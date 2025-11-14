@@ -21,9 +21,6 @@ public class VTStandardConsoleInterruptibleReaderByte implements Runnable
   
   public VTStandardConsoleInterruptibleReaderByte()
   {
-    // String testString = "\u001B[1;1eeR";
-    // System.out.println("matches:" +
-    // testString.matches(ANSIDetectionPattern));
     this.buffer = new LinkedBlockingQueue<byte[]>();
     this.executorService = Executors.newFixedThreadPool(1, new ThreadFactory()
     {
@@ -34,8 +31,6 @@ public class VTStandardConsoleInterruptibleReaderByte implements Runnable
         return created;
       }
     });
-    // standardTerminalReader = new BufferedReader(new
-    // VTStandardConsoleNativeReader());
   }
   
   public void setEcho(boolean echo)

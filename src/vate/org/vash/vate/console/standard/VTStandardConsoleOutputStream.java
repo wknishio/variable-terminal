@@ -43,5 +43,4 @@ public class VTStandardConsoleOutputStream extends OutputStream
   {
     
   }
-  
 }

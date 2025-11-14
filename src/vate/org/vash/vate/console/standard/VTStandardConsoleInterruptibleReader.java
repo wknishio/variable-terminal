@@ -24,15 +24,10 @@ public class VTStandardConsoleInterruptibleReader implements Runnable
   private Method readLineMethod;
   private Method readPasswordMethod;
   private BlockingQueue<String> buffer;
-  // private static final String ANSIDetectionPattern =
-  // "(\\u001B)(\\[)([^R])*([R])";
   private ExecutorService executorService;
   
   public VTStandardConsoleInterruptibleReader()
   {
-    // String testString = "\u001B[1;1eeR";
-    // System.out.println("matches:" +
-    // testString.matches(ANSIDetectionPattern));
     this.buffer = new LinkedBlockingQueue<String>();
     this.executorService = Executors.newFixedThreadPool(1, new ThreadFactory()
     {
@@ -47,7 +42,6 @@ public class VTStandardConsoleInterruptibleReader implements Runnable
     try
     {
       systemConsoleObject = VTMainConsole.getIOConsole();
-      // VTStandardConsole.systemconsoleclass = systemConsoleObject != null;
       VTStandardConsole.systemconsolesupport = systemConsoleObject != null;
       if (systemConsoleObject != null)
       {
@@ -156,13 +150,6 @@ public class VTStandardConsoleInterruptibleReader implements Runnable
       
       if (line != null)
       {
-        // int before = line.length();
-        // line = line.replaceAll(ANSIDetectionPattern, "");
-        // int after = line.length();
-        // if (before > after)
-        // {
-        // VTStandardConsole.ansidetected = true;
-        // }
         buffer.offer(line);
       }
       else
@@ -185,13 +172,6 @@ public class VTStandardConsoleInterruptibleReader implements Runnable
         {
           line = "";
         }
-        // int before = line.length();
-        // line = line.replaceAll(ANSIDetectionPattern, "");
-        // int after = line.length();
-        // if (before > after)
-        // {
-        // VTStandardConsole.ansidetected = true;
-        // }
         buffer.offer(line);
       }
     }

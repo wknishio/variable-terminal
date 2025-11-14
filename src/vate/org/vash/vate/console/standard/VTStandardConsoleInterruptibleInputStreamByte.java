@@ -4,9 +4,6 @@ import java.io.IOException;
 
 public class VTStandardConsoleInterruptibleInputStreamByte extends VTStandardConsoleInterruptibleInputStream
 {
-  //private VTPipedInputStream inputPipe;
-  //private VTPipedOutputStream outputPipe;
-  // private VTByteArrayOutputStream lineBuffer;
   private byte[] inputBuffer;
   private int readed;
   private VTStandardConsoleInterruptibleReaderByte reader;
@@ -14,12 +11,7 @@ public class VTStandardConsoleInterruptibleInputStreamByte extends VTStandardCon
   
   public VTStandardConsoleInterruptibleInputStreamByte()
   {
-    // this.lineBuffer = new VTByteArrayOutputStream();
     this.reader = new VTStandardConsoleInterruptibleReaderByte();
-    // Thread readerThread = new Thread(reader,
-    // "VTStandardTerminalInterruptibleReader");
-    // readerThread.setDaemon(true);
-    // readerThread.start();
   }
   
   public void setEcho(boolean echo)
