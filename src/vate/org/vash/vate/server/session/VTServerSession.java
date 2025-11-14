@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 
-import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.graphics.capture.VTAWTScreenCaptureProvider;
 import org.vash.vate.graphics.clipboard.VTClipboardTransferTask;
 import org.vash.vate.graphics.control.VTAWTControlProvider;
@@ -510,102 +509,13 @@ public class VTServerSession
   
   public void startShell()
   {
-    boolean started = false;
     try
     {
-      if (restartingShell)
-      {
-        /*
-         * connection.getResultWriter().
-         * write("\nVT>Starting remote shell...\nVT>");
-         * connection.getResultWriter().flush();
-         */
-      }
-      else
-      {
-        //connection.getResultWriter().write("\nVT>Starting remote shell...");
-        //connection.getResultWriter().flush();
-      }
       shellAdapter.startShell();
-      
-      started = true;
-      /*
-       * if (!Platform.isWindows()) { VTNativeUtils.system("set +m"); }
-       */
-    }
-    catch (IOException e)
-    {
-      // e.printStackTrace();
-      VTMainConsole.print("\rVT>Remote shell not available!");
-      try
-      {
-        if (restartingShell)
-        {
-          connection.getResultWriter().write("\nVT>Remote shell not available!" + "\nVT>");
-          connection.getResultWriter().flush();
-        }
-        else
-        {
-          connection.getResultWriter().write("\nVT>Remote shell not available!" + "\nVT>Enter *VTHELP or *VTHL to list available commands in client console\nVT>\n");
-          connection.getResultWriter().flush();
-        }
-      }
-      catch (Throwable e1)
-      {
-        
-      }
-      started = false;
-    }
-    catch (SecurityException e)
-    {
-      // e.printStackTrace();
-      VTMainConsole.print("\rVT>Security error detected!");
-      try
-      {
-        if (restartingShell)
-        {
-          connection.getResultWriter().write("\nVT>Security error detected!" + "\nVT>");
-          connection.getResultWriter().flush();
-        }
-        else
-        {
-          connection.getResultWriter().write("\nVT>Security error detected!" + "\nVT>Enter *VTHELP or *VTHL to list available commands in client console\nVT>\n");
-          connection.getResultWriter().flush();
-        }
-      }
-      catch (Throwable e1)
-      {
-        
-      }
-      started = false;
     }
     catch (Throwable e)
     {
       // e.printStackTrace();
-    }
-    try
-    {
-      if (started)
-      {
-//        if (restartingShell)
-//        {
-//          connection.getResultWriter().write("\nVT>Remote shell started!" + "\nVT>\n\n");
-//          connection.getResultWriter().flush();
-//        }
-//        else
-//        {
-//          connection.getResultWriter().write("\nVT>Remote shell started!" + "\nVT>Enter *VTHELP or *VTHL to list available commands in client console\nVT>\n");
-//          connection.getResultWriter().flush();
-//        }
-      }
-      else
-      {
-        
-      }
-    }
-    catch (Throwable e)
-    {
-      
     }
   }
   
