@@ -41,9 +41,9 @@ public class VTLIMIT extends VTClientStandardRemoteConsoleCommandProcessor
         {
           rate = 0;
         }
-        else if (rate < (VTSystem.VT_PACKET_TOTAL_SIZE_BYTES << 1))
+        else if (rate < (VTSystem.VT_PACKET_TOTAL_SIZE_BYTES << 0))
         {
-          rate = (VTSystem.VT_PACKET_TOTAL_SIZE_BYTES << 1);
+          rate = (VTSystem.VT_PACKET_TOTAL_SIZE_BYTES << 0);
         }
         connection.setRateInBytesPerSecond(rate);
         if (rate > 0)
@@ -72,9 +72,9 @@ public class VTLIMIT extends VTClientStandardRemoteConsoleCommandProcessor
         {
           rate = 0;
         }
-        else if (rate < (VTSystem.VT_PACKET_TOTAL_SIZE_BYTES << 1))
+        else if (rate < (VTSystem.VT_PACKET_TOTAL_SIZE_BYTES << 0))
         {
-          rate = (VTSystem.VT_PACKET_TOTAL_SIZE_BYTES << 1);
+          rate = (VTSystem.VT_PACKET_TOTAL_SIZE_BYTES << 0);
         }
         if (parsed[2].toUpperCase().startsWith("D"))
         {

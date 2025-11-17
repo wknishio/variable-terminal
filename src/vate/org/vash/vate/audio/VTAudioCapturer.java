@@ -18,6 +18,7 @@ import org.concentus.OpusApplication;
 import org.concentus.OpusEncoder;
 import org.concentus.OpusException;
 import org.concentus.OpusMode;
+import org.concentus.OpusSignal;
 import org.vash.vate.VTSystem;
 import org.vash.vate.stream.endian.VTLittleEndianByteArrayInputOutputStream;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
@@ -169,9 +170,9 @@ public class VTAudioCapturer
         this.speex.getEncoder().setDtx(false);
         try
         {
-          this.opus = new OpusEncoder(sampleRate, audioFormat.getChannels(), OpusApplication.OPUS_APPLICATION_RESTRICTED_LOWDELAY);
+          this.opus = new OpusEncoder(sampleRate, audioFormat.getChannels(), OpusApplication.OPUS_APPLICATION_AUDIO);
           this.opus.setForceMode(OpusMode.MODE_CELT_ONLY);
-          //this.opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
+          this.opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
           this.opus.setEnableAnalysis(false);
           this.opus.setUseVBR(false);
           this.opus.setUseDTX(false);
@@ -188,9 +189,9 @@ public class VTAudioCapturer
         this.codec = VTSystem.VT_AUDIO_CODEC_OPUS;
         try
         {
-          this.opus = new OpusEncoder(sampleRate, audioFormat.getChannels(), OpusApplication.OPUS_APPLICATION_RESTRICTED_LOWDELAY);
+          this.opus = new OpusEncoder(sampleRate, audioFormat.getChannels(), OpusApplication.OPUS_APPLICATION_AUDIO);
           this.opus.setForceMode(OpusMode.MODE_CELT_ONLY);
-          //this.opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
+          this.opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
           this.opus.setEnableAnalysis(false);
           this.opus.setUseVBR(false);
           this.opus.setUseDTX(false);
@@ -212,9 +213,9 @@ public class VTAudioCapturer
         this.speex.getEncoder().setDtx(false);
         try
         {
-          this.opus = new OpusEncoder(sampleRate, audioFormat.getChannels(), OpusApplication.OPUS_APPLICATION_RESTRICTED_LOWDELAY);
+          this.opus = new OpusEncoder(sampleRate, audioFormat.getChannels(), OpusApplication.OPUS_APPLICATION_AUDIO);
           this.opus.setForceMode(OpusMode.MODE_CELT_ONLY);
-          //this.opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
+          this.opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
           this.opus.setEnableAnalysis(false);
           this.opus.setUseVBR(false);
           this.opus.setUseDTX(false);
@@ -231,9 +232,9 @@ public class VTAudioCapturer
         this.codec = VTSystem.VT_AUDIO_CODEC_OPUS;
         try
         {
-          this.opus = new OpusEncoder(sampleRate, audioFormat.getChannels(), OpusApplication.OPUS_APPLICATION_RESTRICTED_LOWDELAY);
+          this.opus = new OpusEncoder(sampleRate, audioFormat.getChannels(), OpusApplication.OPUS_APPLICATION_AUDIO);
           this.opus.setForceMode(OpusMode.MODE_CELT_ONLY);
-          //this.opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
+          this.opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
           this.opus.setEnableAnalysis(false);
           this.opus.setUseVBR(false);
           this.opus.setUseDTX(false);
@@ -260,14 +261,14 @@ public class VTAudioCapturer
         this.codec = VTSystem.VT_AUDIO_CODEC_OPUS;
         try
         {
-          this.opus = new OpusEncoder(sampleRate, audioFormat.getChannels(), OpusApplication.OPUS_APPLICATION_RESTRICTED_LOWDELAY);
+          this.opus = new OpusEncoder(sampleRate, audioFormat.getChannels(), OpusApplication.OPUS_APPLICATION_AUDIO);
           this.opus.setForceMode(OpusMode.MODE_CELT_ONLY);
-          //this.opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
+          this.opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
           this.opus.setEnableAnalysis(false);
           this.opus.setUseVBR(false);
           this.opus.setUseDTX(false);
           this.opus.setComplexity(7);
-          this.opus.setBitrate(96000);
+          this.opus.setBitrate(48000);
         }
         catch (Throwable t)
         {
