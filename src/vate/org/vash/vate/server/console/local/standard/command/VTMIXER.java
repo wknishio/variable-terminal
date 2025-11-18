@@ -19,7 +19,7 @@ public class VTMIXER extends VTServerStandardLocalConsoleCommandProcessor
   public void execute(String command, String[] parsed) throws Exception
   {
     message.setLength(0);
-    message.append("\nVT>List of server audio mixers:\nVT>");
+    message.append("\rVT>List of server audio mixers:\nVT>");
     Mixer.Info[] mixers = AudioSystem.getMixerInfo();
     int number = 0;
     for (Mixer.Info info : mixers)
