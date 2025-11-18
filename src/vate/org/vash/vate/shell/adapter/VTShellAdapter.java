@@ -147,7 +147,7 @@ public class VTShellAdapter
 //          }
           // this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON",
           // "/A");
-          this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON", "/Q", "/A");
+          this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON", "/A");
           this.shellBuilder.environment().putAll(VTMainNativeUtils.getvirtualenv());
           this.shellEnvironment = this.shellBuilder.environment();
           if (this.shellEnvironment != null)

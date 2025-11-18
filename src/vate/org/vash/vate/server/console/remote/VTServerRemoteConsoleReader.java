@@ -180,7 +180,10 @@ public class VTServerRemoteConsoleReader extends VTTask
         {
           try
           {
-            session.getOutputWriter().setCommandFilter(command.substring(1));
+            if (session.getEchoState() != 1)
+            {
+              session.getOutputWriter().setCommandFilter(command.substring(1));
+            }
             session.getShellCommandExecutor().write(command.substring(1) + "\n");
             session.getShellCommandExecutor().flush();
           }
@@ -193,7 +196,10 @@ public class VTServerRemoteConsoleReader extends VTTask
         {
           try
           {
-            session.getOutputWriter().setCommandFilter(command);
+            if (session.getEchoState() != 1)
+            {
+              session.getOutputWriter().setCommandFilter(command);
+            }
             session.getShellCommandExecutor().write(command + "\n");
             session.getShellCommandExecutor().flush();
           }

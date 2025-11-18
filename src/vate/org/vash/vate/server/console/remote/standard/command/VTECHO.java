@@ -20,13 +20,11 @@ public class VTECHO extends VTServerStandardRemoteConsoleCommandProcessor
     {
       if (echoState == 1)
       {
-        connection.getResultWriter().write("\nVT>Local console echo disabled\nVT>");
-        connection.getResultWriter().flush();
+        
       }
       else
       {
-        connection.getResultWriter().write("\nVT>Local console echo enabled\nVT>");
-        connection.getResultWriter().flush();
+        
       }
     }
     else
@@ -34,15 +32,31 @@ public class VTECHO extends VTServerStandardRemoteConsoleCommandProcessor
       if (session.isEchoCommands())
       {
         session.setEchoCommands(false);
-        connection.getResultWriter().write("\nVT>Remote console echo disabled\nVT>");
-        connection.getResultWriter().flush();
       }
       else
       {
         session.setEchoCommands(true);
-        connection.getResultWriter().write("\nVT>Remote console echo enabled\nVT>");
-        connection.getResultWriter().flush();
       }
+    }
+    if (echoState == 0)
+    {
+      connection.getResultWriter().write("\nVT>Local console echo enabled\nVT>Remote console echo disabled\nVT>");
+      connection.getResultWriter().flush();
+    }
+    else if (echoState == 1)
+    {
+      connection.getResultWriter().write("\nVT>Local console echo disabled\nVT>Remote console echo disabled\nVT>");
+      connection.getResultWriter().flush();
+    }
+    else if (echoState == 2)
+    {
+      connection.getResultWriter().write("\nVT>Local console echo disabled\nVT>Remote console echo enabled\nVT>");
+      connection.getResultWriter().flush();
+    }
+    else if (echoState == 3)
+    {
+      connection.getResultWriter().write("\nVT>Local console echo enabled\nVT>Remote console echo enabled\nVT>");
+      connection.getResultWriter().flush();
     }
   }
   
