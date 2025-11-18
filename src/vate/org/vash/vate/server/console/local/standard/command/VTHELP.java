@@ -20,16 +20,16 @@ public class VTHELP extends VTServerStandardLocalConsoleCommandProcessor
     {
       if (command.toUpperCase().contains("*VTHELP"))
       {
-        VTMainConsole.print(VTHelpManager.getMainHelpForServerCommands());
+        VTMainConsole.print(VTHelpManager.getMainHelpForServerCommands().substring(1));
       }
       else
       {
-        VTMainConsole.print(VTHelpManager.getMinHelpForServerCommands());
+        VTMainConsole.print(VTHelpManager.getMinHelpForServerCommands().substring(1));
       }
     }
     else if (parsed.length > 1)
     {
-      VTMainConsole.print(VTHelpManager.getHelpForServerCommand(parsed[1]));
+      VTMainConsole.print(VTHelpManager.getHelpForServerCommand(parsed[1]).substring(1));
     }
   }
   
