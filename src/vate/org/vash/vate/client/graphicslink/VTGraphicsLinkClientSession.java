@@ -217,7 +217,10 @@ public class VTGraphicsLinkClientSession
     {
       //e.printStackTrace();
     }
-    VTMainConsole.print("\nVT>Remote graphics link stopped!\nVT>");
+    if (session.getConnection().isConnected())
+    {
+      VTMainConsole.print("\nVT>Remote graphics link stopped!\nVT>");
+    }
     finished = true;
   }
 }

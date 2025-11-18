@@ -1470,55 +1470,34 @@ public class VTFileTransferClientTransaction implements Runnable
             fileTransferRemoteOutputStream = session.getClient().getConnection().getFileTransferDataOutputStream();
           }
           
+          boolean failed = false;
+          
           for (String localFile : localFiles)
           {
             localFile = normalizePath(localFile);
             currentRootPath = localFile;
-            if (tryUpload(localFile))
+            if (!tryUpload(localFile))
             {
-              if (!session.getClient().getConnection().isConnected())
-              {
-                finished = true;
-                return;
-              }
-            }
-            else
-            {
-              if (!session.getClient().getConnection().isConnected())
-              {
-                return;
-              }
-              synchronized (this)
-              {
-                if (interrupted)
-                {
-                  VTMainConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + source + "]" + "\nVT>Remote file: [" + destination + "]\nVT>");
-                }
-                else
-                {
-                  VTMainConsole.print("\nVT>File transfer failed!" + "\nVT>Local file: [" + source + "]" + "\nVT>Remote file: [" + destination + "]\nVT>");
-                }
-                finished = true;
-              }
-              return;
+              failed = true;
             }
           }
+          
           synchronized (this)
           {
-            if (!stopped && session.getClient().getConnection().isConnected())
+            if (session.getClient().getConnection().isConnected())
             {
-              if (interrupted)
+              if (interrupted || stopped)
               {
                 VTMainConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + source + "]" + "\nVT>Remote file: [" + destination + "]\nVT>");
+              }
+              else if (failed)
+              {
+                VTMainConsole.print("\nVT>File transfer failed!" + "\nVT>Local file: [" + source + "]" + "\nVT>Remote file: [" + destination + "]\nVT>");
               }
               else
               {
                 VTMainConsole.print("\nVT>File transfer completed!" + "\nVT>Local file: [" + source + "]" + "\nVT>Remote file: [" + destination + "]\nVT>");
               }
-            }
-            else
-            {
-              VTMainConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + source + "]" + "\nVT>Remote file: [" + destination + "]\nVT>");
             }
             finished = true;
           }
@@ -1570,60 +1549,34 @@ public class VTFileTransferClientTransaction implements Runnable
           }
           
           String[] remoteFiles = filePaths.split(";");
+          
+          boolean failed = false;
+          
           for (String remoteFile : remoteFiles)
           {
             remoteFile = normalizePath(remoteFile);
             currentRootPath = remoteFile;
-            if (tryDownload(destination, true))
+            if (!tryDownload(destination, true))
             {
-              if (!session.getClient().getConnection().isConnected())
-              {
-                finished = true;
-                return;
-              }
-            }
-            else
-            {
-              if (!session.getClient().getConnection().isConnected())
-              {
-                return;
-              }
-              synchronized (this)
-              {
-                if (session.getClient().getConnection().isConnected())
-                {
-                  if (interrupted)
-                  {
-                    VTMainConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
-                  }
-                  else
-                  {
-                    VTMainConsole.print("\nVT>File transfer failed!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
-                  }
-                }
-                finished = true;
-              }
-              return;
+              failed = true;
             }
           }
+          
           synchronized (this)
           {
             if (session.getClient().getConnection().isConnected())
             {
-              if (!stopped)
+              if (interrupted || stopped)
               {
-                if (interrupted)
-                {
-                  VTMainConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
-                }
-                else
-                {
-                  VTMainConsole.print("\nVT>File transfer completed!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
-                }
+                VTMainConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
+              }
+              else if (failed)
+              {
+                VTMainConsole.print("\nVT>File transfer failed!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
               }
               else
               {
-                VTMainConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
+                VTMainConsole.print("\nVT>File transfer completed!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
               }
             }
             finished = true;
