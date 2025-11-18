@@ -145,7 +145,7 @@ public class VTServerRemoteConsoleReader extends VTTask
     
     // System.out.println("echoState:" + session.getEchoState());
     
-    if (session.isEchoCommands())
+    if (session.isEchoCommands() && (session.getEchoState() == 2))
     {
       if (command != null && !selector.remoteCommand(parsed[0]))
       {

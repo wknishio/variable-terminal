@@ -19,11 +19,6 @@ public class VTECHO extends VTClientStandardRemoteConsoleCommandProcessor
   {
     if (state == 0)
     {
-      state = 1;
-      
-      session.getConnection().getCommandWriter().writeLine(command + " " + state);
-      session.getConnection().getCommandWriter().flush();
-      
       if (VTMainConsole.isCommandEcho())
       {
         VTMainConsole.setCommandEcho(false);
@@ -32,6 +27,18 @@ public class VTECHO extends VTClientStandardRemoteConsoleCommandProcessor
       {
         VTMainConsole.setCommandEcho(true);
       }
+      
+      if (!VTMainConsole.isCommandEcho())
+      {
+        state = 1;
+      }
+      else
+      {
+        state = 0;
+      }
+      
+      session.getConnection().getCommandWriter().writeLine(command + " " + state);
+      session.getConnection().getCommandWriter().flush();
     }
     else if (state == 1)
     {
@@ -42,11 +49,6 @@ public class VTECHO extends VTClientStandardRemoteConsoleCommandProcessor
     }
     else if (state == 2)
     {
-      state = 3;
-      
-      session.getConnection().getCommandWriter().writeLine(command + " " + state);
-      session.getConnection().getCommandWriter().flush();
-      
       if (VTMainConsole.isCommandEcho())
       {
         VTMainConsole.setCommandEcho(false);
@@ -55,6 +57,18 @@ public class VTECHO extends VTClientStandardRemoteConsoleCommandProcessor
       {
         VTMainConsole.setCommandEcho(true);
       }
+      
+      if (VTMainConsole.isCommandEcho())
+      {
+        state = 3;
+      }
+      else
+      {
+        state = 2;
+      }
+      
+      session.getConnection().getCommandWriter().writeLine(command + " " + state);
+      session.getConnection().getCommandWriter().flush();
     }
     else if (state == 3)
     {
