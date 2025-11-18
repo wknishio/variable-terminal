@@ -22,7 +22,7 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
     {
       if (parsed[1].toUpperCase().contains("R"))
       {
-        connection.getResultWriter().write("\nVT>Starting remote shell...\nVT>");
+        connection.getResultWriter().write("\nVT>Running remote shell...\nVT>");
         connection.getResultWriter().flush();
         // session.setRestartingShell(true);
         session.restartShell();
