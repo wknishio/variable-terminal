@@ -42,41 +42,43 @@ public class VTECHO extends VTClientStandardRemoteConsoleCommandProcessor
     }
     else if (state == 1)
     {
-      state = 2;
+      VTMainConsole.setCommandEcho(true);
       
-      session.getConnection().getCommandWriter().writeLine(command + " " + state);
-      session.getConnection().getCommandWriter().flush();
-    }
-    else if (state == 2)
-    {
-      if (VTMainConsole.isCommandEcho())
-      {
-        VTMainConsole.setCommandEcho(false);
-      }
-      else
-      {
-        VTMainConsole.setCommandEcho(true);
-      }
-      
-      if (VTMainConsole.isCommandEcho())
-      {
-        state = 3;
-      }
-      else
-      {
-        state = 2;
-      }
-      
-      session.getConnection().getCommandWriter().writeLine(command + " " + state);
-      session.getConnection().getCommandWriter().flush();
-    }
-    else if (state == 3)
-    {
       state = 0;
       
       session.getConnection().getCommandWriter().writeLine(command + " " + state);
       session.getConnection().getCommandWriter().flush();
     }
+//    else if (state == 2)
+//    {
+//      if (VTMainConsole.isCommandEcho())
+//      {
+//        VTMainConsole.setCommandEcho(false);
+//      }
+//      else
+//      {
+//        VTMainConsole.setCommandEcho(true);
+//      }
+//      
+//      if (VTMainConsole.isCommandEcho())
+//      {
+//        state = 3;
+//      }
+//      else
+//      {
+//        state = 2;
+//      }
+//      
+//      session.getConnection().getCommandWriter().writeLine(command + " " + state);
+//      session.getConnection().getCommandWriter().flush();
+//    }
+//    else if (state == 3)
+//    {
+//      state = 0;
+//      
+//      session.getConnection().getCommandWriter().writeLine(command + " " + state);
+//      session.getConnection().getCommandWriter().flush();
+//    }
   }
   
   public void close()

@@ -16,48 +16,48 @@ public class VTECHO extends VTServerStandardRemoteConsoleCommandProcessor
   {
     int echoState = Integer.parseInt(parsed[1]);
     session.setEchoState(echoState);
-    if (echoState == 1 || echoState == 3)
-    {
-      if (echoState == 1)
-      {
-        
-      }
-      else
-      {
-        
-      }
-    }
-    else
-    {
-      if (session.isEchoCommands())
-      {
-        session.setEchoCommands(false);
-      }
-      else
-      {
-        session.setEchoCommands(true);
-      }
-    }
+//    if (echoState == 1 || echoState == 3)
+//    {
+//      if (echoState == 1)
+//      {
+//        
+//      }
+//      else
+//      {
+//        
+//      }
+//    }
+//    else
+//    {
+//      if (session.isEchoCommands())
+//      {
+//        session.setEchoCommands(false);
+//      }
+//      else
+//      {
+//        session.setEchoCommands(true);
+//      }
+//    }
     if (echoState == 0)
     {
-      connection.getResultWriter().write("\nVT>Local console echo enabled\nVT>Remote console echo disabled\nVT>");
+      connection.getResultWriter().write("\nVT>Using local console command echo\nVT>");
       connection.getResultWriter().flush();
     }
     else if (echoState == 1)
     {
-      connection.getResultWriter().write("\nVT>Local console echo disabled\nVT>Remote console echo disabled\nVT>");
+      connection.getResultWriter().write("\nVT>Using remote console command echo\nVT>");
       connection.getResultWriter().flush();
     }
-    else if (echoState == 2)
-    {
-      connection.getResultWriter().write("\nVT>Local console echo disabled\nVT>Remote console echo enabled\nVT>");
-      connection.getResultWriter().flush();
-    }
-    else if (echoState == 3)
-    {
-      connection.getResultWriter().write("\nVT>Local console echo enabled\nVT>Remote console echo enabled\nVT>");
-      connection.getResultWriter().flush();
-    }
+//    else if (echoState == 2)
+//    {
+//      connection.getResultWriter().write("\nVT>Local console echo disabled\nVT>Remote console echo enabled\nVT>");
+//      connection.getResultWriter().flush();
+//    }
+//    else if (echoState == 3)
+//    {
+//      connection.getResultWriter().write("\nVT>Local console echo enabled\nVT>Remote console echo enabled\nVT>");
+//      connection.getResultWriter().flush();
+//    }
   }
   
   public void close()
