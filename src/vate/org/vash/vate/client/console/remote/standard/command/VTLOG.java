@@ -22,16 +22,16 @@ public class VTLOG extends VTClientStandardRemoteConsoleCommandProcessor
       boolean ok = VTMainConsole.setLogReadLine(parameter);
       if (ok)
       {
-        VTMainConsole.print("\nVT>Enabled recording of client commands to file: [" + parameter + "]\nVT>");
+        VTMainConsole.print("\rVT>Enabled recording of client commands to file: [" + parameter + "]\nVT>");
       }
       else
       {
-        VTMainConsole.print("\nVT>Failed recording of client commands to file: [" + parameter + "]\nVT>");
+        VTMainConsole.print("\rVT>Failed recording of client commands to file: [" + parameter + "]\nVT>");
       }
     }
     else
     {
-      VTMainConsole.print("\nVT>Disabled recording of client commands\nVT>");
+      VTMainConsole.print("\rVT>Disabled recording of client commands\nVT>");
       VTMainConsole.setLogReadLine(null);
     }
   }

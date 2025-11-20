@@ -15,7 +15,7 @@ public class VTBELL extends VTServerStandardRemoteConsoleCommandProcessor
   
   public void execute(String command, String[] parsed) throws Exception
   {
-    connection.getResultWriter().write("\nVT>Invoking server terminal bell!\nVT>");
+    connection.getResultWriter().write("\rVT>Invoking server terminal bell!\nVT>");
     connection.getResultWriter().flush();
     VTMainConsole.bell();
   }

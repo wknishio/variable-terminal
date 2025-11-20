@@ -69,7 +69,7 @@ public class VTAUDIOLINK extends VTServerStandardRemoteConsoleCommandProcessor
                   }
                   catch (Throwable t)
                   {
-                    connection.getResultWriter().write("\nVT>Invalid remote input audio mixer number [" + mixer + "]!");
+                    connection.getResultWriter().write("\rVT>Invalid remote input audio mixer number [" + mixer + "]!");
                     connection.getResultWriter().flush();
                     // ok = false;
                   }
@@ -83,7 +83,7 @@ public class VTAUDIOLINK extends VTServerStandardRemoteConsoleCommandProcessor
                   }
                   catch (Throwable t)
                   {
-                    connection.getResultWriter().write("\nVT>Invalid remote output audio mixer number [" + mixer + "]!");
+                    connection.getResultWriter().write("\rVT>Invalid remote output audio mixer number [" + mixer + "]!");
                     connection.getResultWriter().flush();
                     // ok = false;
                   }
@@ -147,7 +147,7 @@ public class VTAUDIOLINK extends VTServerStandardRemoteConsoleCommandProcessor
         if (!ok)
         {
           connection.closeAudioStreams();
-          connection.getResultWriter().write("\nVT>Remote audio link start on server failed!\nVT>");
+          connection.getResultWriter().write("\rVT>Remote audio link start on server failed!\nVT>");
           connection.getResultWriter().flush();
           connection.getAudioControlOutputStream().write(0);
           connection.getAudioControlOutputStream().flush();
@@ -160,7 +160,7 @@ public class VTAUDIOLINK extends VTServerStandardRemoteConsoleCommandProcessor
         
         if (ok)
         {
-          connection.getResultWriter().write("\nVT>Remote audio link started!\nVT>");
+          connection.getResultWriter().write("\rVT>Remote audio link started!\nVT>");
           connection.getResultWriter().flush();
           connection.getAudioControlOutputStream().write(1);
           connection.getAudioControlOutputStream().flush();
@@ -178,7 +178,7 @@ public class VTAUDIOLINK extends VTServerStandardRemoteConsoleCommandProcessor
             source.close();
           }
           connection.closeAudioStreams();
-          connection.getResultWriter().write("\nVT>Remote audio link start on server failed!\nVT>");
+          connection.getResultWriter().write("\rVT>Remote audio link start on server failed!\nVT>");
           connection.getResultWriter().flush();
           connection.getAudioControlOutputStream().write(0);
           connection.getAudioControlOutputStream().flush();
@@ -187,7 +187,7 @@ public class VTAUDIOLINK extends VTServerStandardRemoteConsoleCommandProcessor
       else
       {
         connection.closeAudioStreams();
-        connection.getResultWriter().write("\nVT>Remote audio link stopped!\nVT>");
+        connection.getResultWriter().write("\rVT>Remote audio link stopped!\nVT>");
         connection.getResultWriter().flush();
       }
     }

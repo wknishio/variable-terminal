@@ -336,7 +336,7 @@ public class VTServerRuntimeExecutor extends VTTask
           {
             try
             {
-              connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
+              connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
               connection.getResultWriter().flush();
             }
             catch (Throwable e)
@@ -357,7 +357,7 @@ public class VTServerRuntimeExecutor extends VTTask
             {
               try
               {
-                connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
+                connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
                 connection.getResultWriter().flush();
               }
               catch (Throwable e)
@@ -375,7 +375,7 @@ public class VTServerRuntimeExecutor extends VTTask
             {
               try
               {
-                connection.getResultWriter().write("\nVT>There are no managed processes on session list!\nVT>");
+                connection.getResultWriter().write("\rVT>There are no managed processes on session list!\nVT>");
                 connection.getResultWriter().flush();
               }
               catch (Throwable e)
@@ -394,7 +394,7 @@ public class VTServerRuntimeExecutor extends VTTask
           {
             try
             {
-              connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
+              connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
               connection.getResultWriter().flush();
             }
             catch (Throwable e)
@@ -413,12 +413,12 @@ public class VTServerRuntimeExecutor extends VTTask
           {
             if (getRuntimeBuilderWorkingDirectory() != null)
             {
-              connection.getResultWriter().write("\nVT>Server runtime working directory: [" + getRuntimeBuilderWorkingDirectory() + "]\nVT>");
+              connection.getResultWriter().write("\rVT>Server runtime working directory: [" + getRuntimeBuilderWorkingDirectory() + "]\nVT>");
               connection.getResultWriter().flush();
             }
             else
             {
-              connection.getResultWriter().write("\nVT>Server runtime working directory: []\nVT>");
+              connection.getResultWriter().write("\rVT>Server runtime working directory: []\nVT>");
               connection.getResultWriter().flush();
             }
           }
@@ -430,25 +430,25 @@ public class VTServerRuntimeExecutor extends VTTask
               if (workingDirectory.isDirectory())
               {
                 session.setRuntimeBuilderWorkingDirectory(workingDirectory);
-                connection.getResultWriter().write("\nVT>Server runtime working directory set to: [" + workingDirectory + "]\nVT>");
+                connection.getResultWriter().write("\rVT>Server runtime working directory set to: [" + workingDirectory + "]\nVT>");
                 connection.getResultWriter().flush();
               }
               else
               {
-                connection.getResultWriter().write("\nVT>File path: [" + workingDirectory + "] is not a valid directory on server!\nVT>");
+                connection.getResultWriter().write("\rVT>File path: [" + workingDirectory + "] is not a valid directory on server!\nVT>");
                 connection.getResultWriter().flush();
               }
             }
             else
             {
               session.setRuntimeBuilderWorkingDirectory(null);
-              connection.getResultWriter().write("\nVT>Server runtime working directory set to: []\nVT>");
+              connection.getResultWriter().write("\rVT>Server runtime working directory set to: []\nVT>");
               connection.getResultWriter().flush();
             }
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
+            connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
             connection.getResultWriter().flush();
           }
           
@@ -587,7 +587,7 @@ public class VTServerRuntimeExecutor extends VTTask
               managedProcessList.add(process);
               synchronized (this)
               {
-                connection.getResultWriter().write("\nVT>Managed process with command [" + parsedCommand + "] created!\nVT>");
+                connection.getResultWriter().write("\rVT>Managed process with command [" + parsedCommand + "] created!\nVT>");
                 connection.getResultWriter().flush();
                 finished = true;
               }
@@ -598,7 +598,7 @@ public class VTServerRuntimeExecutor extends VTTask
               freeProcessList.add(process);
               synchronized (this)
               {
-                connection.getResultWriter().write("\nVT>Free process with command [" + parsedCommand + "] executed!\nVT>");
+                connection.getResultWriter().write("\rVT>Free process with command [" + parsedCommand + "] executed!\nVT>");
                 connection.getResultWriter().flush();
                 finished = true;
               }
@@ -613,7 +613,7 @@ public class VTServerRuntimeExecutor extends VTTask
             {
               try
               {
-                connection.getResultWriter().write("\nVT>Native runtime failed!\nVT>Error message: [" + e.toString() + "]\nVT>");
+                connection.getResultWriter().write("\rVT>Native runtime failed!\nVT>Error message: [" + e.toString() + "]\nVT>");
                 connection.getResultWriter().flush();
               }
               catch (Throwable e1)
@@ -633,7 +633,7 @@ public class VTServerRuntimeExecutor extends VTTask
           if (process_scope == PROCESS_SCOPE_ALL)
           {
             message.setLength(0);
-            message.append("\nVT>List of managed processes on session list:\nVT>");
+            message.append("\rVT>List of managed processes on session list:\nVT>");
             i = 0;
             for (VTRuntimeProcess process : managedProcessList.toArray(new VTRuntimeProcess[] {}))
             {
@@ -672,7 +672,7 @@ public class VTServerRuntimeExecutor extends VTTask
               if (!found)
               {
                 message.setLength(0);
-                message.append("\nVT>List of managed processes on session list with number [" + splitCommand[2] + "]:\nVT>");
+                message.append("\rVT>List of managed processes on session list with number [" + splitCommand[2] + "]:\nVT>");
               }
               found = true;
               Integer exitValue = process.getExitValue();
@@ -698,7 +698,7 @@ public class VTServerRuntimeExecutor extends VTTask
               {
                 try
                 {
-                  connection.getResultWriter().write("\nVT>Process with number [" + splitCommand[2] + "] not found on session list!\nVT>");
+                  connection.getResultWriter().write("\rVT>Process with number [" + splitCommand[2] + "] not found on session list!\nVT>");
                   connection.getResultWriter().flush();
                 }
                 catch (Throwable e1)
@@ -714,7 +714,7 @@ public class VTServerRuntimeExecutor extends VTTask
               {
                 try
                 {
-                  connection.getResultWriter().write("\nVT>Process number [" + splitCommand[2] + "] is not valid!\nVT>");
+                  connection.getResultWriter().write("\rVT>Process number [" + splitCommand[2] + "] is not valid!\nVT>");
                   connection.getResultWriter().flush();
                 }
                 catch (Throwable e1)
@@ -743,7 +743,7 @@ public class VTServerRuntimeExecutor extends VTTask
                   if (!found)
                   {
                     message.setLength(0);
-                    message.append("\nVT>List of managed processes on session list with command [" + splitCommand[2] + "]:\nVT>");
+                    message.append("\rVT>List of managed processes on session list with command [" + splitCommand[2] + "]:\nVT>");
                   }
                   found = true;
                   Integer exitValue = process.getExitValue();
@@ -765,7 +765,7 @@ public class VTServerRuntimeExecutor extends VTTask
               {
                 try
                 {
-                  connection.getResultWriter().write("\nVT>Processes with command [" + splitCommand[2] + "] not found on session list!\nVT>");
+                  connection.getResultWriter().write("\rVT>Processes with command [" + splitCommand[2] + "] not found on session list!\nVT>");
                   connection.getResultWriter().flush();
                 }
                 catch (Throwable e)
@@ -809,7 +809,7 @@ public class VTServerRuntimeExecutor extends VTTask
             {
               try
               {
-                connection.getResultWriter().write("\nVT>Stopped all managed processes on session list!\nVT>");
+                connection.getResultWriter().write("\rVT>Stopped all managed processes on session list!\nVT>");
                 connection.getResultWriter().flush();
               }
               catch (Throwable e)
@@ -827,7 +827,7 @@ public class VTServerRuntimeExecutor extends VTTask
               managedProcessList.get(Integer.parseInt(splitCommand[2])).destroy();
               synchronized (this)
               {
-                connection.getResultWriter().write("\nVT>Process with number [" + splitCommand[2] + "] stopped!\nVT>");
+                connection.getResultWriter().write("\rVT>Process with number [" + splitCommand[2] + "] stopped!\nVT>");
                 connection.getResultWriter().flush();
                 finished = true;
               }
@@ -838,7 +838,7 @@ public class VTServerRuntimeExecutor extends VTTask
               {
                 try
                 {
-                  connection.getResultWriter().write("\nVT>Process with number [" + splitCommand[2] + "] not found on session list!\nVT>");
+                  connection.getResultWriter().write("\rVT>Process with number [" + splitCommand[2] + "] not found on session list!\nVT>");
                   connection.getResultWriter().flush();
                 }
                 catch (Throwable e1)
@@ -854,7 +854,7 @@ public class VTServerRuntimeExecutor extends VTTask
               {
                 try
                 {
-                  connection.getResultWriter().write("\nVT>Process number [" + splitCommand[2] + "] is not valid!\nVT>");
+                  connection.getResultWriter().write("\rVT>Process number [" + splitCommand[2] + "] is not valid!\nVT>");
                   connection.getResultWriter().flush();
                 }
                 catch (Throwable e1)
@@ -889,7 +889,7 @@ public class VTServerRuntimeExecutor extends VTTask
               {
                 try
                 {
-                  connection.getResultWriter().write("\nVT>Processes with command [" + splitCommand[2] + "] not found on session list!\nVT>");
+                  connection.getResultWriter().write("\rVT>Processes with command [" + splitCommand[2] + "] not found on session list!\nVT>");
                   connection.getResultWriter().flush();
                 }
                 catch (Throwable e)
@@ -905,7 +905,7 @@ public class VTServerRuntimeExecutor extends VTTask
               {
                 try
                 {
-                  connection.getResultWriter().write("\nVT>Processes with command [" + splitCommand[2] + "] stopped!\nVT>");
+                  connection.getResultWriter().write("\rVT>Processes with command [" + splitCommand[2] + "] stopped!\nVT>");
                   connection.getResultWriter().flush();
                 }
                 catch (Throwable e)
@@ -929,7 +929,7 @@ public class VTServerRuntimeExecutor extends VTTask
             {
               try
               {
-                connection.getResultWriter().write("\nVT>Dropped all managed processes on session list!\nVT>");
+                connection.getResultWriter().write("\rVT>Dropped all managed processes on session list!\nVT>");
                 connection.getResultWriter().flush();
               }
               catch (Throwable e)
@@ -947,7 +947,7 @@ public class VTServerRuntimeExecutor extends VTTask
               managedProcessList.remove(Integer.parseInt(splitCommand[2])).setRestart(false);
               synchronized (this)
               {
-                connection.getResultWriter().write("\nVT>Process with number [" + splitCommand[2] + "] dropped from list!\nVT>");
+                connection.getResultWriter().write("\rVT>Process with number [" + splitCommand[2] + "] dropped from list!\nVT>");
                 connection.getResultWriter().flush();
                 finished = true;
               }
@@ -958,7 +958,7 @@ public class VTServerRuntimeExecutor extends VTTask
               {
                 try
                 {
-                  connection.getResultWriter().write("\nVT>Process with number [" + splitCommand[2] + "] not found on session list!\nVT>");
+                  connection.getResultWriter().write("\rVT>Process with number [" + splitCommand[2] + "] not found on session list!\nVT>");
                   connection.getResultWriter().flush();
                 }
                 catch (Throwable e1)
@@ -974,7 +974,7 @@ public class VTServerRuntimeExecutor extends VTTask
               {
                 try
                 {
-                  connection.getResultWriter().write("\nVT>Process number [" + splitCommand[2] + "] is not valid!\nVT>");
+                  connection.getResultWriter().write("\rVT>Process number [" + splitCommand[2] + "] is not valid!\nVT>");
                   connection.getResultWriter().flush();
                 }
                 catch (Throwable e1)
@@ -1009,7 +1009,7 @@ public class VTServerRuntimeExecutor extends VTTask
               {
                 try
                 {
-                  connection.getResultWriter().write("\nVT>Processes with command [" + splitCommand[2] + "] not found on session list!\nVT>");
+                  connection.getResultWriter().write("\rVT>Processes with command [" + splitCommand[2] + "] not found on session list!\nVT>");
                   connection.getResultWriter().flush();
                 }
                 catch (Throwable e)
@@ -1027,7 +1027,7 @@ public class VTServerRuntimeExecutor extends VTTask
               {
                 try
                 {
-                  connection.getResultWriter().write("\nVT>Processes with command [" + splitCommand[2] + "] dropped from list!\nVT>");
+                  connection.getResultWriter().write("\rVT>Processes with command [" + splitCommand[2] + "] dropped from list!\nVT>");
                   connection.getResultWriter().flush();
                 }
                 catch (Throwable e)
@@ -1062,7 +1062,7 @@ public class VTServerRuntimeExecutor extends VTTask
             }
             synchronized (this)
             {
-              connection.getResultWriter().write("\nVT>All managed processes received line!\nVT>");
+              connection.getResultWriter().write("\rVT>All managed processes received line!\nVT>");
               connection.getResultWriter().flush();
               finished = true;
             }
@@ -1078,7 +1078,7 @@ public class VTServerRuntimeExecutor extends VTTask
               managedProcessList.get(Integer.parseInt(splitCommand[2])).getOut().flush();
               synchronized (this)
               {
-                connection.getResultWriter().write("\nVT>Process with number [" + splitCommand[2] + "] received line!\nVT>");
+                connection.getResultWriter().write("\rVT>Process with number [" + splitCommand[2] + "] received line!\nVT>");
                 connection.getResultWriter().flush();
                 finished = true;
               }
@@ -1089,7 +1089,7 @@ public class VTServerRuntimeExecutor extends VTTask
               {
                 try
                 {
-                  connection.getResultWriter().write("\nVT>Process with number [" + splitCommand[2] + "] not found on session list!\nVT>");
+                  connection.getResultWriter().write("\rVT>Process with number [" + splitCommand[2] + "] not found on session list!\nVT>");
                   connection.getResultWriter().flush();
                 }
                 catch (Throwable e1)
@@ -1105,7 +1105,7 @@ public class VTServerRuntimeExecutor extends VTTask
               {
                 try
                 {
-                  connection.getResultWriter().write("\nVT>Process number [" + splitCommand[2] + "] is not valid!\nVT>");
+                  connection.getResultWriter().write("\rVT>Process number [" + splitCommand[2] + "] is not valid!\nVT>");
                   connection.getResultWriter().flush();
                 }
                 catch (Throwable e1)
@@ -1144,7 +1144,7 @@ public class VTServerRuntimeExecutor extends VTTask
                 {
                   try
                   {
-                    connection.getResultWriter().write("\nVT>Processes with command [" + splitCommand[2] + "] not found on session list!\nVT>");
+                    connection.getResultWriter().write("\rVT>Processes with command [" + splitCommand[2] + "] not found on session list!\nVT>");
                     connection.getResultWriter().flush();
                   }
                   catch (Throwable e)
@@ -1158,7 +1158,7 @@ public class VTServerRuntimeExecutor extends VTTask
               {
                 try
                 {
-                  connection.getResultWriter().write("\nVT>Processes with command [" + splitCommand[2] + "] received line!\nVT>");
+                  connection.getResultWriter().write("\rVT>Processes with command [" + splitCommand[2] + "] received line!\nVT>");
                   connection.getResultWriter().flush();
                 }
                 catch (Throwable e1)
@@ -1199,7 +1199,7 @@ public class VTServerRuntimeExecutor extends VTTask
                 {
                   synchronized (this)
                   {
-                    connection.getResultWriter().write("\nVT>Detected invalid base64 data!\nVT>");
+                    connection.getResultWriter().write("\rVT>Detected invalid base64 data!\nVT>");
                     connection.getResultWriter().flush();
                     finished = true;
                   }
@@ -1217,7 +1217,7 @@ public class VTServerRuntimeExecutor extends VTTask
             }
             synchronized (this)
             {
-              connection.getResultWriter().write("\nVT>All managed processes received base64!\nVT>");
+              connection.getResultWriter().write("\rVT>All managed processes received base64!\nVT>");
               connection.getResultWriter().flush();
               finished = true;
             }
@@ -1240,7 +1240,7 @@ public class VTServerRuntimeExecutor extends VTTask
               {
                 synchronized (this)
                 {
-                  connection.getResultWriter().write("\nVT>Detected invalid base64 data!\nVT>");
+                  connection.getResultWriter().write("\rVT>Detected invalid base64 data!\nVT>");
                   connection.getResultWriter().flush();
                   finished = true;
                 }
@@ -1251,7 +1251,7 @@ public class VTServerRuntimeExecutor extends VTTask
                 managedProcessList.get(Integer.parseInt(splitCommand[2])).getOut().flush();
                 synchronized (this)
                 {
-                  connection.getResultWriter().write("\nVT>Process with number [" + splitCommand[2] + "] received base64!\nVT>");
+                  connection.getResultWriter().write("\rVT>Process with number [" + splitCommand[2] + "] received base64!\nVT>");
                   connection.getResultWriter().flush();
                   finished = true;
                 }
@@ -1263,7 +1263,7 @@ public class VTServerRuntimeExecutor extends VTTask
               {
                 try
                 {
-                  connection.getResultWriter().write("\nVT>Process with number [" + splitCommand[2] + "] not found on session list!\nVT>");
+                  connection.getResultWriter().write("\rVT>Process with number [" + splitCommand[2] + "] not found on session list!\nVT>");
                   connection.getResultWriter().flush();
                 }
                 catch (Throwable e1)
@@ -1279,7 +1279,7 @@ public class VTServerRuntimeExecutor extends VTTask
               {
                 try
                 {
-                  connection.getResultWriter().write("\nVT>Process number [" + splitCommand[2] + "] is not valid!\nVT>");
+                  connection.getResultWriter().write("\rVT>Process number [" + splitCommand[2] + "] is not valid!\nVT>");
                   connection.getResultWriter().flush();
                 }
                 catch (Throwable e1)
@@ -1312,7 +1312,7 @@ public class VTServerRuntimeExecutor extends VTTask
               {
                 synchronized (this)
                 {
-                  connection.getResultWriter().write("\nVT>Detected invalid base64 data!\nVT>");
+                  connection.getResultWriter().write("\rVT>Detected invalid base64 data!\nVT>");
                   connection.getResultWriter().flush();
                   finished = true;
                 }
@@ -1336,7 +1336,7 @@ public class VTServerRuntimeExecutor extends VTTask
                   {
                     try
                     {
-                      connection.getResultWriter().write("\nVT>Processes with command [" + splitCommand[2] + "] not found on session list!\nVT>");
+                      connection.getResultWriter().write("\rVT>Processes with command [" + splitCommand[2] + "] not found on session list!\nVT>");
                       connection.getResultWriter().flush();
                     }
                     catch (Throwable e)
@@ -1350,7 +1350,7 @@ public class VTServerRuntimeExecutor extends VTTask
                 {
                   try
                   {
-                    connection.getResultWriter().write("\nVT>Processes with command [" + splitCommand[2] + "] received base64!\nVT>");
+                    connection.getResultWriter().write("\rVT>Processes with command [" + splitCommand[2] + "] received base64!\nVT>");
                     connection.getResultWriter().flush();
                   }
                   catch (Throwable e1)
@@ -1393,7 +1393,7 @@ public class VTServerRuntimeExecutor extends VTTask
                 {
                   synchronized (this)
                   {
-                    connection.getResultWriter().write("\nVT>Detected invalid unicode UTF-8 data!\nVT>");
+                    connection.getResultWriter().write("\rVT>Detected invalid unicode UTF-8 data!\nVT>");
                     connection.getResultWriter().flush();
                     finished = true;
                   }
@@ -1411,7 +1411,7 @@ public class VTServerRuntimeExecutor extends VTTask
             }
             synchronized (this)
             {
-              connection.getResultWriter().write("\nVT>All managed processes received unicode!\nVT>");
+              connection.getResultWriter().write("\rVT>All managed processes received unicode!\nVT>");
               connection.getResultWriter().flush();
               finished = true;
             }
@@ -1434,7 +1434,7 @@ public class VTServerRuntimeExecutor extends VTTask
               {
                 synchronized (this)
                 {
-                  connection.getResultWriter().write("\nVT>Detected invalid unicode UTF-8 data!\nVT>");
+                  connection.getResultWriter().write("\rVT>Detected invalid unicode UTF-8 data!\nVT>");
                   connection.getResultWriter().flush();
                   finished = true;
                 }
@@ -1445,7 +1445,7 @@ public class VTServerRuntimeExecutor extends VTTask
                 managedProcessList.get(Integer.parseInt(splitCommand[2])).getOut().flush();
                 synchronized (this)
                 {
-                  connection.getResultWriter().write("\nVT>Process with number [" + splitCommand[2] + "] received unicode!\nVT>");
+                  connection.getResultWriter().write("\rVT>Process with number [" + splitCommand[2] + "] received unicode!\nVT>");
                   connection.getResultWriter().flush();
                   finished = true;
                 }
@@ -1457,7 +1457,7 @@ public class VTServerRuntimeExecutor extends VTTask
               {
                 try
                 {
-                  connection.getResultWriter().write("\nVT>Process with number [" + splitCommand[2] + "] not found on session list!\nVT>");
+                  connection.getResultWriter().write("\rVT>Process with number [" + splitCommand[2] + "] not found on session list!\nVT>");
                   connection.getResultWriter().flush();
                 }
                 catch (Throwable e1)
@@ -1473,7 +1473,7 @@ public class VTServerRuntimeExecutor extends VTTask
               {
                 try
                 {
-                  connection.getResultWriter().write("\nVT>Process number [" + splitCommand[2] + "] is not valid!\nVT>");
+                  connection.getResultWriter().write("\rVT>Process number [" + splitCommand[2] + "] is not valid!\nVT>");
                   connection.getResultWriter().flush();
                 }
                 catch (Throwable e1)
@@ -1506,7 +1506,7 @@ public class VTServerRuntimeExecutor extends VTTask
               {
                 synchronized (this)
                 {
-                  connection.getResultWriter().write("\nVT>Detected invalid unicode UTF-8 data!\nVT>");
+                  connection.getResultWriter().write("\rVT>Detected invalid unicode UTF-8 data!\nVT>");
                   connection.getResultWriter().flush();
                   finished = true;
                 }
@@ -1530,7 +1530,7 @@ public class VTServerRuntimeExecutor extends VTTask
                   {
                     try
                     {
-                      connection.getResultWriter().write("\nVT>Processes with command [" + splitCommand[2] + "] not found on session list!\nVT>");
+                      connection.getResultWriter().write("\rVT>Processes with command [" + splitCommand[2] + "] not found on session list!\nVT>");
                       connection.getResultWriter().flush();
                     }
                     catch (Throwable e)
@@ -1544,7 +1544,7 @@ public class VTServerRuntimeExecutor extends VTTask
                 {
                   try
                   {
-                    connection.getResultWriter().write("\nVT>Processes with command [" + splitCommand[2] + "] received unicode!\nVT>");
+                    connection.getResultWriter().write("\rVT>Processes with command [" + splitCommand[2] + "] received unicode!\nVT>");
                     connection.getResultWriter().flush();
                   }
                   catch (Throwable e1)
@@ -1572,7 +1572,7 @@ public class VTServerRuntimeExecutor extends VTTask
         {
           try
           {
-            connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
+            connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
             connection.getResultWriter().flush();
           }
           catch (Throwable e)

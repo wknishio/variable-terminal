@@ -43,7 +43,7 @@ public class VTFILEALTER extends VTServerStandardRemoteConsoleCommandProcessor
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Another remote file change is still running!\nVT>");
+            connection.getResultWriter().write("\rVT>Another remote file change is still running!\nVT>");
             connection.getResultWriter().flush();
           }
         }
@@ -63,13 +63,13 @@ public class VTFILEALTER extends VTServerStandardRemoteConsoleCommandProcessor
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Another remote file change is still running!\nVT>");
+            connection.getResultWriter().write("\rVT>Another remote file change is still running!\nVT>");
             connection.getResultWriter().flush();
           }
         }
         else
         {
-          connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+          connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
           connection.getResultWriter().flush();
         }
       }
@@ -94,7 +94,7 @@ public class VTFILEALTER extends VTServerStandardRemoteConsoleCommandProcessor
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Another remote file change is still running!\nVT>");
+            connection.getResultWriter().write("\rVT>Another remote file change is still running!\nVT>");
             connection.getResultWriter().flush();
           }
         }
@@ -113,7 +113,7 @@ public class VTFILEALTER extends VTServerStandardRemoteConsoleCommandProcessor
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Another remote file change is still running!\nVT>");
+            connection.getResultWriter().write("\rVT>Another remote file change is still running!\nVT>");
             connection.getResultWriter().flush();
           }
         }
@@ -132,13 +132,13 @@ public class VTFILEALTER extends VTServerStandardRemoteConsoleCommandProcessor
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Another remote file change is still running!\nVT>");
+            connection.getResultWriter().write("\rVT>Another remote file change is still running!\nVT>");
             connection.getResultWriter().flush();
           }
         }
         else
         {
-          connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+          connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
           connection.getResultWriter().flush();
         }
       }
@@ -156,14 +156,14 @@ public class VTFILEALTER extends VTServerStandardRemoteConsoleCommandProcessor
           }
           if (session.getFileModifyOperation().aliveThread())
           {
-            connection.getResultWriter().write("\nVT>Trying to interrupt remote file change!\nVT>");
+            connection.getResultWriter().write("\rVT>Trying to interrupt remote file change!\nVT>");
             connection.getResultWriter().flush();
             session.getFileModifyOperation().interruptThread();
             session.getFileModifyOperation().stopThread();
           }
           else
           {
-            connection.getResultWriter().write("\nVT>No remote file change is running!\nVT>");
+            connection.getResultWriter().write("\rVT>No remote file change is running!\nVT>");
             connection.getResultWriter().flush();
           }
         }
@@ -171,13 +171,13 @@ public class VTFILEALTER extends VTServerStandardRemoteConsoleCommandProcessor
         {
           if (!session.getFileModifyOperation().aliveThread())
           {
-            connection.getResultWriter().write("\nVT>No remote file change is running!\nVT>");
+            connection.getResultWriter().write("\rVT>No remote file change is running!\nVT>");
             connection.getResultWriter().flush();
           }
         }
         else
         {
-          connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+          connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
           connection.getResultWriter().flush();
         }
       }
@@ -189,18 +189,18 @@ public class VTFILEALTER extends VTServerStandardRemoteConsoleCommandProcessor
         }
         if (!session.getFileModifyOperation().aliveThread())
         {
-          connection.getResultWriter().write("\nVT>No remote file change is running!\nVT>");
+          connection.getResultWriter().write("\rVT>No remote file change is running!\nVT>");
           connection.getResultWriter().flush();
         }
         else
         {
-          connection.getResultWriter().write("\nVT>A remote file change is still running!\nVT>");
+          connection.getResultWriter().write("\rVT>A remote file change is still running!\nVT>");
           connection.getResultWriter().flush();
         }
       }
       else
       {
-        connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+        connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
         connection.getResultWriter().flush();
       }
     }

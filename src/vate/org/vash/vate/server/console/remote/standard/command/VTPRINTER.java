@@ -33,7 +33,7 @@ public class VTPRINTER extends VTServerStandardRemoteConsoleCommandProcessor
           }
           catch (Throwable t)
           {
-            connection.getResultWriter().write("\nVT>Print service number [" + parsed[1] + "] is invalid!\nVT>");
+            connection.getResultWriter().write("\rVT>Print service number [" + parsed[1] + "] is invalid!\nVT>");
             connection.getResultWriter().flush();
           }
         }
@@ -46,7 +46,7 @@ public class VTPRINTER extends VTServerStandardRemoteConsoleCommandProcessor
       }
       else
       {
-        connection.getResultWriter().write("\nVT>Another print service search is still running!\nVT>");
+        connection.getResultWriter().write("\rVT>Another print service search is still running!\nVT>");
         connection.getResultWriter().flush();
       }
     }

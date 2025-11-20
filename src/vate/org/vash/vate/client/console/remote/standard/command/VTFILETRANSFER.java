@@ -39,7 +39,7 @@ public class VTFILETRANSFER extends VTClientStandardRemoteConsoleCommandProcesso
         }
         else
         {
-          VTMainConsole.print("\nVT>No file transfer is running!\nVT>");
+          VTMainConsole.print("\rVT>No file transfer is running!\nVT>");
         }
       }
       else if (waitFor)
@@ -51,12 +51,12 @@ public class VTFILETRANSFER extends VTClientStandardRemoteConsoleCommandProcesso
         }
         else
         {
-          VTMainConsole.print("\nVT>No file transfer is running!\nVT>");
+          VTMainConsole.print("\rVT>No file transfer is running!\nVT>");
         }
       }
       else
       {
-        VTMainConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+        VTMainConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
       }
     }
     else if (parsed.length >= 4)
@@ -95,7 +95,7 @@ public class VTFILETRANSFER extends VTClientStandardRemoteConsoleCommandProcesso
         }
         else
         {
-          VTMainConsole.print("\nVT>Another file transfer is still running!\nVT>");
+          VTMainConsole.print("\rVT>Another file transfer is still running!\nVT>");
         }
       }
       else if (parsed[1].toUpperCase().contains("P") && !parsed[1].toUpperCase().contains("G"))
@@ -115,12 +115,12 @@ public class VTFILETRANSFER extends VTClientStandardRemoteConsoleCommandProcesso
         }
         else
         {
-          VTMainConsole.print("\nVT>Another file transfer is still running!\nVT>");
+          VTMainConsole.print("\rVT>Another file transfer is still running!\nVT>");
         }
       }
       else
       {
-        VTMainConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+        VTMainConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
       }
     }
     else if (parsed.length == 1)
@@ -131,16 +131,16 @@ public class VTFILETRANSFER extends VTClientStandardRemoteConsoleCommandProcesso
       }
       if (session.getFileTransferClient().aliveThread())
       {
-        VTMainConsole.print("\nVT>A file transfer is running!\nVT>");
+        VTMainConsole.print("\rVT>A file transfer is running!\nVT>");
       }
       else
       {
-        VTMainConsole.print("\nVT>No file transfer is running!\nVT>");
+        VTMainConsole.print("\rVT>No file transfer is running!\nVT>");
       }
     }
     else
     {
-      VTMainConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+      VTMainConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
     }
   }
   

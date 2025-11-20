@@ -19,19 +19,11 @@ public class VTGRAPHICSLINK extends VTClientStandardRemoteConsoleCommandProcesso
   {
     if (VTReflectionUtils.isAWTHeadless())
     {
-      VTMainConsole.print("\nVT>Remote graphics link start on client failed!\nVT>");
+      VTMainConsole.print("\rVT>Remote graphics link start on client failed!\nVT>");
       return;
     }
     if (parsed.length >= 2)
     {
-      /*
-       * if (splitCommand[1].toUpperCase().startsWith("S")) { synchronized
-       * (session.getGraphicsClient()) { if
-       * (session.getGraphicsClient().isFinished()) {
-       * session.getGraphicsClient().joinThread(); } } if
-       * (session.getGraphicsClient().aliveThread()) { } else { VTTerminal.
-       * print("\nVT>Remote graphics link is not running!\nVT>" ); } }
-       */
       if (parsed[1].toUpperCase().startsWith("V"))
       {
         synchronized (session.getGraphicsClient())
@@ -55,7 +47,7 @@ public class VTGRAPHICSLINK extends VTClientStandardRemoteConsoleCommandProcesso
         else
         {
           session.getGraphicsClient().setReadOnly(true);
-          VTMainConsole.print("\nVT>Remote graphics link set to view mode!\nVT>");
+          VTMainConsole.print("\rVT>Remote graphics link set to view mode!\nVT>");
         }
       }
       else if (parsed[1].toUpperCase().startsWith("C"))
@@ -81,12 +73,12 @@ public class VTGRAPHICSLINK extends VTClientStandardRemoteConsoleCommandProcesso
         else
         {
           session.getGraphicsClient().setReadOnly(false);
-          VTMainConsole.print("\nVT>Remote graphics link set to control mode!\nVT>");
+          VTMainConsole.print("\rVT>Remote graphics link set to control mode!\nVT>");
         }
       }
       else
       {
-        VTMainConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+        VTMainConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
       }
     }
     else if (parsed.length == 1)
@@ -118,7 +110,7 @@ public class VTGRAPHICSLINK extends VTClientStandardRemoteConsoleCommandProcesso
     }
     else
     {
-      VTMainConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+      VTMainConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
     }
   }
   

@@ -25,7 +25,7 @@ public class VTDATE extends VTServerStandardRemoteConsoleCommandProcessor
   public void execute(String command, String[] parsed) throws Exception
   {
     clock.setTime(Calendar.getInstance().getTime());
-    connection.getResultWriter().write("\nVT>Current server date/time ([ER-Y-MM-DD][HH:MM:SS:MS-TZ]):\nVT>[" + firstDateTimeFormat.format(clock.getTime()) + "-" + clock.get(GregorianCalendar.YEAR) + "-" + secondDateTimeFormat.format(clock.getTime()) + "\nVT>");
+    connection.getResultWriter().write("\rVT>Current server date/time ([ER-Y-MM-DD][HH:MM:SS:MS-TZ]):\nVT>[" + firstDateTimeFormat.format(clock.getTime()) + "-" + clock.get(GregorianCalendar.YEAR) + "-" + secondDateTimeFormat.format(clock.getTime()) + "\nVT>");
     connection.getResultWriter().flush();
   }
   

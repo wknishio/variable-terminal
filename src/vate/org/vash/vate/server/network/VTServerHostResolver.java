@@ -43,7 +43,7 @@ public class VTServerHostResolver extends VTTask
     {
       message.setLength(0);
       InetAddress[] addresses = InetAddress.getAllByName(host);
-      message.append("\nVT>List of host addresses for host [" + host + "]:\nVT>");
+      message.append("\rVT>List of host addresses for host [" + host + "]:\nVT>");
       for (InetAddress address : addresses)
       {
         message.append("\nVT>Host address: [" + address.getHostAddress() + "]" + "\nVT>Host name: [" + address.getCanonicalHostName() + "]\nVT>");
@@ -56,29 +56,13 @@ public class VTServerHostResolver extends VTTask
         finished = true;
       }
     }
-    catch (SecurityException e)
-    {
-      synchronized (this)
-      {
-        try
-        {
-          session.getConnection().getResultWriter().write("\nVT>Security error detected!\nVT>");
-          session.getConnection().getResultWriter().flush();
-        }
-        catch (IOException e1)
-        {
-          
-        }
-        finished = true;
-      }
-    }
     catch (UnknownHostException e)
     {
       synchronized (this)
       {
         try
         {
-          session.getConnection().getResultWriter().write("\nVT>Host [" + host + "] not found!\nVT>");
+          session.getConnection().getResultWriter().write("\rVT>Host [" + host + "] not found!\nVT>");
           session.getConnection().getResultWriter().flush();
         }
         catch (IOException e1)

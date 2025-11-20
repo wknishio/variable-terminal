@@ -42,7 +42,7 @@ public class VTServerOpticalDriveOperation extends VTTask
         {
           synchronized (this)
           {
-            session.getConnection().getResultWriter().write("\nVT>Optical disc drive opened on server!\nVT>");
+            session.getConnection().getResultWriter().write("\rVT>Optical disc drive opened on server!\nVT>");
             session.getConnection().getResultWriter().flush();
             finished = true;
           }
@@ -51,7 +51,7 @@ public class VTServerOpticalDriveOperation extends VTTask
         {
           synchronized (this)
           {
-            session.getConnection().getResultWriter().write("\nVT>Optical disc drive has not opened on server!\nVT>");
+            session.getConnection().getResultWriter().write("\rVT>Optical disc drive has not opened on server!\nVT>");
             session.getConnection().getResultWriter().flush();
             finished = true;
           }
@@ -63,7 +63,7 @@ public class VTServerOpticalDriveOperation extends VTTask
         {
           synchronized (this)
           {
-            session.getConnection().getResultWriter().write("\nVT>Optical disc drive closed on server!\nVT>");
+            session.getConnection().getResultWriter().write("\rVT>Optical disc drive closed on server!\nVT>");
             session.getConnection().getResultWriter().flush();
             finished = true;
           }
@@ -72,7 +72,7 @@ public class VTServerOpticalDriveOperation extends VTTask
         {
           synchronized (this)
           {
-            session.getConnection().getResultWriter().write("\nVT>Optical disc drive has not closed on server!\nVT>");
+            session.getConnection().getResultWriter().write("\rVT>Optical disc drive has not closed on server!\nVT>");
             session.getConnection().getResultWriter().flush();
             finished = true;
           }
@@ -85,7 +85,7 @@ public class VTServerOpticalDriveOperation extends VTTask
       {
         try
         {
-          session.getConnection().getResultWriter().write("\nVT>Optical disc drive operation failed on server!\nVT>");
+          session.getConnection().getResultWriter().write("\rVT>Optical disc drive operation failed on server!\nVT>");
           session.getConnection().getResultWriter().flush();
         }
         catch (Throwable t)

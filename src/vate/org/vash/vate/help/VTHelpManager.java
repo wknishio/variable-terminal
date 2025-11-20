@@ -116,12 +116,12 @@ public class VTHelpManager
   
   public static String getHelpForClientCommand(String command)
   {
-    return helpMap.getProperty("client." + command.toLowerCase(), "\nVT>Client console internal command [" + command + "] not found!\nVT>");
+    return helpMap.getProperty("client." + command.toLowerCase(), "\rVT>Client console internal command [" + command + "] not found!\nVT>");
   }
   
   public static String getHelpForServerCommand(String command)
   {
-    return helpMap.getProperty("server." + command.toLowerCase(), "\nVT>Server console internal command [" + command + "] not found!\nVT>");
+    return helpMap.getProperty("server." + command.toLowerCase(), "\rVT>Server console internal command [" + command + "] not found!\nVT>");
   }
   
   public static String findHelpForClientCommand(String command)

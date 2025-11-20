@@ -82,43 +82,43 @@ public class VTCALLPRINT extends VTServerStandardRemoteConsoleCommandProcessor
           // desktop.print(new File(parsed[1]));
           Object desktopObject = getDesktopMethod.invoke(null);
           printMethod.invoke(desktopObject, new File(command.substring(parsed[0].length() + 1)));
-          connection.getResultWriter().write("\nVT>Print operation executed!\nVT>");
+          connection.getResultWriter().write("\rVT>Print operation executed!\nVT>");
           connection.getResultWriter().flush();
         }
         else
         {
-          connection.getResultWriter().write("\nVT>Print operation not supported!\nVT>");
+          connection.getResultWriter().write("\rVT>Print operation not supported!\nVT>");
           connection.getResultWriter().flush();
         }
       }
       catch (SecurityException e)
       {
         // e.printStackTrace();
-        connection.getResultWriter().write("\nVT>Print operation failed!\nVT>");
+        connection.getResultWriter().write("\rVT>Print operation failed!\nVT>");
         connection.getResultWriter().flush();
       }
       catch (IllegalArgumentException e)
       {
         // e.printStackTrace();
-        connection.getResultWriter().write("\nVT>Print operation failed!\nVT>");
+        connection.getResultWriter().write("\rVT>Print operation failed!\nVT>");
         connection.getResultWriter().flush();
       }
       catch (IOException e)
       {
         // e.printStackTrace();
-        connection.getResultWriter().write("\nVT>Print operation failed!\nVT>");
+        connection.getResultWriter().write("\rVT>Print operation failed!\nVT>");
         connection.getResultWriter().flush();
       }
       catch (Throwable e)
       {
         // e.printStackTrace();
-        connection.getResultWriter().write("\nVT>Print operation failed!\nVT>");
+        connection.getResultWriter().write("\rVT>Print operation failed!\nVT>");
         connection.getResultWriter().flush();
       }
     }
     else
     {
-      connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+      connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
       connection.getResultWriter().flush();
     }
   }

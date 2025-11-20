@@ -33,13 +33,13 @@ public class VTHOST extends VTServerStandardRemoteConsoleCommandProcessor
         }
         else
         {
-          connection.getResultWriter().write("\nVT>Another network host resolution is still running!\nVT>");
+          connection.getResultWriter().write("\rVT>Another network host resolution is still running!\nVT>");
           connection.getResultWriter().flush();
         }
       }
       else
       {
-        connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+        connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
         connection.getResultWriter().flush();
       }
     }

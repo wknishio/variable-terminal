@@ -29,7 +29,7 @@ public class VTNETWORK extends VTServerStandardRemoteConsoleCommandProcessor
       }
       else
       {
-        connection.getResultWriter().write("\nVT>Another network interface search is still running!\nVT>");
+        connection.getResultWriter().write("\rVT>Another network interface search is still running!\nVT>");
         connection.getResultWriter().flush();
       }
     }

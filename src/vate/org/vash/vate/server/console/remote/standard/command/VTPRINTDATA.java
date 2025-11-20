@@ -27,12 +27,12 @@ public class VTPRINTDATA extends VTServerStandardRemoteConsoleCommandProcessor
         }
         if (!session.getPrintDataTask().aliveThread())
         {
-          connection.getResultWriter().write("\nVT>No print data task is running!\nVT>");
+          connection.getResultWriter().write("\rVT>No print data task is running!\nVT>");
           connection.getResultWriter().flush();
         }
         else
         {
-          connection.getResultWriter().write("\nVT>Another print data task is still running!\nVT>");
+          connection.getResultWriter().write("\rVT>Another print data task is still running!\nVT>");
           connection.getResultWriter().flush();
         }
       }
@@ -50,12 +50,12 @@ public class VTPRINTDATA extends VTServerStandardRemoteConsoleCommandProcessor
           }
           if (!session.getPrintDataTask().aliveThread())
           {
-            connection.getResultWriter().write("\nVT>No print data task is running!\nVT>");
+            connection.getResultWriter().write("\rVT>No print data task is running!\nVT>");
             connection.getResultWriter().flush();
           }
           else
           {
-            //connection.getResultWriter().write("\nVT>Stopping current print data task...\nVT>");
+            //connection.getResultWriter().write("\rVT>Stopping current print data task...\nVT>");
             //connection.getResultWriter().flush();
             session.getPrintDataTask().setStopped(true);
           }
@@ -64,13 +64,13 @@ public class VTPRINTDATA extends VTServerStandardRemoteConsoleCommandProcessor
         {
           if (!session.getPrintDataTask().aliveThread())
           {
-            connection.getResultWriter().write("\nVT>No print data task is running!\nVT>");
+            connection.getResultWriter().write("\rVT>No print data task is running!\nVT>");
             connection.getResultWriter().flush();
           }
         }
         else
         {
-          connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+          connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
           connection.getResultWriter().flush();
         }
       }
@@ -92,7 +92,7 @@ public class VTPRINTDATA extends VTServerStandardRemoteConsoleCommandProcessor
           {
             if (parsed[1].toUpperCase().contains("S"))
             {
-              connection.getResultWriter().write("\nVT>No print data task is running!\nVT>");
+              connection.getResultWriter().write("\rVT>No print data task is running!\nVT>");
               connection.getResultWriter().flush();
             }
             else
@@ -122,13 +122,13 @@ public class VTPRINTDATA extends VTServerStandardRemoteConsoleCommandProcessor
                 {
                   session.getPrintDataTask().setFileEncoding("N");
                 }
-                connection.getResultWriter().write("\nVT>Print mode: [" + parsed[1] + "], data: [" + parsed[2] + "], service: [Default]\nVT>");
+                connection.getResultWriter().write("\rVT>Print mode: [" + parsed[1] + "], data: [" + parsed[2] + "], service: [Default]\nVT>");
                 connection.getResultWriter().flush();
                 session.getPrintDataTask().startThread();
               }
               else
               {
-                connection.getResultWriter().write("\nVT>No print data task is running!\nVT>");
+                connection.getResultWriter().write("\rVT>No print data task is running!\nVT>");
                 connection.getResultWriter().flush();
               }
             }
@@ -137,13 +137,13 @@ public class VTPRINTDATA extends VTServerStandardRemoteConsoleCommandProcessor
           {
             if (parsed[1].toUpperCase().contains("S"))
             {
-              //connection.getResultWriter().write("\nVT>Stopping current print data task...\nVT>");
+              //connection.getResultWriter().write("\rVT>Stopping current print data task...\nVT>");
               //connection.getResultWriter().flush();
               session.getPrintDataTask().setStopped(true);
             }
             else
             {
-              connection.getResultWriter().write("\nVT>Another print data task is still running!\nVT>");
+              connection.getResultWriter().write("\rVT>Another print data task is still running!\nVT>");
               connection.getResultWriter().flush();
             }
           }
@@ -167,7 +167,7 @@ public class VTPRINTDATA extends VTServerStandardRemoteConsoleCommandProcessor
           {
             if (parsed[1].toUpperCase().contains("S"))
             {
-              connection.getResultWriter().write("\nVT>No print data task is running!\nVT>");
+              connection.getResultWriter().write("\rVT>No print data task is running!\nVT>");
               connection.getResultWriter().flush();
             }
             else
@@ -197,13 +197,13 @@ public class VTPRINTDATA extends VTServerStandardRemoteConsoleCommandProcessor
                 {
                   session.getPrintDataTask().setFileEncoding("N");
                 }
-                connection.getResultWriter().write("\nVT>Print mode: [" + parsed[1] + "], data: [" + parsed[2] + "], service: [" + parsed[3] + "]\nVT>");
+                connection.getResultWriter().write("\rVT>Print mode: [" + parsed[1] + "], data: [" + parsed[2] + "], service: [" + parsed[3] + "]\nVT>");
                 connection.getResultWriter().flush();
                 session.getPrintDataTask().startThread();
               }
               else
               {
-                connection.getResultWriter().write("\nVT>No print data task is running!\nVT>");
+                connection.getResultWriter().write("\rVT>No print data task is running!\nVT>");
                 connection.getResultWriter().flush();
               }
             }
@@ -212,13 +212,13 @@ public class VTPRINTDATA extends VTServerStandardRemoteConsoleCommandProcessor
           {
             if (parsed[1].toUpperCase().contains("S"))
             {
-              //connection.getResultWriter().write("\nVT>Stopping current print data task...\nVT>");
+              //connection.getResultWriter().write("\rVT>Stopping current print data task...\nVT>");
               //connection.getResultWriter().flush();
               session.getPrintDataTask().setStopped(true);
             }
             else
             {
-              connection.getResultWriter().write("\nVT>Another print data task is still running!\nVT>");
+              connection.getResultWriter().write("\rVT>Another print data task is still running!\nVT>");
               connection.getResultWriter().flush();
             }
           }
@@ -226,13 +226,13 @@ public class VTPRINTDATA extends VTServerStandardRemoteConsoleCommandProcessor
       }
       else
       {
-        connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+        connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
         connection.getResultWriter().flush();
       }
     }
     catch (NumberFormatException e)
     {
-      connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+      connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
       connection.getResultWriter().flush();
     }
     if (waitFor)

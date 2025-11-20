@@ -21,7 +21,7 @@ public class VTVARIABLE extends VTServerStandardRemoteConsoleCommandProcessor
     if (parsed.length == 1)
     {
       message.setLength(0);
-      message.append("\nVT>List of server environment variables:\nVT>");
+      message.append("\rVT>List of server environment variables:\nVT>");
       for (Entry<String, String> variable : VTMainNativeUtils.getvirtualenv().entrySet())
       {
         message.append("\nVT>[" + variable.getKey() + "]=[" + variable.getValue() + "]");
@@ -35,12 +35,12 @@ public class VTVARIABLE extends VTServerStandardRemoteConsoleCommandProcessor
       String value = VTMainNativeUtils.getvirtualenv(parsed[1]);
       if (value != null)
       {
-        connection.getResultWriter().write("\nVT>[" + parsed[1] + "]=[" + value + "]\nVT>");
+        connection.getResultWriter().write("\rVT>[" + parsed[1] + "]=[" + value + "]\nVT>");
         connection.getResultWriter().flush();
       }
       else
       {
-        connection.getResultWriter().write("\nVT>Environment variable [" + parsed[1] + "] not found on server!\nVT>");
+        connection.getResultWriter().write("\rVT>Environment variable [" + parsed[1] + "] not found on server!\nVT>");
         connection.getResultWriter().flush();
       }
     }
@@ -48,18 +48,18 @@ public class VTVARIABLE extends VTServerStandardRemoteConsoleCommandProcessor
     {
       if (VTMainNativeUtils.putvirtualenv(parsed[1], parsed[2]) == 0)
       {
-        connection.getResultWriter().write("\nVT>[" + parsed[1] + "]=[" + parsed[2] + "]\nVT>");
+        connection.getResultWriter().write("\rVT>[" + parsed[1] + "]=[" + parsed[2] + "]\nVT>");
         connection.getResultWriter().flush();
       }
       else
       {
-        connection.getResultWriter().write("\nVT>Environment variable [" + parsed[1] + "] failed to be set to [" + parsed[2] + "] on server!\nVT>");
+        connection.getResultWriter().write("\rVT>Environment variable [" + parsed[1] + "] failed to be set to [" + parsed[2] + "] on server!\nVT>");
         connection.getResultWriter().flush();
       }
     }
     else
     {
-      connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+      connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
       connection.getResultWriter().flush();
     }
   }

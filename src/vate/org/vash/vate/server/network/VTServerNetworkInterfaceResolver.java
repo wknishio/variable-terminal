@@ -54,7 +54,7 @@ public class VTServerNetworkInterfaceResolver extends VTTask
       Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
       if (networkInterfaces != null && networkInterfaces.hasMoreElements())
       {
-        message.append("\nVT>List of server network interfaces:\nVT>");
+        message.append("\rVT>List of server network interfaces:\nVT>");
         while (networkInterfaces.hasMoreElements())
         {
           NetworkInterface networkInterface = networkInterfaces.nextElement();

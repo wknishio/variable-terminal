@@ -1,7 +1,6 @@
 package org.vash.vate.server.filesystem;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.vash.vate.server.session.VTServerSession;
 import org.vash.vate.task.VTTask;
@@ -36,7 +35,7 @@ public class VTServerFileSystemRootsResolver extends VTTask
     {
       message.setLength(0);
       File[] roots = File.listRoots();
-      message.append("\nVT>List of server file roots:\nVT>");
+      message.append("\rVT>List of server file roots:\nVT>");
       for (File root : roots)
       {
         message.append("\nVT>" + (root.isFile() ? "File" : "Directory") + ": [" + root.getName() + "]");
@@ -46,22 +45,6 @@ public class VTServerFileSystemRootsResolver extends VTTask
       {
         session.getConnection().getResultWriter().write(message.toString());
         session.getConnection().getResultWriter().flush();
-        finished = true;
-      }
-    }
-    catch (SecurityException e)
-    {
-      synchronized (this)
-      {
-        try
-        {
-          session.getConnection().getResultWriter().write("\nVT>Security error detected!\nVT>");
-          session.getConnection().getResultWriter().flush();
-        }
-        catch (IOException e1)
-        {
-          
-        }
         finished = true;
       }
     }

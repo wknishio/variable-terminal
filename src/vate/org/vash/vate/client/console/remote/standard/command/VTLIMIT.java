@@ -22,11 +22,11 @@ public class VTLIMIT extends VTClientStandardRemoteConsoleCommandProcessor
       long rate = connection.getRateInBytesPerSecond();
       if (rate > 0)
       {
-        VTMainConsole.print("\nVT>Connection upload rate limit: [" + rate + "] bytes per second\nVT>");
+        VTMainConsole.print("\rVT>Connection upload rate limit: [" + rate + "] bytes per second\nVT>");
       }
       else
       {
-        VTMainConsole.print("\nVT>Connection upload rate limit: [Unlimited] bytes per second\nVT>");
+        VTMainConsole.print("\rVT>Connection upload rate limit: [Unlimited] bytes per second\nVT>");
       }
       connection.getCommandWriter().writeLine(command);
       connection.getCommandWriter().flush();
@@ -48,18 +48,18 @@ public class VTLIMIT extends VTClientStandardRemoteConsoleCommandProcessor
         connection.setRateInBytesPerSecond(rate);
         if (rate > 0)
         {
-          VTMainConsole.print("\nVT>Connection upload rate limit set to: [" + rate + "] bytes per second\nVT>");
+          VTMainConsole.print("\rVT>Connection upload rate limit set to: [" + rate + "] bytes per second\nVT>");
         }
         else
         {
-          VTMainConsole.print("\nVT>Connection upload rate limit set to: [Unlimited] bytes per second\nVT>");
+          VTMainConsole.print("\rVT>Connection upload rate limit set to: [Unlimited] bytes per second\nVT>");
         }
         connection.getCommandWriter().writeLine(command);
         connection.getCommandWriter().flush();
       }
       catch (NumberFormatException e)
       {
-        VTMainConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+        VTMainConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
       }
     }
     else if (parsed.length >= 3)
@@ -86,11 +86,11 @@ public class VTLIMIT extends VTClientStandardRemoteConsoleCommandProcessor
           connection.setRateInBytesPerSecond(rate);
           if (rate > 0)
           {
-            VTMainConsole.print("\nVT>Connection upload rate limit set to: [" + rate + "] bytes per second\nVT>");
+            VTMainConsole.print("\rVT>Connection upload rate limit set to: [" + rate + "] bytes per second\nVT>");
           }
           else
           {
-            VTMainConsole.print("\nVT>Connection upload rate limit set to: [Unlimited] bytes per second\nVT>");
+            VTMainConsole.print("\rVT>Connection upload rate limit set to: [Unlimited] bytes per second\nVT>");
           }
           connection.getCommandWriter().writeLine(command);
           connection.getCommandWriter().flush();
@@ -98,7 +98,7 @@ public class VTLIMIT extends VTClientStandardRemoteConsoleCommandProcessor
       }
       catch (NumberFormatException e)
       {
-        VTMainConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+        VTMainConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
       }
     }
   }

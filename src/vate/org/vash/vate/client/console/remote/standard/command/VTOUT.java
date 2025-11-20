@@ -22,16 +22,16 @@ public class VTOUT extends VTClientStandardRemoteConsoleCommandProcessor
       boolean ok = VTMainConsole.setLogOutput(parameter);
       if (ok)
       {
-        VTMainConsole.print("\nVT>Enabled recording of client console to file: [" + parameter + "]\nVT>");
+        VTMainConsole.print("\rVT>Enabled recording of client console to file: [" + parameter + "]\nVT>");
       }
       else
       {
-        VTMainConsole.print("\nVT>Failed recording of client console to file: [" + parameter + "]\nVT>");
+        VTMainConsole.print("\rVT>Failed recording of client console to file: [" + parameter + "]\nVT>");
       }
     }
     else
     {
-      VTMainConsole.print("\nVT>Disabled recording of client console\nVT>");
+      VTMainConsole.print("\rVT>Disabled recording of client console\nVT>");
       VTMainConsole.setLogOutput(null);
     }
   }

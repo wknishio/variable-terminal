@@ -152,7 +152,7 @@ public class VTServerPrintFileTask extends VTTask
                     return;
                   }
                   finished = true;
-                  session.getConnection().getResultWriter().write("\nVT>Print job of file [" + file + "] canceled!" + "\nVT>");
+                  session.getConnection().getResultWriter().write("\rVT>Print job of file [" + file + "] canceled!" + "\nVT>");
                   session.getConnection().getResultWriter().flush();
                 }
               }
@@ -184,7 +184,7 @@ public class VTServerPrintFileTask extends VTTask
                     return;
                   }
                   finished = true;
-                  session.getConnection().getResultWriter().write("\nVT>Print job of file [" + file + "] completed!" + "\nVT>");
+                  session.getConnection().getResultWriter().write("\rVT>Print job of file [" + file + "] completed!" + "\nVT>");
                   session.getConnection().getResultWriter().flush();
                 }
               }
@@ -216,7 +216,7 @@ public class VTServerPrintFileTask extends VTTask
                     return;
                   }
                   finished = true;
-                  session.getConnection().getResultWriter().write("\nVT>Print job of file [" + file + "] failed!" + "\nVT>");
+                  session.getConnection().getResultWriter().write("\rVT>Print job of file [" + file + "] failed!" + "\nVT>");
                   session.getConnection().getResultWriter().flush();
                 }
               }
@@ -249,7 +249,7 @@ public class VTServerPrintFileTask extends VTTask
                     return;
                   }
                   finished = true;
-                  session.getConnection().getResultWriter().write("\nVT>Print job of file [" + file + "] completed!" + "\nVT>");
+                  session.getConnection().getResultWriter().write("\rVT>Print job of file [" + file + "] completed!" + "\nVT>");
                   session.getConnection().getResultWriter().flush();
                 }
               }
@@ -292,7 +292,7 @@ public class VTServerPrintFileTask extends VTTask
         {
           synchronized (this)
           {
-            session.getConnection().getResultWriter().write("\nVT>Print service number [" + printServiceNumber + "] not found!" + "\nVT>");
+            session.getConnection().getResultWriter().write("\rVT>Print service number [" + printServiceNumber + "] not found!" + "\nVT>");
             session.getConnection().getResultWriter().flush();
             finished = true;
           }
@@ -302,7 +302,7 @@ public class VTServerPrintFileTask extends VTTask
       {
         synchronized (this)
         {
-          session.getConnection().getResultWriter().write("\nVT>Print service number [" + printServiceNumber + "] not found!" + "\nVT>");
+          session.getConnection().getResultWriter().write("\rVT>Print service number [" + printServiceNumber + "] not found!" + "\nVT>");
           session.getConnection().getResultWriter().flush();
           finished = true;
         }
@@ -311,13 +311,6 @@ public class VTServerPrintFileTask extends VTTask
           stream.close();
         }
       }
-      /*
-       * catch (PrintException e) { synchronized (this) {
-       * session.getConnection().getResultWriter().
-       * write("\nVT>Print job failed!" + "\nVT>");
-       * session.getConnection().getResultWriter().flush(); finished = true; }
-       * if (stream != null) { stream.close(); } }
-       */
     }
     catch (FileNotFoundException e)
     {
@@ -325,7 +318,7 @@ public class VTServerPrintFileTask extends VTTask
       {
         try
         {
-          session.getConnection().getResultWriter().write("\nVT>File for print [" + file + "] not found!" + "\nVT>");
+          session.getConnection().getResultWriter().write("\rVT>File for print [" + file + "] not found!" + "\nVT>");
           session.getConnection().getResultWriter().flush();
           finished = true;
         }

@@ -62,7 +62,7 @@ public class VTGraphicsLinkClientSession
       {
         session.getConnection().getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_SESSION_UNSTARTED);
         session.getConnection().getGraphicsControlDataOutputStream().flush();
-        VTMainConsole.print("\nVT>Remote graphics link start on client failed!\nVT>");
+        VTMainConsole.print("\rVT>Remote graphics link start on client failed!\nVT>");
         if (session.getConnection().getGraphicsControlDataInputStream().read() == VTSystem.VT_GRAPHICS_LINK_SESSION_UNSTARTED)
         {
           //VTConsole.print("\nVT>Remote graphics link start on server failed!\nVT>");
@@ -78,7 +78,7 @@ public class VTGraphicsLinkClientSession
         }
         else
         {
-          VTMainConsole.print("\nVT>Remote graphics link start on server failed!\nVT>");
+          VTMainConsole.print("\rVT>Remote graphics link start on server failed!\nVT>");
         }
       }
     }

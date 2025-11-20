@@ -38,7 +38,7 @@ public class VTFILESEEK extends VTServerStandardRemoteConsoleCommandProcessor
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Another remote file seek is still running!\nVT>");
+            connection.getResultWriter().write("\rVT>Another remote file seek is still running!\nVT>");
             connection.getResultWriter().flush();
           }
         }
@@ -57,13 +57,13 @@ public class VTFILESEEK extends VTServerStandardRemoteConsoleCommandProcessor
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Another remote file seek is still running!\nVT>");
+            connection.getResultWriter().write("\rVT>Another remote file seek is still running!\nVT>");
             connection.getResultWriter().flush();
           }
         }
         else
         {
-          connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+          connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
           connection.getResultWriter().flush();
         }
       }
@@ -77,14 +77,14 @@ public class VTFILESEEK extends VTServerStandardRemoteConsoleCommandProcessor
           }
           if (session.getFileScanOperation().aliveThread())
           {
-            connection.getResultWriter().write("\nVT>Trying to interrupt remote file seek!\nVT>");
+            connection.getResultWriter().write("\rVT>Trying to interrupt remote file seek!\nVT>");
             connection.getResultWriter().flush();
             session.getFileScanOperation().interruptThread();
             session.getFileScanOperation().stopThread();
           }
           else
           {
-            connection.getResultWriter().write("\nVT>No remote file seek is running!\nVT>");
+            connection.getResultWriter().write("\rVT>No remote file seek is running!\nVT>");
             connection.getResultWriter().flush();
           }
         }
@@ -103,13 +103,13 @@ public class VTFILESEEK extends VTServerStandardRemoteConsoleCommandProcessor
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Another remote file seek is still running!\nVT>");
+            connection.getResultWriter().write("\rVT>Another remote file seek is still running!\nVT>");
             connection.getResultWriter().flush();
           }
         }
         else
         {
-          connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+          connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
           connection.getResultWriter().flush();
         }
       }
@@ -121,18 +121,18 @@ public class VTFILESEEK extends VTServerStandardRemoteConsoleCommandProcessor
         }
         if (!session.getFileScanOperation().aliveThread())
         {
-          connection.getResultWriter().write("\nVT>No remote file seek is running!\nVT>");
+          connection.getResultWriter().write("\rVT>No remote file seek is running!\nVT>");
           connection.getResultWriter().flush();
         }
         else
         {
-          connection.getResultWriter().write("\nVT>A remote file seek is still running!\nVT>");
+          connection.getResultWriter().write("\rVT>A remote file seek is still running!\nVT>");
           connection.getResultWriter().flush();
         }
       }
       else
       {
-        connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+        connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
         connection.getResultWriter().flush();
       }
     }

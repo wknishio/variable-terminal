@@ -24,7 +24,7 @@ public class VTPING extends VTClientStandardRemoteConsoleCommandProcessor
     long clientMilliseconds = clientTime / 1000000;
     long serverNanoseconds = serverTime;
     long serverMilliseconds = serverTime / 1000000;
-    VTMainConsole.printf("\nVT>Client connection latency: [%d] ns or [%d] ms" +
+    VTMainConsole.printf("\rVT>Client connection latency: [%d] ns or [%d] ms" +
     "\nVT>Server connection latency: [%d] ns or [%d] ms" +
     "\nVT>", clientNanoseconds, clientMilliseconds, serverNanoseconds, serverMilliseconds);
   }

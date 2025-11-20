@@ -48,7 +48,7 @@ public class VTNETWORK extends VTClientStandardRemoteConsoleCommandProcessor
         message.setLength(0);
         Enumeration<NetworkInterface> networkInterfaces;
         networkInterfaces = NetworkInterface.getNetworkInterfaces();
-        message.append("\nVT>List of client network interfaces:\nVT>");
+        message.append("\rVT>List of client network interfaces:\nVT>");
         if (networkInterfaces != null && networkInterfaces.hasMoreElements())
         {
           while (networkInterfaces.hasMoreElements())
@@ -59,7 +59,7 @@ public class VTNETWORK extends VTClientStandardRemoteConsoleCommandProcessor
             {
               continue;
             }
-            message.append("\nVT>Name: [" + networkInterface.getName() + "]" + "\nVT>Display name: [" + networkInterface.getDisplayName() + "]");
+            message.append("\rVT>Name: [" + networkInterface.getName() + "]" + "\nVT>Display name: [" + networkInterface.getDisplayName() + "]");
             
             try
             {
@@ -97,13 +97,13 @@ public class VTNETWORK extends VTClientStandardRemoteConsoleCommandProcessor
         }
         else
         {
-          message.append("\nVT>No network interfaces found on client!\nVT>");
+          message.append("\rVT>No network interfaces found on client!\nVT>");
         }
         VTMainConsole.print(message.toString());
       }
       else
       {
-        VTMainConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+        VTMainConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
       }
     }
     else
@@ -111,7 +111,7 @@ public class VTNETWORK extends VTClientStandardRemoteConsoleCommandProcessor
       message.setLength(0);
       Enumeration<NetworkInterface> networkInterfaces;
       networkInterfaces = NetworkInterface.getNetworkInterfaces();
-      message.append("\nVT>List of client network interfaces:\nVT>");
+      message.append("\rVT>List of client network interfaces:\nVT>");
       if (networkInterfaces != null && networkInterfaces.hasMoreElements())
       {
         while (networkInterfaces.hasMoreElements())
@@ -160,7 +160,7 @@ public class VTNETWORK extends VTClientStandardRemoteConsoleCommandProcessor
       }
       else
       {
-        message.append("\nVT>No network interfaces found on client!\nVT>");
+        message.append("\rVT>No network interfaces found on client!\nVT>");
       }
       VTMainConsole.print(message.toString());
       connection.getCommandWriter().writeLine(command);

@@ -40,22 +40,22 @@ public class VTECHO extends VTServerStandardRemoteConsoleCommandProcessor
 //    }
     if (echoState == 0)
     {
-      connection.getResultWriter().write("\nVT>Using local console command echo\nVT>");
+      connection.getResultWriter().write("\rVT>Using local console command echo\nVT>");
       connection.getResultWriter().flush();
     }
     else if (echoState == 1)
     {
-      connection.getResultWriter().write("\nVT>Using remote console command echo\nVT>");
+      connection.getResultWriter().write("\rVT>Using remote console command echo\nVT>");
       connection.getResultWriter().flush();
     }
 //    else if (echoState == 2)
 //    {
-//      connection.getResultWriter().write("\nVT>Local console echo disabled\nVT>Remote console echo enabled\nVT>");
+//      connection.getResultWriter().write("\rVT>Local console echo disabled\nVT>Remote console echo enabled\nVT>");
 //      connection.getResultWriter().flush();
 //    }
 //    else if (echoState == 3)
 //    {
-//      connection.getResultWriter().write("\nVT>Local console echo enabled\nVT>Remote console echo enabled\nVT>");
+//      connection.getResultWriter().write("\rVT>Local console echo enabled\nVT>Remote console echo enabled\nVT>");
 //      connection.getResultWriter().flush();
 //    }
   }

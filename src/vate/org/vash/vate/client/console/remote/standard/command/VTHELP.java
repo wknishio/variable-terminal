@@ -20,16 +20,16 @@ public class VTHELP extends VTClientStandardRemoteConsoleCommandProcessor
     {
       if (command.toUpperCase().contains("*VTHELP"))
       {
-        VTMainConsole.print(VTHelpManager.getMainHelpForClientCommands());
+        VTMainConsole.print(VTHelpManager.getMainHelpForClientCommands().substring(1));
       }
       else
       {
-        VTMainConsole.print(VTHelpManager.getMinHelpForClientCommands());
+        VTMainConsole.print(VTHelpManager.getMinHelpForClientCommands().substring(1));
       }
     }
     else if (parsed.length > 1)
     {
-      VTMainConsole.print(VTHelpManager.getHelpForClientCommand(parsed[1]));
+      VTMainConsole.print(VTHelpManager.getHelpForClientCommand(parsed[1]).substring(1));
     }
   }
   

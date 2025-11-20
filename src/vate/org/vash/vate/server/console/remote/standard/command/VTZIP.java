@@ -28,20 +28,20 @@ public class VTZIP extends VTServerStandardRemoteConsoleCommandProcessor
 //            }
 //            if (session.getZipFileOperation().aliveThread())
 //            {
-//              connection.getResultWriter().write("\nVT>Trying to interrupt remote zip file operation!\nVT>");
+//              connection.getResultWriter().write("\rVT>Trying to interrupt remote zip file operation!\nVT>");
 //              connection.getResultWriter().flush();
 //              session.getZipFileOperation().interruptThread();
 //              session.getZipFileOperation().stopThread();
 //            }
 //            else
 //            {
-//              connection.getResultWriter().write("\nVT>No remote zip file operation is running!\nVT>");
+//              connection.getResultWriter().write("\rVT>No remote zip file operation is running!\nVT>");
 //              connection.getResultWriter().flush();
 //            }
 //          }
 //          else
 //          {
-//            connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+//            connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
 //            connection.getResultWriter().flush();
 //          }
 //        }
@@ -53,12 +53,12 @@ public class VTZIP extends VTServerStandardRemoteConsoleCommandProcessor
 //          }
 //          if (session.getZipFileOperation().aliveThread())
 //          {
-//            connection.getResultWriter().write("\nVT>A remote zip file operation is still running!\nVT>");
+//            connection.getResultWriter().write("\rVT>A remote zip file operation is still running!\nVT>");
 //            connection.getResultWriter().flush();
 //          }
 //          else
 //          {
-//            connection.getResultWriter().write("\nVT>No remote zip file operation is running!\nVT>");
+//            connection.getResultWriter().write("\rVT>No remote zip file operation is running!\nVT>");
 //            connection.getResultWriter().flush();
 //          }
 //        }
@@ -91,26 +91,26 @@ public class VTZIP extends VTServerStandardRemoteConsoleCommandProcessor
 //          {
 //            if (session.getZipFileOperation().aliveThread())
 //            {
-//              connection.getResultWriter().write("\nVT>Trying to interrupt remote zip file operation!\nVT>");
+//              connection.getResultWriter().write("\rVT>Trying to interrupt remote zip file operation!\nVT>");
 //              connection.getResultWriter().flush();
 //              session.getZipFileOperation().interruptThread();
 //              session.getZipFileOperation().stopThread();
 //            }
 //            else
 //            {
-//              connection.getResultWriter().write("\nVT>No remote zip file operation is running!\nVT>");
+//              connection.getResultWriter().write("\rVT>No remote zip file operation is running!\nVT>");
 //              connection.getResultWriter().flush();
 //            }
 //          }
 //          else
 //          {
-//            connection.getResultWriter().write("\nVT>Another remote zip file operation is still running!\nVT>");
+//            connection.getResultWriter().write("\rVT>Another remote zip file operation is still running!\nVT>");
 //            connection.getResultWriter().flush();
 //          }
 //        }
 //        else
 //        {
-//          connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+//          connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
 //          connection.getResultWriter().flush();
 //        }
 //      }

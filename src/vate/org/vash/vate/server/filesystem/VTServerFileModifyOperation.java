@@ -80,7 +80,7 @@ public class VTServerFileModifyOperation extends VTTask
               VTFileUtils.moveFile(sourceFile, destinationFile);
               synchronized (this)
               {
-                session.getConnection().getResultWriter().write("\nVT>File [" + sourceFile.getPath() + "] moved to [" + destinationFile.getPath() + "] on server!\nVT>");
+                session.getConnection().getResultWriter().write("\rVT>File [" + sourceFile.getPath() + "] moved to [" + destinationFile.getPath() + "] on server!\nVT>");
                 session.getConnection().getResultWriter().flush();
                 finished = true;
               }
@@ -90,7 +90,7 @@ public class VTServerFileModifyOperation extends VTTask
               VTFileUtils.moveDirectory(sourceFile, destinationFile);
               synchronized (this)
               {
-                session.getConnection().getResultWriter().write("\nVT>File [" + sourceFile.getPath() + "] moved to [" + destinationFile.getPath() + "] on server!\nVT>");
+                session.getConnection().getResultWriter().write("\rVT>File [" + sourceFile.getPath() + "] moved to [" + destinationFile.getPath() + "] on server!\nVT>");
                 session.getConnection().getResultWriter().flush();
                 finished = true;
               }
@@ -100,26 +100,17 @@ public class VTServerFileModifyOperation extends VTTask
           {
             synchronized (this)
             {
-              session.getConnection().getResultWriter().write("\nVT>File [" + sourceFile.getPath() + "] not found on server!\nVT>");
+              session.getConnection().getResultWriter().write("\rVT>File [" + sourceFile.getPath() + "] not found on server!\nVT>");
               session.getConnection().getResultWriter().flush();
               finished = true;
             }
-          }
-        }
-        catch (SecurityException e)
-        {
-          synchronized (this)
-          {
-            session.getConnection().getResultWriter().write("\nVT>Security error detected!\nVT>");
-            session.getConnection().getResultWriter().flush();
-            finished = true;
           }
         }
         catch (ClosedByInterruptException e)
         {
           synchronized (this)
           {
-            session.getConnection().getResultWriter().write("\nVT>File [" + sourceFile.getPath() + "] move to [" + destinationFile.getPath() + "] on server interrupted!\nVT>");
+            session.getConnection().getResultWriter().write("\rVT>File [" + sourceFile.getPath() + "] move to [" + destinationFile.getPath() + "] on server interrupted!\nVT>");
             session.getConnection().getResultWriter().flush();
             finished = true;
           }
@@ -128,7 +119,7 @@ public class VTServerFileModifyOperation extends VTTask
         {
           synchronized (this)
           {
-            session.getConnection().getResultWriter().write("\nVT>File [" + sourceFile.getPath() + "] move to [" + destinationFile.getPath() + "] on server failed!\nVT>");
+            session.getConnection().getResultWriter().write("\rVT>File [" + sourceFile.getPath() + "] move to [" + destinationFile.getPath() + "] on server failed!\nVT>");
             session.getConnection().getResultWriter().flush();
             finished = true;
           }
@@ -149,16 +140,7 @@ public class VTServerFileModifyOperation extends VTTask
           }
           synchronized (this)
           {
-            session.getConnection().getResultWriter().write("\nVT>File [" + sourceFile.getPath() + "] copied to [" + destinationFile.getPath() + "] on server!\nVT>");
-            session.getConnection().getResultWriter().flush();
-            finished = true;
-          }
-        }
-        catch (SecurityException e)
-        {
-          synchronized (this)
-          {
-            session.getConnection().getResultWriter().write("\nVT>Security error detected!\nVT>");
+            session.getConnection().getResultWriter().write("\rVT>File [" + sourceFile.getPath() + "] copied to [" + destinationFile.getPath() + "] on server!\nVT>");
             session.getConnection().getResultWriter().flush();
             finished = true;
           }
@@ -167,7 +149,7 @@ public class VTServerFileModifyOperation extends VTTask
         {
           synchronized (this)
           {
-            session.getConnection().getResultWriter().write("\nVT>File [" + sourceFile.getPath() + "] copy to [" + destinationFile.getPath() + "] on server failed!\nVT>");
+            session.getConnection().getResultWriter().write("\rVT>File [" + sourceFile.getPath() + "] copy to [" + destinationFile.getPath() + "] on server failed!\nVT>");
             session.getConnection().getResultWriter().flush();
             finished = true;
           }
@@ -176,7 +158,7 @@ public class VTServerFileModifyOperation extends VTTask
         {
           synchronized (this)
           {
-            session.getConnection().getResultWriter().write("\nVT>File [" + sourceFile.getPath() + "] copy to [" + destinationFile.getPath() + "] on server interrupted!\nVT>");
+            session.getConnection().getResultWriter().write("\rVT>File [" + sourceFile.getPath() + "] copy to [" + destinationFile.getPath() + "] on server interrupted!\nVT>");
             session.getConnection().getResultWriter().flush();
             finished = true;
           }
@@ -185,7 +167,7 @@ public class VTServerFileModifyOperation extends VTTask
         {
           synchronized (this)
           {
-            session.getConnection().getResultWriter().write("\nVT>File [" + sourceFile.getPath() + "] copy to [" + destinationFile.getPath() + "] on server failed!\nVT>");
+            session.getConnection().getResultWriter().write("\rVT>File [" + sourceFile.getPath() + "] copy to [" + destinationFile.getPath() + "] on server failed!\nVT>");
             session.getConnection().getResultWriter().flush();
             finished = true;
           }
@@ -202,7 +184,7 @@ public class VTServerFileModifyOperation extends VTTask
             {
               synchronized (this)
               {
-                session.getConnection().getResultWriter().write("\nVT>File [" + sourceFile.getPath() + "] removed from server!\nVT>");
+                session.getConnection().getResultWriter().write("\rVT>File [" + sourceFile.getPath() + "] removed from server!\nVT>");
                 session.getConnection().getResultWriter().flush();
                 finished = true;
               }
@@ -211,7 +193,7 @@ public class VTServerFileModifyOperation extends VTTask
             {
               synchronized (this)
               {
-                session.getConnection().getResultWriter().write("\nVT>File [" + sourceFile.getPath() + "] removal on server failed!\nVT>");
+                session.getConnection().getResultWriter().write("\rVT>File [" + sourceFile.getPath() + "] removal on server failed!\nVT>");
                 session.getConnection().getResultWriter().flush();
                 finished = true;
               }
@@ -221,26 +203,17 @@ public class VTServerFileModifyOperation extends VTTask
           {
             synchronized (this)
             {
-              session.getConnection().getResultWriter().write("\nVT>File [" + sourceFile.getPath() + "] not found on server!\nVT>");
+              session.getConnection().getResultWriter().write("\rVT>File [" + sourceFile.getPath() + "] not found on server!\nVT>");
               session.getConnection().getResultWriter().flush();
               finished = true;
             }
-          }
-        }
-        catch (SecurityException e)
-        {
-          synchronized (this)
-          {
-            session.getConnection().getResultWriter().write("\nVT>Security error detected!\nVT>");
-            session.getConnection().getResultWriter().flush();
-            finished = true;
           }
         }
         catch (IOException e)
         {
           synchronized (this)
           {
-            session.getConnection().getResultWriter().write("\nVT>File [" + sourceFile.getPath() + "] removal on server failed!\nVT>");
+            session.getConnection().getResultWriter().write("\rVT>File [" + sourceFile.getPath() + "] removal on server failed!\nVT>");
             session.getConnection().getResultWriter().flush();
             finished = true;
           }
@@ -249,7 +222,7 @@ public class VTServerFileModifyOperation extends VTTask
         {
           synchronized (this)
           {
-            session.getConnection().getResultWriter().write("\nVT>File [" + sourceFile.getPath() + "] removal on server failed!\nVT>");
+            session.getConnection().getResultWriter().write("\rVT>File [" + sourceFile.getPath() + "] removal on server failed!\nVT>");
             session.getConnection().getResultWriter().flush();
             finished = true;
           }
@@ -270,7 +243,7 @@ public class VTServerFileModifyOperation extends VTTask
             {
               synchronized (this)
               {
-                session.getConnection().getResultWriter().write("\nVT>File [" + sourceFile.getPath() + "] created on server!\nVT>");
+                session.getConnection().getResultWriter().write("\rVT>File [" + sourceFile.getPath() + "] created on server!\nVT>");
                 session.getConnection().getResultWriter().flush();
                 finished = true;
               }
@@ -279,7 +252,7 @@ public class VTServerFileModifyOperation extends VTTask
             {
               synchronized (this)
               {
-                session.getConnection().getResultWriter().write("\nVT>File [" + sourceFile.getPath() + "] creation on server failed!\nVT>");
+                session.getConnection().getResultWriter().write("\rVT>File [" + sourceFile.getPath() + "] creation on server failed!\nVT>");
                 session.getConnection().getResultWriter().flush();
                 finished = true;
               }
@@ -289,26 +262,17 @@ public class VTServerFileModifyOperation extends VTTask
           {
             synchronized (this)
             {
-              session.getConnection().getResultWriter().write("\nVT>File [" + sourceFile.getPath() + "] already exists on server!\nVT>");
+              session.getConnection().getResultWriter().write("\rVT>File [" + sourceFile.getPath() + "] already exists on server!\nVT>");
               session.getConnection().getResultWriter().flush();
               finished = true;
             }
-          }
-        }
-        catch (SecurityException e)
-        {
-          synchronized (this)
-          {
-            session.getConnection().getResultWriter().write("\nVT>Security error detected!\nVT>");
-            session.getConnection().getResultWriter().flush();
-            finished = true;
           }
         }
         catch (IOException e)
         {
           synchronized (this)
           {
-            session.getConnection().getResultWriter().write("\nVT>File [" + sourceFile.getPath() + "] creation on server failed!\nVT>");
+            session.getConnection().getResultWriter().write("\rVT>File [" + sourceFile.getPath() + "] creation on server failed!\nVT>");
             session.getConnection().getResultWriter().flush();
             finished = true;
           }
@@ -317,7 +281,7 @@ public class VTServerFileModifyOperation extends VTTask
         {
           synchronized (this)
           {
-            session.getConnection().getResultWriter().write("\nVT>File [" + sourceFile.getPath() + "] creation on server failed!\nVT>");
+            session.getConnection().getResultWriter().write("\rVT>File [" + sourceFile.getPath() + "] creation on server failed!\nVT>");
             session.getConnection().getResultWriter().flush();
             finished = true;
           }
@@ -334,7 +298,7 @@ public class VTServerFileModifyOperation extends VTTask
             {
               synchronized (this)
               {
-                session.getConnection().getResultWriter().write("\nVT>Directory [" + sourceFile.getPath() + "] created on server!\nVT>");
+                session.getConnection().getResultWriter().write("\rVT>Directory [" + sourceFile.getPath() + "] created on server!\nVT>");
                 session.getConnection().getResultWriter().flush();
                 finished = true;
               }
@@ -343,7 +307,7 @@ public class VTServerFileModifyOperation extends VTTask
             {
               synchronized (this)
               {
-                session.getConnection().getResultWriter().write("\nVT>Directory [" + sourceFile.getPath() + "] creation on server failed!\nVT>");
+                session.getConnection().getResultWriter().write("\rVT>Directory [" + sourceFile.getPath() + "] creation on server failed!\nVT>");
                 session.getConnection().getResultWriter().flush();
                 finished = true;
               }
@@ -353,26 +317,17 @@ public class VTServerFileModifyOperation extends VTTask
           {
             synchronized (this)
             {
-              session.getConnection().getResultWriter().write("\nVT>File [" + sourceFile.getPath() + "] already exists on server!\nVT>");
+              session.getConnection().getResultWriter().write("\rVT>File [" + sourceFile.getPath() + "] already exists on server!\nVT>");
               session.getConnection().getResultWriter().flush();
               finished = true;
             }
-          }
-        }
-        catch (SecurityException e)
-        {
-          synchronized (this)
-          {
-            session.getConnection().getResultWriter().write("\nVT>Security error detected!\nVT>");
-            session.getConnection().getResultWriter().flush();
-            finished = true;
           }
         }
         catch (IOException e)
         {
           synchronized (this)
           {
-            session.getConnection().getResultWriter().write("\nVT>Directory [" + sourceFile.getPath() + "] creation on server failed!\nVT>");
+            session.getConnection().getResultWriter().write("\rVT>Directory [" + sourceFile.getPath() + "] creation on server failed!\nVT>");
             session.getConnection().getResultWriter().flush();
             finished = true;
           }
@@ -381,7 +336,7 @@ public class VTServerFileModifyOperation extends VTTask
         {
           synchronized (this)
           {
-            session.getConnection().getResultWriter().write("\nVT>Directory [" + sourceFile.getPath() + "] creation on server failed!\nVT>");
+            session.getConnection().getResultWriter().write("\rVT>Directory [" + sourceFile.getPath() + "] creation on server failed!\nVT>");
             session.getConnection().getResultWriter().flush();
             finished = true;
           }

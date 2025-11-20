@@ -20,12 +20,12 @@ public class VTLIMIT extends VTServerStandardRemoteConsoleCommandProcessor
       long rate = connection.getRateInBytesPerSecond();
       if (rate > 0)
       {
-        connection.getResultWriter().write("\nVT>Connection download rate limit: [" + rate + "] bytes per second\nVT>");
+        connection.getResultWriter().write("\rVT>Connection download rate limit: [" + rate + "] bytes per second\nVT>");
         connection.getResultWriter().flush();
       }
       else
       {
-        connection.getResultWriter().write("\nVT>Connection download rate limit: [Unlimited] bytes per second\nVT>");
+        connection.getResultWriter().write("\rVT>Connection download rate limit: [Unlimited] bytes per second\nVT>");
         connection.getResultWriter().flush();
       }
     }
@@ -46,12 +46,12 @@ public class VTLIMIT extends VTServerStandardRemoteConsoleCommandProcessor
         connection.setRateInBytesPerSecond(rate);
         if (rate > 0)
         {
-          connection.getResultWriter().write("\nVT>Connection download rate limit set to: [" + rate + "] bytes per second\nVT>");
+          connection.getResultWriter().write("\rVT>Connection download rate limit set to: [" + rate + "] bytes per second\nVT>");
           connection.getResultWriter().flush();
         }
         else
         {
-          connection.getResultWriter().write("\nVT>Connection download rate limit set to: [Unlimited] bytes per second\nVT>");
+          connection.getResultWriter().write("\rVT>Connection download rate limit set to: [Unlimited] bytes per second\nVT>");
           connection.getResultWriter().flush();
         }
       }
@@ -79,12 +79,12 @@ public class VTLIMIT extends VTServerStandardRemoteConsoleCommandProcessor
           connection.setRateInBytesPerSecond(rate);
           if (rate > 0)
           {
-            connection.getResultWriter().write("\nVT>Connection download rate limit set to: [" + rate + "] bytes per second\nVT>");
+            connection.getResultWriter().write("\rVT>Connection download rate limit set to: [" + rate + "] bytes per second\nVT>");
             connection.getResultWriter().flush();
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Connection download rate limit set to: [Unlimited] bytes per second\nVT>");
+            connection.getResultWriter().write("\rVT>Connection download rate limit set to: [Unlimited] bytes per second\nVT>");
             connection.getResultWriter().flush();
           }
         }

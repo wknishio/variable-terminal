@@ -215,7 +215,7 @@ public class VTServerScreenshotTask extends VTTask
         {
           try
           {
-            connection.getResultWriter().write("\nVT>Screen capture on server failed!\nVT>");
+            connection.getResultWriter().write("\rVT>Screen capture on server failed!\nVT>");
             connection.getResultWriter().flush();
           }
           catch (Throwable e)
@@ -226,8 +226,8 @@ public class VTServerScreenshotTask extends VTTask
           return;
         }
       }
-      //connection.getResultWriter().write("\nVT>Screen capture starting...\nVT>");
-      //connection.getResultWriter().flush();
+      connection.getResultWriter().write("\rVT>Screen capture on server starting...\nVT>");
+      connection.getResultWriter().flush();
       // provider.initialize();
       // clock.setTimeInMillis(System.currentTimeMillis());
       clock.setTime(Calendar.getInstance().getTime());
@@ -244,9 +244,6 @@ public class VTServerScreenshotTask extends VTTask
       // screenshotProvider.writeHighQualityScreenshot(photoOutputStream,
       // SWT.IMAGE_BMP);
       BufferedImage screenCapture = screenshotProvider.createScreenCapture(0, drawPointer);
-      //connection.getResultWriter().write("\nVT>Screen capture data obtained, image will be saved in:\nVT>[" + screenshotFile.getAbsolutePath() + "]\nVT>");
-      //connection.getResultWriter().flush();
-      
       //int lastColors = screenshotProvider.getColorCount();
       
       if (useJPG)
@@ -318,7 +315,7 @@ public class VTServerScreenshotTask extends VTTask
       // provider.dispose();
       synchronized (this)
       {
-        connection.getResultWriter().write("\nVT>Screen capture on server saved in:\nVT>[" + screenshotFile.getAbsolutePath() + "]\nVT>");
+        connection.getResultWriter().write("\rVT>Screen capture on server saved in:\nVT>[" + screenshotFile.getAbsolutePath() + "]\nVT>");
         connection.getResultWriter().flush();
         finished = true;
       }
@@ -330,7 +327,7 @@ public class VTServerScreenshotTask extends VTTask
       {
         try
         {
-          connection.getResultWriter().write("\nVT>Screen capture on server failed!\nVT>");
+          connection.getResultWriter().write("\rVT>Screen capture on server failed!\nVT>");
           connection.getResultWriter().flush();
         }
         catch (Throwable e1)

@@ -39,7 +39,7 @@ public class VTServerGraphicsDeviceResolver extends VTTask
       if (devices != null && devices.length > 0)
       {
         int count = 0;
-        message.append("\nVT>List of server graphical display devices:\nVT>");
+        message.append("\rVT>List of server graphical display devices:\nVT>");
         for (GraphicsDevice device : devices)
         {
           DisplayMode mode = device.getDisplayMode();
@@ -63,7 +63,7 @@ public class VTServerGraphicsDeviceResolver extends VTTask
       {
         synchronized (this)
         {
-          session.getConnection().getResultWriter().write("\nVT>No graphical display devices found on server!\nVT>");
+          session.getConnection().getResultWriter().write("\rVT>No graphical display devices found on server!\nVT>");
           session.getConnection().getResultWriter().flush();
           finished = true;
         }
@@ -73,7 +73,7 @@ public class VTServerGraphicsDeviceResolver extends VTTask
     {
       try
       {
-        session.getConnection().getResultWriter().write("\nVT>No graphical display devices found on server!\nVT>");
+        session.getConnection().getResultWriter().write("\rVT>No graphical display devices found on server!\nVT>");
         session.getConnection().getResultWriter().flush();
         finished = true;
       }

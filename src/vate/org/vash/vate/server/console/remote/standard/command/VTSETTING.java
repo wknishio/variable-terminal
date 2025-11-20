@@ -37,7 +37,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
       {
         encryptionPassword = new String(session.getServer().getServerConnector().getEncryptionKey(), "UTF-8");
       }
-      message.append("\nVT>List of server connection settings:\nVT>");
+      message.append("\rVT>List of server connection settings:\nVT>");
       if (session.getServer().getServerConnector().isPassive())
       {
         message.append("\nVT>Connection mode(CM): [Passive]");
@@ -139,12 +139,12 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
           try
           {
             session.getServer().saveServerSettingsFile("vate-server.properties");
-            connection.getResultWriter().write("\nVT>Saved settings file:[vate-server.properties]");
+            connection.getResultWriter().write("\rVT>Saved settings file:[vate-server.properties]");
             connection.getResultWriter().flush();
           }
           catch (Throwable t)
           {
-            connection.getResultWriter().write("\nVT>Failed to save settings file:[vate-server.properties]");
+            connection.getResultWriter().write("\rVT>Failed to save settings file:[vate-server.properties]");
             connection.getResultWriter().flush();
           }
         }
@@ -153,18 +153,18 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
           try
           {
             session.getServer().saveServerSettingsFile(parsed[2]);
-            connection.getResultWriter().write("\nVT>Saved settings file:[" + parsed[2] + "]");
+            connection.getResultWriter().write("\rVT>Saved settings file:[" + parsed[2] + "]");
             connection.getResultWriter().flush();
           }
           catch (Throwable t)
           {
-            connection.getResultWriter().write("\nVT>Failed to save settings file:[" + parsed[2] + "]");
+            connection.getResultWriter().write("\rVT>Failed to save settings file:[" + parsed[2] + "]");
             connection.getResultWriter().flush();
           }
         }
         else
         {
-          connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+          connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
           connection.getResultWriter().flush();
         }
       }
@@ -181,12 +181,12 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
               connector.interruptConnector();
               connector.notify();
             }
-            connection.getResultWriter().write("\nVT>Loaded settings file:[vate-server.properties]");
+            connection.getResultWriter().write("\rVT>Loaded settings file:[vate-server.properties]");
             connection.getResultWriter().flush();
           }
           catch (Throwable t)
           {
-            connection.getResultWriter().write("\nVT>Failed to load settings file:[vate-server.properties]");
+            connection.getResultWriter().write("\rVT>Failed to load settings file:[vate-server.properties]");
             connection.getResultWriter().flush();
           }
         }
@@ -201,18 +201,18 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
               connector.interruptConnector();
               connector.notify();
             }
-            connection.getResultWriter().write("\nVT>Loaded settings file:[" + parsed[2] + "]");
+            connection.getResultWriter().write("\rVT>Loaded settings file:[" + parsed[2] + "]");
             connection.getResultWriter().flush();
           }
           catch (Throwable t)
           {
-            connection.getResultWriter().write("\nVT>Failed to load settings file:[" + parsed[2] + "]");
+            connection.getResultWriter().write("\rVT>Failed to load settings file:[" + parsed[2] + "]");
             connection.getResultWriter().flush();
           }
         }
         else
         {
-          connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+          connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
           connection.getResultWriter().flush();
         }
       }
@@ -221,7 +221,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
         if (parsed.length == 2)
         {
           Integer sessionsMaximum = session.getServer().getServerConnector().getSessionsMaximum();
-          connection.getResultWriter().write("\nVT>Session maximum(SM): [" + (sessionsMaximum == null ? "" : sessionsMaximum) + "]\nVT>");
+          connection.getResultWriter().write("\rVT>Session maximum(SM): [" + (sessionsMaximum == null ? "" : sessionsMaximum) + "]\nVT>");
           connection.getResultWriter().flush();
         }
         else if (parsed.length >= 3)
@@ -238,12 +238,12 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
             connector.interruptConnector();
             connector.notify();
           }
-          connection.getResultWriter().write("\nVT>Session maximum(SM) set to: [" + (sessionsMaximum == null ? "" : sessionsMaximum) + "]\nVT>");
+          connection.getResultWriter().write("\rVT>Session maximum(SM) set to: [" + (sessionsMaximum == null ? "" : sessionsMaximum) + "]\nVT>");
           connection.getResultWriter().flush();
         }
         else
         {
-          connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+          connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
           connection.getResultWriter().flush();
         }
       }
@@ -253,12 +253,12 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
         {
           if (session.getServer().getServerConnector().isPassive())
           {
-            connection.getResultWriter().write("\nVT>Connection mode(CM): [Passive]\nVT>");
+            connection.getResultWriter().write("\rVT>Connection mode(CM): [Passive]\nVT>");
             connection.getResultWriter().flush();
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Connection mode(CM): [Active]\nVT>");
+            connection.getResultWriter().write("\rVT>Connection mode(CM): [Active]\nVT>");
             connection.getResultWriter().flush();
           }
         }
@@ -272,12 +272,12 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
             connector.interruptConnector();
             connector.notify();
           }
-          connection.getResultWriter().write("\nVT>Connection mode(CM) set to: [" + (passive ? "Passive" : "Active") + "]\nVT>");
+          connection.getResultWriter().write("\rVT>Connection mode(CM) set to: [" + (passive ? "Passive" : "Active") + "]\nVT>");
           connection.getResultWriter().flush();
         }
         else
         {
-          connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+          connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
           connection.getResultWriter().flush();
         }
       }
@@ -286,7 +286,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
         if (parsed.length == 2)
         {
           String hostAddress = session.getServer().getServerConnector().getAddress();
-          connection.getResultWriter().write("\nVT>Connection host address(CH): [" + hostAddress + "]\nVT>");
+          connection.getResultWriter().write("\rVT>Connection host address(CH): [" + hostAddress + "]\nVT>");
           connection.getResultWriter().flush();
         }
         else if (parsed.length >= 3)
@@ -299,12 +299,12 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
             connector.interruptConnector();
             connector.notify();
           }
-          connection.getResultWriter().write("\nVT>Connection host address(CH) set to: [" + hostAddress + "]\nVT>");
+          connection.getResultWriter().write("\rVT>Connection host address(CH) set to: [" + hostAddress + "]\nVT>");
           connection.getResultWriter().flush();
         }
         else
         {
-          connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+          connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
           connection.getResultWriter().flush();
         }
       }
@@ -313,7 +313,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
         if (parsed.length == 2)
         {
           Integer port = session.getServer().getServerConnector().getPort();
-          connection.getResultWriter().write("\nVT>Connection host port(CP): [" + port + "]\nVT>");
+          connection.getResultWriter().write("\rVT>Connection host port(CP): [" + port + "]\nVT>");
           connection.getResultWriter().flush();
         }
         else if (parsed.length >= 3)
@@ -323,7 +323,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
             int port = Integer.parseInt(parsed[2]);
             if (port < 1 || port > 65535)
             {
-              connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+              connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
               connection.getResultWriter().flush();
             }
             else
@@ -335,19 +335,19 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
                 connector.interruptConnector();
                 connector.notify();
               }
-              connection.getResultWriter().write("\nVT>Connection host port(CP) set to: [" + port + "]\nVT>");
+              connection.getResultWriter().write("\rVT>Connection host port(CP) set to: [" + port + "]\nVT>");
               connection.getResultWriter().flush();
             }
           }
           catch (NumberFormatException e)
           {
-            connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+            connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
             connection.getResultWriter().flush();
           }
         }
         else
         {
-          connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+          connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
           connection.getResultWriter().flush();
         }
       }
@@ -358,27 +358,27 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
           String proxyType = session.getServer().getServerConnector().getProxyType();
           if (proxyType == null)
           {
-            connection.getResultWriter().write("\nVT>Proxy type(PT): []\nVT>");
+            connection.getResultWriter().write("\rVT>Proxy type(PT): []\nVT>");
             connection.getResultWriter().flush();
           }
           else if (proxyType.toUpperCase().startsWith("H"))
           {
-            connection.getResultWriter().write("\nVT>Proxy type(PT): [HTTP]\nVT>");
+            connection.getResultWriter().write("\rVT>Proxy type(PT): [HTTP]\nVT>");
             connection.getResultWriter().flush();
           }
           else if (proxyType.toUpperCase().startsWith("S"))
           {
-            connection.getResultWriter().write("\nVT>Proxy type(PT): [SOCKS]\nVT>");
+            connection.getResultWriter().write("\rVT>Proxy type(PT): [SOCKS]\nVT>");
             connection.getResultWriter().flush();
           }
           else if (proxyType.toUpperCase().startsWith("P"))
           {
-            connection.getResultWriter().write("\nVT>Proxy type(PT): [PLUS]\nVT>");
+            connection.getResultWriter().write("\rVT>Proxy type(PT): [PLUS]\nVT>");
             connection.getResultWriter().flush();
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Proxy type(PT): []\nVT>");
+            connection.getResultWriter().write("\rVT>Proxy type(PT): []\nVT>");
             connection.getResultWriter().flush();
           }
         }
@@ -394,28 +394,28 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
           }
           if (proxyType.toUpperCase().startsWith("H"))
           {
-            connection.getResultWriter().write("\nVT>Proxy type(PT) set to: [HTTP]\nVT>");
+            connection.getResultWriter().write("\rVT>Proxy type(PT) set to: [HTTP]\nVT>");
             connection.getResultWriter().flush();
           }
           else if (proxyType.toUpperCase().startsWith("S"))
           {
-            connection.getResultWriter().write("\nVT>Proxy type(PT) set to: [SOCKS]\nVT>");
+            connection.getResultWriter().write("\rVT>Proxy type(PT) set to: [SOCKS]\nVT>");
             connection.getResultWriter().flush();
           }
           else if (proxyType.toUpperCase().startsWith("P"))
           {
-            connection.getResultWriter().write("\nVT>Proxy type(PT) set to: [PLUS]\nVT>");
+            connection.getResultWriter().write("\rVT>Proxy type(PT) set to: [PLUS]\nVT>");
             connection.getResultWriter().flush();
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Proxy type(PT) set to: []\nVT>");
+            connection.getResultWriter().write("\rVT>Proxy type(PT) set to: []\nVT>");
             connection.getResultWriter().flush();
           }
         }
         else
         {
-          connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+          connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
           connection.getResultWriter().flush();
         }
       }
@@ -424,7 +424,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
         if (parsed.length == 2)
         {
           String proxyAddress = session.getServer().getServerConnector().getProxyAddress();
-          connection.getResultWriter().write("\nVT>Proxy host address(PH): [" + proxyAddress + "]\nVT>");
+          connection.getResultWriter().write("\rVT>Proxy host address(PH): [" + proxyAddress + "]\nVT>");
           connection.getResultWriter().flush();
         }
         else if (parsed.length >= 3)
@@ -437,12 +437,12 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
             connector.interruptConnector();
             connector.notify();
           }
-          connection.getResultWriter().write("\nVT>Proxy host address set to: [" + proxyAddress + "]\nVT>");
+          connection.getResultWriter().write("\rVT>Proxy host address set to: [" + proxyAddress + "]\nVT>");
           connection.getResultWriter().flush();
         }
         else
         {
-          connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+          connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
           connection.getResultWriter().flush();
         }
       }
@@ -453,12 +453,12 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
           Integer proxyPort = session.getServer().getServerConnector().getProxyPort();
           if (proxyPort != null)
           {
-            connection.getResultWriter().write("\nVT>Proxy host port(PP): [" + proxyPort + "]\nVT>");
+            connection.getResultWriter().write("\rVT>Proxy host port(PP): [" + proxyPort + "]\nVT>");
             connection.getResultWriter().flush();
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Proxy host port(PP): []\nVT>");
+            connection.getResultWriter().write("\rVT>Proxy host port(PP): []\nVT>");
             connection.getResultWriter().flush();
           }
         }
@@ -469,7 +469,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
             int proxyPort = Integer.parseInt(parsed[2]);
             if (proxyPort < 1 || proxyPort > 65535)
             {
-              connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+              connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
               connection.getResultWriter().flush();
             }
             else
@@ -481,19 +481,19 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
                 connector.interruptConnector();
                 connector.notify();
               }
-              connection.getResultWriter().write("\nVT>Proxy host port(PP) set to: [" + proxyPort + "]\nVT>");
+              connection.getResultWriter().write("\rVT>Proxy host port(PP) set to: [" + proxyPort + "]\nVT>");
               connection.getResultWriter().flush();
             }
           }
           catch (NumberFormatException e)
           {
-            connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+            connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
             connection.getResultWriter().flush();
           }
         }
         else
         {
-          connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+          connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
           connection.getResultWriter().flush();
         }
       }
@@ -503,12 +503,12 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
 //        {
 //          if (!session.getServer().getServerConnector().isUseProxyAuthentication())
 //          {
-//            connection.getResultWriter().write("\nVT>Proxy authentication(PA): [Disabled]\nVT>");
+//            connection.getResultWriter().write("\rVT>Proxy authentication(PA): [Disabled]\nVT>");
 //            connection.getResultWriter().flush();
 //          }
 //          else
 //          {
-//            connection.getResultWriter().write("\nVT>Proxy authentication(PA): [Enabled]\nVT>");
+//            connection.getResultWriter().write("\rVT>Proxy authentication(PA): [Enabled]\nVT>");
 //            connection.getResultWriter().flush();
 //          }
 //        }
@@ -523,7 +523,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
 //              connector.interruptConnector();
 //              connector.notify();
 //            }
-//            connection.getResultWriter().write("\nVT>Proxy authentication(PA) set to: [Enabled]\nVT>");
+//            connection.getResultWriter().write("\rVT>Proxy authentication(PA) set to: [Enabled]\nVT>");
 //            connection.getResultWriter().flush();
 //          }
 //          else
@@ -535,13 +535,13 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
 //              connector.interruptConnector();
 //              connector.notify();
 //            }
-//            connection.getResultWriter().write("\nVT>Proxy authentication(PA) set to: [Disabled]\nVT>");
+//            connection.getResultWriter().write("\rVT>Proxy authentication(PA) set to: [Disabled]\nVT>");
 //            connection.getResultWriter().flush();
 //          }
 //        }
 //        else
 //        {
-//          connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+//          connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
 //          connection.getResultWriter().flush();
 //        }
 //      }
@@ -550,7 +550,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
         if (parsed.length == 2)
         {
           String proxyUser = session.getServer().getServerConnector().getProxyUser();
-          connection.getResultWriter().write("\nVT>Proxy user(PU): [" + proxyUser + "]\nVT>");
+          connection.getResultWriter().write("\rVT>Proxy user(PU): [" + proxyUser + "]\nVT>");
           connection.getResultWriter().flush();
         }
         else if (parsed.length >= 3)
@@ -563,12 +563,12 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
             connector.interruptConnector();
             connector.notify();
           }
-          connection.getResultWriter().write("\nVT>Proxy user(PU) set to: [" + proxyUser + "]\nVT>");
+          connection.getResultWriter().write("\rVT>Proxy user(PU) set to: [" + proxyUser + "]\nVT>");
           connection.getResultWriter().flush();
         }
         else
         {
-          connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+          connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
           connection.getResultWriter().flush();
         }
       }
@@ -577,7 +577,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
         if (parsed.length == 2)
         {
           String proxyPassword = session.getServer().getServerConnector().getProxyPassword();
-          connection.getResultWriter().write("\nVT>Proxy password(PK): [" + proxyPassword + "]\nVT>");
+          connection.getResultWriter().write("\rVT>Proxy password(PK): [" + proxyPassword + "]\nVT>");
           connection.getResultWriter().flush();
         }
         else if (parsed.length >= 3)
@@ -590,12 +590,12 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
             connector.interruptConnector();
             connector.notify();
           }
-          connection.getResultWriter().write("\nVT>Proxy password(PK) set to: [" + proxyPassword + "]\nVT>");
+          connection.getResultWriter().write("\rVT>Proxy password(PK) set to: [" + proxyPassword + "]\nVT>");
           connection.getResultWriter().flush();
         }
         else
         {
-          connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+          connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
           connection.getResultWriter().flush();
         }
       }
@@ -606,32 +606,32 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
           String encryptionType = session.getServer().getServerConnector().getEncryptionType();
           if (encryptionType.toUpperCase().startsWith("G"))
           {
-            connection.getResultWriter().write("\nVT>Encryption type(ET): [GRAIN]\nVT>");
+            connection.getResultWriter().write("\rVT>Encryption type(ET): [GRAIN]\nVT>");
             connection.getResultWriter().flush();
           }
           else if (encryptionType.toUpperCase().startsWith("Z"))
           {
-            connection.getResultWriter().write("\nVT>Encryption type(ET): [ZUC]\nVT>");
+            connection.getResultWriter().write("\rVT>Encryption type(ET): [ZUC]\nVT>");
             connection.getResultWriter().flush();
           }
           else if (encryptionType.toUpperCase().startsWith("S"))
           {
-            connection.getResultWriter().write("\nVT>Encryption type(ET): [SALSA]\nVT>");
+            connection.getResultWriter().write("\rVT>Encryption type(ET): [SALSA]\nVT>");
             connection.getResultWriter().flush();
           }
           else if (encryptionType.toUpperCase().startsWith("H"))
           {
-            connection.getResultWriter().write("\nVT>Encryption type(ET): [HC]\nVT>");
+            connection.getResultWriter().write("\rVT>Encryption type(ET): [HC]\nVT>");
             connection.getResultWriter().flush();
           }
           else if (encryptionType.toUpperCase().startsWith("R"))
           {
-            connection.getResultWriter().write("\nVT>Encryption type(ET): [RABBIT]\nVT>");
+            connection.getResultWriter().write("\rVT>Encryption type(ET): [RABBIT]\nVT>");
             connection.getResultWriter().flush();
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Encryption type(ET): []\nVT>");
+            connection.getResultWriter().write("\rVT>Encryption type(ET): []\nVT>");
             connection.getResultWriter().flush();
           }
         }
@@ -647,38 +647,38 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
           }
           if (encryptionType.toUpperCase().startsWith("G"))
           {
-            connection.getResultWriter().write("\nVT>Encryption type(ET) set to: [GRAIN]\nVT>");
+            connection.getResultWriter().write("\rVT>Encryption type(ET) set to: [GRAIN]\nVT>");
             connection.getResultWriter().flush();
           }
           else if (encryptionType.toUpperCase().startsWith("Z"))
           {
-            connection.getResultWriter().write("\nVT>Encryption type(ET) set to: [ZUC]\nVT>");
+            connection.getResultWriter().write("\rVT>Encryption type(ET) set to: [ZUC]\nVT>");
             connection.getResultWriter().flush();
           }
           else if (encryptionType.toUpperCase().startsWith("S"))
           {
-            connection.getResultWriter().write("\nVT>Encryption type(ET) set to: [SALSA]\nVT>");
+            connection.getResultWriter().write("\rVT>Encryption type(ET) set to: [SALSA]\nVT>");
             connection.getResultWriter().flush();
           }
           else if (encryptionType.toUpperCase().startsWith("H"))
           {
-            connection.getResultWriter().write("\nVT>Encryption type(ET) set to: [HC]\nVT>");
+            connection.getResultWriter().write("\rVT>Encryption type(ET) set to: [HC]\nVT>");
             connection.getResultWriter().flush();
           }
           else if (encryptionType.toUpperCase().startsWith("R"))
           {
-            connection.getResultWriter().write("\nVT>Encryption type(ET) set to: [RABBIT]\nVT>");
+            connection.getResultWriter().write("\rVT>Encryption type(ET) set to: [RABBIT]\nVT>");
             connection.getResultWriter().flush();
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Encryption type(ET) set to: []\nVT>");
+            connection.getResultWriter().write("\rVT>Encryption type(ET) set to: []\nVT>");
             connection.getResultWriter().flush();
           }
         }
         else
         {
-          connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+          connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
           connection.getResultWriter().flush();
         }
       }
@@ -691,7 +691,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
           {
             encryptionPassword = new String(session.getServer().getServerConnector().getEncryptionKey(), "UTF-8");
           }
-          connection.getResultWriter().write("\nVT>Encryption password(EK): [" + encryptionPassword + "]\nVT>");
+          connection.getResultWriter().write("\rVT>Encryption password(EK): [" + encryptionPassword + "]\nVT>");
           connection.getResultWriter().flush();
         }
         else if (parsed.length >= 3)
@@ -704,12 +704,12 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
             connector.interruptConnector();
             connector.notify();
           }
-          connection.getResultWriter().write("\nVT>Encryption password(EK) set to: [" + encryptionPassword + "]\nVT>");
+          connection.getResultWriter().write("\rVT>Encryption password(EK) set to: [" + encryptionPassword + "]\nVT>");
           connection.getResultWriter().flush();
         }
         else
         {
-          connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+          connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
           connection.getResultWriter().flush();
         }
       }
@@ -720,12 +720,12 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
           Integer natPort = session.getServer().getServerConnector().getNatPort();
           if (natPort != null)
           {
-            connection.getResultWriter().write("\nVT>Connection nat port(CN): [" + natPort + "]\nVT>");
+            connection.getResultWriter().write("\rVT>Connection nat port(CN): [" + natPort + "]\nVT>");
             connection.getResultWriter().flush();
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Connection nat port(CN): []\nVT>");
+            connection.getResultWriter().write("\rVT>Connection nat port(CN): []\nVT>");
             connection.getResultWriter().flush();
           }
         }
@@ -736,7 +736,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
             int natPort = Integer.parseInt(parsed[2]);
             if (natPort < 1 || natPort > 65535)
             {
-              connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+              connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
               connection.getResultWriter().flush();
             }
             else
@@ -748,7 +748,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
                 {
                   connector.setNatPort(null);
                 }
-                connection.getResultWriter().write("\nVT>Connection nat port(CN) set to: []\nVT>");
+                connection.getResultWriter().write("\rVT>Connection nat port(CN) set to: []\nVT>");
                 connection.getResultWriter().flush();
               }
               else
@@ -757,7 +757,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
                 {
                   connector.setNatPort(natPort);
                 }
-                connection.getResultWriter().write("\nVT>Connection nat port(CN) set to: [" + natPort + "]\nVT>");
+                connection.getResultWriter().write("\rVT>Connection nat port(CN) set to: [" + natPort + "]\nVT>");
                 connection.getResultWriter().flush();
               }
             }
@@ -769,13 +769,13 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
             {
               connector.setNatPort(null);
             }
-            connection.getResultWriter().write("\nVT>Connection nat port(CN) set to: []\nVT>");
+            connection.getResultWriter().write("\rVT>Connection nat port(CN) set to: []\nVT>");
             connection.getResultWriter().flush();
           }
         }
         else
         {
-          connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+          connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
           connection.getResultWriter().flush();
         }
       }
@@ -785,7 +785,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
         {
           String sessionShell = session.getServer().getServerConnector().getSessionShell();
           
-          connection.getResultWriter().write("\nVT>Session shell(SS): [" + sessionShell + "]\nVT>");
+          connection.getResultWriter().write("\rVT>Session shell(SS): [" + sessionShell + "]\nVT>");
           connection.getResultWriter().flush();
         }
         else if (parsed.length >= 3)
@@ -798,12 +798,12 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
             connector.interruptConnector();
             connector.notify();
           }
-          connection.getResultWriter().write("\nVT>Session shell(SS) set to: [" + sessionShell + "]\nVT>");
+          connection.getResultWriter().write("\rVT>Session shell(SS) set to: [" + sessionShell + "]\nVT>");
           connection.getResultWriter().flush();
         }
         else
         {
-          connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+          connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
           connection.getResultWriter().flush();
         }
       }
@@ -814,18 +814,18 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
           String sessionUsers = parsed[2];
           if (session.getServer().setMultipleUserCredentials(sessionUsers))
           {
-            connection.getResultWriter().write("\nVT>Session accounts(SA) set to: [" + sessionUsers + "]\nVT>");
+            connection.getResultWriter().write("\rVT>Session accounts(SA) set to: [" + sessionUsers + "]\nVT>");
             connection.getResultWriter().flush();
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Session accounts(SA) set to: []\nVT>");
+            connection.getResultWriter().write("\rVT>Session accounts(SA) set to: []\nVT>");
             connection.getResultWriter().flush();
           }
         }
         else
         {
-          connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+          connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
           connection.getResultWriter().flush();
         }
       }
@@ -834,7 +834,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
         if (parsed.length == 2)
         {
           String pingLimit = (session.getServer().getPingLimit() > 0 ? "" + session.getServer().getPingLimit() : "");
-          connection.getResultWriter().write("\nVT>Ping limit(PL): [" + pingLimit + "]\nVT>");
+          connection.getResultWriter().write("\rVT>Ping limit(PL): [" + pingLimit + "]\nVT>");
           connection.getResultWriter().flush();
         }
         else if (parsed.length >= 3)
@@ -845,26 +845,26 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
             if (pingLimit > 0)
             {
               session.getServer().setPingLimit(pingLimit);
-              connection.getResultWriter().write("\nVT>Ping limit(PL) set to: [" + (session.getServer().getPingLimit() > 0 ? session.getServer().getPingLimit() : "") + "]\nVT>");
+              connection.getResultWriter().write("\rVT>Ping limit(PL) set to: [" + (session.getServer().getPingLimit() > 0 ? session.getServer().getPingLimit() : "") + "]\nVT>");
               connection.getResultWriter().flush();
             }
             else
             {
               session.getServer().setPingLimit(0);
-              connection.getResultWriter().write("\nVT>Ping limit(PL) set to: [" + (session.getServer().getPingLimit() > 0 ? session.getServer().getPingLimit() : "") + "]\nVT>");
+              connection.getResultWriter().write("\rVT>Ping limit(PL) set to: [" + (session.getServer().getPingLimit() > 0 ? session.getServer().getPingLimit() : "") + "]\nVT>");
               connection.getResultWriter().flush();
             }
           }
           catch (NumberFormatException e)
           {
             session.getServer().setPingLimit(0);
-            connection.getResultWriter().write("\nVT>Ping limit(PL) set to: [" + (session.getServer().getPingLimit() > 0 ? session.getServer().getPingLimit() : "") + "]\nVT>");
+            connection.getResultWriter().write("\rVT>Ping limit(PL) set to: [" + (session.getServer().getPingLimit() > 0 ? session.getServer().getPingLimit() : "") + "]\nVT>");
             connection.getResultWriter().flush();
           }
         }
         else
         {
-          connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+          connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
           connection.getResultWriter().flush();
         }
       }
@@ -873,7 +873,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
         if (parsed.length == 2)
         {
           String pingInterval = (session.getServer().getPingInterval() > 0 ? "" + session.getServer().getPingInterval() : "");
-          connection.getResultWriter().write("\nVT>Ping interval(PI): [" + pingInterval + "]\nVT>");
+          connection.getResultWriter().write("\rVT>Ping interval(PI): [" + pingInterval + "]\nVT>");
           connection.getResultWriter().flush();
         }
         else if (parsed.length >= 3)
@@ -884,32 +884,32 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
             if (pingInterval > 0)
             {
               session.getServer().setPingInterval(pingInterval);
-              connection.getResultWriter().write("\nVT>Ping interval(PI) set to: [" + (session.getServer().getPingInterval() > 0 ? session.getServer().getPingInterval() : "") + "]\nVT>");
+              connection.getResultWriter().write("\rVT>Ping interval(PI) set to: [" + (session.getServer().getPingInterval() > 0 ? session.getServer().getPingInterval() : "") + "]\nVT>");
               connection.getResultWriter().flush();
             }
             else
             {
               session.getServer().setPingInterval(0);
-              connection.getResultWriter().write("\nVT>Ping interval(PI) set to: [" + (session.getServer().getPingInterval() > 0 ? session.getServer().getPingInterval() : "") + "]\nVT>");
+              connection.getResultWriter().write("\rVT>Ping interval(PI) set to: [" + (session.getServer().getPingInterval() > 0 ? session.getServer().getPingInterval() : "") + "]\nVT>");
               connection.getResultWriter().flush();
             }
           }
           catch (NumberFormatException e)
           {
             session.getServer().setPingInterval(0);
-            connection.getResultWriter().write("\nVT>Ping interval(PI) set to: [" + (session.getServer().getPingInterval() > 0 ? session.getServer().getPingInterval() : "") + "]\nVT>");
+            connection.getResultWriter().write("\rVT>Ping interval(PI) set to: [" + (session.getServer().getPingInterval() > 0 ? session.getServer().getPingInterval() : "") + "]\nVT>");
             connection.getResultWriter().flush();
           }
         }
         else
         {
-          connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+          connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
           connection.getResultWriter().flush();
         }
       }
       else
       {
-        connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+        connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
         connection.getResultWriter().flush();
       }
     }

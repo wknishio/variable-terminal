@@ -64,7 +64,8 @@ public class VTAUDIOLINK extends VTClientStandardRemoteConsoleCommandProcessor
                   }
                   catch (Throwable t)
                   {
-                    VTMainConsole.print("\nVT>Invalid local input audio mixer number [" + mixer + "]!");
+                    
+                    VTMainConsole.print("\rVT>Invalid local input audio mixer number [" + mixer + "]!");
                     // ok = false;
                   }
                 }
@@ -77,7 +78,7 @@ public class VTAUDIOLINK extends VTClientStandardRemoteConsoleCommandProcessor
                   }
                   catch (Throwable t)
                   {
-                    VTMainConsole.print("\nVT>Invalid local output audio mixer number [" + mixer + "]!");
+                    VTMainConsole.print("\rVT>Invalid local output audio mixer number [" + mixer + "]!");
                     // ok = false;
                   }
                 }
@@ -182,7 +183,7 @@ public class VTAUDIOLINK extends VTClientStandardRemoteConsoleCommandProcessor
         {
           connection.closeAudioStreams();
           formatAudioSystem.stop();
-          VTMainConsole.print("\nVT>Remote audio link start on client failed!\nVT>");
+          VTMainConsole.print("\rVT>Remote audio link start on client failed!\nVT>");
           return;
         }
         
@@ -202,7 +203,7 @@ public class VTAUDIOLINK extends VTClientStandardRemoteConsoleCommandProcessor
           }
           connection.closeAudioStreams();
           formatAudioSystem.stop();
-          VTMainConsole.print("\nVT>Remote audio link start on client failed!\nVT>");
+          VTMainConsole.print("\rVT>Remote audio link start on client failed!\nVT>");
           return;
         }
         

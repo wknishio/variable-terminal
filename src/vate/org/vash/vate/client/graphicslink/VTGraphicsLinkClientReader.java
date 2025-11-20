@@ -235,11 +235,11 @@ public class VTGraphicsLinkClientReader implements Runnable
     {
       if (failed)
       {
-        VTMainConsole.print("\nVT>Remote graphics link failed to start on client!\nVT>");
+        VTMainConsole.print("\rVT>Remote graphics link failed to start on client!\nVT>");
       }
       else
       {
-        VTMainConsole.print("\nVT>Remote graphics link started!\nVT>");
+        VTMainConsole.print("\rVT>Remote graphics link started!\nVT>");
         vtCustomCodec = new VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII();
         // pngImageReader = ImageIO.getImageReadersByFormatName("PNG").next();
         pngImageReader = new PngImageReader(new PngImageReaderSpi());

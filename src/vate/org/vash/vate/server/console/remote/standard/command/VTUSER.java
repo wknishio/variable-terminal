@@ -29,7 +29,7 @@ public class VTUSER extends VTServerStandardRemoteConsoleCommandProcessor
       }
       else
       {
-        connection.getResultWriter().write("\nVT>Another server connection list view is still running!\nVT>");
+        connection.getResultWriter().write("\rVT>Another server connection list view is still running!\nVT>");
         connection.getResultWriter().flush();
       }
     }

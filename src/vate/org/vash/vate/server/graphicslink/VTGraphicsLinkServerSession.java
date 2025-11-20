@@ -92,22 +92,6 @@ public class VTGraphicsLinkServerSession
   {
     reader.setStopped(false);
     writer.setStopped(false);
-    //readerThread = new Thread(null, reader, reader.getClass().getSimpleName());
-    //readerThread.setDaemon(true);
-    //writerThread = new Thread(null, writer, writer.getClass().getSimpleName());
-    //writerThread.setDaemon(true);
-    /*
-     * try { if (reader.isReadOnly()) {
-     * session.getConnection().getResultWriter().
-     * write("\nVT>Starting graphics mode in view mode...\nVT>");
-     * session.getConnection().getResultWriter().flush(); } else {
-     * session.getConnection().getResultWriter().
-     * write("\nVT>Starting graphics mode in control mode...\nVT>");
-     * session.getConnection().getResultWriter().flush(); } } catch (IOException
-     * e) { }
-     */
-    //writerThread.start();
-    //readerThread.start();
     writerThread = executorService.submit(writer);
     readerThread = executorService.submit(reader);
   }

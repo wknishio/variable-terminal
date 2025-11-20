@@ -22,7 +22,7 @@ public class VTMIXER extends VTServerStandardRemoteConsoleCommandProcessor
       if (parsed[1].toUpperCase().startsWith("R"))
       {
         message.setLength(0);
-        message.append("\nVT>List of server audio mixers:\nVT>");
+        message.append("\rVT>List of server audio mixers:\nVT>");
         Mixer.Info[] mixers = AudioSystem.getMixerInfo();
         int number = 0;
         for (Mixer.Info info : mixers)
@@ -45,7 +45,7 @@ public class VTMIXER extends VTServerStandardRemoteConsoleCommandProcessor
     else
     {
       message.setLength(0);
-      message.append("\nVT>List of server audio mixers:\nVT>");
+      message.append("\rVT>List of server audio mixers:\nVT>");
       Mixer.Info[] mixers = AudioSystem.getMixerInfo();
       int number = 0;
       for (Mixer.Info info : mixers)

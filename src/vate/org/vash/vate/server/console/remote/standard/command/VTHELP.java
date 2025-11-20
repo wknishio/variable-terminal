@@ -19,18 +19,18 @@ public class VTHELP extends VTServerStandardRemoteConsoleCommandProcessor
     {
       if (command.toUpperCase().contains("*VTHELP"))
       {
-        connection.getResultWriter().write(VTHelpManager.getMainHelpForClientCommands());
+        connection.getResultWriter().write(VTHelpManager.getMainHelpForClientCommands().substring(1));
         connection.getResultWriter().flush();
       }
       else
       {
-        connection.getResultWriter().write(VTHelpManager.getMinHelpForClientCommands());
+        connection.getResultWriter().write(VTHelpManager.getMinHelpForClientCommands().substring(1));
         connection.getResultWriter().flush();
       }
     }
     else if (parsed.length > 1)
     {
-      connection.getResultWriter().write(VTHelpManager.getHelpForClientCommand(parsed[1]));
+      connection.getResultWriter().write(VTHelpManager.getHelpForClientCommand(parsed[1]).substring(1));
       connection.getResultWriter().flush();
     }
   }

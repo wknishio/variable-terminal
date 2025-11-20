@@ -17,7 +17,7 @@ public class VTCOVER extends VTServerStandardRemoteConsoleCommandProcessor
   {
     if (session.getServer().isDaemon())
     {
-      connection.getResultWriter().write("\nVT>Server console interface is unavailable\nVT>");
+      connection.getResultWriter().write("\rVT>Server console interface is unavailable\nVT>");
       connection.getResultWriter().flush();
     }
     else
@@ -26,14 +26,14 @@ public class VTCOVER extends VTServerStandardRemoteConsoleCommandProcessor
       {
         VTMainConsole.setDaemon(false);
         session.getServer().enableTrayIcon();
-        connection.getResultWriter().write("\nVT>Server console interface enabled\nVT>");
+        connection.getResultWriter().write("\rVT>Server console interface enabled\nVT>");
         connection.getResultWriter().flush();
       }
       else
       {
         VTMainConsole.setDaemon(true);
         session.getServer().disableTrayIcon();
-        connection.getResultWriter().write("\nVT>Server console interface disabled\nVT>");
+        connection.getResultWriter().write("\rVT>Server console interface disabled\nVT>");
         connection.getResultWriter().flush();
       }
     }

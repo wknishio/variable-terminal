@@ -52,7 +52,7 @@ public class VTServerPrintServiceResolver extends VTTask
         if (printServices.length > 0)
         {
           int i = 0;
-          message.append("\nVT>List of server print services:\nVT>");
+          message.append("\rVT>List of server print services:\nVT>");
           for (PrintService printService : printServices)
           {
             message.append("\nVT>Number: [" + i++ + "]" + (defaultPrintService.getName().equals(printService.getName()) ? " (Default)" : "") + "\nVT>Name: [" + printService.getName() + "]");
@@ -70,7 +70,7 @@ public class VTServerPrintServiceResolver extends VTTask
         {
           synchronized (this)
           {
-            session.getConnection().getResultWriter().write("\nVT>No print services found on server!\nVT>");
+            session.getConnection().getResultWriter().write("\rVT>No print services found on server!\nVT>");
             session.getConnection().getResultWriter().flush();
             finished = true;
           }
@@ -80,7 +80,7 @@ public class VTServerPrintServiceResolver extends VTTask
       {
         if (printServices.length > 0)
         {
-          message.append("\nVT>Server print service details:\nVT>");
+          message.append("\rVT>List of server print service details:\nVT>");
           PrintService printService = printServices[number];
           mimeSet.clear();
           message.append("\nVT>Number: [" + number + "]" + (defaultPrintService.getName().equals(printService.getName()) ? " (Default)" : "") + "\nVT>Name: [" + printService.getName() + "]");
@@ -108,7 +108,7 @@ public class VTServerPrintServiceResolver extends VTTask
         {
           synchronized (this)
           {
-            session.getConnection().getResultWriter().write("\nVT>No print services found on server!\nVT>");
+            session.getConnection().getResultWriter().write("\rVT>No print services found on server!\nVT>");
             session.getConnection().getResultWriter().flush();
             finished = true;
           }
@@ -122,7 +122,7 @@ public class VTServerPrintServiceResolver extends VTTask
       {
         try
         {
-          session.getConnection().getResultWriter().write("\nVT>Print service [" + number + "] not found on server!\nVT>");
+          session.getConnection().getResultWriter().write("\rVT>Print service [" + number + "] not found on server!\nVT>");
           session.getConnection().getResultWriter().flush();
         }
         catch (Throwable t)
@@ -138,7 +138,7 @@ public class VTServerPrintServiceResolver extends VTTask
       {
         try
         {
-          session.getConnection().getResultWriter().write("\nVT>No print services found on server!\nVT>");
+          session.getConnection().getResultWriter().write("\rVT>No print services found on server!\nVT>");
           session.getConnection().getResultWriter().flush();
         }
         catch (Throwable t)

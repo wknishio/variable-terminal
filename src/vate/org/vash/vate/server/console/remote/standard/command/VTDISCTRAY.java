@@ -35,7 +35,7 @@ public class VTDISCTRAY extends VTServerStandardRemoteConsoleCommandProcessor
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Another optical disc drive operation is still running!\nVT>");
+            connection.getResultWriter().write("\rVT>Another optical disc drive operation is still running!\nVT>");
             connection.getResultWriter().flush();
           }
         }
@@ -53,19 +53,19 @@ public class VTDISCTRAY extends VTServerStandardRemoteConsoleCommandProcessor
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Another optical disc drive operation is still running!\nVT>");
+            connection.getResultWriter().write("\rVT>Another optical disc drive operation is still running!\nVT>");
             connection.getResultWriter().flush();
           }
         }
         else
         {
-          connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+          connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
           connection.getResultWriter().flush();
         }
       }
       else
       {
-        connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+        connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
         connection.getResultWriter().flush();
       }
     }

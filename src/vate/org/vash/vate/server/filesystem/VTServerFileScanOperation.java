@@ -64,7 +64,7 @@ public class VTServerFileScanOperation extends VTTask
             {
               synchronized (this)
               {
-                session.getConnection().getResultWriter().write("\nVT>Information about file: [" + target.getPath() + "]" + "\nVT>" + "\nVT>Type: [File]" + "\nVT>Name: [" + target.getName() + "]" + "\nVT>Path: [" + target.getPath() + "]" + "\nVT>Absolute path: [" + target.getAbsolutePath() + "]" + "\nVT>Canonical path: [" + target.getCanonicalPath() + "]" + "\nVT>File size: [" + target.length() + "] bytes" + "\nVT>" + "\nVT>End of information about file: [" + target.getPath() + "]" + "\nVT>");
+                session.getConnection().getResultWriter().write("\rVT>Information about file: [" + target.getPath() + "]" + "\nVT>" + "\nVT>Type: [File]" + "\nVT>Name: [" + target.getName() + "]" + "\nVT>Path: [" + target.getPath() + "]" + "\nVT>Absolute path: [" + target.getAbsolutePath() + "]" + "\nVT>Canonical path: [" + target.getCanonicalPath() + "]" + "\nVT>File size: [" + target.length() + "] bytes" + "\nVT>" + "\nVT>End of information about file: [" + target.getPath() + "]" + "\nVT>");
                 session.getConnection().getResultWriter().flush();
                 finished = true;
               }
@@ -73,7 +73,7 @@ public class VTServerFileScanOperation extends VTTask
             {
               synchronized (this)
               {
-                session.getConnection().getResultWriter().write("\nVT>Information about file: [" + target.getPath() + "]" + "\nVT>" + "\nVT>Type: [Directory]" + "\nVT>Name: [" + target.getName() + "]" + "\nVT>Path: [" + target.getPath() + "]" + "\nVT>Absolute path: [" + target.getAbsolutePath() + "]" + "\nVT>Canonical path: [" + target.getCanonicalPath() + "]" + "\nVT>Total of files in directory: [" + target.list().length + "] files" + "\nVT>" + "\nVT>End of information about file: [" + target.getPath() + "]" + "\nVT>");
+                session.getConnection().getResultWriter().write("\rVT>Information about file: [" + target.getPath() + "]" + "\nVT>" + "\nVT>Type: [Directory]" + "\nVT>Name: [" + target.getName() + "]" + "\nVT>Path: [" + target.getPath() + "]" + "\nVT>Absolute path: [" + target.getAbsolutePath() + "]" + "\nVT>Canonical path: [" + target.getCanonicalPath() + "]" + "\nVT>Total of files in directory: [" + target.list().length + "] files" + "\nVT>" + "\nVT>End of information about file: [" + target.getPath() + "]" + "\nVT>");
                 session.getConnection().getResultWriter().flush();
                 finished = true;
               }
@@ -83,26 +83,17 @@ public class VTServerFileScanOperation extends VTTask
           {
             synchronized (this)
             {
-              session.getConnection().getResultWriter().write("\nVT>File [" + target.getPath() + "] not found on server!\nVT>");
+              session.getConnection().getResultWriter().write("\rVT>File [" + target.getPath() + "] not found on server!\nVT>");
               session.getConnection().getResultWriter().flush();
               finished = true;
             }
-          }
-        }
-        catch (SecurityException e)
-        {
-          synchronized (this)
-          {
-            session.getConnection().getResultWriter().write("\nVT>Security error detected!\nVT>");
-            session.getConnection().getResultWriter().flush();
-            finished = true;
           }
         }
         catch (IOException e)
         {
           synchronized (this)
           {
-            session.getConnection().getResultWriter().write("\nVT>File [" + target.getPath() + "] inspection on server failed!\nVT>");
+            session.getConnection().getResultWriter().write("\rVT>File [" + target.getPath() + "] inspection on server failed!\nVT>");
             session.getConnection().getResultWriter().flush();
             finished = true;
           }
@@ -111,7 +102,7 @@ public class VTServerFileScanOperation extends VTTask
         {
           synchronized (this)
           {
-            session.getConnection().getResultWriter().write("\nVT>File [" + target.getPath() + "] inspection on server failed!\nVT>");
+            session.getConnection().getResultWriter().write("\rVT>File [" + target.getPath() + "] inspection on server failed!\nVT>");
             session.getConnection().getResultWriter().flush();
             finished = true;
           }
@@ -127,7 +118,7 @@ public class VTServerFileScanOperation extends VTTask
             if (target.isDirectory())
             {
               message.setLength(0);
-              message.append("\nVT>List of files in directory [" + target.getPath() + "]:\nVT>");
+              message.append("\rVT>List of files in directory [" + target.getPath() + "]:\nVT>");
               File[] files = target.listFiles();
              // Arrays.sort(files, fileSorter);
               for (File file : files)
@@ -147,41 +138,27 @@ public class VTServerFileScanOperation extends VTTask
             {
               synchronized (this)
               {
-                session.getConnection().getResultWriter().write("\nVT>File [" + target.getPath() + "] is not a directory on server!\nVT>");
+                session.getConnection().getResultWriter().write("\rVT>File [" + target.getPath() + "] is not a directory on server!\nVT>");
                 session.getConnection().getResultWriter().flush();
                 finished = true;
               }
             }
-            /*
-             * else { connection.getResultWriter().
-             * write("\nVT>File of unknown type detected!\nVT>");
-             * connection.getResultWriter().flush(); }
-             */
           }
           else
           {
             synchronized (this)
             {
-              session.getConnection().getResultWriter().write("\nVT>Directory [" + target.getPath() + "] not found on server!\nVT>");
+              session.getConnection().getResultWriter().write("\rVT>Directory [" + target.getPath() + "] not found on server!\nVT>");
               session.getConnection().getResultWriter().flush();
               finished = true;
             }
-          }
-        }
-        catch (SecurityException e)
-        {
-          synchronized (this)
-          {
-            session.getConnection().getResultWriter().write("\nVT>Security error detected!\nVT>");
-            session.getConnection().getResultWriter().flush();
-            finished = true;
           }
         }
         catch (IOException e)
         {
           synchronized (this)
           {
-            session.getConnection().getResultWriter().write("\nVT>File [" + target.getPath() + "] inspection on server failed!\nVT>");
+            session.getConnection().getResultWriter().write("\rVT>File [" + target.getPath() + "] inspection on server failed!\nVT>");
             session.getConnection().getResultWriter().flush();
             finished = true;
           }
@@ -190,7 +167,7 @@ public class VTServerFileScanOperation extends VTTask
         {
           synchronized (this)
           {
-            session.getConnection().getResultWriter().write("\nVT>File [" + target.getPath() + "] inspection on server failed!\nVT>");
+            session.getConnection().getResultWriter().write("\rVT>File [" + target.getPath() + "] inspection on server failed!\nVT>");
             session.getConnection().getResultWriter().flush();
             finished = true;
           }

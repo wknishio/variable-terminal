@@ -21,12 +21,12 @@ public class VTLOCK extends VTServerStandardRemoteConsoleCommandProcessor
       String user = parsed[1].substring(0, idx);
       String password = parsed[1].substring(idx + 1);
       session.getServer().setUniqueUserCredential(user, password);
-      connection.getResultWriter().write("\nVT>Single credential set!\nVT>");
+      connection.getResultWriter().write("\rVT>Single credential set!\nVT>");
       connection.getResultWriter().flush();
     }
     else
     {
-      connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+      connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
       connection.getResultWriter().flush();
     }
   }

@@ -29,7 +29,7 @@ public class VTDISPLAY extends VTServerStandardRemoteConsoleCommandProcessor
       }
       else
       {
-        connection.getResultWriter().write("\nVT>Another graphical display device search is still running\nVT>");
+        connection.getResultWriter().write("\rVT>Another graphical display device search is still running\nVT>");
         connection.getResultWriter().flush();
       }
     }

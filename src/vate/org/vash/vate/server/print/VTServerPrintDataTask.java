@@ -155,7 +155,7 @@ public class VTServerPrintDataTask extends VTTask
         printService = PrintServiceLookup.lookupDefaultPrintService();
         if (printService == null)
         {
-          session.getConnection().getResultWriter().write("\nVT>No print services found on server!\nVT>");
+          session.getConnection().getResultWriter().write("\rVT>No print services found on server!\nVT>");
           session.getConnection().getResultWriter().flush();
           finished = true;
           return;
@@ -193,7 +193,7 @@ public class VTServerPrintDataTask extends VTTask
                   return;
                 }
                 finished = true;
-                session.getConnection().getResultWriter().write("\nVT>Print job of data [" + data + "] canceled!" + "\nVT>");
+                session.getConnection().getResultWriter().write("\rVT>Print job of data [" + data + "] canceled!" + "\nVT>");
                 session.getConnection().getResultWriter().flush();
               }
             }
@@ -214,7 +214,7 @@ public class VTServerPrintDataTask extends VTTask
                   return;
                 }
                 finished = true;
-                session.getConnection().getResultWriter().write("\nVT>Print job of data [" + data + "] completed!" + "\nVT>");
+                session.getConnection().getResultWriter().write("\rVT>Print job of data [" + data + "] completed!" + "\nVT>");
                 session.getConnection().getResultWriter().flush();
               }
             }
@@ -236,7 +236,7 @@ public class VTServerPrintDataTask extends VTTask
                   return;
                 }
                 finished = true;
-                session.getConnection().getResultWriter().write("\nVT>Print job of data [" + data + "] failed!" + "\nVT>");
+                session.getConnection().getResultWriter().write("\rVT>Print job of data [" + data + "] failed!" + "\nVT>");
                 session.getConnection().getResultWriter().flush();
               }
             }
@@ -257,7 +257,7 @@ public class VTServerPrintDataTask extends VTTask
                   return;
                 }
                 finished = true;
-                session.getConnection().getResultWriter().write("\nVT>Print job of data [" + data + "] completed!" + "\nVT>");
+                session.getConnection().getResultWriter().write("\rVT>Print job of data [" + data + "] completed!" + "\nVT>");
                 session.getConnection().getResultWriter().flush();
               }
             }
@@ -289,7 +289,7 @@ public class VTServerPrintDataTask extends VTTask
       {
         synchronized (this)
         {
-          session.getConnection().getResultWriter().write("\nVT>Print service number [" + printServiceNumber + "] not found!" + "\nVT>");
+          session.getConnection().getResultWriter().write("\rVT>Print service number [" + printServiceNumber + "] not found!" + "\nVT>");
           session.getConnection().getResultWriter().flush();
           finished = true;
         }
@@ -612,7 +612,7 @@ public class VTServerPrintDataTask extends VTTask
             }
             else
             {
-              session.getConnection().getResultWriter().write("\nVT>File for printing [" + data + "] not found!" + "\nVT>");
+              session.getConnection().getResultWriter().write("\rVT>File for printing [" + data + "] not found!" + "\nVT>");
               session.getConnection().getResultWriter().flush();
               finished = true;
               return;
@@ -629,7 +629,7 @@ public class VTServerPrintDataTask extends VTTask
       {
         try
         {
-          session.getConnection().getResultWriter().write("\nVT>File for printing [" + data + "] not found!" + "\nVT>");
+          session.getConnection().getResultWriter().write("\rVT>File for printing [" + data + "] not found!" + "\nVT>");
           session.getConnection().getResultWriter().flush();
           finished = true;
         }
@@ -645,7 +645,7 @@ public class VTServerPrintDataTask extends VTTask
       {
         try
         {
-          session.getConnection().getResultWriter().write("\nVT>Print job of data [" + data + "] failed!" + "\nVT>");
+          session.getConnection().getResultWriter().write("\rVT>Print job of data [" + data + "] failed!" + "\nVT>");
           session.getConnection().getResultWriter().flush();
           finished = true;
         }

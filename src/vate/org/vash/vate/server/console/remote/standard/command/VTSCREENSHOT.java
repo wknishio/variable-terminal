@@ -36,7 +36,7 @@ public class VTSCREENSHOT extends VTServerStandardRemoteConsoleCommandProcessor
         }
         else
         {
-          connection.getResultWriter().write("\nVT>Another screen capture is still running!\nVT>");
+          connection.getResultWriter().write("\rVT>Another screen capture is still running!\nVT>");
           connection.getResultWriter().flush();
         }
       }
@@ -136,7 +136,7 @@ public class VTSCREENSHOT extends VTServerStandardRemoteConsoleCommandProcessor
         }
         else
         {
-          connection.getResultWriter().write("\nVT>Another screen capture is still running!\nVT>");
+          connection.getResultWriter().write("\rVT>Another screen capture is still running!\nVT>");
           connection.getResultWriter().flush();
         }
       }

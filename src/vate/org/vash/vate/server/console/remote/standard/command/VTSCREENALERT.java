@@ -35,7 +35,7 @@ public class VTSCREENALERT extends VTServerStandardRemoteConsoleCommandProcessor
         }
         VTGraphicsMessager.showAlert(VTMainConsole.getFrame(), title, alert);
         session.getServer().displayTrayIconMessage(title, "[" + alert + "]");
-        connection.getResultWriter().write("\nVT>Graphical alert sent to server!\nVT>");
+        connection.getResultWriter().write("\rVT>Graphical alert sent to server!\nVT>");
         connection.getResultWriter().flush();
       }
       else if (parsed.length >= 3)
@@ -60,30 +60,30 @@ public class VTSCREENALERT extends VTServerStandardRemoteConsoleCommandProcessor
             }
             VTGraphicsMessager.showAlert(devices[number], VTMainConsole.getFrame(), title, alert);
             session.getServer().displayTrayIconMessage(title, "[" + alert + "]");
-            connection.getResultWriter().write("\nVT>Graphical alert sent to server!\nVT>");
+            connection.getResultWriter().write("\rVT>Graphical alert sent to server!\nVT>");
             connection.getResultWriter().flush();
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Graphical display device not found!\nVT>");
+            connection.getResultWriter().write("\rVT>Graphical display device not found!\nVT>");
             connection.getResultWriter().flush();
           }
         }
         catch (NumberFormatException e)
         {
-          connection.getResultWriter().write("\nVT>Graphical display device not found!\nVT>");
+          connection.getResultWriter().write("\rVT>Graphical display device not found!\nVT>");
           connection.getResultWriter().flush();
         }
       }
       else
       {
-        connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+        connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
         connection.getResultWriter().flush();
       }
     }
     else
     {
-      connection.getResultWriter().write("\nVT>Graphical alert not supported in server!\nVT>");
+      connection.getResultWriter().write("\rVT>Graphical alert not supported in server!\nVT>");
       connection.getResultWriter().flush();
     }
   }

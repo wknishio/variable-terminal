@@ -1,6 +1,5 @@
 package org.vash.vate.server.session;
 
-import java.io.IOException;
 import java.net.InetAddress;
 import java.util.Collection;
 
@@ -38,7 +37,7 @@ public class VTServerSessionListViewer extends VTTask
       message.setLength(0);
       int i = 0;
       Collection<VTServerConnectionHandler> connections = session.getServer().getServerConnector().getConnectionHandlers();
-      message.append("\nVT>List of client connections with server:\nVT>");
+      message.append("\rVT>List of client connections with server:\nVT>");
       for (VTServerConnectionHandler handler : connections)
       {
         message.append("\nVT>Number: [" + i++ + "]");
@@ -61,22 +60,6 @@ public class VTServerSessionListViewer extends VTTask
       {
         session.getConnection().getResultWriter().write(message.toString());
         session.getConnection().getResultWriter().flush();
-        finished = true;
-      }
-    }
-    catch (SecurityException e)
-    {
-      synchronized (this)
-      {
-        try
-        {
-          session.getConnection().getResultWriter().write("\nVT>Security error detected!\nVT>");
-          session.getConnection().getResultWriter().flush();
-        }
-        catch (IOException e1)
-        {
-          
-        }
         finished = true;
       }
     }

@@ -47,13 +47,13 @@ public class VTURLGET extends VTServerStandardRemoteConsoleCommandProcessor
 //        }
 //        else
 //        {
-//          connection.getResultWriter().write("\nVT>Another url data transfer is still running!\nVT>");
+//          connection.getResultWriter().write("\rVT>Another url data transfer is still running!\nVT>");
 //          connection.getResultWriter().flush();
 //        }
 //      }
 //      else
 //      {
-//        connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+//        connection.getResultWriter().write("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
 //        connection.getResultWriter().flush();
 //      }
 //    }

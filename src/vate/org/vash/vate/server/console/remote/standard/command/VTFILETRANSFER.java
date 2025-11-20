@@ -29,7 +29,7 @@ public class VTFILETRANSFER extends VTServerStandardRemoteConsoleCommandProcesso
       {
 //        if (!session.getFileTransferServer().aliveThread())
 //        {
-//          connection.getResultWriter().write("\nVT>No file transfer is running!\nVT>");
+//          connection.getResultWriter().write("\rVT>No file transfer is running!\nVT>");
 //          connection.getResultWriter().flush();
 //        }
       }

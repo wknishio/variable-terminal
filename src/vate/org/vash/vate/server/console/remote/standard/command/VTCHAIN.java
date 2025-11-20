@@ -17,7 +17,7 @@ public class VTCHAIN extends VTServerStandardRemoteConsoleCommandProcessor
     if (parsed.length == 1)
     {
       int level = 1;
-      connection.getResultWriter().write("\nVT>Instance detected at level [" + level + "]!\nVT>");
+      connection.getResultWriter().write("\rVT>Instance detected at level [" + level + "]!\nVT>");
       connection.getResultWriter().flush();
       try
       {
@@ -33,7 +33,7 @@ public class VTCHAIN extends VTServerStandardRemoteConsoleCommandProcessor
     else if (parsed.length == 2)
     {
       int level = Integer.parseInt(parsed[1]);
-      connection.getResultWriter().write("\nVT>Instance detected at level [" + level + "]!\nVT>");
+      connection.getResultWriter().write("\rVT>Instance detected at level [" + level + "]!\nVT>");
       connection.getResultWriter().flush();
       try
       {
