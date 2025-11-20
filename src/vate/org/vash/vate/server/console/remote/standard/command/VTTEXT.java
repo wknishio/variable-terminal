@@ -36,7 +36,7 @@ public class VTTEXT extends VTServerStandardRemoteConsoleCommandProcessor
               {
                 try
                 {
-                  connectionHandler.getConnection().getResultWriter().write("\u0007\nVT>Message from server: [" + command.substring(CommandLineTokenizerMKII.findParameterStart(command, 1)) + "]\nVT>");
+                  connectionHandler.getConnection().getResultWriter().write("\u0007\nVT>Message from client: [" + command.substring(CommandLineTokenizerMKII.findParameterStart(command, 1)) + "]\nVT>");
                   connectionHandler.getConnection().getResultWriter().flush();
                 }
                 catch (Throwable e)
@@ -48,8 +48,8 @@ public class VTTEXT extends VTServerStandardRemoteConsoleCommandProcessor
           }
         }
       }
-      session.getServer().displayTrayIconMessage("Variable-Terminal - Server", "[" + command.substring(8) + "]");
-      VTMainConsole.print("\u0007\rVT>Message from client: [" + command.substring(8) + "]\nVT>");
+      session.getServer().displayTrayIconMessage("Variable-Terminal - Server", "[" + command.substring(CommandLineTokenizerMKII.findParameterStart(command, 1)) + "]");
+      VTMainConsole.print("\u0007\rVT>Message from client: [" + command.substring(CommandLineTokenizerMKII.findParameterStart(command, 1)) + "]\nVT>");
       // VTConsole.bell();
       connection.getResultWriter().write("\nVT>Message received by server!\nVT>");
       connection.getResultWriter().flush();
