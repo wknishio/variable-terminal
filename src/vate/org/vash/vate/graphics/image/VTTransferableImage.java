@@ -60,7 +60,14 @@ public class VTTransferableImage implements Transferable, ClipboardOwner
   
   public void lostOwnership(Clipboard clipboard, Transferable contents)
   {
-    bufferedImage.flush();
+    try
+    {
+      bufferedImage.flush();
+    }
+    catch (Throwable t)
+    {
+      
+    }
     bufferedImage = null;
 //    System.runFinalization();
 //    System.gc();
@@ -68,7 +75,14 @@ public class VTTransferableImage implements Transferable, ClipboardOwner
   
   public void flush()
   {
-    bufferedImage.flush();
+    try
+    {
+      bufferedImage.flush();
+    }
+    catch (Throwable t)
+    {
+      
+    }
     bufferedImage = null;
 //    System.runFinalization();
 //    System.gc();

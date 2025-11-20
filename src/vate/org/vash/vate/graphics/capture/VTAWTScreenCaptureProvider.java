@@ -1199,34 +1199,76 @@ public final class VTAWTScreenCaptureProvider
   {
     if (screenCurrentImage != null)
     {
-      screenCurrentImage.flush();
+      try
+      {
+        screenCurrentImage.flush();
+      }
+      catch (Throwable t)
+      {
+        
+      }
       screenCurrentImage = null;
     }
     if (scaledCurrentImage != null)
     {
-      scaledCurrentImage.flush();
+      try
+      {
+        scaledCurrentImage.flush();
+      }
+      catch (Throwable t)
+      {
+        
+      }
       scaledCurrentImage = null;
     }
     if (scaledCurrentImageGraphics != null)
     {
-      scaledCurrentImageGraphics.dispose();
+      try
+      {
+        scaledCurrentImageGraphics.dispose();
+      }
+      catch (Throwable t)
+      {
+        
+      }
       scaledCurrentImageGraphics = null;
     }
     if (sectionCurrentImageTrue != null)
     {
-      sectionCurrentImageTrue.flush();
+      try
+      {
+        sectionCurrentImageTrue.flush();
+      }
+      catch (Throwable t)
+      {
+        
+      }
       sectionCurrentImageTrue = null;
     }
     if (sectionCurrentImageGrayscale != null)
     {
-      sectionCurrentImageGrayscale.flush();
+      try
+      {
+        sectionCurrentImageGrayscale.flush();
+      }
+      catch (Throwable t)
+      {
+        
+      }
       sectionCurrentImageGrayscale = null;
       //sectionCurrentImageGrayscaleColorCount = 0;
       //sectionCurrentImageConvertedColorCount = 0;
     }
     if (sectionCurrentImageGrayscaleGraphics != null)
     {
-      sectionCurrentImageGrayscaleGraphics.dispose();
+      try
+      {
+        sectionCurrentImageGrayscaleGraphics.dispose();
+      }
+      catch (Throwable t)
+      {
+        
+      }
       sectionCurrentImageGrayscaleGraphics = null;
     }
     pixelBufferByte = null;
@@ -1299,7 +1341,14 @@ public final class VTAWTScreenCaptureProvider
     screenCurrentY = currentDeviceBounds.y;
     if (screenCurrentImage != null)
     {
-      screenCurrentImage.flush();
+      try
+      {
+        screenCurrentImage.flush();
+      }
+      catch (Throwable t)
+      {
+        
+      }
       screenCurrentImage = null;
     }
     int x = 0;
@@ -1322,12 +1371,26 @@ public final class VTAWTScreenCaptureProvider
     {
       if (scaledCurrentImage != null)
       {
-        scaledCurrentImage.flush();
+        try
+        {
+          scaledCurrentImage.flush();
+        }
+        catch (Throwable t)
+        {
+          
+        }
         scaledCurrentImage = null;
       }
       if (scaledCurrentImageGraphics != null)
       {
-        scaledCurrentImageGraphics.dispose();
+        try
+        {
+          scaledCurrentImageGraphics.dispose();
+        }
+        catch (Throwable t)
+        {
+          
+        }
         scaledCurrentImageGraphics = null;
       }
       int x = 0;
@@ -1361,7 +1424,14 @@ public final class VTAWTScreenCaptureProvider
     screenCurrentY = currentDeviceBounds.y;
     if (screenCurrentImage != null)
     {
-      screenCurrentImage.flush();
+      try
+      {
+        screenCurrentImage.flush();
+      }
+      catch (Throwable t)
+      {
+        
+      }
       screenCurrentImage = null;
     }
     int x = 0;
@@ -1384,12 +1454,26 @@ public final class VTAWTScreenCaptureProvider
     {
       if (scaledCurrentImage != null)
       {
-        scaledCurrentImage.flush();
+        try
+        {
+          scaledCurrentImage.flush();
+        }
+        catch (Throwable t)
+        {
+          
+        }
         scaledCurrentImage = null;
       }
       if (scaledCurrentImageGraphics != null)
       {
-        scaledCurrentImageGraphics.dispose();
+        try
+        {
+          scaledCurrentImageGraphics.dispose();
+        }
+        catch (Throwable t)
+        {
+          
+        }
         scaledCurrentImageGraphics = null;
       }
       int x = 0;
@@ -1423,7 +1507,14 @@ public final class VTAWTScreenCaptureProvider
     screenCurrentY = currentDeviceBounds.y;
     if (screenCurrentImage != null)
     {
-      screenCurrentImage.flush();
+      try
+      {
+        screenCurrentImage.flush();
+      }
+      catch (Throwable t)
+      {
+        
+      }
       screenCurrentImage = null;
     }
     int x = 0;
@@ -1446,12 +1537,26 @@ public final class VTAWTScreenCaptureProvider
     {
       if (scaledCurrentImage != null)
       {
-        scaledCurrentImage.flush();
+        try
+        {
+          scaledCurrentImage.flush();
+        }
+        catch (Throwable t)
+        {
+          
+        }
         scaledCurrentImage = null;
       }
       if (scaledCurrentImageGraphics != null)
       {
-        scaledCurrentImageGraphics.dispose();
+        try
+        {
+          scaledCurrentImageGraphics.dispose();
+        }
+        catch (Throwable t)
+        {
+          
+        }
         scaledCurrentImageGraphics = null;
       }
       int x = 0;
@@ -1547,7 +1652,14 @@ public final class VTAWTScreenCaptureProvider
     screenCurrentY = currentDeviceBounds.y;
     if (screenCurrentImage != null)
     {
-      screenCurrentImage.flush();
+      try
+      {
+        screenCurrentImage.flush();
+      }
+      catch (Throwable t)
+      {
+        
+      }
       screenCurrentImage = null;
     }
     int x = 0;
@@ -1570,12 +1682,26 @@ public final class VTAWTScreenCaptureProvider
     {
       if (scaledCurrentImage != null)
       {
-        scaledCurrentImage.flush();
+        try
+        {
+          scaledCurrentImage.flush();
+        }
+        catch (Throwable t)
+        {
+          
+        }
         scaledCurrentImage = null;
       }
       if (scaledCurrentImageGraphics != null)
       {
-        scaledCurrentImageGraphics.dispose();
+        try
+        {
+          scaledCurrentImageGraphics.dispose();
+        }
+        catch (Throwable t)
+        {
+          
+        }
         scaledCurrentImageGraphics = null;
       }
       int x = 0;
@@ -1609,7 +1735,14 @@ public final class VTAWTScreenCaptureProvider
     screenCurrentY = currentDeviceBounds.y;
     if (screenCurrentImage != null)
     {
-      screenCurrentImage.flush();
+      try
+      {
+        screenCurrentImage.flush();
+      }
+      catch (Throwable t)
+      {
+        
+      }
       screenCurrentImage = null;
     }
     int x = 0;
@@ -1632,12 +1765,26 @@ public final class VTAWTScreenCaptureProvider
     {
       if (scaledCurrentImage != null)
       {
-        scaledCurrentImage.flush();
+        try
+        {
+          scaledCurrentImage.flush();
+        }
+        catch (Throwable t)
+        {
+          
+        }
         scaledCurrentImage = null;
       }
       if (scaledCurrentImageGraphics != null)
       {
-        scaledCurrentImageGraphics.dispose();
+        try
+        {
+          scaledCurrentImageGraphics.dispose();
+        }
+        catch (Throwable t)
+        {
+          
+        }
         scaledCurrentImageGraphics = null;
       }
       int x = 0;
@@ -1671,7 +1818,14 @@ public final class VTAWTScreenCaptureProvider
     screenCurrentY = currentDeviceBounds.y;
     if (screenCurrentImage != null)
     {
-      screenCurrentImage.flush();
+      try
+      {
+        screenCurrentImage.flush();
+      }
+      catch (Throwable t)
+      {
+        
+      }
       screenCurrentImage = null;
     }
     int x = 0;
@@ -1694,12 +1848,26 @@ public final class VTAWTScreenCaptureProvider
     {
       if (scaledCurrentImage != null)
       {
-        scaledCurrentImage.flush();
+        try
+        {
+          scaledCurrentImage.flush();
+        }
+        catch (Throwable t)
+        {
+          
+        }
         scaledCurrentImage = null;
       }
       if (scaledCurrentImageGraphics != null)
       {
-        scaledCurrentImageGraphics.dispose();
+        try
+        {
+          scaledCurrentImageGraphics.dispose();
+        }
+        catch (Throwable t)
+        {
+          
+        }
         scaledCurrentImageGraphics = null;
       }
       int x = 0;
@@ -1733,7 +1901,14 @@ public final class VTAWTScreenCaptureProvider
     screenCurrentY = currentDeviceBounds.y;
     if (screenCurrentImage != null)
     {
-      screenCurrentImage.flush();
+      try
+      {
+        screenCurrentImage.flush();
+      }
+      catch (Throwable t)
+      {
+        
+      }
       screenCurrentImage = null;
     }
     int x = 0;
@@ -1756,12 +1931,26 @@ public final class VTAWTScreenCaptureProvider
     {
       if (scaledCurrentImage != null)
       {
-        scaledCurrentImage.flush();
+        try
+        {
+          scaledCurrentImage.flush();
+        }
+        catch (Throwable t)
+        {
+          
+        }
         scaledCurrentImage = null;
       }
       if (scaledCurrentImageGraphics != null)
       {
-        scaledCurrentImageGraphics.dispose();
+        try
+        {
+          scaledCurrentImageGraphics.dispose();
+        }
+        catch (Throwable t)
+        {
+          
+        }
         scaledCurrentImageGraphics = null;
       }
       int x = 0;
@@ -1795,7 +1984,14 @@ public final class VTAWTScreenCaptureProvider
     screenCurrentY = currentDeviceBounds.y;
     if (screenCurrentImage != null)
     {
-      screenCurrentImage.flush();
+      try
+      {
+        screenCurrentImage.flush();
+      }
+      catch (Throwable t)
+      {
+        
+      }
       screenCurrentImage = null;
     }
     int x = 0;
@@ -1818,12 +2014,26 @@ public final class VTAWTScreenCaptureProvider
     {
       if (scaledCurrentImage != null)
       {
-        scaledCurrentImage.flush();
+        try
+        {
+          scaledCurrentImage.flush();
+        }
+        catch (Throwable t)
+        {
+          
+        }
         scaledCurrentImage = null;
       }
       if (scaledCurrentImageGraphics != null)
       {
-        scaledCurrentImageGraphics.dispose();
+        try
+        {
+          scaledCurrentImageGraphics.dispose();
+        }
+        catch (Throwable t)
+        {
+          
+        }
         scaledCurrentImageGraphics = null;
       }
       int x = 0;
@@ -1857,7 +2067,14 @@ public final class VTAWTScreenCaptureProvider
     screenCurrentY = currentDeviceBounds.y;
     if (screenCurrentImage != null)
     {
-      screenCurrentImage.flush();
+      try
+      {
+        screenCurrentImage.flush();
+      }
+      catch (Throwable t)
+      {
+        
+      }
       screenCurrentImage = null;
     }
     int x = 0;
@@ -1880,12 +2097,26 @@ public final class VTAWTScreenCaptureProvider
     {
       if (scaledCurrentImage != null)
       {
-        scaledCurrentImage.flush();
+        try
+        {
+          scaledCurrentImage.flush();
+        }
+        catch (Throwable t)
+        {
+          
+        }
         scaledCurrentImage = null;
       }
       if (scaledCurrentImageGraphics != null)
       {
-        scaledCurrentImageGraphics.dispose();
+        try
+        {
+          scaledCurrentImageGraphics.dispose();
+        }
+        catch (Throwable t)
+        {
+          
+        }
         scaledCurrentImageGraphics = null;
       }
       int x = 0;
@@ -1919,7 +2150,14 @@ public final class VTAWTScreenCaptureProvider
     screenCurrentY = currentDeviceBounds.y;
     if (screenCurrentImage != null)
     {
-      screenCurrentImage.flush();
+      try
+      {
+        screenCurrentImage.flush();
+      }
+      catch (Throwable t)
+      {
+        
+      }
       screenCurrentImage = null;
     }
     int x = 0;
@@ -1942,12 +2180,26 @@ public final class VTAWTScreenCaptureProvider
     {
       if (scaledCurrentImage != null)
       {
-        scaledCurrentImage.flush();
+        try
+        {
+          scaledCurrentImage.flush();
+        }
+        catch (Throwable t)
+        {
+          
+        }
         scaledCurrentImage = null;
       }
       if (scaledCurrentImageGraphics != null)
       {
-        scaledCurrentImageGraphics.dispose();
+        try
+        {
+          scaledCurrentImageGraphics.dispose();
+        }
+        catch (Throwable t)
+        {
+          
+        }
         scaledCurrentImageGraphics = null;
       }
       int x = 0;
@@ -1981,7 +2233,14 @@ public final class VTAWTScreenCaptureProvider
     screenCurrentY = currentDeviceBounds.y;
     if (screenCurrentImage != null)
     {
-      screenCurrentImage.flush();
+      try
+      {
+        screenCurrentImage.flush();
+      }
+      catch (Throwable t)
+      {
+        
+      }
       screenCurrentImage = null;
     }
     int x = 0;
@@ -2004,12 +2263,26 @@ public final class VTAWTScreenCaptureProvider
     {
       if (scaledCurrentImage != null)
       {
-        scaledCurrentImage.flush();
+        try
+        {
+          scaledCurrentImage.flush();
+        }
+        catch (Throwable t)
+        {
+          
+        }
         scaledCurrentImage = null;
       }
       if (scaledCurrentImageGraphics != null)
       {
-        scaledCurrentImageGraphics.dispose();
+        try
+        {
+          scaledCurrentImageGraphics.dispose();
+        }
+        catch (Throwable t)
+        {
+          
+        }
         scaledCurrentImageGraphics = null;
       }
       int x = 0;
@@ -2043,7 +2316,14 @@ public final class VTAWTScreenCaptureProvider
     screenCurrentY = currentDeviceBounds.y;
     if (screenCurrentImage != null)
     {
-      screenCurrentImage.flush();
+      try
+      {
+        screenCurrentImage.flush();
+      }
+      catch (Throwable t)
+      {
+        
+      }
       screenCurrentImage = null;
     }
     int x = 0;
@@ -2066,12 +2346,26 @@ public final class VTAWTScreenCaptureProvider
     {
       if (scaledCurrentImage != null)
       {
-        scaledCurrentImage.flush();
+        try
+        {
+          scaledCurrentImage.flush();
+        }
+        catch (Throwable t)
+        {
+          
+        }
         scaledCurrentImage = null;
       }
       if (scaledCurrentImageGraphics != null)
       {
-        scaledCurrentImageGraphics.dispose();
+        try
+        {
+          scaledCurrentImageGraphics.dispose();
+        }
+        catch (Throwable t)
+        {
+          
+        }
         scaledCurrentImageGraphics = null;
       }
       int x = 0;
@@ -2105,7 +2399,14 @@ public final class VTAWTScreenCaptureProvider
     screenCurrentY = currentDeviceBounds.y;
     if (screenCurrentImage != null)
     {
-      screenCurrentImage.flush();
+      try
+      {
+        screenCurrentImage.flush();
+      }
+      catch (Throwable t)
+      {
+        
+      }
       screenCurrentImage = null;
     }
     int x = 0;
@@ -2128,12 +2429,26 @@ public final class VTAWTScreenCaptureProvider
     {
       if (scaledCurrentImage != null)
       {
-        scaledCurrentImage.flush();
+        try
+        {
+          scaledCurrentImage.flush();
+        }
+        catch (Throwable t)
+        {
+          
+        }
         scaledCurrentImage = null;
       }
       if (scaledCurrentImageGraphics != null)
       {
-        scaledCurrentImageGraphics.dispose();
+        try
+        {
+          scaledCurrentImageGraphics.dispose();
+        }
+        catch (Throwable t)
+        {
+          
+        }
         scaledCurrentImageGraphics = null;
       }
       int x = 0;
@@ -3303,7 +3618,14 @@ public final class VTAWTScreenCaptureProvider
       {
         if (sectionCurrentImageTrue != null)
         {
-          sectionCurrentImageTrue.flush();
+          try
+          {
+            sectionCurrentImageTrue.flush();
+          }
+          catch (Throwable t)
+          {
+            
+          }
         }
         sectionCurrentImageTrue = VTImageIO.createImage(0, 0, captureArea.width, captureArea.height, BufferedImage.TYPE_INT_RGB, 0, recyclableSectionDataBufferTrue);
         recyclableSectionDataBufferTrue = sectionCurrentImageTrue.getRaster().getDataBuffer();
@@ -3330,7 +3652,14 @@ public final class VTAWTScreenCaptureProvider
       {
         if (sectionCurrentImageGrayscale != null)
         {
-          sectionCurrentImageGrayscale.flush();
+          try
+          {
+            sectionCurrentImageGrayscale.flush();
+          }
+          catch (Throwable t)
+          {
+            
+          }
         }
         //sectionCurrentImageGrayscaleColorCount = getColorCount();
         //sectionCurrentImageGrayscale = VTImageIO.createImage(0, 0, captureArea.width, captureArea.height, BufferedImage.TYPE_CUSTOM, sectionCurrentImageGrayscaleColorCount, recyclableSectionDataBufferGrayscale);
@@ -3357,12 +3686,26 @@ public final class VTAWTScreenCaptureProvider
     {
       if (sectionCurrentImageGrayscale != null)
       {
-        sectionCurrentImageGrayscale.flush();
+        try
+        {
+          sectionCurrentImageGrayscale.flush();
+        }
+        catch (Throwable t)
+        {
+          
+        }
         sectionCurrentImageGrayscale = null;
       }
       if (sectionCurrentImageGrayscaleGraphics != null)
       {
-        sectionCurrentImageGrayscaleGraphics.dispose();
+        try
+        {
+          sectionCurrentImageGrayscaleGraphics.dispose();
+        }
+        catch (Throwable t)
+        {
+          
+        }
         sectionCurrentImageGrayscaleGraphics = null;
       }
     }

@@ -109,12 +109,26 @@ public class VTServerScreenshotTask extends VTTask
     pngEncoder = null;
     if (convertedImage != null)
     {
-      convertedImage.flush();
+      try
+      {
+        convertedImage.flush();
+      }
+      catch (Throwable t)
+      {
+        
+      }
       convertedImage = null;
     }
     if (convertedGraphics != null)
     {
-      convertedGraphics.dispose();
+      try
+      {
+        convertedGraphics.dispose();
+      }
+      catch (Throwable t)
+      {
+        
+      }
       convertedGraphics = null;
     }
     if (recyclableDataBuffer != null)
@@ -201,7 +215,7 @@ public class VTServerScreenshotTask extends VTTask
         {
           try
           {
-            connection.getResultWriter().write("\nVT>Screen capture initialization failed!\nVT>");
+            connection.getResultWriter().write("\nVT>Screen capture on server failed!\nVT>");
             connection.getResultWriter().flush();
           }
           catch (Throwable e)
@@ -230,8 +244,8 @@ public class VTServerScreenshotTask extends VTTask
       // screenshotProvider.writeHighQualityScreenshot(photoOutputStream,
       // SWT.IMAGE_BMP);
       BufferedImage screenCapture = screenshotProvider.createScreenCapture(0, drawPointer);
-      connection.getResultWriter().write("\nVT>Screen capture data obtained, image will be saved in:\nVT>[" + screenshotFile.getAbsolutePath() + "]\nVT>");
-      connection.getResultWriter().flush();
+      //connection.getResultWriter().write("\nVT>Screen capture data obtained, image will be saved in:\nVT>[" + screenshotFile.getAbsolutePath() + "]\nVT>");
+      //connection.getResultWriter().flush();
       
       //int lastColors = screenshotProvider.getColorCount();
       
@@ -304,7 +318,7 @@ public class VTServerScreenshotTask extends VTTask
       // provider.dispose();
       synchronized (this)
       {
-        connection.getResultWriter().write("\nVT>Screen capture completed successfully!\nVT>");
+        connection.getResultWriter().write("\nVT>Screen capture on server saved in:\nVT>[" + screenshotFile.getAbsolutePath() + "]\nVT>");
         connection.getResultWriter().flush();
         finished = true;
       }
@@ -316,7 +330,7 @@ public class VTServerScreenshotTask extends VTTask
       {
         try
         {
-          connection.getResultWriter().write("\nVT>Screen capture failed!\nVT>");
+          connection.getResultWriter().write("\nVT>Screen capture on server failed!\nVT>");
           connection.getResultWriter().flush();
         }
         catch (Throwable e1)
@@ -350,12 +364,26 @@ public class VTServerScreenshotTask extends VTTask
     }
     if (convertedImage != null)
     {
-      convertedImage.flush();
+      try
+      {
+        convertedImage.flush();
+      }
+      catch (Throwable t)
+      {
+        
+      }
       convertedImage = null;
     }
     if (convertedGraphics != null)
     {
-      convertedGraphics.dispose();
+      try
+      {
+        convertedGraphics.dispose();
+      }
+      catch (Throwable t)
+      {
+        
+      }
       convertedGraphics = null;
     }
 //    System.runFinalization();

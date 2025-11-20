@@ -61,12 +61,26 @@ public class VTGraphicsMessager
   {
     if (warningIcon16 != null)
     {
-      warningIcon16.flush();
+      try
+      {
+        warningIcon16.flush();
+      }
+      catch (Throwable t)
+      {
+        
+      }
       warningIcon16 = null;
     }
     if (warningIcon32 != null)
     {
-      warningIcon32.flush();
+      try
+      {
+        warningIcon32.flush();
+      }
+      catch (Throwable t)
+      {
+        
+      }
       warningIcon32 = null;
     }
   }

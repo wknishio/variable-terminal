@@ -109,17 +109,38 @@ public class VTGraphicsLinkClientReader implements Runnable
     // imageBuffer = null;
     if (nextImageDataBuffer != null)
     {
-      nextImageDataBuffer.flush();
+      try
+      {
+        nextImageDataBuffer.flush();
+      }
+      catch (Throwable t)
+      {
+        
+      }
       nextImageDataBuffer = null;
     }
     if (currentImageDataBuffer != null)
     {
-      currentImageDataBuffer.flush();
+      try
+      {
+        currentImageDataBuffer.flush();
+      }
+      catch (Throwable t)
+      {
+        
+      }
       currentImageDataBuffer = null;
     }
     if (currentImageGraphics != null)
     {
-      currentImageGraphics.dispose();
+      try
+      {
+        currentImageGraphics.dispose();
+      }
+      catch (Throwable t)
+      {
+        
+      }
       currentImageGraphics = null;
     }
     if (vtCustomCodec != null)
@@ -246,12 +267,26 @@ public class VTGraphicsLinkClientReader implements Runnable
             writer.requestInterfaceRefresh();
             if (currentImageDataBuffer != null)
             {
-              currentImageDataBuffer.flush();
+              try
+              {
+                currentImageDataBuffer.flush();
+              }
+              catch (Throwable t)
+              {
+                
+              }
               currentImageDataBuffer = null;
             }
             if (currentImageGraphics != null)
             {
-              currentImageGraphics.dispose();
+              try
+              {
+                currentImageGraphics.dispose();
+              }
+              catch (Throwable t)
+              {
+                
+              }
               currentImageGraphics = null;
             }
             if (connection.getGraphicsControlDataInputStream().read() == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_JPG)
@@ -381,12 +416,26 @@ public class VTGraphicsLinkClientReader implements Runnable
             writer.requestInterfaceRefresh();
             if (currentImageDataBuffer != null)
             {
-              currentImageDataBuffer.flush();
+              try
+              {
+                currentImageDataBuffer.flush();
+              }
+              catch (Throwable t)
+              {
+                
+              }
               currentImageDataBuffer = null;
             }
             if (currentImageGraphics != null)
             {
-              currentImageGraphics.dispose();
+              try
+              {
+                currentImageGraphics.dispose();
+              }
+              catch (Throwable t)
+              {
+                
+              }
               currentImageGraphics = null;
             }
             int coding = connection.getGraphicsControlDataInputStream().read();

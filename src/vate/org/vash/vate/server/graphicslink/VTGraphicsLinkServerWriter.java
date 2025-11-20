@@ -156,13 +156,27 @@ public class VTGraphicsLinkServerWriter implements Runnable
     
     if (convertedDataBuffer != null)
     {
-      convertedDataBuffer.flush();
+      try
+      {
+        convertedDataBuffer.flush();
+      }
+      catch (Throwable t)
+      {
+        
+      }
       convertedDataBuffer = null;
     }
     
     if (convertedGraphics != null)
     {
-      convertedGraphics.dispose();
+      try
+      {
+        convertedGraphics.dispose();
+      }
+      catch (Throwable t)
+      {
+        
+      }
       convertedGraphics = null;
     }
   }
@@ -1034,12 +1048,26 @@ public class VTGraphicsLinkServerWriter implements Runnable
                   lastImageCoding = imageCoding;
                   if (convertedDataBuffer != null)
                   {
-                    convertedDataBuffer.flush();
+                    try
+                    {
+                      convertedDataBuffer.flush();
+                    }
+                    catch (Throwable t)
+                    {
+                      
+                    }
                     convertedDataBuffer = null;
                   }
                   if (convertedGraphics != null)
                   {
-                    convertedGraphics.dispose();
+                    try
+                    {
+                      convertedGraphics.dispose();
+                    }
+                    catch (Throwable t)
+                    {
+                      
+                    }
                     convertedGraphics = null;
                   }
                   if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)
