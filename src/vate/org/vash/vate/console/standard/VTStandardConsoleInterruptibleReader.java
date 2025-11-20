@@ -25,9 +25,11 @@ public class VTStandardConsoleInterruptibleReader implements Runnable
   private Method readPasswordMethod;
   private BlockingQueue<String> buffer;
   private ExecutorService executorService;
+  private final VTStandardConsole console;
   
-  public VTStandardConsoleInterruptibleReader()
+  public VTStandardConsoleInterruptibleReader(final VTStandardConsole console)
   {
+    this.console = console;
     this.buffer = new LinkedBlockingQueue<String>();
     this.executorService = Executors.newFixedThreadPool(1, new ThreadFactory()
     {
@@ -128,6 +130,10 @@ public class VTStandardConsoleInterruptibleReader implements Runnable
           {
             // line = new String(systemConsole.readPassword());
             line = new String((char[]) readPasswordMethod.invoke(systemConsoleObject));
+            if (console != null)
+            {
+              console.setlastOutputLineEmpty(true);
+            }
           }
           catch (Throwable e)
           {
@@ -140,6 +146,10 @@ public class VTStandardConsoleInterruptibleReader implements Runnable
           {
             // line = systemConsole.readLine();
             line = (String) readLineMethod.invoke(systemConsoleObject);
+            if (console != null)
+            {
+              console.setlastOutputLineEmpty(true);
+            }
           }
           catch (Throwable e)
           {
@@ -157,6 +167,10 @@ public class VTStandardConsoleInterruptibleReader implements Runnable
         try
         {
           line = standardTerminalReader.readLine();
+          if (console != null)
+          {
+            console.setlastOutputLineEmpty(true);
+          }
         }
         catch (IOException e)
         {

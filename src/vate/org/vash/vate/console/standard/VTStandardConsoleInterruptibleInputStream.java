@@ -10,9 +10,9 @@ public class VTStandardConsoleInterruptibleInputStream extends InputStream
   private VTStandardConsoleInterruptibleReader reader;
   private Thread currentThread;
   
-  public VTStandardConsoleInterruptibleInputStream()
+  public VTStandardConsoleInterruptibleInputStream(VTStandardConsole console)
   {
-    this.reader = new VTStandardConsoleInterruptibleReader();
+    this.reader = new VTStandardConsoleInterruptibleReader(console);
   }
   
   public void setEcho(boolean echo)

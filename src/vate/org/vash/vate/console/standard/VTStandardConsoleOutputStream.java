@@ -7,31 +7,42 @@ import java.io.OutputStream;
 
 public class VTStandardConsoleOutputStream extends OutputStream
 {
-  OutputStream output;
+  private final VTStandardConsole console;
+  private OutputStream output;
   
-  public VTStandardConsoleOutputStream(OutputStream out)
+  public VTStandardConsoleOutputStream(final VTStandardConsole console, OutputStream out)
   {
-    output = out;
+    this.console = console;
+    this.output = out;
   }
   
-  public VTStandardConsoleOutputStream(FileDescriptor descriptor)
+  public VTStandardConsoleOutputStream(final VTStandardConsole console, FileDescriptor descriptor)
   {
-    output = new FileOutputStream(descriptor);
+    this.console = console;
+    this.output = new FileOutputStream(descriptor);
   }
   
   public void write(int b) throws IOException
   {
     output.write(b);
+    if (console != null)
+    {
+      console.setlastOutputLineEmpty(b == '\n');
+    }
   }
   
   public final void write(byte[] b, int off, int len) throws IOException
   {
     output.write(b, off, len);
+    if (console != null && len > 0)
+    {
+      console.setlastOutputLineEmpty(b[off + len - 1] == '\n');
+    }
   }
   
   public final void write(byte[] b) throws IOException
   {
-    output.write(b);
+    write(b, 0, b.length);
   }
   
   public void flush() throws IOException

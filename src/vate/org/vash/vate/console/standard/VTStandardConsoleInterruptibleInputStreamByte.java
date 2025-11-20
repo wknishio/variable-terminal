@@ -9,8 +9,9 @@ public class VTStandardConsoleInterruptibleInputStreamByte extends VTStandardCon
   private VTStandardConsoleInterruptibleReaderByte reader;
   private Thread currentThread;
   
-  public VTStandardConsoleInterruptibleInputStreamByte()
+  public VTStandardConsoleInterruptibleInputStreamByte(VTStandardConsole console)
   {
+    super(console);
     this.reader = new VTStandardConsoleInterruptibleReaderByte();
   }
   

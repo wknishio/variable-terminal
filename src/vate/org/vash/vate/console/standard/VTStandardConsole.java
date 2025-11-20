@@ -41,13 +41,14 @@ public class VTStandardConsole extends VTConsole
   public static boolean systemconsolesupport = false;
   private static BufferedWriter readLineLog = null;
   private static PrintStream logOutput = null;
+  private volatile boolean lastOutputLineEmpty = false;
   
   private VTStandardConsole()
   {
     isatty = VTMainNativeUtils.isatty(1) != 0;
     
-    outputStandard = new VTStandardConsoleOutputStream(FileDescriptor.out);
-    errorStandard = new VTStandardConsoleOutputStream(FileDescriptor.err);
+    outputStandard = new VTStandardConsoleOutputStream(this, FileDescriptor.out);
+    errorStandard = new VTStandardConsoleOutputStream(this, FileDescriptor.err);
     
     outputDoubled = new VTDoubledOutputStream(outputStandard, null, true);
     errorDoubled = new VTDoubledOutputStream(errorStandard, null, true);
@@ -55,7 +56,7 @@ public class VTStandardConsole extends VTConsole
     errorStream = new PrintStream(errorDoubled, true);
     printStream = new PrintStream(outputDoubled, true);
     
-    inputStream = new VTStandardConsoleInterruptibleInputStream();
+    inputStream = new VTStandardConsoleInterruptibleInputStream(this);
     
     inputReader = new BufferedReader(new InputStreamReader(inputStream, VTSystem.getCharsetDecoder(null)));
     outputWriter = new BufferedWriter(new OutputStreamWriter(outputDoubled, VTSystem.getCharsetEncoder(null)));
@@ -828,6 +829,10 @@ public class VTStandardConsole extends VTConsole
   
   public int getLastOutputLineLength()
   {
+    if (lastOutputLineEmpty)
+    {
+      return 0;
+    }
     return -1;
   }
   
@@ -849,5 +854,10 @@ public class VTStandardConsole extends VTConsole
   public Panel getPanel()
   {
     return null;
+  }
+  
+  public void setlastOutputLineEmpty(boolean empty)
+  {
+    this.lastOutputLineEmpty = empty;
   }
 }

@@ -8,7 +8,7 @@ public class VTArgumentsRuntimeLauncher
 {
   public static void main(String[] args) throws Exception
   {
-    VTStandardConsoleInterruptibleInputStreamByte stream = new VTStandardConsoleInterruptibleInputStreamByte();
+    VTStandardConsoleInterruptibleInputStreamByte stream = new VTStandardConsoleInterruptibleInputStreamByte(null);
     try
     {
       Thread.sleep(1000);

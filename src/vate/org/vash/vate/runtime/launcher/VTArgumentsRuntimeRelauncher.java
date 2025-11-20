@@ -8,7 +8,7 @@ public class VTArgumentsRuntimeRelauncher
 {
   public static void main(String[] args) throws Exception
   {
-    VTStandardConsoleInterruptibleInputStreamByte stream = new VTStandardConsoleInterruptibleInputStreamByte();
+    VTStandardConsoleInterruptibleInputStreamByte stream = new VTStandardConsoleInterruptibleInputStreamByte(null);
     try
     {
       while (true)
