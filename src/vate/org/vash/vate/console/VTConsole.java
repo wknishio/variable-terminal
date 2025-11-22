@@ -71,13 +71,17 @@ public abstract class VTConsole
   {
     if (VTReflectionUtils.getJavaVersion() >= 6)
     {
-      return checkIOConsole();
+      if (checkIOConsole())
+      {
+        return true;
+      }
     }
     try
     {
-      if (FileDescriptor.in.valid())
+      if (FileDescriptor.in.valid() && FileDescriptor.out.valid())
       {
         FileDescriptor.in.sync();
+        FileDescriptor.out.sync();
       }
       else
       {

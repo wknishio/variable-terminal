@@ -70,13 +70,17 @@ public final class VTMainConsole
   {
     if (VTReflectionUtils.getJavaVersion() >= 6)
     {
-      return checkIOConsole();
+      if (checkIOConsole())
+      {
+        return true;
+      }
     }
     try
     {
-      if (FileDescriptor.in.valid())
+      if (FileDescriptor.in.valid() && FileDescriptor.out.valid())
       {
         FileDescriptor.in.sync();
+        FileDescriptor.out.sync();
       }
       else
       {
@@ -728,58 +732,6 @@ public final class VTMainConsole
     catch (Throwable e)
     {
       
-    }
-    return false;
-  }
-  
-  public static boolean checkConsoleIsatty()
-  {
-    try
-    {
-      Class.forName("java.io.Console");
-      Class<?> systemClass = Class.forName("java.lang.System");
-      Method consoleMethod = systemClass.getDeclaredMethod("console");
-      // consoleMethod.setAccessible(true);
-      Object consoleResult = consoleMethod.invoke(null);
-      if (consoleResult != null)
-      {
-        return VTMainNativeUtils.isatty(0) != 0 && VTMainNativeUtils.isatty(1) != 0;
-      }
-      try
-      {
-        if (FileDescriptor.in.valid())
-        {
-          FileDescriptor.in.sync();
-          return VTMainNativeUtils.isatty(0) != 0 && VTMainNativeUtils.isatty(1) != 0;
-        }
-        else
-        {
-          
-        }
-      }
-      catch (Throwable e)
-      {
-        
-      }
-    }
-    catch (Throwable e)
-    {
-      try
-      {
-        if (FileDescriptor.in.valid())
-        {
-          FileDescriptor.in.sync();
-          return VTMainNativeUtils.isatty(0) != 0 && VTMainNativeUtils.isatty(1) != 0;
-        }
-        else
-        {
-          
-        }
-      }
-      catch (Throwable ex)
-      {
-        
-      }
     }
     return false;
   }
