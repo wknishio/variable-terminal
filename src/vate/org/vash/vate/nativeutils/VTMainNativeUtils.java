@@ -560,4 +560,13 @@ public class VTMainNativeUtils
     }
     return false;
   }
+  
+  public static boolean isAvailable()
+  {
+    if (checkNativeUtils())
+    {
+      return !(nativeUtils instanceof VTNullNativeUtils);
+    }
+    return false;
+  }
 }

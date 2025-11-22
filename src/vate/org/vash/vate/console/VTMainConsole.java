@@ -153,20 +153,16 @@ public final class VTMainConsole
   {
     if (console == null)
     {
+      boolean headless = isHeadless();
+      boolean terminal = hasTerminal();
       VTMainConsole.graphical = graphical;
-      if (VTReflectionUtils.isAWTHeadless())
+      if (headless)
       {
         VTMainConsole.graphical = false;
       }
-      else
+      else if (!graphical && !terminal)
       {
-        if (!graphical)
-        {
-          if (!hasTerminal())
-          {
-            VTMainConsole.graphical = true;
-          }
-        }
+        VTMainConsole.graphical = true;
       }
     }
   }
