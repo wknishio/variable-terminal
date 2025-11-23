@@ -66,6 +66,11 @@ public final class VTMainConsole
     return false;
   }
   
+  public static boolean hasConsole()
+  {
+    return checkIOConsole();
+  }
+  
   public static boolean hasTerminal()
   {
     if (VTReflectionUtils.getJavaVersion() >= 6)
@@ -113,7 +118,7 @@ public final class VTMainConsole
         }
         else
         {
-          if (separated && hasTerminal() && VTMainNativeUtils.checkANSI() && !VTReflectionUtils.detectWindows())
+          if (separated && hasTerminal() && checkIOConsole() && VTMainNativeUtils.checkANSI() && !VTReflectionUtils.detectWindows())
           {
             console = new VTLanternaConsole(graphical, remoteIcon, null);
           }

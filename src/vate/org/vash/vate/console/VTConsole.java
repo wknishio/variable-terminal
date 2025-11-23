@@ -67,6 +67,11 @@ public abstract class VTConsole
     return false;
   }
   
+  public static boolean hasConsole()
+  {
+    return checkIOConsole();
+  }
+  
   public static boolean hasTerminal()
   {
     if (VTReflectionUtils.getJavaVersion() >= 6)
@@ -123,7 +128,7 @@ public abstract class VTConsole
         }
         else
         {
-          if (separated && terminal && VTMainNativeUtils.checkANSI() && !VTReflectionUtils.detectWindows())
+          if (separated && terminal && checkIOConsole() && VTMainNativeUtils.checkANSI() && !VTReflectionUtils.detectWindows())
           {
             console = new VTLanternaConsole(false, true, null);
           }
@@ -139,7 +144,7 @@ public abstract class VTConsole
     }
     else
     {
-      if (separated && terminal && VTMainNativeUtils.checkANSI() && !VTReflectionUtils.detectWindows())
+      if (separated && terminal && checkIOConsole() && VTMainNativeUtils.checkANSI() && !VTReflectionUtils.detectWindows())
       {
         console = new VTLanternaConsole(false, true, null);
       }
