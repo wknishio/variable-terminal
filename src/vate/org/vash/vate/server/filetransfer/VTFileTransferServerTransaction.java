@@ -1460,13 +1460,9 @@ public class VTFileTransferServerTransaction implements Runnable
           {
             remoteFile = normalizePath(remoteFile);
             currentRootPath = remoteFile;
-            if (tryDownload(destination, true))
+            if (!tryDownload(destination, true))
             {
-              
-            }
-            else
-            {
-              
+              break;
             }
           }
         }
@@ -1521,13 +1517,9 @@ public class VTFileTransferServerTransaction implements Runnable
           {
             localFile = normalizePath(localFile);
             currentRootPath = localFile;
-            if (tryUpload(localFile))
+            if (!tryUpload(localFile))
             {
-              
-            }
-            else
-            {
-              
+              break;
             }
           }
         }

@@ -1479,6 +1479,7 @@ public class VTFileTransferClientTransaction implements Runnable
             if (!tryUpload(localFile))
             {
               failed = true;
+              break;
             }
           }
           
@@ -1559,6 +1560,7 @@ public class VTFileTransferClientTransaction implements Runnable
             if (!tryDownload(destination, true))
             {
               failed = true;
+              break;
             }
           }
           
