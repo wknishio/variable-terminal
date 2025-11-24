@@ -37,8 +37,8 @@ simple, medium, next, extra, high, vast, ultra, true
 * Added shortcut control+shift+end to use next device in *VTGRAPHICSLINK
 * Added 10 keyboard shorcuts to *VTGRAPHICSLINK
 * Added tips for *VTGRAPHICSLINK interface keyboard shortcuts
-* Replaced AES 256 bit encryption with ZUC 256 bit encryption
-* Added command *VTAUDIOMIXERS to list available audio mixers
+* Added command *VTMIXER to list available audio mixers
+* Added command *VTDISPLAY to list available display devices
 * Renamed command *VTAUDIOCHAT to *VTAUDIOLINK
 * Changed command *VTAUDIOLINK to allow use of specific audio mixers
 * Changed command *VTAUDIOLINK to use 16-bit Opus CELT or 16-bit Speex codec
@@ -69,7 +69,7 @@ simple, medium, next, extra, high, vast, ultra, true
 * Changed command *VTPRINTSERVICES to *VTPRINTER
 * Command *VTPRINTER now allows specifying a print service for more details
 * Added command *VTSAVE to save current client connection settings to file
-* Command *VTNETWORK now shows hardware address with java 1.6
+* Command *VTNETWORK now shows hardware address with java 1.6 or later
 * Changed startup parameter format, parameters now have a dash(-) as in unix
 * Changed *VTFILETRANSFER command to transfer directories and multiple files
 * Added capacity of adding custom plugin console commands in client and server
@@ -84,12 +84,13 @@ simple, medium, next, extra, high, vast, ultra, true
 * Added notification of nat devices external addresses with UPnP and NAT-PMP
 * Added timeout option to command *VTRUNTIME
 * Added Sixlegs Java PNG Decoder library
-* Added optional lz4 compression in command *VTFILETRANSFER
-* Added optional zstd compression in command *VTFILETRANSFER
-* Changed all encryption functions to use bouncycastle library
+* Added optional lz4 compression in commands *VTFILETRANSFER and *VTTUNNEL
+* Added optional zstd compression in commands *VTFILETRANSFER and *VTTUNNEL
+* Changed all encryption functions to use repackaged bouncycastle library
 * Added SALSA as encryption algorithm
 * Added HC as encryption algorithm
-* Added ISAAC as encryption algorithm
+* Added GRAIN as encryption algorithm
+* Added RABBIT as encryption algorithm
 * Added ZUC as encryption algorithm
 * Added *VTPAUSE command to pause local console for a interval or until enter
 * Added *VTCONFIGURE command to reconfigure all server connection settings
