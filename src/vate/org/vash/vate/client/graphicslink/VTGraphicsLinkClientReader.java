@@ -15,7 +15,7 @@ import org.vash.vate.client.connection.VTClientConnection;
 import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.graphics.codec.VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII;
 import org.vash.vate.graphics.image.VTImageIO;
-import org.vash.vate.stream.limit.VTLimitedInputStream;
+import org.vash.vate.stream.limit.VTSizedInputStream;
 import com.sixlegs.png.iio.*;
 
 public class VTGraphicsLinkClientReader implements Runnable
@@ -44,7 +44,7 @@ public class VTGraphicsLinkClientReader implements Runnable
   //private ImageReadParam jpgReaderParam;
   private ImageInputStream imageStream;
   private VTIncrementalIIOReadUpdateListener incrementalImageReader = new VTIncrementalIIOReadUpdateListener();
-  private VTLimitedInputStream limitedInputStream;
+  private VTSizedInputStream limitedInputStream;
   private DataBuffer recyclableDataBuffer;
   // private long startTime, endTime;
   
@@ -244,7 +244,7 @@ public class VTGraphicsLinkClientReader implements Runnable
         // pngImageReader = ImageIO.getImageReadersByFormatName("PNG").next();
         pngImageReader = new PngImageReader(new PngImageReaderSpi());
         jpegImageReader = ImageIO.getImageReadersByFormatName("JPEG").next();
-        limitedInputStream = new VTLimitedInputStream(connection.getGraphicsDirectImageDataInputStream());
+        limitedInputStream = new VTSizedInputStream(connection.getGraphicsDirectImageDataInputStream());
         pngImageReader.addIIOReadUpdateListener(incrementalImageReader);
         jpegImageReader.addIIOReadUpdateListener(incrementalImageReader);
         //jpgReaderParam = jpegImageReader.getDefaultReadParam();
@@ -335,13 +335,13 @@ public class VTGraphicsLinkClientReader implements Runnable
                 }
                 imageStream = null;
               }
-              limitedInputStream.setLimit(size);
+              limitedInputStream.size(size);
               imageStream = ImageIO.createImageInputStream(limitedInputStream);
               currentImageReader.setInput(imageStream, true, false);
               incrementalImageReader.setOffsetX(x);
               incrementalImageReader.setOffsetY(y);
               nextImageDataBuffer = currentImageReader.read(0, null);
-              limitedInputStream.empty();
+              limitedInputStream.finish();
               if (nextImageDataBuffer != null)
               {
                 nextImageDataBuffer.flush();
@@ -394,13 +394,13 @@ public class VTGraphicsLinkClientReader implements Runnable
                 }
                 imageStream = null;
               }
-              limitedInputStream.setLimit(size);
+              limitedInputStream.size(size);
               imageStream = ImageIO.createImageInputStream(limitedInputStream);
               currentImageReader.setInput(imageStream, true, false);
               incrementalImageReader.setOffsetX(x);
               incrementalImageReader.setOffsetY(y);
               nextImageDataBuffer = currentImageReader.read(0, null);
-              limitedInputStream.empty();
+              limitedInputStream.finish();
               if (nextImageDataBuffer != null)
               {
                 nextImageDataBuffer.flush();

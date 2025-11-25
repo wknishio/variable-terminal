@@ -4,19 +4,19 @@ import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public final class VTLimitedInputStream extends FilterInputStream
+public final class VTSizedInputStream extends FilterInputStream
 {
   private int remaining = 0;
   // private long skipped = 0;
   
-  public VTLimitedInputStream(final InputStream in)
+  public VTSizedInputStream(final InputStream in)
   {
     super(in);
   }
   
-  public final void setLimit(final int limit)
+  public final void size(final int size)
   {
-    this.remaining = limit;
+    this.remaining = size;
   }
   
   public final int available() throws IOException
@@ -25,7 +25,7 @@ public final class VTLimitedInputStream extends FilterInputStream
     return Math.min(remaining, available);
   }
   
-  public final void empty() throws IOException
+  public final void finish() throws IOException
   {
     long skipped = 0;
     while (remaining > 0 && skipped >= 0)
