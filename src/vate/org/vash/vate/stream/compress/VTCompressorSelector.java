@@ -100,19 +100,9 @@ public class VTCompressorSelector
     //return new VTAirliftInputStream(in, new ZstdDecompressor());
   }
   
-  public static OutputStream createBufferedSyncFlushDefaultZlibOutputStream(OutputStream out)
+  public static OutputStream createBufferedSyncFlushZlibOutputStream(OutputStream out, int strategy)
   {
-    return createFlushBufferedSyncFlushDefaultDeflaterOutputStream(out);
-  }
-  
-  public static OutputStream createBufferedSyncFlushFilteredZlibOutputStream(OutputStream out)
-  {
-    return createFlushBufferedSyncFlushFilteredDeflaterOutputStream(out);
-  }
-  
-  public static OutputStream createBufferedSyncFlushHuffmanZlibOutputStream(OutputStream out)
-  {
-    return createFlushBufferedSyncFlushHuffmanDeflaterOutputStream(out);
+    return createFlushBufferedSyncFlushDeflaterOutputStream(out, strategy);
   }
   
   public static InputStream createBufferedSyncFlushZlibInputStream(InputStream in)
@@ -120,19 +110,9 @@ public class VTCompressorSelector
     return createFlushBufferedSyncFlushInflaterInputStream(in);
   }
   
-  public static OutputStream createBufferedNoFlushDefaultZlibOutputStream(OutputStream out)
+  public static OutputStream createBufferedNoFlushZlibOutputStream(OutputStream out, int strategy)
   {
-    return createFlushBufferedNoFlushDefaultDeflaterOutputStream(out);
-  }
-  
-  public static OutputStream createBufferedNoFlushFilteredZlibOutputStream(OutputStream out)
-  {
-    return createFlushBufferedNoFlushFilteredDeflaterOutputStream(out);
-  }
-  
-  public static OutputStream createBufferedNoFlushHuffmanZlibOutputStream(OutputStream out)
-  {
-    return createFlushBufferedNoFlushHuffmanDeflaterOutputStream(out);
+    return createFlushBufferedNoFlushDeflaterOutputStream(out, strategy);
   }
   
   public static InputStream createBufferedNoFlushZlibInputStream(InputStream in)
@@ -155,12 +135,12 @@ public class VTCompressorSelector
     //return new BufferedInputStream(new VTAirliftInputStream(in, new ZstdDecompressor()), VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
   }
   
-  private static OutputStream createFlushBufferedSyncFlushFilteredDeflaterOutputStream(OutputStream out)
+  private static OutputStream createFlushBufferedSyncFlushDeflaterOutputStream(OutputStream out, int strategy)
   {
     try
     {
       Deflater javaDeflater = new Deflater(Deflater.BEST_SPEED, true);
-      javaDeflater.setStrategy(Deflater.FILTERED);
+      javaDeflater.setStrategy(strategy);
       javaDeflater.setLevel(Deflater.BEST_SPEED);
       VTSyncFlushDeflaterOutputStream javaDeflaterOutputStream = new VTSyncFlushDeflaterOutputStream(out, javaDeflater, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
       //return new VTFlushBufferedOutputStream(javaDeflaterOutputStream, new VTByteArrayOutputStream(VT.VT_COMPRESSION_BUFFER_SIZE_BYTES));
@@ -172,73 +152,7 @@ public class VTCompressorSelector
       {
         ZOutputStream jzlibDeflater = new ZOutputStream(out, JZlib.Z_BEST_SPEED, true, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
         jzlibDeflater.setFlushMode(JZlib.Z_SYNC_FLUSH);
-        jzlibDeflater.getZStream().deflateParams(JZlib.Z_BEST_SPEED, JZlib.Z_FILTERED);
-        //return new VTFlushBufferedOutputStream(jzlibDeflater, new VTByteArrayOutputStream(VT.VT_COMPRESSION_BUFFER_SIZE_BYTES));
-        return new BufferedOutputStream(jzlibDeflater, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
-      }
-      catch (Throwable e)
-      {
-        
-      }
-    }
-    finally
-    {
-      
-    }
-    return null;
-  }
-  
-  private static OutputStream createFlushBufferedSyncFlushDefaultDeflaterOutputStream(OutputStream out)
-  {
-    try
-    {
-      Deflater javaDeflater = new Deflater(Deflater.BEST_SPEED, true);
-      javaDeflater.setStrategy(Deflater.DEFAULT_STRATEGY);
-      javaDeflater.setLevel(Deflater.BEST_SPEED);
-      VTSyncFlushDeflaterOutputStream javaDeflaterOutputStream = new VTSyncFlushDeflaterOutputStream(out, javaDeflater, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
-      //return new VTFlushBufferedOutputStream(javaDeflaterOutputStream, new VTByteArrayOutputStream(VT.VT_COMPRESSION_BUFFER_SIZE_BYTES));
-      return new BufferedOutputStream(javaDeflaterOutputStream, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
-    }
-    catch (Throwable t)
-    {
-      try
-      {
-        ZOutputStream jzlibDeflater = new ZOutputStream(out, JZlib.Z_BEST_SPEED, true, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
-        jzlibDeflater.setFlushMode(JZlib.Z_SYNC_FLUSH);
-        jzlibDeflater.getZStream().deflateParams(JZlib.Z_BEST_SPEED, JZlib.Z_DEFAULT_STRATEGY);
-        //return new VTFlushBufferedOutputStream(jzlibDeflater, new VTByteArrayOutputStream(VT.VT_COMPRESSION_BUFFER_SIZE_BYTES));
-        return new BufferedOutputStream(jzlibDeflater, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
-      }
-      catch (Throwable e)
-      {
-        
-      }
-    }
-    finally
-    {
-      
-    }
-    return null;
-  }
-  
-  private static OutputStream createFlushBufferedSyncFlushHuffmanDeflaterOutputStream(OutputStream out)
-  {
-    try
-    {
-      Deflater javaDeflater = new Deflater(Deflater.BEST_SPEED, true);
-      javaDeflater.setStrategy(Deflater.HUFFMAN_ONLY);
-      javaDeflater.setLevel(Deflater.BEST_SPEED);
-      VTSyncFlushDeflaterOutputStream javaDeflaterOutputStream = new VTSyncFlushDeflaterOutputStream(out, javaDeflater, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
-      //return new VTFlushBufferedOutputStream(javaDeflaterOutputStream, new VTByteArrayOutputStream(VT.VT_COMPRESSION_BUFFER_SIZE_BYTES));
-      return new BufferedOutputStream(javaDeflaterOutputStream, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
-    }
-    catch (Throwable t)
-    {
-      try
-      {
-        ZOutputStream jzlibDeflater = new ZOutputStream(out, JZlib.Z_BEST_SPEED, true, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
-        jzlibDeflater.setFlushMode(JZlib.Z_SYNC_FLUSH);
-        jzlibDeflater.getZStream().deflateParams(JZlib.Z_BEST_SPEED, JZlib.Z_HUFFMAN_ONLY);
+        jzlibDeflater.getZStream().deflateParams(JZlib.Z_BEST_SPEED, strategy);
         //return new VTFlushBufferedOutputStream(jzlibDeflater, new VTByteArrayOutputStream(VT.VT_COMPRESSION_BUFFER_SIZE_BYTES));
         return new BufferedOutputStream(jzlibDeflater, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
       }
@@ -270,56 +184,12 @@ public class VTCompressorSelector
     // return in;
   }
   
-  private static OutputStream createFlushBufferedNoFlushFilteredDeflaterOutputStream(OutputStream out)
+  private static OutputStream createFlushBufferedNoFlushDeflaterOutputStream(OutputStream out, int strategy)
   {
     try
     {
       Deflater javaDeflater = new Deflater(Deflater.BEST_SPEED, true);
-      javaDeflater.setStrategy(Deflater.FILTERED);
-      javaDeflater.setLevel(Deflater.BEST_SPEED);
-      VTNoFlushDeflaterOutputStream javaDeflaterOutputStream = new VTNoFlushDeflaterOutputStream(out, javaDeflater, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
-      //return new VTFlushBufferedOutputStream(javaDeflaterOutputStream, new VTByteArrayOutputStream(VT.VT_COMPRESSION_BUFFER_SIZE_BYTES));
-      return new BufferedOutputStream(javaDeflaterOutputStream, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
-    }
-    catch (Throwable t)
-    {
-      
-    }
-    finally
-    {
-      
-    }
-    return null;
-  }
-  
-  private static OutputStream createFlushBufferedNoFlushDefaultDeflaterOutputStream(OutputStream out)
-  {
-    try
-    {
-      Deflater javaDeflater = new Deflater(Deflater.BEST_SPEED, true);
-      javaDeflater.setStrategy(Deflater.DEFAULT_STRATEGY);
-      javaDeflater.setLevel(Deflater.BEST_SPEED);
-      VTNoFlushDeflaterOutputStream javaDeflaterOutputStream = new VTNoFlushDeflaterOutputStream(out, javaDeflater, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
-      //return new VTFlushBufferedOutputStream(javaDeflaterOutputStream, new VTByteArrayOutputStream(VT.VT_COMPRESSION_BUFFER_SIZE_BYTES));
-      return new BufferedOutputStream(javaDeflaterOutputStream, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
-    }
-    catch (Throwable t)
-    {
-      
-    }
-    finally
-    {
-      
-    }
-    return null;
-  }
-  
-  private static OutputStream createFlushBufferedNoFlushHuffmanDeflaterOutputStream(OutputStream out)
-  {
-    try
-    {
-      Deflater javaDeflater = new Deflater(Deflater.BEST_SPEED, true);
-      javaDeflater.setStrategy(Deflater.HUFFMAN_ONLY);
+      javaDeflater.setStrategy(strategy);
       javaDeflater.setLevel(Deflater.BEST_SPEED);
       VTNoFlushDeflaterOutputStream javaDeflaterOutputStream = new VTNoFlushDeflaterOutputStream(out, javaDeflater, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
       //return new VTFlushBufferedOutputStream(javaDeflaterOutputStream, new VTByteArrayOutputStream(VT.VT_COMPRESSION_BUFFER_SIZE_BYTES));
