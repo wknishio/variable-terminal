@@ -66,7 +66,7 @@ public final class VTMainConsole
     return false;
   }
   
-  public static boolean hasConsole()
+  public static boolean hasIOConsole()
   {
     return checkIOConsole();
   }

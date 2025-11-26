@@ -67,7 +67,7 @@ public abstract class VTConsole
     return false;
   }
   
-  public static boolean hasConsole()
+  public static boolean hasIOConsole()
   {
     return checkIOConsole();
   }

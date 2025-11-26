@@ -45,7 +45,7 @@ public class VTStandardConsole extends VTConsole
   
   private VTStandardConsole()
   {
-    isatty = VTConsole.hasConsole();
+    isatty = VTConsole.hasIOConsole();
     
     outputStandard = new VTStandardConsoleOutputStream(this, FileDescriptor.out);
     errorStandard = new VTStandardConsoleOutputStream(this, FileDescriptor.err);
