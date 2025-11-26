@@ -414,8 +414,7 @@ public class VTClientConnector implements Runnable
     int idx = address.indexOf(';');
     if (idx >= 0)
     {
-      String[] split = address.split(";");
-      address = split[0];
+      address = address.substring(0, idx);
     }
     try
     {
@@ -658,9 +657,8 @@ public class VTClientConnector implements Runnable
     int idx = address.indexOf(';');
     if (idx >= 0)
     {
-      String[] split = address.split(";");
-      bind = split[0];
-      address = split[1];
+      bind = address.substring(0, idx);
+      address = address.substring(idx + 1);
     }
     if (port == null)
     {

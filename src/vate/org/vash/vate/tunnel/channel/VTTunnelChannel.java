@@ -65,9 +65,8 @@ public class VTTunnelChannel
     int idx = bindHost.indexOf(';');
     if (idx >= 0)
     {
-      String[] split = bindHost.split(";");
-      remoteBind = split[0];
-      bindHost = split[1];
+      remoteBind = bindHost.substring(0, idx);
+      bindHost = bindHost.substring(idx + 1);
     }
     if (ftp)
     {
@@ -103,9 +102,8 @@ public class VTTunnelChannel
     int idx = bindHost.indexOf(';');
     if (idx >= 0)
     {
-      String[] split = bindHost.split(";");
-      remoteBind = split[0];
-      bindHost = split[1];
+      remoteBind = bindHost.substring(0, idx);
+      bindHost = bindHost.substring(idx + 1);
     }
     if (ftp)
     {
@@ -143,9 +141,8 @@ public class VTTunnelChannel
     int idx = bindHost.indexOf(';');
     if (idx >= 0)
     {
-      String[] split = bindHost.split(";");
-      remoteBind = split[0];
-      bindHost = split[1];
+      remoteBind = bindHost.substring(0, idx);
+      bindHost = bindHost.substring(idx + 1);
     }
     this.tunnelType = TUNNEL_TYPE_TCP;
     this.channelType = channelType;
