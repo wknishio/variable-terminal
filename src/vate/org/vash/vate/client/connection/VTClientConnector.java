@@ -659,8 +659,8 @@ public class VTClientConnector implements Runnable
     if (idx >= 0)
     {
       String[] split = address.split(";");
-      address = split[0];
-      bind = split[1];
+      bind = split[0];
+      address = split[1];
     }
     if (port == null)
     {

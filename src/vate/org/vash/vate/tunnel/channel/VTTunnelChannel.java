@@ -29,7 +29,7 @@ public class VTTunnelChannel
   private int connectTimeout;
   private int dataTimeout;
   private InetSocketAddress bindAddress;
-  private String network = "";
+  private String remoteBind = "";
   private String bindHost;
   private int bindPort;
   private String redirectHost;
@@ -61,13 +61,13 @@ public class VTTunnelChannel
   // SOCKS/HTTP/FTP bind tunnel without authentication
   public VTTunnelChannel(int channelType, VTTunnelConnection connection, int connectTimeout, int dataTimeout, String bindHost, int bindPort, boolean ftp, VTProxy proxy)
   {
-    String network = "";
+    String remoteBind = "";
     int idx = bindHost.indexOf(';');
     if (idx >= 0)
     {
       String[] split = bindHost.split(";");
-      bindHost = split[0];
-      network = split[1];
+      remoteBind = split[0];
+      bindHost = split[1];
     }
     if (ftp)
     {
@@ -81,7 +81,7 @@ public class VTTunnelChannel
     this.connection = connection;
     this.connectTimeout = connectTimeout;
     this.dataTimeout = dataTimeout;
-    this.network = network;
+    this.remoteBind = remoteBind;
     this.bindHost = bindHost;
     this.bindPort = bindPort;
     this.proxy = proxy;
@@ -99,13 +99,13 @@ public class VTTunnelChannel
   // SOCKS/HTTP/FTP bind tunnel with authentication
   public VTTunnelChannel(int channelType, VTTunnelConnection connection, int connectTimeout, int dataTimeout, String bindHost, int bindPort, String username, String password, boolean ftp, VTProxy proxy)
   {
-    String network = "";
+    String remoteBind = "";
     int idx = bindHost.indexOf(';');
     if (idx >= 0)
     {
       String[] split = bindHost.split(";");
-      bindHost = split[0];
-      network = split[1];
+      remoteBind = split[0];
+      bindHost = split[1];
     }
     if (ftp)
     {
@@ -119,7 +119,7 @@ public class VTTunnelChannel
     this.connection = connection;
     this.connectTimeout = connectTimeout;
     this.dataTimeout = dataTimeout;
-    this.network = network;
+    this.remoteBind = remoteBind;
     this.bindHost = bindHost;
     this.bindPort = bindPort;
     this.proxy = proxy;
@@ -139,20 +139,20 @@ public class VTTunnelChannel
   // TCP bind redirect tunnel
   public VTTunnelChannel(int channelType, VTTunnelConnection connection, int connectTimeout, int dataTimeout, String bindHost, int bindPort, String redirectHost, int redirectPort, VTProxy proxy)
   {
-    String network = "";
+    String remoteBind = "";
     int idx = bindHost.indexOf(';');
     if (idx >= 0)
     {
       String[] split = bindHost.split(";");
-      bindHost = split[0];
-      network = split[1];
+      remoteBind = split[0];
+      bindHost = split[1];
     }
     this.tunnelType = TUNNEL_TYPE_TCP;
     this.channelType = channelType;
     this.connection = connection;
     this.connectTimeout = connectTimeout;
     this.dataTimeout = dataTimeout;
-    this.network = network;
+    this.remoteBind = remoteBind;
     this.bindHost = bindHost;
     this.bindPort = bindPort;
     this.redirectHost = redirectHost;
@@ -258,9 +258,9 @@ public class VTTunnelChannel
     return dataTimeout;
   }
   
-  public String getNetwork()
+  public String getRemoteBind()
   {
-    return network;
+    return remoteBind;
   }
   
   public String getBindHost()
@@ -291,9 +291,9 @@ public class VTTunnelChannel
     return redirectPort;
   }
   
-  public void setNetwork(String network)
+  public void setRemoteBind(String route)
   {
-    this.network = network;
+    this.remoteBind = route;
   }
   
   public void setRedirectAddress(String redirectHost, int redirectPort)

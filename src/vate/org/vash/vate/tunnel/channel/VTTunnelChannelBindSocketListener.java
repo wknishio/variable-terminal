@@ -126,7 +126,7 @@ public class VTTunnelChannelBindSocketListener implements Runnable
           int channelType = channel.getChannelType();
           int connectTimeout = channel.getConnectTimeout();
           int dataTimeout = channel.getDataTimeout();
-          String bind = channel.getNetwork();
+          String bind = channel.getRemoteBind();
           
           if (dataTimeout > 0)
           {
