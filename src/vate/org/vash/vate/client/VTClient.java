@@ -69,7 +69,7 @@ public class VTClient implements Runnable
   private int reconnectTimeout = 0;
   private Future<?> runThread;
   private VTDataMonitorService monitorService;
-  private VTProxy[] proxies = new VTProxy[] {};
+  private VTProxy proxy;
   
   private static final String VT_CLIENT_SETTINGS_COMMENTS = 
   "Variable-Terminal client settings file, supports UTF-8\r\n" + 
@@ -83,9 +83,26 @@ public class VTClient implements Runnable
     VTSystem.initialize();
   }
   
-  public VTClient(VTProxy... proxies)
+  public VTClient()
   {
-    this.proxies = proxies;
+    this.executorService = Executors.newCachedThreadPool(new ThreadFactory()
+    {
+      public Thread newThread(Runnable runnable)
+      {
+        Thread created = new Thread(null, runnable, runnable.getClass().getSimpleName());
+        created.setDaemon(true);
+        created.setUncaughtExceptionHandler(uncaughtExceptionHandler);
+        return created;
+      }
+    });
+    this.audioSystem = new VTAudioSystem(executorService);
+    
+    // loadClientSettingsFile();
+  }
+  
+  public VTClient(VTProxy proxy)
+  {
+    this.proxy = proxy;
     this.executorService = Executors.newCachedThreadPool(new ThreadFactory()
     {
       public Thread newThread(Runnable runnable)
@@ -2275,9 +2292,9 @@ public class VTClient implements Runnable
     }
   }
   
-  public void setProxies(VTProxy... proxies)
+  public void setProxy(VTProxy proxy)
   {
-    this.proxies = proxies;
+    this.proxy = proxy;
   }
   
   public void run()
@@ -2286,7 +2303,7 @@ public class VTClient implements Runnable
     {
       executorService.execute(monitorService);
     }
-    clientConnector = new VTClientConnector(this, new VTBlake3SecureRandom(), proxies);
+    clientConnector = new VTClientConnector(this, new VTBlake3SecureRandom(), proxy);
     clientConnector.setActive(active);
     clientConnector.setAddress(hostAddress);
     clientConnector.setPort(hostPort);

@@ -64,6 +64,19 @@ public class VTTunnelChannelRemoteSocketBuilder
     return connectSocket(bind, host, port, connectTimeout, dataTimeout, proxy.getProxyType(), proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword());
   }
   
+  public Socket connectSocket(String bind, String host, int port, int connectTimeout, int dataTimeout) throws IOException
+  {
+    if (host == null)
+    {
+      host = "";
+    }
+    if (bind ==  null)
+    {
+      bind = "";
+    }
+    return connectSocket(bind, host, port, connectTimeout, dataTimeout, PROXY_NONE.getProxyType(), PROXY_NONE.getProxyHost(), PROXY_NONE.getProxyPort(), PROXY_NONE.getProxyUser(), PROXY_NONE.getProxyPassword());
+  }
+  
   public Socket connectSocket(String bind, String host, int port, int connectTimeout, int dataTimeout, VTProxyType proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException
   {
     if (host == null)

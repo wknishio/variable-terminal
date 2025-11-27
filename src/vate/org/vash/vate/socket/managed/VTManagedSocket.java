@@ -87,14 +87,14 @@ public class VTManagedSocket extends Socket implements Closeable
     return connection.getOutputStream(type, link);
   }
   
-  public int setInputStreamOutputStream(Object link, OutputStream outputStream, Closeable closeable)
+  public int setOutputStream(Object link, OutputStream output, Closeable closeable)
   {
-    return connection.setInputStreamOutputStream(link, outputStream, closeable);
+    return connection.setOutputStream(link, output, closeable);
   }
   
-  public int setInputStreamOutputStream(int type, Object link, OutputStream outputStream, Closeable closeable)
+  public int setOutputStream(int type, Object link, OutputStream output, Closeable closeable)
   {
-    return connection.setInputStreamOutputStream(type, link, outputStream, closeable);
+    return connection.setOutputStream(type, link, output, closeable);
   }
   
   public InputStream createBufferedInputStream(int number)

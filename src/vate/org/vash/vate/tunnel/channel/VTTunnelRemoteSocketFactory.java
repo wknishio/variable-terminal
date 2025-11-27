@@ -18,12 +18,17 @@ public class VTTunnelRemoteSocketFactory extends VTRemoteSocketFactory
     this.socketBuilder = socketBuilder;
   }
   
-  public Socket connectSocket(String bind, String host, int port, int connectTimeout, int dataTimeout, VTProxy... proxies) throws IOException
+  public Socket connectSocket(String bind, String host, int port, int connectTimeout, int dataTimeout, VTProxy proxy) throws IOException
   {
-    if (proxies != null && proxies.length >= 1)
+    if (proxy != null)
     {
-      return socketBuilder.connectSocket(bind, host, port, connectTimeout, dataTimeout, proxies[0]);
+      return socketBuilder.connectSocket(bind, host, port, connectTimeout, dataTimeout, proxy);
     }
+    return socketBuilder.connectSocket(bind, host, port, connectTimeout, dataTimeout, PROXY_NONE);
+  }
+  
+  public Socket connectSocket(String bind, String host, int port, int connectTimeout, int dataTimeout) throws IOException
+  {
     return socketBuilder.connectSocket(bind, host, port, connectTimeout, dataTimeout, PROXY_NONE);
   }
   

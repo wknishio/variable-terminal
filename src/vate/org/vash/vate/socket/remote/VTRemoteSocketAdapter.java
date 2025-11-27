@@ -16,7 +16,7 @@ public class VTRemoteSocketAdapter extends Socket
     this.remoteSocketFactory = socketFactory;
   }
   
-  public Socket connect(String bind, String host, int port, int connectTimeout, int dataTimeout, VTProxy... proxies) throws IOException
+  public Socket connect(String bind, String host, int port, int connectTimeout, int dataTimeout, VTProxy proxy) throws IOException
   {
     if (bind == null)
     {
@@ -26,7 +26,20 @@ public class VTRemoteSocketAdapter extends Socket
     {
       host = "";
     }
-    return remoteSocketFactory.connectSocket(bind, host, port, connectTimeout, dataTimeout, proxies);
+    return remoteSocketFactory.connectSocket(bind, host, port, connectTimeout, dataTimeout, proxy);
+  }
+  
+  public Socket connect(String bind, String host, int port, int connectTimeout, int dataTimeout) throws IOException
+  {
+    if (bind == null)
+    {
+      bind = "";
+    }
+    if (host == null)
+    {
+      host = "";
+    }
+    return remoteSocketFactory.connectSocket(bind, host, port, connectTimeout, dataTimeout);
   }
   
   public Socket accept(String bind, String host, int port, int connectTimeout, int dataTimeout) throws IOException

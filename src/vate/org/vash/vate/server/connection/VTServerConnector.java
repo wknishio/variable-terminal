@@ -43,13 +43,13 @@ public class VTServerConnector implements Runnable
   private VTServerConnectorNATPortMappingResultNotify natNotify = new VTServerConnectorNATPortMappingResultNotify();
   private Collection<VTServerSessionListener> listeners = new ConcurrentLinkedQueue<VTServerSessionListener>();
   private final VTBlake3SecureRandom secureRandom;
-  private final VTProxy[] proxies;
+  private final VTProxy proxy;
   
-  public VTServerConnector(VTServer server, VTBlake3SecureRandom secureRandom, VTProxy... proxies)
+  public VTServerConnector(VTServer server, VTBlake3SecureRandom secureRandom, VTProxy proxy)
   {
     this.server = server;
     this.secureRandom = secureRandom;
-    this.proxies = proxies;
+    this.proxy = proxy;
     this.connectionHandlers = new ConcurrentLinkedQueue<VTServerConnectionHandler>();
     portMappingManager = new VTNATSinglePortMappingManagerMKII(5, 300, server.getExecutorService());
     portMappingManager.start();
@@ -388,9 +388,9 @@ public class VTServerConnector implements Runnable
   
   public void resetSockets(VTServerConnection connection) throws IOException
   {
-    if (proxies != null && proxies.length > 0)
+    if (proxy != null)
     {
-      Socket socket = VTProxy.next(null, null, 0, proxies);
+      Socket socket = VTProxy.next(null, null, 0, proxy);
       
       connection.setConnectionSocket(socket);
       return;

@@ -575,7 +575,6 @@ public class VTTunnelConnectionControlThread implements Runnable
   
   private Socket connect(String bind, String host, int port, int connectTimeout, int dataTimeout, VTProxy proxy)
   {
-    VTTunnelCloseableSocket clientSocket = null;
     Socket connectionSocket = null;
     try
     {
@@ -587,11 +586,8 @@ public class VTTunnelConnectionControlThread implements Runnable
       {
         bind = "";
       }
-      connectionSocket = VTProxy.next(null, bind, connectTimeout, proxy);
-      clientSocket = new VTTunnelCloseableSocket(connectionSocket);
-      connection.getCloseables().add(clientSocket);
       
-      connectionSocket = VTProxy.connect(bind, host, port, connectTimeout, connectionSocket);
+      connectionSocket = VTProxy.connect(bind, host, port, connectTimeout, connectionSocket, proxy);
       if (dataTimeout > 0)
       {
         connectionSocket.setSoTimeout(dataTimeout);
@@ -612,13 +608,6 @@ public class VTTunnelConnectionControlThread implements Runnable
         }
       }
       connectionSocket = null;
-    }
-    finally
-    {
-      if (clientSocket != null)
-      {
-        connection.getCloseables().remove(clientSocket);
-      }
     }
     return connectionSocket;
   }

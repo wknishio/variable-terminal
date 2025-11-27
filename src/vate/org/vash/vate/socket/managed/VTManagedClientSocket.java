@@ -79,17 +79,17 @@ public class VTManagedClientSocket
       return connection.getMultiplexedConnectionOutputStream().linkOutputStream(type, link);
     }
     
-    public int setInputStreamOutputStream(Object link, OutputStream outputStream, Closeable closeable)
+    public int setOutputStream(Object link, OutputStream output, Closeable closeable)
     {
       VTLinkableDynamicMultiplexedInputStream stream = getInputStream(link);
-      stream.setOutputStream(outputStream, closeable);
+      stream.setOutputStream(output, closeable);
       return stream.number();
     }
     
-    public int setInputStreamOutputStream(int type, Object link, OutputStream outputStream, Closeable closeable)
+    public int setOutputStream(int type, Object link, OutputStream output, Closeable closeable)
     {
       VTLinkableDynamicMultiplexedInputStream stream = getInputStream(type, link);
-      stream.setOutputStream(outputStream, closeable);
+      stream.setOutputStream(output, closeable);
       return stream.number();
     }
     
@@ -244,17 +244,17 @@ public class VTManagedClientSocket
     }
   }
   
-  public VTManagedClientSocket(VTProxy... proxies)
+  public VTManagedClientSocket(VTProxy proxy)
   {
-    vtclient = new VTClient(proxies);
+    vtclient = new VTClient(proxy);
     vtclient.setDaemon(true);
     vtclient.addSessionListener(new VTManagedClientSocketClientSessionListener());
     vtclient.setSessionShell("N");
   }
   
-  public VTManagedClientSocket(String host, int port, VTProxy... proxies)
+  public VTManagedClientSocket(String host, int port, VTProxy proxy)
   {
-    vtclient = new VTClient(proxies);
+    vtclient = new VTClient(proxy);
     vtclient.setDaemon(true);
     vtclient.addSessionListener(new VTManagedClientSocketClientSessionListener());
     vtclient.setSessionShell("N");
@@ -262,9 +262,9 @@ public class VTManagedClientSocket
     vtclient.setPort(port);
   }
   
-  public VTManagedClientSocket(String host, int port, String type, String key, VTProxy... proxies)
+  public VTManagedClientSocket(String host, int port, String type, String key, VTProxy proxy)
   {
-    vtclient = new VTClient(proxies);
+    vtclient = new VTClient(proxy);
     vtclient.setDaemon(true);
     vtclient.addSessionListener(new VTManagedClientSocketClientSessionListener());
     vtclient.setSessionShell("N");
@@ -284,9 +284,9 @@ public class VTManagedClientSocket
     }
   }
   
-  public VTManagedClientSocket(String host, int port, String type, String key, String user, String password, VTProxy... proxies)
+  public VTManagedClientSocket(String host, int port, String type, String key, String user, String password, VTProxy proxy)
   {
-    vtclient = new VTClient(proxies);
+    vtclient = new VTClient(proxy);
     vtclient.setDaemon(true);
     vtclient.addSessionListener(new VTManagedClientSocketClientSessionListener());
     vtclient.setSessionShell("N");
@@ -308,9 +308,9 @@ public class VTManagedClientSocket
     }
   }
   
-  public VTManagedClientSocket(boolean active, String host, int port, VTProxy... proxies)
+  public VTManagedClientSocket(boolean active, String host, int port, VTProxy proxy)
   {
-    vtclient = new VTClient(proxies);
+    vtclient = new VTClient(proxy);
     vtclient.setActive(active);
     vtclient.setDaemon(true);
     vtclient.addSessionListener(new VTManagedClientSocketClientSessionListener());
@@ -319,9 +319,9 @@ public class VTManagedClientSocket
     vtclient.setPort(port);
   }
   
-  public VTManagedClientSocket(boolean active, String host, int port, String type, String key, VTProxy... proxies)
+  public VTManagedClientSocket(boolean active, String host, int port, String type, String key, VTProxy proxy)
   {
-    vtclient = new VTClient(proxies);
+    vtclient = new VTClient(proxy);
     vtclient.setActive(active);
     vtclient.setDaemon(true);
     vtclient.addSessionListener(new VTManagedClientSocketClientSessionListener());
@@ -342,9 +342,9 @@ public class VTManagedClientSocket
     }
   }
   
-  public VTManagedClientSocket(boolean active, String host, int port, String type, String key, String user, String password, VTProxy... proxies)
+  public VTManagedClientSocket(boolean active, String host, int port, String type, String key, String user, String password, VTProxy proxy)
   {
-    vtclient = new VTClient(proxies);
+    vtclient = new VTClient(proxy);
     vtclient.setActive(active);
     vtclient.setDaemon(true);
     vtclient.addSessionListener(new VTManagedClientSocketClientSessionListener());
@@ -367,18 +367,18 @@ public class VTManagedClientSocket
     }
   }
   
-  public VTManagedClientSocket(Properties properties, VTProxy... proxies)
+  public VTManagedClientSocket(Properties properties, VTProxy proxy)
   {
-    vtclient = new VTClient(proxies);
+    vtclient = new VTClient(proxy);
     vtclient.setDaemon(true);
     vtclient.addSessionListener(new VTManagedClientSocketClientSessionListener());
     vtclient.setSessionShell("N");
     vtclient.loadClientSettingsProperties(properties);
   }
   
-  public VTManagedClientSocket(String settingsFile, VTProxy... proxies) throws IOException
+  public VTManagedClientSocket(String settingsFile, VTProxy proxy) throws IOException
   {
-    vtclient = new VTClient(proxies);
+    vtclient = new VTClient(proxy);
     vtclient.setDaemon(true);
     vtclient.addSessionListener(new VTManagedClientSocketClientSessionListener());
     vtclient.setSessionShell("N");
@@ -498,9 +498,9 @@ public class VTManagedClientSocket
     }
   }
   
-  public void setProxies(VTProxy... proxies)
+  public void setProxy(VTProxy proxy)
   {
-    vtclient.setProxies(proxies);
+    vtclient.setProxy(proxy);
   }
   
 //  public static void main(String[] args)

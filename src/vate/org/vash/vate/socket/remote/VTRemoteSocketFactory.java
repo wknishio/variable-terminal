@@ -9,7 +9,8 @@ import org.vash.vate.proxy.client.VTProxy;
 
 public abstract class VTRemoteSocketFactory
 {  
-  public abstract Socket connectSocket(String bind, String host, int port, int connectTimeout, int dataTimeout, VTProxy... proxies) throws IOException;
+  public abstract Socket connectSocket(String bind, String host, int port, int connectTimeout, int dataTimeout, VTProxy proxy) throws IOException;
+  public abstract Socket connectSocket(String bind, String host, int port, int connectTimeout, int dataTimeout) throws IOException;
   public abstract Socket acceptSocket(String bind, String host, int port, int connectTimeout, int dataTimeout) throws IOException;
   public abstract ServerSocket bindSocket(String bind, String host, int port, int connectTimeout, int dataTimeout) throws IOException;
   public abstract void unbindSocket(String bind) throws IOException;

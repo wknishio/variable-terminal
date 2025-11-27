@@ -17,8 +17,8 @@ public interface VTManagedConnection extends Closeable
   public VTLinkableDynamicMultiplexedOutputStream getOutputStream(Object link);
   public VTLinkableDynamicMultiplexedInputStream getInputStream(int type, Object link);
   public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int type, Object link);
-  public int setInputStreamOutputStream(Object link, OutputStream outputStream, Closeable closeable);
-  public int setInputStreamOutputStream(int type, Object link, OutputStream outputStream, Closeable closeable);
+  public int setOutputStream(Object link, OutputStream output, Closeable closeable);
+  public int setOutputStream(int type, Object link, OutputStream output, Closeable closeable);
   public InputStream createBufferedInputStream(Object link);
   public OutputStream createBufferedOutputStream(Object link);
   public InputStream createBufferedInputStream(int type, Object link);

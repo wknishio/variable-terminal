@@ -83,7 +83,7 @@ public class VTServer implements Runnable
   private int reconnectTimeout = 0;
   private Future<?> runThread;
   private VTDataMonitorService monitorService;
-  private VTProxy[] proxies = new VTProxy[] {};
+  private VTProxy proxy;
   
   private static final String VT_SERVER_SETTINGS_COMMENTS = 
   "Variable-Terminal server settings file, supports UTF-8\r\n" + 
@@ -97,9 +97,31 @@ public class VTServer implements Runnable
     VTSystem.initialize();
   }
   
-  public VTServer(VTProxy... proxies)
+  public VTServer()
   {
-    this.proxies = proxies;
+    this.executorService = Executors.newCachedThreadPool(new ThreadFactory()
+    {
+      public Thread newThread(Runnable runnable)
+      {
+        Thread created = new Thread(null, runnable, runnable.getClass().getSimpleName());
+        created.setDaemon(true);
+        created.setUncaughtExceptionHandler(uncaughtExceptionHandler);
+        return created;
+      }
+    });
+    this.audioSystem = new VTAudioSystem[5];
+    this.audioSystem[0] = new VTAudioSystem(executorService);
+    this.audioSystem[1] = new VTAudioSystem(executorService);
+    this.audioSystem[2] = new VTAudioSystem(executorService);
+    this.audioSystem[3] = new VTAudioSystem(executorService);
+    this.audioSystem[4] = new VTAudioSystem(executorService);
+    
+    // loadServerSettingsFile();
+  }
+  
+  public VTServer(VTProxy proxy)
+  {
+    this.proxy = proxy;
     this.executorService = Executors.newCachedThreadPool(new ThreadFactory()
     {
       public Thread newThread(Runnable runnable)
@@ -2368,9 +2390,9 @@ public class VTServer implements Runnable
     }
   }
   
-  public void setProxies(VTProxy... proxies)
+  public void setProxy(VTProxy proxy)
   {
-    this.proxies = proxies;
+    this.proxy = proxy;
   }
   
   public void run()
@@ -2379,7 +2401,7 @@ public class VTServer implements Runnable
     {
       executorService.execute(monitorService);
     }
-    serverConnector = new VTServerConnector(this, new VTBlake3SecureRandom(), proxies);
+    serverConnector = new VTServerConnector(this, new VTBlake3SecureRandom(), proxy);
     serverConnector.setPassive(passive);
     serverConnector.setAddress(hostAddress);
     serverConnector.setPort(hostPort);
