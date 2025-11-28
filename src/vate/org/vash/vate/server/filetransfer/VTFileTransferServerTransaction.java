@@ -635,9 +635,7 @@ public class VTFileTransferServerTransaction implements Runnable
           {
             if (resuming)
             {
-              resumable = remoteFileStatus != VTSystem.VT_FILE_TRANSFER_STATUS_INEXISTENT &&
-              ((localFileSize >= remoteFileSize && remoteFileSize > 0)
-              || (remoteFileSize > localFileSize && remoteFileSize > 0));
+              resumable = remoteFileStatus == VTSystem.VT_FILE_TRANSFER_STATUS_NORMAL && remoteFileSize > 0 && localFileSize > 0;
             }
             return true;
           }
@@ -923,9 +921,7 @@ public class VTFileTransferServerTransaction implements Runnable
           {
             if (resuming)
             {
-              resumable = localFileStatus != VTSystem.VT_FILE_TRANSFER_STATUS_INEXISTENT &&
-              ((remoteFileSize >= localFileSize && localFileSize > 0)
-              || (localFileSize > remoteFileSize && localFileSize > 0));
+              resumable = localFileStatus == VTSystem.VT_FILE_TRANSFER_STATUS_NORMAL && localFileSize > 0 && remoteFileSize > 0;
             }
             return true;
           }
