@@ -441,7 +441,7 @@ public final class VTAWTScreenCaptureProvider
         }
         catch (Throwable t)
         {
-          
+          //t.printStackTrace();
         }
         try
         {
@@ -449,7 +449,7 @@ public final class VTAWTScreenCaptureProvider
         }
         catch (Throwable t)
         {
-          
+          //t.printStackTrace();
         }
       }
       else
@@ -480,7 +480,7 @@ public final class VTAWTScreenCaptureProvider
           }
           catch (Throwable t)
           {
-            
+            //t.printStackTrace();
           }
           try
           {
@@ -488,7 +488,7 @@ public final class VTAWTScreenCaptureProvider
           }
           catch (Throwable t)
           {
-            
+            //t.printStackTrace();
           }
         }
         else
@@ -499,7 +499,7 @@ public final class VTAWTScreenCaptureProvider
           }
           catch (Throwable t)
           {
-            
+            //t.printStackTrace();
           }
           try
           {
@@ -507,7 +507,7 @@ public final class VTAWTScreenCaptureProvider
           }
           catch (Throwable t)
           {
-            
+            //t.printStackTrace();
           }
         }
       }
@@ -518,36 +518,28 @@ public final class VTAWTScreenCaptureProvider
       }
       catch (Throwable t)
       {
-        
+        //t.printStackTrace();
       }
     }
     return directCaptureRobot != null || standardCaptureRobot != null;
   }
   
-  private final boolean initialize16ScreenCapture(final GraphicsDevice device)
+  private final boolean initialize16ScreenCapture(final GraphicsDevice device) throws Throwable
   {
     reset();
     if (VTReflectionUtils.isAWTHeadless())
     {
       return false;
     }
-    try
+    if (initializeCaptureRobot(device))
     {
-      if (initializeCaptureRobot(device))
+      if (changedCurrentScreenCapture())
       {
-        if (changedCurrentScreenCapture())
-        {
-          refresh16ScreenCapture();
-        }
-        initialized16ScreenCapture = true;
-        return true;
+        refresh16ScreenCapture();
       }
+      initialized16ScreenCapture = true;
+      return true;
     }
-    catch (Throwable e)
-    {
-      
-    }
-    initialized16ScreenCapture = false;
     return false;
   }
   
@@ -577,325 +569,241 @@ public final class VTAWTScreenCaptureProvider
 //    return false;
 //  }
   
-  private final boolean initialize4ScreenCapture(final GraphicsDevice device)
+  private final boolean initialize4ScreenCapture(final GraphicsDevice device) throws Throwable
   {
     reset();
     if (VTReflectionUtils.isAWTHeadless())
     {
       return false;
     }
-    try
+    if (initializeCaptureRobot(device))
     {
-      if (initializeCaptureRobot(device))
+      if (changedCurrentScreenCapture())
       {
-        if (changedCurrentScreenCapture())
-        {
-          refresh4ScreenCapture();
-        }
-        initialized4ScreenCapture = true;
-        return true;
+        refresh4ScreenCapture();
       }
-    }
-    catch (Throwable e)
-    {
-      
+      initialized4ScreenCapture = true;
+      return true;
     }
     initialized4ScreenCapture = false;
     return false;
   }
   
-  private final boolean initialize8ScreenCapture(final GraphicsDevice device)
+  private final boolean initialize8ScreenCapture(final GraphicsDevice device) throws Throwable
   {
     reset();
     if (VTReflectionUtils.isAWTHeadless())
     {
       return false;
     }
-    try
+    if (initializeCaptureRobot(device))
     {
-      if (initializeCaptureRobot(device))
+      if (changedCurrentScreenCapture())
       {
-        if (changedCurrentScreenCapture())
-        {
-          refresh8ScreenCapture();
-        }
-        initialized8ScreenCapture = true;
-        return true;
+        refresh8ScreenCapture();
       }
-    }
-    catch (Throwable e)
-    {
-      
+      initialized8ScreenCapture = true;
+      return true;
     }
     initialized8ScreenCapture = false;
     return false;
   }
   
-  private final boolean initialize512ScreenCapture(final GraphicsDevice device)
+  private final boolean initialize512ScreenCapture(final GraphicsDevice device) throws Throwable
   {
     reset();
     if (VTReflectionUtils.isAWTHeadless())
     {
       return false;
     }
-    try
+    if (initializeCaptureRobot(device))
     {
-      if (initializeCaptureRobot(device))
+      if (changedCurrentScreenCapture())
       {
-        if (changedCurrentScreenCapture())
-        {
-          refresh512ScreenCapture();
-        }
-        initialized512ScreenCapture = true;
-        return true;
+        refresh512ScreenCapture();
       }
-    }
-    catch (Throwable e)
-    {
-      
+      initialized512ScreenCapture = true;
+      return true;
     }
     initialized512ScreenCapture = false;
     return false;
   }
   
-  private final boolean initialize4096ScreenCapture(final GraphicsDevice device)
+  private final boolean initialize4096ScreenCapture(final GraphicsDevice device) throws Throwable
   {
     reset();
     if (VTReflectionUtils.isAWTHeadless())
     {
       return false;
     }
-    try
+    if (initializeCaptureRobot(device))
     {
-      if (initializeCaptureRobot(device))
+      if (changedCurrentScreenCapture())
       {
-        if (changedCurrentScreenCapture())
-        {
-          refresh4096ScreenCapture();
-        }
-        initialized4096ScreenCapture = true;
-        return true;
+        refresh4096ScreenCapture();
       }
-    }
-    catch (Throwable e)
-    {
-      
+      initialized4096ScreenCapture = true;
+      return true;
     }
     initialized4096ScreenCapture = false;
     return false;
   }
   
-  private final boolean initialize64ScreenCapture(final GraphicsDevice device)
+  private final boolean initialize64ScreenCapture(final GraphicsDevice device) throws Throwable
   {
     reset();
     if (VTReflectionUtils.isAWTHeadless())
     {
       return false;
     }
-    try
+    if (initializeCaptureRobot(device))
     {
-      if (initializeCaptureRobot(device))
+      if (changedCurrentScreenCapture())
       {
-        if (changedCurrentScreenCapture())
-        {
-          refresh64ScreenCapture();
-        }
-        initialized64ScreenCapture = true;
-        return true;
+        refresh64ScreenCapture();
       }
-    }
-    catch (Throwable e)
-    {
-      
+      initialized64ScreenCapture = true;
+      return true;
     }
     initialized64ScreenCapture = false;
     return false;
   }
   
-  private final boolean initialize216ScreenCapture(final GraphicsDevice device)
+  private final boolean initialize216ScreenCapture(final GraphicsDevice device) throws Throwable
   {
     reset();
     if (VTReflectionUtils.isAWTHeadless())
     {
       return false;
     }
-    try
+    if (initializeCaptureRobot(device))
     {
-      if (initializeCaptureRobot(device))
+      if (changedCurrentScreenCapture())
       {
-        if (changedCurrentScreenCapture())
-        {
-          refresh216ScreenCapture();
-        }
-        initialized216ScreenCapture = true;
-        return true;
+        refresh216ScreenCapture();
       }
-    }
-    catch (Throwable e)
-    {
-      
+      initialized216ScreenCapture = true;
+      return true;
     }
     initialized216ScreenCapture = false;
     return false;
   }
   
-  private final boolean initialize32768ScreenCapture(final GraphicsDevice device)
+  private final boolean initialize32768ScreenCapture(final GraphicsDevice device) throws Throwable
   {
     reset();
     if (VTReflectionUtils.isAWTHeadless())
     {
       return false;
     }
-    try
+    if (initializeCaptureRobot(device))
     {
-      if (initializeCaptureRobot(device))
+      if (changedCurrentScreenCapture())
       {
-        if (changedCurrentScreenCapture())
-        {
-          refresh32768ScreenCapture();
-        }
-        initialized32768ScreenCapture = true;
-        return true;
+        refresh32768ScreenCapture();
       }
-    }
-    catch (Throwable e)
-    {
-      
+      initialized32768ScreenCapture = true;
+      return true;
     }
     initialized32768ScreenCapture = false;
     return false;
   }
   
-  private final boolean initialize16777216ScreenCapture(final GraphicsDevice device)
+  private final boolean initialize16777216ScreenCapture(final GraphicsDevice device) throws Throwable
   {
     reset();
     if (VTReflectionUtils.isAWTHeadless())
     {
       return false;
     }
-    try
+    if (initializeCaptureRobot(device))
     {
-      if (initializeCaptureRobot(device))
+      if (changedCurrentScreenCapture())
       {
-        if (changedCurrentScreenCapture())
-        {
-          refresh16777216ScreenCapture();
-        }
-        initialized16777216ScreenCapture = true;
-        return true;
+        refresh16777216ScreenCapture();
       }
-    }
-    catch (Throwable e)
-    {
-      
+      initialized16777216ScreenCapture = true;
+      return true;
     }
     initialized16777216ScreenCapture = false;
     return false;
   }
   
-  private final boolean initialize125ScreenCapture(final GraphicsDevice device)
+  private final boolean initialize125ScreenCapture(final GraphicsDevice device) throws Throwable
   {
     reset();
     if (VTReflectionUtils.isAWTHeadless())
     {
       return false;
     }
-    try
+    if (initializeCaptureRobot(device))
     {
-      if (initializeCaptureRobot(device))
+      if (changedCurrentScreenCapture())
       {
-        if (changedCurrentScreenCapture())
-        {
-          refresh125ScreenCapture();
-        }
-        initialized125ScreenCapture = true;
-        return true;
+        refresh125ScreenCapture();
       }
-    }
-    catch (Throwable e)
-    {
-      
+      initialized125ScreenCapture = true;
+      return true;
     }
     initialized125ScreenCapture = false;
     return false;
   }
   
-  private final boolean initialize27ScreenCapture(final GraphicsDevice device)
+  private final boolean initialize27ScreenCapture(final GraphicsDevice device) throws Throwable
   {
     reset();
     if (VTReflectionUtils.isAWTHeadless())
     {
       return false;
     }
-    try
+    if (initializeCaptureRobot(device))
     {
-      if (initializeCaptureRobot(device))
+      if (changedCurrentScreenCapture())
       {
-        if (changedCurrentScreenCapture())
-        {
-          refresh27ScreenCapture();
-        }
-        initialized27ScreenCapture = true;
-        return true;
+        refresh27ScreenCapture();
       }
-    }
-    catch (Throwable e)
-    {
-      
+      initialized27ScreenCapture = true;
+      return true;
     }
     initialized27ScreenCapture = false;
     return false;
   }
   
-  private final boolean initialize262144ScreenCapture(final GraphicsDevice device)
+  private final boolean initialize262144ScreenCapture(final GraphicsDevice device) throws Throwable
   {
     reset();
     if (VTReflectionUtils.isAWTHeadless())
     {
       return false;
     }
-    try
+    if (initializeCaptureRobot(device))
     {
-      if (initializeCaptureRobot(device))
+      if (changedCurrentScreenCapture())
       {
-        if (changedCurrentScreenCapture())
-        {
-          refresh262144ScreenCapture();
-        }
-        initialized262144ScreenCapture = true;
-        return true;
+        refresh262144ScreenCapture();
       }
-    }
-    catch (Throwable e)
-    {
-      
+      initialized262144ScreenCapture = true;
+      return true;
     }
     initialized262144ScreenCapture = false;
     return false;
   }
   
-  private final boolean initialize2097152ScreenCapture(final GraphicsDevice device)
+  private final boolean initialize2097152ScreenCapture(final GraphicsDevice device) throws Throwable
   {
     reset();
     if (VTReflectionUtils.isAWTHeadless())
     {
       return false;
     }
-    try
+    if (initializeCaptureRobot(device))
     {
-      if (initializeCaptureRobot(device))
+      if (changedCurrentScreenCapture())
       {
-        if (changedCurrentScreenCapture())
-        {
-          refresh2097152ScreenCapture();
-        }
-        initialized2097152ScreenCapture = true;
-        return true;
+        refresh2097152ScreenCapture();
       }
-    }
-    catch (Throwable e)
-    {
-      
+      initialized2097152ScreenCapture = true;
+      return true;
     }
     initialized2097152ScreenCapture = false;
     return false;
@@ -904,61 +812,68 @@ public final class VTAWTScreenCaptureProvider
   public final boolean initializeScreenCapture(final int padding)
   {
     this.padding = padding;
-    if (colorQuality == VT_COLOR_QUALITY_16777216)
+    try
     {
-      return initialize16777216ScreenCapture(graphicsDevice);
+      if (colorQuality == VT_COLOR_QUALITY_16777216)
+      {
+        return initialize16777216ScreenCapture(graphicsDevice);
+      }
+      else if (colorQuality == VT_COLOR_QUALITY_32768)
+      {
+        return initialize32768ScreenCapture(graphicsDevice);
+      }
+      else if (colorQuality == VT_COLOR_QUALITY_216)
+      {
+        return initialize216ScreenCapture(graphicsDevice);
+      }
+      else if (colorQuality == VT_COLOR_QUALITY_16)
+      {
+        return initialize16ScreenCapture(graphicsDevice);
+      }
+      //else if (colorQuality == VT_COLOR_QUALITY_32)
+      //{
+        //return initialize32ScreenCapture(graphicsDevice);
+      //}
+      else if (colorQuality == VT_COLOR_QUALITY_512)
+      {
+        return initialize512ScreenCapture(graphicsDevice);
+      }
+      else if (colorQuality == VT_COLOR_QUALITY_4096)
+      {
+        return initialize4096ScreenCapture(graphicsDevice);
+      }
+      else if (colorQuality == VT_COLOR_QUALITY_8)
+      {
+        return initialize8ScreenCapture(graphicsDevice);
+      }
+      else if (colorQuality == VT_COLOR_QUALITY_4)
+      {
+        return initialize4ScreenCapture(graphicsDevice);
+      }
+      else if (colorQuality == VT_COLOR_QUALITY_125)
+      {
+        return initialize125ScreenCapture(graphicsDevice);
+      }
+      else if (colorQuality == VT_COLOR_QUALITY_27)
+      {
+        return initialize27ScreenCapture(graphicsDevice);
+      }
+      else if (colorQuality == VT_COLOR_QUALITY_262144)
+      {
+        return initialize262144ScreenCapture(graphicsDevice);
+      }
+      else if (colorQuality == VT_COLOR_QUALITY_2097152)
+      {
+        return initialize2097152ScreenCapture(graphicsDevice);
+      }
+      else if (colorQuality == VT_COLOR_QUALITY_64)
+      {
+        return initialize64ScreenCapture(graphicsDevice);
+      }
     }
-    else if (colorQuality == VT_COLOR_QUALITY_32768)
+    catch (Throwable t)
     {
-      return initialize32768ScreenCapture(graphicsDevice);
-    }
-    else if (colorQuality == VT_COLOR_QUALITY_216)
-    {
-      return initialize216ScreenCapture(graphicsDevice);
-    }
-    else if (colorQuality == VT_COLOR_QUALITY_16)
-    {
-      return initialize16ScreenCapture(graphicsDevice);
-    }
-    //else if (colorQuality == VT_COLOR_QUALITY_32)
-    //{
-      //return initialize32ScreenCapture(graphicsDevice);
-    //}
-    else if (colorQuality == VT_COLOR_QUALITY_512)
-    {
-      return initialize512ScreenCapture(graphicsDevice);
-    }
-    else if (colorQuality == VT_COLOR_QUALITY_4096)
-    {
-      return initialize4096ScreenCapture(graphicsDevice);
-    }
-    else if (colorQuality == VT_COLOR_QUALITY_8)
-    {
-      return initialize8ScreenCapture(graphicsDevice);
-    }
-    else if (colorQuality == VT_COLOR_QUALITY_4)
-    {
-      return initialize4ScreenCapture(graphicsDevice);
-    }
-    else if (colorQuality == VT_COLOR_QUALITY_125)
-    {
-      return initialize125ScreenCapture(graphicsDevice);
-    }
-    else if (colorQuality == VT_COLOR_QUALITY_27)
-    {
-      return initialize27ScreenCapture(graphicsDevice);
-    }
-    else if (colorQuality == VT_COLOR_QUALITY_262144)
-    {
-      return initialize262144ScreenCapture(graphicsDevice);
-    }
-    else if (colorQuality == VT_COLOR_QUALITY_2097152)
-    {
-      return initialize2097152ScreenCapture(graphicsDevice);
-    }
-    else if (colorQuality == VT_COLOR_QUALITY_64)
-    {
-      return initialize64ScreenCapture(graphicsDevice);
+      //t.printStackTrace();
     }
     return false;
   }
@@ -966,63 +881,71 @@ public final class VTAWTScreenCaptureProvider
   public final boolean initializeScreenCapture(final int padding, final GraphicsDevice device)
   {
     this.padding = padding;
-    if (colorQuality == VT_COLOR_QUALITY_16777216)
+    try
     {
-      return initialize16777216ScreenCapture(device);
+      if (colorQuality == VT_COLOR_QUALITY_16777216)
+      {
+        return initialize16777216ScreenCapture(device);
+      }
+      else if (colorQuality == VT_COLOR_QUALITY_32768)
+      {
+        return initialize32768ScreenCapture(device);
+      }
+      else if (colorQuality == VT_COLOR_QUALITY_216)
+      {
+        return initialize216ScreenCapture(device);
+      }
+      else if (colorQuality == VT_COLOR_QUALITY_16)
+      {
+        return initialize16ScreenCapture(device);
+      }
+      //else if (colorQuality == VT_COLOR_QUALITY_32)
+      //{
+        //return initialize32ScreenCapture(device);
+      //}
+      else if (colorQuality == VT_COLOR_QUALITY_512)
+      {
+        return initialize512ScreenCapture(device);
+      }
+      else if (colorQuality == VT_COLOR_QUALITY_4096)
+      {
+        return initialize4096ScreenCapture(device);
+      }
+      else if (colorQuality == VT_COLOR_QUALITY_8)
+      {
+        return initialize8ScreenCapture(device);
+      }
+      else if (colorQuality == VT_COLOR_QUALITY_4)
+      {
+        return initialize4ScreenCapture(device);
+      }
+      else if (colorQuality == VT_COLOR_QUALITY_125)
+      {
+        return initialize125ScreenCapture(device);
+      }
+      else if (colorQuality == VT_COLOR_QUALITY_27)
+      {
+        return initialize27ScreenCapture(device);
+      }
+      else if (colorQuality == VT_COLOR_QUALITY_262144)
+      {
+        return initialize262144ScreenCapture(device);
+      }
+      else if (colorQuality == VT_COLOR_QUALITY_2097152)
+      {
+        return initialize2097152ScreenCapture(device);
+      }
+      else if (colorQuality == VT_COLOR_QUALITY_64)
+      {
+        return initialize64ScreenCapture(device);
+      }
     }
-    else if (colorQuality == VT_COLOR_QUALITY_32768)
+    catch (Throwable t)
     {
-      return initialize32768ScreenCapture(device);
-    }
-    else if (colorQuality == VT_COLOR_QUALITY_216)
-    {
-      return initialize216ScreenCapture(device);
-    }
-    else if (colorQuality == VT_COLOR_QUALITY_16)
-    {
-      return initialize16ScreenCapture(device);
-    }
-    //else if (colorQuality == VT_COLOR_QUALITY_32)
-    //{
-      //return initialize32ScreenCapture(device);
-    //}
-    else if (colorQuality == VT_COLOR_QUALITY_512)
-    {
-      return initialize512ScreenCapture(device);
-    }
-    else if (colorQuality == VT_COLOR_QUALITY_4096)
-    {
-      return initialize4096ScreenCapture(device);
-    }
-    else if (colorQuality == VT_COLOR_QUALITY_8)
-    {
-      return initialize8ScreenCapture(device);
-    }
-    else if (colorQuality == VT_COLOR_QUALITY_4)
-    {
-      return initialize4ScreenCapture(device);
-    }
-    else if (colorQuality == VT_COLOR_QUALITY_125)
-    {
-      return initialize125ScreenCapture(device);
-    }
-    else if (colorQuality == VT_COLOR_QUALITY_27)
-    {
-      return initialize27ScreenCapture(device);
-    }
-    else if (colorQuality == VT_COLOR_QUALITY_262144)
-    {
-      return initialize262144ScreenCapture(device);
-    }
-    else if (colorQuality == VT_COLOR_QUALITY_2097152)
-    {
-      return initialize2097152ScreenCapture(device);
-    }
-    else if (colorQuality == VT_COLOR_QUALITY_64)
-    {
-      return initialize64ScreenCapture(device);
+      //t.printStackTrace();
     }
     return false;
+    
   }
   
   private final boolean is27ScreenCaptureInitialized()

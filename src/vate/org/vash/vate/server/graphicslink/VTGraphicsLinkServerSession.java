@@ -60,6 +60,8 @@ public class VTGraphicsLinkServerSession
       }
       else
       {
+        //System.out.println("viewProviderInitialized=" + viewProviderInitialized);
+        //System.out.println("controlProviderInitialized=" + controlProviderInitialized);
         session.getConnection().getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_SESSION_UNSTARTED);
         session.getConnection().getGraphicsControlDataOutputStream().flush();
         session.getConnection().getGraphicsControlDataInputStream().read();
