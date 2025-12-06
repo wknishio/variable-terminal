@@ -810,20 +810,20 @@ public class VTGraphicsLinkClientWriter implements Runnable
             
             int remainingM = (int) Math.min(viewport.width * 0.125, viewport.height * 0.125);
             
-            if (pointerX < scrollX + remainingM)
+            if ((pointerX < lastPointerX) && (pointerX < scrollX + remainingM))
             {
               deltaX = pointerX - remainingM - scrollX;
             }
-            else if (pointerX > scrollX + viewport.width - remainingM)
+            else if ((pointerX > lastPointerX) && (pointerX > scrollX + viewport.width - remainingM))
             {
               deltaX = pointerX + remainingM - scrollX - viewport.width;
             }
             
-            if (pointerY < scrollY + remainingM)
+            if ((pointerY < lastPointerY) && (pointerY < scrollY + remainingM))
             {
               deltaY = pointerY - remainingM - scrollY;
             }
-            else if (pointerY > scrollY + viewport.height - remainingM)
+            else if ((pointerY > lastPointerY) && (pointerY > scrollY + viewport.height - remainingM))
             {
               deltaY = pointerY + remainingM - scrollY - viewport.height;
             }
@@ -842,10 +842,10 @@ public class VTGraphicsLinkClientWriter implements Runnable
             {
               scrolled.setScrollPosition(nextScrollPosition);
               
-              Point scrolledPosition = scrolled.getScrollPosition();
+              //Point scrolledPosition = scrolled.getScrollPosition();
               
-              deltaX = scrolledPosition.x - currentScrollPosition.x;
-              deltaY = scrolledPosition.y - currentScrollPosition.y;
+              //deltaX = scrolledPosition.x - currentScrollPosition.x;
+              //deltaY = scrolledPosition.y - currentScrollPosition.y;
             }
             else
             {
