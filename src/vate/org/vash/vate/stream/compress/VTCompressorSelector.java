@@ -8,30 +8,29 @@ import java.io.OutputStream;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
-import org.iq80.snappyvt.SnappyFramedInputStream;
-import org.iq80.snappyvt.SnappyFramedOutputStream;
 import org.vash.vate.VTSystem;
 import org.vash.vate.stream.array.VTByteArrayOutputStream;
 import org.vash.vate.stream.filter.VTBlockSplitOutputStream;
 import org.vash.vate.stream.filter.VTBufferedOutputStream;
 
-import com.jcraft.jzlibvt.JZlib;
-import com.jcraft.jzlibvt.ZInputStream;
-import com.jcraft.jzlibvt.ZOutputStream;
-
-import io.airlift.compressvt.zstd.ZstdCompressor;
-import io.airlift.compressvt.zstd.ZstdDecompressor;
-import io.airlift.compressvt.zstd.ZstdHadoopInputStream;
-import io.airlift.compressvt.zstd.ZstdHadoopOutputStream;
-import io.airlift.compressvt.zstd.ZstdInputStream;
-import io.airlift.compressvt.zstd.ZstdOutputStream;
-import net.jpountz.lz4vt.LZ4BlockInputStream;
-import net.jpountz.lz4vt.LZ4BlockOutputStream;
-import net.jpountz.lz4vt.LZ4Factory;
-import net.jpountz.lz4vt.LZ4FrameInputStream;
-import net.jpountz.lz4vt.LZ4FrameOutputStream;
-import net.jpountz.lz4vt.LZ4FrameOutputStream.BLOCKSIZE;
-import net.jpountz.xxhashvt.XXHashFactory;
+import vate.com.jcraft.jzlib.JZlib;
+import vate.com.jcraft.jzlib.ZInputStream;
+import vate.com.jcraft.jzlib.ZOutputStream;
+import vate.io.airlift.compress.zstd.ZstdCompressor;
+import vate.io.airlift.compress.zstd.ZstdDecompressor;
+import vate.io.airlift.compress.zstd.ZstdHadoopInputStream;
+import vate.io.airlift.compress.zstd.ZstdHadoopOutputStream;
+import vate.io.airlift.compress.zstd.ZstdInputStream;
+import vate.io.airlift.compress.zstd.ZstdOutputStream;
+import vate.net.jpountz.lz4.LZ4BlockInputStream;
+import vate.net.jpountz.lz4.LZ4BlockOutputStream;
+import vate.net.jpountz.lz4.LZ4Factory;
+import vate.net.jpountz.lz4.LZ4FrameInputStream;
+import vate.net.jpountz.lz4.LZ4FrameOutputStream;
+import vate.net.jpountz.lz4.LZ4FrameOutputStream.BLOCKSIZE;
+import vate.net.jpountz.xxhash.XXHashFactory;
+import vate.org.iq80.snappy.SnappyFramedInputStream;
+import vate.org.iq80.snappy.SnappyFramedOutputStream;
 
 @SuppressWarnings(
 { "unused", "deprecation" })

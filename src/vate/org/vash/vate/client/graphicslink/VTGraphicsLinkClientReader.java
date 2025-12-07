@@ -17,7 +17,7 @@ import org.vash.vate.graphics.codec.VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
 import org.vash.vate.graphics.image.VTImageIO;
 import org.vash.vate.stream.limit.VTSizedInputStream;
 
-import com.sixlegs.pngvt.iio.*;
+import vate.com.sixlegs.png.iio.*;
 
 public class VTGraphicsLinkClientReader implements Runnable
 {

@@ -19,7 +19,7 @@ import org.vash.vate.stream.compress.VTCompressorSelector;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
 import org.vash.vate.stream.limit.VTThrottledOutputStream;
 
-import engineering.clientside.throttlevt.NanoThrottle;
+import vate.engineering.clientside.throttle.NanoThrottle;
 
 public final class VTLinkableDynamicMultiplexingOutputStream
 {

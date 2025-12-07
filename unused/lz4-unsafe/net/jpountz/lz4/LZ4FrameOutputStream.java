@@ -11,9 +11,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package net.jpountz.lz4vt;
+package vate.net.jpountz.lz4;
 
-import net.jpountz.lz4vt.LZ4FrameOutputStream.FLG.Bits;
+import vate.net.jpountz.lz4.LZ4FrameOutputStream.FLG.Bits;
 
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,10 +29,10 @@ import net.jpountz.lz4vt.LZ4FrameOutputStream.FLG.Bits;
  * limitations under the License.
  */
 
-import net.jpountz.utilvt.Utils;
-import net.jpountz.xxhashvt.StreamingXXHash32;
-import net.jpountz.xxhashvt.XXHash32;
-import net.jpountz.xxhashvt.XXHashFactory;
+import vate.net.jpountz.util.Utils;
+import vate.net.jpountz.xxhash.StreamingXXHash32;
+import vate.net.jpountz.xxhash.XXHash32;
+import vate.net.jpountz.xxhash.XXHashFactory;
 
 import java.io.FilterOutputStream;
 import java.io.IOException;

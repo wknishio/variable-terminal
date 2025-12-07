@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package net.jpountz.utilvt;
+package vate.net.jpountz.util;
 
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,7 +27,7 @@ package net.jpountz.utilvt;
  * limitations under the License.
  */
 
-import static net.jpountz.utilvt.Utils.NATIVE_BYTE_ORDER;
+import static vate.net.jpountz.util.Utils.NATIVE_BYTE_ORDER;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;

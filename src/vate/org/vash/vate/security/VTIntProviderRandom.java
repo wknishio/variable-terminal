@@ -2,7 +2,7 @@ package org.vash.vate.security;
 
 import java.util.Random;
 
-import org.apache.commons.rngvt.core.source32.IntProvider;
+import vate.org.apache.commons.rng.core.source32.IntProvider;
 
 public abstract class VTIntProviderRandom extends Random
 {

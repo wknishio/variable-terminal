@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import com.guichaguri.minimalftpvt.api.ResponseException;
-import com.guichaguri.minimalftpvt.handler.FTPFileHandler;
+import vate.com.guichaguri.minimalftp.api.ResponseException;
+import vate.com.guichaguri.minimalftp.handler.FTPFileHandler;
 
 public class VTFTPFileHandler extends FTPFileHandler
 {

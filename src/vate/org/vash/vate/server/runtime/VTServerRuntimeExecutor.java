@@ -16,7 +16,7 @@ import org.vash.vate.server.connection.VTServerConnection;
 import org.vash.vate.server.session.VTServerSession;
 import org.vash.vate.task.VTTask;
 
-import com.martiansoftware.jsapvt.CommandLineTokenizerMKII;
+import vate.com.martiansoftware.jsap.CommandLineTokenizerMKII;
 
 public class VTServerRuntimeExecutor extends VTTask
 {
@@ -1193,7 +1193,7 @@ public class VTServerRuntimeExecutor extends VTTask
                 byte[] data = null;
                 try
                 {
-                  data = org.apache.commons.codecvt.binary.Base64.decodeBase64(commandData);
+                  data = vate.org.apache.commons.codec.binary.Base64.decodeBase64(commandData);
                 }
                 catch (Throwable e)
                 {
@@ -1234,7 +1234,7 @@ public class VTServerRuntimeExecutor extends VTTask
               byte[] data = null;
               try
               {
-                data = org.apache.commons.codecvt.binary.Base64.decodeBase64(commandData);
+                data = vate.org.apache.commons.codec.binary.Base64.decodeBase64(commandData);
               }
               catch (Throwable e)
               {
@@ -1306,7 +1306,7 @@ public class VTServerRuntimeExecutor extends VTTask
               byte[] data = null;
               try
               {
-                data = org.apache.commons.codecvt.binary.Base64.decodeBase64(commandData);
+                data = vate.org.apache.commons.codec.binary.Base64.decodeBase64(commandData);
               }
               catch (Throwable e)
               {
@@ -1387,7 +1387,7 @@ public class VTServerRuntimeExecutor extends VTTask
                 byte[] data = null;
                 try
                 {
-                  data = org.apache.commons.lang3vt.StringEscapeUtils.unescapeJava(commandData).getBytes("UTF-8");
+                  data = vate.org.apache.commons.lang3.StringEscapeUtils.unescapeJava(commandData).getBytes("UTF-8");
                 }
                 catch (Throwable e)
                 {
@@ -1428,7 +1428,7 @@ public class VTServerRuntimeExecutor extends VTTask
               byte[] data = null;
               try
               {
-                data = org.apache.commons.lang3vt.StringEscapeUtils.unescapeJava(commandData).getBytes("UTF-8");
+                data = vate.org.apache.commons.lang3.StringEscapeUtils.unescapeJava(commandData).getBytes("UTF-8");
               }
               catch (Throwable e)
               {
@@ -1500,7 +1500,7 @@ public class VTServerRuntimeExecutor extends VTTask
               byte[] data = null;
               try
               {
-                data = org.apache.commons.lang3vt.StringEscapeUtils.unescapeJava(commandData).getBytes("UTF-8");
+                data = vate.org.apache.commons.lang3.StringEscapeUtils.unescapeJava(commandData).getBytes("UTF-8");
               }
               catch (Throwable e)
               {

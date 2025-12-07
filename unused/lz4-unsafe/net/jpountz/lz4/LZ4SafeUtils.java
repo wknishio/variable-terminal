@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package net.jpountz.lz4vt;
+package vate.net.jpountz.lz4;
 
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,11 +27,11 @@ package net.jpountz.lz4vt;
  * limitations under the License.
  */
 
-import static net.jpountz.lz4vt.LZ4Constants.LAST_LITERALS;
-import static net.jpountz.lz4vt.LZ4Constants.ML_BITS;
-import static net.jpountz.lz4vt.LZ4Constants.ML_MASK;
-import static net.jpountz.lz4vt.LZ4Constants.RUN_MASK;
-import net.jpountz.utilvt.SafeUtils;
+import static vate.net.jpountz.lz4.LZ4Constants.LAST_LITERALS;
+import static vate.net.jpountz.lz4.LZ4Constants.ML_BITS;
+import static vate.net.jpountz.lz4.LZ4Constants.ML_MASK;
+import static vate.net.jpountz.lz4.LZ4Constants.RUN_MASK;
+import vate.net.jpountz.util.SafeUtils;
 
 enum LZ4SafeUtils {
 	;

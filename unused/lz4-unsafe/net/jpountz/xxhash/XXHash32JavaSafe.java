@@ -13,15 +13,15 @@
  *******************************************************************************/
 // Auto-generated: DO NOT EDIT
 
-package net.jpountz.xxhashvt;
+package vate.net.jpountz.xxhash;
 
-import static net.jpountz.xxhashvt.XXHashConstants.*;
+import static vate.net.jpountz.xxhash.XXHashConstants.*;
 import static java.lang.Integer.rotateLeft;
 
 import java.nio.ByteBuffer;
 
-import net.jpountz.utilvt.SafeUtils;
-import net.jpountz.utilvt.ByteBufferUtils;
+import vate.net.jpountz.util.SafeUtils;
+import vate.net.jpountz.util.ByteBufferUtils;
 
 /**
  * {@link XXHash32} implementation.

@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package net.jpountz.lz4vt;
+package vate.net.jpountz.lz4;
 
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,10 +32,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
-import net.jpountz.utilvt.Native;
-import net.jpountz.utilvt.Utils;
-import static net.jpountz.lz4vt.LZ4Constants.DEFAULT_COMPRESSION_LEVEL;
-import static net.jpountz.lz4vt.LZ4Constants.MAX_COMPRESSION_LEVEL;
+import vate.net.jpountz.util.Native;
+import vate.net.jpountz.util.Utils;
+import static vate.net.jpountz.lz4.LZ4Constants.DEFAULT_COMPRESSION_LEVEL;
+import static vate.net.jpountz.lz4.LZ4Constants.MAX_COMPRESSION_LEVEL;
 
 /**
  * Entry point for the LZ4 API.
@@ -194,10 +194,10 @@ public final class LZ4Factory {
 
   private LZ4Factory(String impl) throws ClassNotFoundException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InstantiationException, InvocationTargetException {
     this.impl = impl;
-    fastCompressor = classInstance("net.jpountz.lz4vt.LZ4" + impl + "Compressor");
-    highCompressor = classInstance("net.jpountz.lz4vt.LZ4HC" + impl + "Compressor");
-    fastDecompressor = classInstance("net.jpountz.lz4vt.LZ4" + impl + "FastDecompressor");
-    safeDecompressor = classInstance("net.jpountz.lz4vt.LZ4" + impl + "SafeDecompressor");
+    fastCompressor = classInstance("vate.net.jpountz.lz4.LZ4" + impl + "Compressor");
+    highCompressor = classInstance("vate.net.jpountz.lz4.LZ4HC" + impl + "Compressor");
+    fastDecompressor = classInstance("vate.net.jpountz.lz4.LZ4" + impl + "FastDecompressor");
+    safeDecompressor = classInstance("vate.net.jpountz.lz4.LZ4" + impl + "SafeDecompressor");
     Constructor<? extends LZ4Compressor> highConstructor = highCompressor.getClass().getDeclaredConstructor(int.class);
     highCompressors[DEFAULT_COMPRESSION_LEVEL] = highCompressor;
     for(int level = 1; level <= MAX_COMPRESSION_LEVEL; level++) {

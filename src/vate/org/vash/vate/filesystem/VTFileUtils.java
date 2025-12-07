@@ -3,7 +3,7 @@ package org.vash.vate.filesystem;
 import java.io.File;
 import java.io.RandomAccessFile;
 
-import org.apache.commons.iovt.FileUtils;
+import vate.org.apache.commons.io.FileUtils;
 
 public class VTFileUtils extends FileUtils
 {

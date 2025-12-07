@@ -4,7 +4,7 @@ import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.bouncycastlevt.crypto.StreamCipher;
+import vate.org.bouncycastle.crypto.StreamCipher;
 
 public class VTStreamCipherOutputStream extends FilterOutputStream
 {

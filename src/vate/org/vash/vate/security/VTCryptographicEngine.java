@@ -3,15 +3,16 @@ package org.vash.vate.security;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.bouncycastlevt.crypto.StreamCipher;
-import org.bouncycastlevt.crypto.engines.ChaChaEngine;
-import org.bouncycastlevt.crypto.engines.Grain128Engine;
-import org.bouncycastlevt.crypto.engines.HC128Engine;
-import org.bouncycastlevt.crypto.engines.RabbitEngine;
-import org.bouncycastlevt.crypto.engines.Zuc128Engine;
-import org.bouncycastlevt.crypto.params.KeyParameter;
-import org.bouncycastlevt.crypto.params.ParametersWithIV;
 import org.vash.vate.VTSystem;
+
+import vate.org.bouncycastle.crypto.StreamCipher;
+import vate.org.bouncycastle.crypto.engines.ChaChaEngine;
+import vate.org.bouncycastle.crypto.engines.Grain128Engine;
+import vate.org.bouncycastle.crypto.engines.HC128Engine;
+import vate.org.bouncycastle.crypto.engines.RabbitEngine;
+import vate.org.bouncycastle.crypto.engines.Zuc128Engine;
+import vate.org.bouncycastle.crypto.params.KeyParameter;
+import vate.org.bouncycastle.crypto.params.ParametersWithIV;
 
 public class VTCryptographicEngine
 {

@@ -27,7 +27,7 @@ import org.vash.vate.graphics.image.VTImageIO;
 import org.vash.vate.graphics.image.VTRectangle;
 import org.vash.vate.reflection.VTReflectionUtils;
 
-import com.bric.imagevt.VTARGBPixelGrabber;
+import vate.com.bric.image.VTARGBPixelGrabber;
 
 public final class VTAWTScreenCaptureProvider
 {

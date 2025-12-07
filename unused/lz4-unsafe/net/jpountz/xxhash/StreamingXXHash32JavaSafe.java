@@ -13,11 +13,11 @@
  *******************************************************************************/
 // Auto-generated: DO NOT EDIT
 
-package net.jpountz.xxhashvt;
+package vate.net.jpountz.xxhash;
 
-import static net.jpountz.xxhashvt.XXHashConstants.*;
-import static net.jpountz.utilvt.SafeUtils.*;
-import static net.jpountz.utilvt.SafeUtils.checkRange;
+import static vate.net.jpountz.xxhash.XXHashConstants.*;
+import static vate.net.jpountz.util.SafeUtils.*;
+import static vate.net.jpountz.util.SafeUtils.checkRange;
 import static java.lang.Integer.rotateLeft;
 
 /**

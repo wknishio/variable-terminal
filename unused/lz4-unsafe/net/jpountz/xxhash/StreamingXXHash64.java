@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package net.jpountz.xxhashvt;
+package vate.net.jpountz.xxhash;
 
 import java.security.MessageDigest;
 import java.util.zip.Checksum;

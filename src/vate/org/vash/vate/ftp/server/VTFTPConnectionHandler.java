@@ -10,8 +10,8 @@ import javax.net.SocketFactory;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
-import com.guichaguri.minimalftpvt.FTPServer;
-import com.guichaguri.minimalftpvt.handler.FTPConnectionHandler;
+import vate.com.guichaguri.minimalftp.FTPServer;
+import vate.com.guichaguri.minimalftp.handler.FTPConnectionHandler;
 
 public class VTFTPConnectionHandler extends FTPConnectionHandler
 {

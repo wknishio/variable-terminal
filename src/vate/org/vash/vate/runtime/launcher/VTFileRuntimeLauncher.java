@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 
 import org.vash.vate.VTSystem;
 
-import com.martiansoftware.jsapvt.CommandLineTokenizerMKII;
+import vate.com.martiansoftware.jsap.CommandLineTokenizerMKII;
 
 public class VTFileRuntimeLauncher
 {

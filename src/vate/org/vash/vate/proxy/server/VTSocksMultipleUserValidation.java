@@ -2,7 +2,7 @@ package org.vash.vate.proxy.server;
 
 import java.net.Socket;
 
-import net.sourceforge.jsocksvt.socks.server.UserValidation;
+import vate.net.sourceforge.jsocks.socks.server.UserValidation;
 
 public class VTSocksMultipleUserValidation implements UserValidation
 {

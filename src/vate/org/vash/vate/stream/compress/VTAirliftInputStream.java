@@ -6,7 +6,7 @@ import java.io.InputStream;
 import org.vash.vate.stream.array.VTByteArrayInputStream;
 import org.vash.vate.stream.endian.VTLittleEndianInputStream;
 
-import io.airlift.compressvt.Decompressor;
+import vate.io.airlift.compress.Decompressor;
 
 public class VTAirliftInputStream extends InputStream
 {

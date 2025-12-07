@@ -9,14 +9,14 @@ import java.util.Map.Entry;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
-import com.offbynull.portmappervt.PortMapperFactory;
-import com.offbynull.portmappervt.gateway.Bus;
-import com.offbynull.portmappervt.gateway.Gateway;
-import com.offbynull.portmappervt.gateways.network.NetworkGateway;
-import com.offbynull.portmappervt.gateways.process.ProcessGateway;
-import com.offbynull.portmappervt.mapper.MappedPort;
-import com.offbynull.portmappervt.mapper.PortMapper;
-import com.offbynull.portmappervt.mapper.PortType;
+import vate.com.offbynull.portmapper.PortMapperFactory;
+import vate.com.offbynull.portmapper.gateway.Bus;
+import vate.com.offbynull.portmapper.gateway.Gateway;
+import vate.com.offbynull.portmapper.gateways.network.NetworkGateway;
+import vate.com.offbynull.portmapper.gateways.process.ProcessGateway;
+import vate.com.offbynull.portmapper.mapper.MappedPort;
+import vate.com.offbynull.portmapper.mapper.PortMapper;
+import vate.com.offbynull.portmapper.mapper.PortType;
 
 public class VTNATSinglePortMappingManagerMKII implements Runnable
 {

@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package net.jpountz.lz4vt;
+package vate.net.jpountz.lz4;
 
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,20 +27,20 @@ package net.jpountz.lz4vt;
  * limitations under the License.
  */
 
-import static net.jpountz.lz4vt.LZ4Constants.COPY_LENGTH;
-import static net.jpountz.lz4vt.LZ4Constants.LAST_LITERALS;
-import static net.jpountz.lz4vt.LZ4Constants.ML_BITS;
-import static net.jpountz.lz4vt.LZ4Constants.ML_MASK;
-import static net.jpountz.lz4vt.LZ4Constants.RUN_MASK;
-import static net.jpountz.utilvt.UnsafeUtils.readByte;
-import static net.jpountz.utilvt.UnsafeUtils.readInt;
-import static net.jpountz.utilvt.UnsafeUtils.readLong;
-import static net.jpountz.utilvt.UnsafeUtils.readShort;
-import static net.jpountz.utilvt.UnsafeUtils.writeByte;
-import static net.jpountz.utilvt.UnsafeUtils.writeInt;
-import static net.jpountz.utilvt.UnsafeUtils.writeLong;
-import static net.jpountz.utilvt.UnsafeUtils.writeShort;
-import static net.jpountz.utilvt.Utils.NATIVE_BYTE_ORDER;
+import static vate.net.jpountz.lz4.LZ4Constants.COPY_LENGTH;
+import static vate.net.jpountz.lz4.LZ4Constants.LAST_LITERALS;
+import static vate.net.jpountz.lz4.LZ4Constants.ML_BITS;
+import static vate.net.jpountz.lz4.LZ4Constants.ML_MASK;
+import static vate.net.jpountz.lz4.LZ4Constants.RUN_MASK;
+import static vate.net.jpountz.util.UnsafeUtils.readByte;
+import static vate.net.jpountz.util.UnsafeUtils.readInt;
+import static vate.net.jpountz.util.UnsafeUtils.readLong;
+import static vate.net.jpountz.util.UnsafeUtils.readShort;
+import static vate.net.jpountz.util.UnsafeUtils.writeByte;
+import static vate.net.jpountz.util.UnsafeUtils.writeInt;
+import static vate.net.jpountz.util.UnsafeUtils.writeLong;
+import static vate.net.jpountz.util.UnsafeUtils.writeShort;
+import static vate.net.jpountz.util.Utils.NATIVE_BYTE_ORDER;
 
 import java.nio.ByteOrder;
 

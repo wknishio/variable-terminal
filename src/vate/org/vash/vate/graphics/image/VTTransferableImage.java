@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import com.bric.imagevt.VTARGBPixelGrabber;
+import vate.com.bric.image.VTARGBPixelGrabber;
 
 public class VTTransferableImage implements Transferable, ClipboardOwner
 {
