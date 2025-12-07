@@ -13,17 +13,17 @@
  *******************************************************************************/
 // Auto-generated: DO NOT EDIT
 
-package vate.net.jpountz.lz4;
+package org.vash.vate.net.jpountz.lz4;
 
-import static vate.net.jpountz.lz4.LZ4Constants.*;
-import static vate.net.jpountz.lz4.LZ4Utils.*;
+import static org.vash.vate.net.jpountz.lz4.LZ4Constants.*;
+import static org.vash.vate.net.jpountz.lz4.LZ4Utils.*;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
-import vate.net.jpountz.lz4.LZ4Utils.Match;
-import vate.net.jpountz.util.ByteBufferUtils;
-import vate.net.jpountz.util.UnsafeUtils;
+import org.vash.vate.net.jpountz.lz4.LZ4Utils.Match;
+import org.vash.vate.net.jpountz.util.ByteBufferUtils;
+import org.vash.vate.net.jpountz.util.UnsafeUtils;
 
 /**
  * High compression compressor.

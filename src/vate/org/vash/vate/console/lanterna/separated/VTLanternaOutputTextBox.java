@@ -2,12 +2,12 @@ package org.vash.vate.console.lanterna.separated;
 
 import java.util.regex.Pattern;
 
-import vate.com.googlecode.lanterna.TerminalPosition;
-import vate.com.googlecode.lanterna.TerminalSize;
-import vate.com.googlecode.lanterna.TerminalTextUtils;
-import vate.com.googlecode.lanterna.input.KeyStroke;
-import vate.com.googlecode.lanterna.input.KeyType;
-import vate.com.googlecode.lanterna.terminal.Terminal;
+import org.vash.vate.com.googlecode.lanterna.TerminalPosition;
+import org.vash.vate.com.googlecode.lanterna.TerminalSize;
+import org.vash.vate.com.googlecode.lanterna.TerminalTextUtils;
+import org.vash.vate.com.googlecode.lanterna.input.KeyStroke;
+import org.vash.vate.com.googlecode.lanterna.input.KeyType;
+import org.vash.vate.com.googlecode.lanterna.terminal.Terminal;
 
 public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
 {

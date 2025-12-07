@@ -1,6 +1,6 @@
 package org.vash.vate.security;
 
-import vate.org.apache.commons.rng.core.source32.MiddleSquareWeylSequence;
+import org.vash.vate.org.apache.commons.rng.core.source32.MiddleSquareWeylSequence;
 
 public class VTMiddleSquareWeylSequenceRandom extends VTIntProviderRandom
 {

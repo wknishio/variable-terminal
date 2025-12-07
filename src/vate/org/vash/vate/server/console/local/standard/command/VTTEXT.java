@@ -2,11 +2,10 @@ package org.vash.vate.server.console.local.standard.command;
 
 import java.util.Collection;
 
+import org.vash.vate.com.martiansoftware.jsap.CommandLineTokenizerMKII;
 import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.server.connection.VTServerConnectionHandler;
 import org.vash.vate.server.console.local.standard.VTServerStandardLocalConsoleCommandProcessor;
-
-import vate.com.martiansoftware.jsap.CommandLineTokenizerMKII;
 
 public class VTTEXT extends VTServerStandardLocalConsoleCommandProcessor
 {

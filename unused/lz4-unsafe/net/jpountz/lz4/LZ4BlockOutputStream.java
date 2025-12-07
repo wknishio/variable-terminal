@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package vate.net.jpountz.lz4;
+package org.vash.vate.net.jpountz.lz4;
 
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,9 +32,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.zip.Checksum;
 
-import vate.net.jpountz.util.SafeUtils;
-import vate.net.jpountz.xxhash.StreamingXXHash32;
-import vate.net.jpountz.xxhash.XXHashFactory;
+import org.vash.vate.net.jpountz.util.SafeUtils;
+import org.vash.vate.net.jpountz.xxhash.StreamingXXHash32;
+import org.vash.vate.net.jpountz.xxhash.XXHashFactory;
 
 /**
  * Streaming LZ4.

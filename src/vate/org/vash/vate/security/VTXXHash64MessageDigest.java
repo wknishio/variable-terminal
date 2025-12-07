@@ -2,7 +2,7 @@ package org.vash.vate.security;
 
 import java.security.MessageDigest;
 
-import vate.net.jpountz.xxhash.StreamingXXHash64;
+import org.vash.vate.net.jpountz.xxhash.StreamingXXHash64;
 
 public class VTXXHash64MessageDigest extends MessageDigest
 {

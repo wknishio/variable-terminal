@@ -3,7 +3,7 @@ package org.vash.vate.ftp.server;
 import java.io.File;
 import java.io.IOException;
 
-import vate.com.guichaguri.minimalftp.impl.NativeFileSystem;
+import org.vash.vate.com.guichaguri.minimalftp.impl.NativeFileSystem;
 
 public class VTFTPNativeFileSystem extends NativeFileSystem
 {

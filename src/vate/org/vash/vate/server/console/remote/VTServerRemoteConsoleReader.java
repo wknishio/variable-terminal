@@ -7,11 +7,10 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 
 import org.vash.vate.VTSystem;
+import org.vash.vate.com.martiansoftware.jsap.CommandLineTokenizerMKII;
 import org.vash.vate.server.connection.VTServerConnection;
 import org.vash.vate.server.session.VTServerSession;
 import org.vash.vate.task.VTTask;
-
-import vate.com.martiansoftware.jsap.CommandLineTokenizerMKII;
 
 public class VTServerRemoteConsoleReader extends VTTask
 {

@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 
+import org.vash.vate.com.martiansoftware.jsap.CommandLineTokenizerMKII;
 import org.vash.vate.graphics.capture.VTAWTScreenCaptureProvider;
 import org.vash.vate.graphics.clipboard.VTClipboardTransferTask;
 import org.vash.vate.graphics.control.VTAWTControlProvider;
@@ -39,8 +40,6 @@ import org.vash.vate.shell.adapter.VTShellAdapter;
 import org.vash.vate.shell.adapter.VTShellProcessor;
 import org.vash.vate.tunnel.connection.VTTunnelConnection;
 import org.vash.vate.tunnel.connection.VTTunnelConnectionHandler;
-
-import vate.com.martiansoftware.jsap.CommandLineTokenizerMKII;
 
 public class VTServerSession
 {

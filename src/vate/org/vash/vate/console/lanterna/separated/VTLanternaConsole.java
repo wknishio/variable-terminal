@@ -40,6 +40,34 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 import org.vash.vate.VTSystem;
+import org.vash.vate.com.googlecode.lanterna.TerminalPosition;
+import org.vash.vate.com.googlecode.lanterna.TerminalSize;
+import org.vash.vate.com.googlecode.lanterna.TextColor;
+import org.vash.vate.com.googlecode.lanterna.TextColor.ANSI;
+import org.vash.vate.com.googlecode.lanterna.graphics.PropertyTheme;
+import org.vash.vate.com.googlecode.lanterna.gui2.BasicWindow;
+import org.vash.vate.com.googlecode.lanterna.gui2.DefaultWindowManager;
+import org.vash.vate.com.googlecode.lanterna.gui2.InputFilter;
+import org.vash.vate.com.googlecode.lanterna.gui2.Interactable;
+import org.vash.vate.com.googlecode.lanterna.gui2.MultiWindowTextGUI;
+import org.vash.vate.com.googlecode.lanterna.gui2.Window.Hint;
+import org.vash.vate.com.googlecode.lanterna.input.KeyStroke;
+import org.vash.vate.com.googlecode.lanterna.input.KeyType;
+import org.vash.vate.com.googlecode.lanterna.input.MouseAction;
+import org.vash.vate.com.googlecode.lanterna.input.MouseActionType;
+import org.vash.vate.com.googlecode.lanterna.screen.Screen;
+import org.vash.vate.com.googlecode.lanterna.screen.TabBehaviour;
+import org.vash.vate.com.googlecode.lanterna.screen.TerminalScreen;
+import org.vash.vate.com.googlecode.lanterna.screen.Screen.RefreshType;
+import org.vash.vate.com.googlecode.lanterna.terminal.DefaultTerminalFactory;
+import org.vash.vate.com.googlecode.lanterna.terminal.MouseCaptureMode;
+import org.vash.vate.com.googlecode.lanterna.terminal.Terminal;
+import org.vash.vate.com.googlecode.lanterna.terminal.swing.AWTTerminal;
+import org.vash.vate.com.googlecode.lanterna.terminal.swing.AWTTerminalFontConfiguration;
+import org.vash.vate.com.googlecode.lanterna.terminal.swing.AWTTerminalFrame;
+import org.vash.vate.com.googlecode.lanterna.terminal.swing.AWTTerminalPanel;
+import org.vash.vate.com.googlecode.lanterna.terminal.swing.TerminalEmulatorColorConfiguration;
+import org.vash.vate.com.googlecode.lanterna.terminal.swing.TerminalEmulatorPalette;
 import org.vash.vate.console.VTConsoleBooleanToggleNotify;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.console.graphical.listener.VTGraphicalConsoleDropTargetListener;
@@ -51,35 +79,6 @@ import org.vash.vate.nativeutils.VTMainNativeUtils;
 import org.vash.vate.reflection.VTReflectionUtils;
 import org.vash.vate.runtime.VTRuntimeExit;
 import org.vash.vate.stream.filter.VTDoubledOutputStream;
-
-import vate.com.googlecode.lanterna.TerminalPosition;
-import vate.com.googlecode.lanterna.TerminalSize;
-import vate.com.googlecode.lanterna.TextColor;
-import vate.com.googlecode.lanterna.TextColor.ANSI;
-import vate.com.googlecode.lanterna.graphics.PropertyTheme;
-import vate.com.googlecode.lanterna.gui2.BasicWindow;
-import vate.com.googlecode.lanterna.gui2.DefaultWindowManager;
-import vate.com.googlecode.lanterna.gui2.InputFilter;
-import vate.com.googlecode.lanterna.gui2.Interactable;
-import vate.com.googlecode.lanterna.gui2.MultiWindowTextGUI;
-import vate.com.googlecode.lanterna.gui2.Window.Hint;
-import vate.com.googlecode.lanterna.input.KeyStroke;
-import vate.com.googlecode.lanterna.input.KeyType;
-import vate.com.googlecode.lanterna.input.MouseAction;
-import vate.com.googlecode.lanterna.input.MouseActionType;
-import vate.com.googlecode.lanterna.screen.Screen;
-import vate.com.googlecode.lanterna.screen.TabBehaviour;
-import vate.com.googlecode.lanterna.screen.TerminalScreen;
-import vate.com.googlecode.lanterna.screen.Screen.RefreshType;
-import vate.com.googlecode.lanterna.terminal.DefaultTerminalFactory;
-import vate.com.googlecode.lanterna.terminal.MouseCaptureMode;
-import vate.com.googlecode.lanterna.terminal.Terminal;
-import vate.com.googlecode.lanterna.terminal.swing.AWTTerminal;
-import vate.com.googlecode.lanterna.terminal.swing.AWTTerminalFontConfiguration;
-import vate.com.googlecode.lanterna.terminal.swing.AWTTerminalFrame;
-import vate.com.googlecode.lanterna.terminal.swing.AWTTerminalPanel;
-import vate.com.googlecode.lanterna.terminal.swing.TerminalEmulatorColorConfiguration;
-import vate.com.googlecode.lanterna.terminal.swing.TerminalEmulatorPalette;
 
 public class VTLanternaConsole extends VTConsole
 {
@@ -884,8 +883,8 @@ public class VTLanternaConsole extends VTConsole
     //terminal.setBackgroundColor(TextColor.ANSI.BLACK);
     //terminal.setForegroundColor(TextColor.ANSI.GREEN_BRIGHT);
     
-    vate.com.googlecode.lanterna.gui2.Panel mainPanel = new vate.com.googlecode.lanterna.gui2.Panel();
-    mainPanel.setLayoutManager(new vate.com.googlecode.lanterna.gui2.BorderLayout());
+    org.vash.vate.com.googlecode.lanterna.gui2.Panel mainPanel = new org.vash.vate.com.googlecode.lanterna.gui2.Panel();
+    mainPanel.setLayoutManager(new org.vash.vate.com.googlecode.lanterna.gui2.BorderLayout());
     
     // outputBox.setReadOnly(true);
     outputBox.setTerminal(terminal);
@@ -1520,14 +1519,14 @@ public class VTLanternaConsole extends VTConsole
       }
     });
     
-    vate.com.googlecode.lanterna.gui2.Panel bottonPanel = new vate.com.googlecode.lanterna.gui2.Panel();
-    bottonPanel.setLayoutManager(new vate.com.googlecode.lanterna.gui2.BorderLayout());
+    org.vash.vate.com.googlecode.lanterna.gui2.Panel bottonPanel = new org.vash.vate.com.googlecode.lanterna.gui2.Panel();
+    bottonPanel.setLayoutManager(new org.vash.vate.com.googlecode.lanterna.gui2.BorderLayout());
     
     // bottonPanel.addComponent(promptLabel, BorderLayout.Location.LEFT);
-    bottonPanel.addComponent(inputBox, vate.com.googlecode.lanterna.gui2.BorderLayout.Location.CENTER);
+    bottonPanel.addComponent(inputBox, org.vash.vate.com.googlecode.lanterna.gui2.BorderLayout.Location.CENTER);
     
-    mainPanel.addComponent(outputBox, vate.com.googlecode.lanterna.gui2.BorderLayout.Location.CENTER);
-    mainPanel.addComponent(bottonPanel, vate.com.googlecode.lanterna.gui2.BorderLayout.Location.BOTTOM);
+    mainPanel.addComponent(outputBox, org.vash.vate.com.googlecode.lanterna.gui2.BorderLayout.Location.CENTER);
+    mainPanel.addComponent(bottonPanel, org.vash.vate.com.googlecode.lanterna.gui2.BorderLayout.Location.BOTTOM);
     
     // Create window to hold the panel
     window = new BasicWindow();

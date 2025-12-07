@@ -22,10 +22,9 @@ import javax.sound.sampled.AudioFormat;
 
 import org.vash.vate.graphics.font.VTFontManager;
 import org.vash.vate.help.VTHelpManager;
+import org.vash.vate.io.airlift.compress.zstd.ZstdUtil;
+import org.vash.vate.net.jpountz.lz4.LZ4Utils;
 import org.vash.vate.tls.VTTLSVerificationDisabler;
-
-import vate.io.airlift.compress.zstd.ZstdUtil;
-import vate.net.jpountz.lz4.LZ4Utils;
 
 @SuppressWarnings("deprecation")
 public class VTSystem

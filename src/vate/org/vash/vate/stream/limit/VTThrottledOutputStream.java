@@ -4,7 +4,7 @@ import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import vate.engineering.clientside.throttle.NanoThrottle;
+import org.vash.vate.engineering.clientside.throttle.NanoThrottle;
 
 public final class VTThrottledOutputStream extends FilterOutputStream
 {

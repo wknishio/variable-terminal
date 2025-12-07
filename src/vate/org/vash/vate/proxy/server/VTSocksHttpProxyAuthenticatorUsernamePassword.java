@@ -9,12 +9,11 @@ import java.util.Collection;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 
+import org.vash.vate.net.sourceforge.jsocks.socks.server.ServerAuthenticator;
+import org.vash.vate.net.sourceforge.jsocks.socks.server.ServerAuthenticatorNone;
+import org.vash.vate.net.sourceforge.jsocks.socks.server.UserPasswordAuthenticator;
+import org.vash.vate.net.sourceforge.jsocks.socks.server.UserValidation;
 import org.vash.vate.proxy.client.VTProxy;
-
-import vate.net.sourceforge.jsocks.socks.server.ServerAuthenticator;
-import vate.net.sourceforge.jsocks.socks.server.ServerAuthenticatorNone;
-import vate.net.sourceforge.jsocks.socks.server.UserPasswordAuthenticator;
-import vate.net.sourceforge.jsocks.socks.server.UserValidation;
 
 public class VTSocksHttpProxyAuthenticatorUsernamePassword extends UserPasswordAuthenticator
 {

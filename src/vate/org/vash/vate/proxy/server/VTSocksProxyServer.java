@@ -25,18 +25,17 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.VTSystem;
+import org.vash.vate.net.sourceforge.jsocks.socks.Proxy;
+import org.vash.vate.net.sourceforge.jsocks.socks.ProxyMessage;
+import org.vash.vate.net.sourceforge.jsocks.socks.Socks4Message;
+import org.vash.vate.net.sourceforge.jsocks.socks.Socks5Message;
+import org.vash.vate.net.sourceforge.jsocks.socks.SocksException;
+import org.vash.vate.net.sourceforge.jsocks.socks.SocksServerSocket;
+import org.vash.vate.net.sourceforge.jsocks.socks.SocksSocket;
+import org.vash.vate.net.sourceforge.jsocks.socks.UDPRelayServer;
+import org.vash.vate.net.sourceforge.jsocks.socks.server.ServerAuthenticator;
 import org.vash.vate.proxy.client.VTProxy;
 import org.vash.vate.socket.remote.VTRemoteSocketFactory;
-
-import vate.net.sourceforge.jsocks.socks.Proxy;
-import vate.net.sourceforge.jsocks.socks.ProxyMessage;
-import vate.net.sourceforge.jsocks.socks.Socks4Message;
-import vate.net.sourceforge.jsocks.socks.Socks5Message;
-import vate.net.sourceforge.jsocks.socks.SocksException;
-import vate.net.sourceforge.jsocks.socks.SocksServerSocket;
-import vate.net.sourceforge.jsocks.socks.SocksSocket;
-import vate.net.sourceforge.jsocks.socks.UDPRelayServer;
-import vate.net.sourceforge.jsocks.socks.server.ServerAuthenticator;
 
 /**
  * SOCKS4 and SOCKS5 proxy, handles both protocols simultaniously. Implements

@@ -12,12 +12,12 @@ import java.awt.event.KeyEvent;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.vash.vate.com.googlecode.lanterna.terminal.swing.AWTTerminalFrame;
+import org.vash.vate.com.googlecode.lanterna.terminal.swing.AWTTerminalPanel;
 import org.vash.vate.compatibility.VTArrays;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.reflection.VTReflectionUtils;
-
-import vate.com.googlecode.lanterna.terminal.swing.AWTTerminalFrame;
-import vate.com.googlecode.lanterna.terminal.swing.AWTTerminalPanel;
 
 public class VTFontManager
 {

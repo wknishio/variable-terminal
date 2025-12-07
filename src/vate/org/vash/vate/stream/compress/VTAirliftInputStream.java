@@ -3,10 +3,9 @@ package org.vash.vate.stream.compress;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.vash.vate.io.airlift.compress.Decompressor;
 import org.vash.vate.stream.array.VTByteArrayInputStream;
 import org.vash.vate.stream.endian.VTLittleEndianInputStream;
-
-import vate.io.airlift.compress.Decompressor;
 
 public class VTAirliftInputStream extends InputStream
 {

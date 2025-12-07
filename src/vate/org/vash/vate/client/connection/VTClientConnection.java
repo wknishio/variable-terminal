@@ -10,6 +10,7 @@ import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.VTSystem;
 import org.vash.vate.console.VTMainConsole;
+import org.vash.vate.net.jpountz.xxhash.XXHashFactory;
 import org.vash.vate.security.VTArrayComparator;
 import org.vash.vate.security.VTBlake3SecureRandom;
 import org.vash.vate.security.VTBlake3MessageDigest;
@@ -22,8 +23,6 @@ import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
-
-import vate.net.jpountz.xxhash.XXHashFactory;
 
 public class VTClientConnection
 {

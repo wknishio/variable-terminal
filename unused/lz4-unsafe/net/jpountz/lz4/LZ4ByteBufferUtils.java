@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package vate.net.jpountz.lz4;
+package org.vash.vate.net.jpountz.lz4;
 
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,17 +27,17 @@ package vate.net.jpountz.lz4;
  * limitations under the License.
  */
 
-import static vate.net.jpountz.lz4.LZ4Constants.COPY_LENGTH;
-import static vate.net.jpountz.lz4.LZ4Constants.LAST_LITERALS;
-import static vate.net.jpountz.lz4.LZ4Constants.ML_BITS;
-import static vate.net.jpountz.lz4.LZ4Constants.ML_MASK;
-import static vate.net.jpountz.lz4.LZ4Constants.RUN_MASK;
-import static vate.net.jpountz.util.ByteBufferUtils.readByte;
-import static vate.net.jpountz.util.ByteBufferUtils.readInt;
-import static vate.net.jpountz.util.ByteBufferUtils.readLong;
-import static vate.net.jpountz.util.ByteBufferUtils.writeByte;
-import static vate.net.jpountz.util.ByteBufferUtils.writeInt;
-import static vate.net.jpountz.util.ByteBufferUtils.writeLong;
+import static org.vash.vate.net.jpountz.lz4.LZ4Constants.COPY_LENGTH;
+import static org.vash.vate.net.jpountz.lz4.LZ4Constants.LAST_LITERALS;
+import static org.vash.vate.net.jpountz.lz4.LZ4Constants.ML_BITS;
+import static org.vash.vate.net.jpountz.lz4.LZ4Constants.ML_MASK;
+import static org.vash.vate.net.jpountz.lz4.LZ4Constants.RUN_MASK;
+import static org.vash.vate.net.jpountz.util.ByteBufferUtils.readByte;
+import static org.vash.vate.net.jpountz.util.ByteBufferUtils.readInt;
+import static org.vash.vate.net.jpountz.util.ByteBufferUtils.readLong;
+import static org.vash.vate.net.jpountz.util.ByteBufferUtils.writeByte;
+import static org.vash.vate.net.jpountz.util.ByteBufferUtils.writeInt;
+import static org.vash.vate.net.jpountz.util.ByteBufferUtils.writeLong;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package vate.net.jpountz.lz4;
+package org.vash.vate.net.jpountz.lz4;
 
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,15 +27,15 @@ package vate.net.jpountz.lz4;
  * limitations under the License.
  */
 
-import static vate.net.jpountz.lz4.LZ4Constants.HASH_LOG;
-import static vate.net.jpountz.lz4.LZ4Constants.HASH_LOG_64K;
-import static vate.net.jpountz.lz4.LZ4Constants.HASH_LOG_HC;
-import static vate.net.jpountz.lz4.LZ4Constants.LAST_LITERALS;
-import static vate.net.jpountz.lz4.LZ4Constants.MIN_MATCH;
-import static vate.net.jpountz.lz4.LZ4Constants.ML_BITS;
-import static vate.net.jpountz.lz4.LZ4Constants.ML_MASK;
-import static vate.net.jpountz.lz4.LZ4Constants.RUN_MASK;
-import vate.net.jpountz.util.SafeUtils;
+import static org.vash.vate.net.jpountz.lz4.LZ4Constants.HASH_LOG;
+import static org.vash.vate.net.jpountz.lz4.LZ4Constants.HASH_LOG_64K;
+import static org.vash.vate.net.jpountz.lz4.LZ4Constants.HASH_LOG_HC;
+import static org.vash.vate.net.jpountz.lz4.LZ4Constants.LAST_LITERALS;
+import static org.vash.vate.net.jpountz.lz4.LZ4Constants.MIN_MATCH;
+import static org.vash.vate.net.jpountz.lz4.LZ4Constants.ML_BITS;
+import static org.vash.vate.net.jpountz.lz4.LZ4Constants.ML_MASK;
+import static org.vash.vate.net.jpountz.lz4.LZ4Constants.RUN_MASK;
+import org.vash.vate.net.jpountz.util.SafeUtils;
 
 enum LZ4Utils {
   ;

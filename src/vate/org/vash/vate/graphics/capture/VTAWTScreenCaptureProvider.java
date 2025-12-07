@@ -21,13 +21,12 @@ import java.awt.image.DataBufferUShort;
 //import javax.swing.UIManager;
 
 import org.vash.vate.VTSystem;
+import org.vash.vate.com.bric.image.VTARGBPixelGrabber;
 import org.vash.vate.graphics.device.VTGraphicalDeviceResolver;
 import org.vash.vate.graphics.font.VTFontManager;
 import org.vash.vate.graphics.image.VTImageIO;
 import org.vash.vate.graphics.image.VTRectangle;
 import org.vash.vate.reflection.VTReflectionUtils;
-
-import vate.com.bric.image.VTARGBPixelGrabber;
 
 public final class VTAWTScreenCaptureProvider
 {

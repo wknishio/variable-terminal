@@ -12,12 +12,11 @@ import javax.imageio.event.IIOReadUpdateListener;
 import javax.imageio.stream.ImageInputStream;
 import org.vash.vate.VTSystem;
 import org.vash.vate.client.connection.VTClientConnection;
+import org.vash.vate.com.sixlegs.png.iio.*;
 import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.graphics.codec.VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII;
 import org.vash.vate.graphics.image.VTImageIO;
 import org.vash.vate.stream.limit.VTSizedInputStream;
-
-import vate.com.sixlegs.png.iio.*;
 
 public class VTGraphicsLinkClientReader implements Runnable
 {

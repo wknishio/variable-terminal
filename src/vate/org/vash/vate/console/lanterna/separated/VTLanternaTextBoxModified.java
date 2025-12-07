@@ -20,18 +20,18 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import vate.com.googlecode.lanterna.SGR;
-import vate.com.googlecode.lanterna.TerminalPosition;
-import vate.com.googlecode.lanterna.TerminalSize;
-import vate.com.googlecode.lanterna.TerminalTextUtils;
-import vate.com.googlecode.lanterna.graphics.ThemeDefinition;
-import vate.com.googlecode.lanterna.gui2.AbstractInteractableComponent;
-import vate.com.googlecode.lanterna.gui2.Direction;
-import vate.com.googlecode.lanterna.gui2.InteractableRenderer;
-import vate.com.googlecode.lanterna.gui2.ScrollBar;
-import vate.com.googlecode.lanterna.gui2.TextGUIGraphics;
-import vate.com.googlecode.lanterna.input.KeyStroke;
-import vate.com.googlecode.lanterna.input.KeyType;
+import org.vash.vate.com.googlecode.lanterna.SGR;
+import org.vash.vate.com.googlecode.lanterna.TerminalPosition;
+import org.vash.vate.com.googlecode.lanterna.TerminalSize;
+import org.vash.vate.com.googlecode.lanterna.TerminalTextUtils;
+import org.vash.vate.com.googlecode.lanterna.graphics.ThemeDefinition;
+import org.vash.vate.com.googlecode.lanterna.gui2.AbstractInteractableComponent;
+import org.vash.vate.com.googlecode.lanterna.gui2.Direction;
+import org.vash.vate.com.googlecode.lanterna.gui2.InteractableRenderer;
+import org.vash.vate.com.googlecode.lanterna.gui2.ScrollBar;
+import org.vash.vate.com.googlecode.lanterna.gui2.TextGUIGraphics;
+import org.vash.vate.com.googlecode.lanterna.input.KeyStroke;
+import org.vash.vate.com.googlecode.lanterna.input.KeyType;
 
 /**
  * This component keeps a text content that is editable by the user. A TextBox

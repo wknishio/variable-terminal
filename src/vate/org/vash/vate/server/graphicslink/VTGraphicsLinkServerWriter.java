@@ -21,6 +21,7 @@ import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.stream.ImageOutputStream;
 
 import org.vash.vate.VTSystem;
+import org.vash.vate.com.pngencoder.PngEncoder;
 import org.vash.vate.graphics.capture.VTAWTScreenCaptureProvider;
 import org.vash.vate.graphics.codec.VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII;
 import org.vash.vate.graphics.image.VTImageDataUtils;
@@ -32,8 +33,6 @@ import org.vash.vate.stream.array.VTByteArrayOutputStream;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import vate.com.pngencoder.PngEncoder;
 
 public class VTGraphicsLinkServerWriter implements Runnable
 {

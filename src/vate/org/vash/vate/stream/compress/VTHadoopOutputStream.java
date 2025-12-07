@@ -3,7 +3,7 @@ package org.vash.vate.stream.compress;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import vate.io.airlift.compress.hadoop.HadoopOutputStream;
+import org.vash.vate.io.airlift.compress.hadoop.HadoopOutputStream;
 
 public class VTHadoopOutputStream extends OutputStream
 {

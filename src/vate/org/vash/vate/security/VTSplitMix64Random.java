@@ -1,6 +1,6 @@
 package org.vash.vate.security;
 
-import vate.org.apache.commons.rng.core.source64.SplitMix64;
+import org.vash.vate.org.apache.commons.rng.core.source64.SplitMix64;
 
 public class VTSplitMix64Random extends VTLongProviderRandom
 {

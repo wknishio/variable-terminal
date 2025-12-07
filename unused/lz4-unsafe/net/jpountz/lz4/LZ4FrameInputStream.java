@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package vate.net.jpountz.lz4;
+package org.vash.vate.net.jpountz.lz4;
 
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,8 +27,8 @@ package vate.net.jpountz.lz4;
  * limitations under the License.
  */
 
-import vate.net.jpountz.xxhash.XXHash32;
-import vate.net.jpountz.xxhash.XXHashFactory;
+import org.vash.vate.net.jpountz.xxhash.XXHash32;
+import org.vash.vate.net.jpountz.xxhash.XXHashFactory;
 
 import java.io.FilterInputStream;
 import java.io.IOException;

@@ -12,13 +12,12 @@ import java.io.StringReader;
 import org.vash.vate.VTSystem;
 import org.vash.vate.client.connection.VTClientConnection;
 import org.vash.vate.client.session.VTClientSession;
+import org.vash.vate.com.martiansoftware.jsap.CommandLineTokenizerMKII;
 import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.runtime.VTRuntimeExit;
 import org.vash.vate.stream.pipe.VTPipedInputStream;
 import org.vash.vate.stream.pipe.VTPipedOutputStream;
 import org.vash.vate.task.VTTask;
-
-import vate.com.martiansoftware.jsap.CommandLineTokenizerMKII;
 
 public class VTClientRemoteConsoleWriter extends VTTask
 {

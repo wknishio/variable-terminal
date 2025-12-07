@@ -2,7 +2,7 @@ package org.vash.vate.security;
 
 import java.security.MessageDigest;
 
-import vate.org.bouncycastle.crypto.params.Blake3Parameters;
+import org.vash.vate.org.bouncycastle.crypto.params.Blake3Parameters;
 
 public class VTBlake3MessageDigest extends MessageDigest
 {

@@ -31,15 +31,14 @@ import java.util.Map.Entry;
 
 import org.vash.vate.VTSystem;
 import org.vash.vate.filesystem.VTRootList;
+import org.vash.vate.net.jpountz.xxhash.XXHashFactory;
+import org.vash.vate.org.apache.commons.codec.binary.Base64;
+import org.vash.vate.org.apache.commons.codec.digest.DigestUtils;
+import org.vash.vate.org.bouncycastle.util.encoders.Hex;
 import org.vash.vate.parser.VTConfigurationProperties;
 import org.vash.vate.proxy.client.VTProxy;
 import org.vash.vate.security.VTXXHash64MessageDigest;
 import org.vash.vate.stream.array.VTByteArrayInputStream;
-
-import vate.net.jpountz.xxhash.XXHashFactory;
-import vate.org.apache.commons.codec.binary.Base64;
-import vate.org.apache.commons.codec.digest.DigestUtils;
-import vate.org.bouncycastle.util.encoders.Hex;
 
 /**
  * A simple, tiny, nicely embeddable HTTP 1.0 (partially 1.1) server in Java

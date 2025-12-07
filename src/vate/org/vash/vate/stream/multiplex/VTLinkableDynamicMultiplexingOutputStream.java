@@ -12,14 +12,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.vash.vate.VTSystem;
+import org.vash.vate.engineering.clientside.throttle.NanoThrottle;
 import org.vash.vate.security.VTSplitMix64Random;
 import org.vash.vate.security.VTXXHash64MessageDigest;
 import org.vash.vate.stream.array.VTByteArrayOutputStream;
 import org.vash.vate.stream.compress.VTCompressorSelector;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
 import org.vash.vate.stream.limit.VTThrottledOutputStream;
-
-import vate.engineering.clientside.throttle.NanoThrottle;
 
 public final class VTLinkableDynamicMultiplexingOutputStream
 {

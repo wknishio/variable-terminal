@@ -9,28 +9,27 @@ import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
 import org.vash.vate.VTSystem;
+import org.vash.vate.com.jcraft.jzlib.JZlib;
+import org.vash.vate.com.jcraft.jzlib.ZInputStream;
+import org.vash.vate.com.jcraft.jzlib.ZOutputStream;
+import org.vash.vate.io.airlift.compress.zstd.ZstdCompressor;
+import org.vash.vate.io.airlift.compress.zstd.ZstdDecompressor;
+import org.vash.vate.io.airlift.compress.zstd.ZstdHadoopInputStream;
+import org.vash.vate.io.airlift.compress.zstd.ZstdHadoopOutputStream;
+import org.vash.vate.io.airlift.compress.zstd.ZstdInputStream;
+import org.vash.vate.io.airlift.compress.zstd.ZstdOutputStream;
+import org.vash.vate.net.jpountz.lz4.LZ4BlockInputStream;
+import org.vash.vate.net.jpountz.lz4.LZ4BlockOutputStream;
+import org.vash.vate.net.jpountz.lz4.LZ4Factory;
+import org.vash.vate.net.jpountz.lz4.LZ4FrameInputStream;
+import org.vash.vate.net.jpountz.lz4.LZ4FrameOutputStream;
+import org.vash.vate.net.jpountz.lz4.LZ4FrameOutputStream.BLOCKSIZE;
+import org.vash.vate.net.jpountz.xxhash.XXHashFactory;
+import org.vash.vate.org.iq80.snappy.SnappyFramedInputStream;
+import org.vash.vate.org.iq80.snappy.SnappyFramedOutputStream;
 import org.vash.vate.stream.array.VTByteArrayOutputStream;
 import org.vash.vate.stream.filter.VTBlockSplitOutputStream;
 import org.vash.vate.stream.filter.VTBufferedOutputStream;
-
-import vate.com.jcraft.jzlib.JZlib;
-import vate.com.jcraft.jzlib.ZInputStream;
-import vate.com.jcraft.jzlib.ZOutputStream;
-import vate.io.airlift.compress.zstd.ZstdCompressor;
-import vate.io.airlift.compress.zstd.ZstdDecompressor;
-import vate.io.airlift.compress.zstd.ZstdHadoopInputStream;
-import vate.io.airlift.compress.zstd.ZstdHadoopOutputStream;
-import vate.io.airlift.compress.zstd.ZstdInputStream;
-import vate.io.airlift.compress.zstd.ZstdOutputStream;
-import vate.net.jpountz.lz4.LZ4BlockInputStream;
-import vate.net.jpountz.lz4.LZ4BlockOutputStream;
-import vate.net.jpountz.lz4.LZ4Factory;
-import vate.net.jpountz.lz4.LZ4FrameInputStream;
-import vate.net.jpountz.lz4.LZ4FrameOutputStream;
-import vate.net.jpountz.lz4.LZ4FrameOutputStream.BLOCKSIZE;
-import vate.net.jpountz.xxhash.XXHashFactory;
-import vate.org.iq80.snappy.SnappyFramedInputStream;
-import vate.org.iq80.snappy.SnappyFramedOutputStream;
 
 @SuppressWarnings(
 { "unused", "deprecation" })

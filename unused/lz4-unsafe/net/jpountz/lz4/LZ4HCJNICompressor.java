@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package vate.net.jpountz.lz4;
+package org.vash.vate.net.jpountz.lz4;
 
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,12 +27,12 @@ package vate.net.jpountz.lz4;
  * limitations under the License.
  */
 
-import static vate.net.jpountz.lz4.LZ4Constants.DEFAULT_COMPRESSION_LEVEL;
+import static org.vash.vate.net.jpountz.lz4.LZ4Constants.DEFAULT_COMPRESSION_LEVEL;
 
 import java.nio.ByteBuffer;
 
-import vate.net.jpountz.util.ByteBufferUtils;
-import vate.net.jpountz.util.SafeUtils;
+import org.vash.vate.net.jpountz.util.ByteBufferUtils;
+import org.vash.vate.net.jpountz.util.SafeUtils;
 
 /**
  * High compression {@link LZ4Compressor}s implemented with JNI bindings to the

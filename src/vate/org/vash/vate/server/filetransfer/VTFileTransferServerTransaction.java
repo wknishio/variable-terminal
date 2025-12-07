@@ -12,13 +12,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.vash.vate.VTSystem;
+import org.vash.vate.com.martiansoftware.jsap.CommandLineTokenizerMKII;
 import org.vash.vate.filesystem.VTFileUtils;
+import org.vash.vate.net.jpountz.xxhash.XXHashFactory;
 import org.vash.vate.security.VTBlake3MessageDigest;
 import org.vash.vate.security.VTXXHash64MessageDigest;
 import org.vash.vate.stream.compress.VTCompressorSelector;
-
-import vate.com.martiansoftware.jsap.CommandLineTokenizerMKII;
-import vate.net.jpountz.xxhash.XXHashFactory;
 
 public class VTFileTransferServerTransaction implements Runnable
 {

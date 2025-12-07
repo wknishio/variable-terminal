@@ -23,6 +23,7 @@ import javax.imageio.ImageWriter;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.stream.ImageOutputStream;
 import org.vash.vate.VTSystem;
+import org.vash.vate.com.pngencoder.PngEncoder;
 import org.vash.vate.graphics.capture.VTAWTScreenCaptureProvider;
 import org.vash.vate.graphics.device.VTGraphicalDeviceResolver;
 import org.vash.vate.graphics.image.VTImageIO;
@@ -32,8 +33,6 @@ import org.vash.vate.task.VTTask;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import vate.com.pngencoder.PngEncoder;
 
 // import org.eclipse.swt.SWT;
 

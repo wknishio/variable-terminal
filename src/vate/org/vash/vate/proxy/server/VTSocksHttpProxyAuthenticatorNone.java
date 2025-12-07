@@ -7,10 +7,9 @@ import java.io.PushbackInputStream;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 
+import org.vash.vate.net.sourceforge.jsocks.socks.server.ServerAuthenticator;
+import org.vash.vate.net.sourceforge.jsocks.socks.server.ServerAuthenticatorNone;
 import org.vash.vate.proxy.client.VTProxy;
-
-import vate.net.sourceforge.jsocks.socks.server.ServerAuthenticator;
-import vate.net.sourceforge.jsocks.socks.server.ServerAuthenticatorNone;
 
 public class VTSocksHttpProxyAuthenticatorNone extends ServerAuthenticatorNone
 {
