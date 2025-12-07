@@ -27,7 +27,7 @@ import org.apache.commons.loggingvt.Log;
 
 
 /**
- * <p>Implementation of the <code>org.apache.commons.logging.Log</code>
+ * <p>Implementation of the <code>org.apache.commons.loggingvt.Log</code>
  * interface that wraps the standard JDK logging mechanisms that were
  * introduced in the Merlin release (JDK 1.4).</p>
  *

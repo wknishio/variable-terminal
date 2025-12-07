@@ -39,16 +39,16 @@ import org.apache.commons.loggingvt.LogFactory;
  * class to instantiate a wrapper for.</p>
  * <ul>
  * <li>Use a factory configuration attribute named
- *     <code>org.apache.commons.logging.Log</code> to identify the
+ *     <code>org.apache.commons.loggingvt.Log</code> to identify the
  *     requested implementation class.</li>
- * <li>Use the <code>org.apache.commons.logging.Log</code> system property
+ * <li>Use the <code>org.apache.commons.loggingvt.Log</code> system property
  *     to identify the requested implementation class.</li>
  * <li>If <em>Log4J</em> is available, return an instance of
- *     <code>org.apache.commons.logging.impl.Log4JLogger</code>.</li>
+ *     <code>org.apache.commons.loggingvt.impl.Log4JLogger</code>.</li>
  * <li>If <em>JDK 1.4 or later</em> is available, return an instance of
- *     <code>org.apache.commons.logging.impl.Jdk14Logger</code>.</li>
+ *     <code>org.apache.commons.loggingvt.impl.Jdk14Logger</code>.</li>
  * <li>Otherwise, return an instance of
- *     <code>org.apache.commons.logging.impl.SimpleLog</code>.</li>
+ *     <code>org.apache.commons.loggingvt.impl.SimpleLog</code>.</li>
  * </ul>
  *
  * <p>If the selected {@link Log} implementation class has a
@@ -72,15 +72,15 @@ public class LogFactoryImpl extends LogFactory {
 
 
     /** Log4JLogger class name */
-    private static final String LOGGING_IMPL_LOG4J_LOGGER = "org.apache.commons.logging.impl.Log4JLogger";
+    private static final String LOGGING_IMPL_LOG4J_LOGGER = "org.apache.commons.loggingvt.impl.Log4JLogger";
     /** Jdk14Logger class name */
-    private static final String LOGGING_IMPL_JDK14_LOGGER = "org.apache.commons.logging.impl.Jdk14Logger";
+    private static final String LOGGING_IMPL_JDK14_LOGGER = "org.apache.commons.loggingvt.impl.Jdk14Logger";
     /** Jdk13LumberjackLogger class name */
-    private static final String LOGGING_IMPL_LUMBERJACK_LOGGER = "org.apache.commons.logging.impl.Jdk13LumberjackLogger";
+    private static final String LOGGING_IMPL_LUMBERJACK_LOGGER = "org.apache.commons.loggingvt.impl.Jdk13LumberjackLogger";
     /** SimpleLog class name */
-    private static final String LOGGING_IMPL_SIMPLE_LOGGER = "org.apache.commons.logging.impl.SimpleLog";
+    private static final String LOGGING_IMPL_SIMPLE_LOGGER = "org.apache.commons.loggingvt.impl.SimpleLog";
 
-    private static final String PKG_IMPL="org.apache.commons.logging.impl.";
+    private static final String PKG_IMPL="org.apache.commons.loggingvt.impl.";
     private static final int PKG_LEN = PKG_IMPL.length();
     
     // ----------------------------------------------------------- Constructors
@@ -103,11 +103,11 @@ public class LogFactoryImpl extends LogFactory {
 
 
     /**
-     * The name (<code>org.apache.commons.logging.Log</code>) of the system 
+     * The name (<code>org.apache.commons.loggingvt.Log</code>) of the system 
      * property identifying our {@link Log} implementation class.
      */
     public static final String LOG_PROPERTY =
-        "org.apache.commons.logging.Log";
+        "org.apache.commons.loggingvt.Log";
 
 
     /**
@@ -115,10 +115,10 @@ public class LogFactoryImpl extends LogFactory {
      * old versions of JCL.
      */
     protected static final String LOG_PROPERTY_OLD =
-        "org.apache.commons.logging.log";
+        "org.apache.commons.loggingvt.log";
 
     /**
-     * The name (<code>org.apache.commons.logging.Log.allowFlawedContext</code>) 
+     * The name (<code>org.apache.commons.loggingvt.Log.allowFlawedContext</code>) 
      * of the system property which can be set true/false to
      * determine system behaviour when a bad context-classloader is encountered.
      * When set to false, a LogConfigurationException is thrown if
@@ -130,10 +130,10 @@ public class LogFactoryImpl extends LogFactory {
      * See also method setAttribute.
      */
     public static final String ALLOW_FLAWED_CONTEXT_PROPERTY = 
-        "org.apache.commons.logging.Log.allowFlawedContext";
+        "org.apache.commons.loggingvt.Log.allowFlawedContext";
 
     /**
-     * The name (<code>org.apache.commons.logging.Log.allowFlawedDiscovery</code>) 
+     * The name (<code>org.apache.commons.loggingvt.Log.allowFlawedDiscovery</code>) 
      * of the system property which can be set true/false to
      * determine system behaviour when a bad logging adapter class is
      * encountered during logging discovery. When set to false, an
@@ -146,10 +146,10 @@ public class LogFactoryImpl extends LogFactory {
      * See also method setAttribute.
      */
     public static final String ALLOW_FLAWED_DISCOVERY_PROPERTY = 
-        "org.apache.commons.logging.Log.allowFlawedDiscovery";
+        "org.apache.commons.loggingvt.Log.allowFlawedDiscovery";
 
     /**
-     * The name (<code>org.apache.commons.logging.Log.allowFlawedHierarchy</code>) 
+     * The name (<code>org.apache.commons.loggingvt.Log.allowFlawedHierarchy</code>) 
      * of the system property which can be set true/false to
      * determine system behaviour when a logging adapter class is
      * encountered which has bound to the wrong Log class implementation.
@@ -162,7 +162,7 @@ public class LogFactoryImpl extends LogFactory {
      * See also method setAttribute.
      */
     public static final String ALLOW_FLAWED_HIERARCHY_PROPERTY = 
-        "org.apache.commons.logging.Log.allowFlawedHierarchy";
+        "org.apache.commons.loggingvt.Log.allowFlawedHierarchy";
 
 
     /**
@@ -175,9 +175,9 @@ public class LogFactoryImpl extends LogFactory {
      */
     private static final String[] classesToDiscover = {
             LOGGING_IMPL_LOG4J_LOGGER,
-            "org.apache.commons.logging.impl.Jdk14Logger",
-            "org.apache.commons.logging.impl.Jdk13LumberjackLogger",
-            "org.apache.commons.logging.impl.SimpleLog"
+            "org.apache.commons.loggingvt.impl.Jdk14Logger",
+            "org.apache.commons.loggingvt.impl.Jdk13LumberjackLogger",
+            "org.apache.commons.loggingvt.impl.SimpleLog"
     };
     
 
@@ -554,7 +554,7 @@ public class LogFactoryImpl extends LogFactory {
     protected boolean isJdk13LumberjackAvailable() {
         return isLogLibraryAvailable(
                 "Jdk13Lumberjack",
-                "org.apache.commons.logging.impl.Jdk13LumberjackLogger");
+                "org.apache.commons.loggingvt.impl.Jdk13LumberjackLogger");
     }
 
 
@@ -570,7 +570,7 @@ public class LogFactoryImpl extends LogFactory {
     protected boolean isJdk14Available() {
         return isLogLibraryAvailable(
                 "Jdk14",
-                "org.apache.commons.logging.impl.Jdk14Logger");
+                "org.apache.commons.loggingvt.impl.Jdk14Logger");
     }
 
 

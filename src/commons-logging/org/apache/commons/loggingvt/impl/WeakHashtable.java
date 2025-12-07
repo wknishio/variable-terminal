@@ -45,7 +45,7 @@ import java.util.*;
  * to call {@link org.apache.commons.loggingvt.LogFactory#release(ClassLoader) LogFactory.release(ClassLoader)}.
  * </p>
  *
- * <p><code>org.apache.commons.logging.LogFactory</code> checks whether this class
+ * <p><code>org.apache.commons.loggingvt.LogFactory</code> checks whether this class
  * can be supported by the current JVM, and if so then uses it to store
  * references to the <code>LogFactory</code> implementationd it loads 
  * (rather than using a standard Hashtable instance). 

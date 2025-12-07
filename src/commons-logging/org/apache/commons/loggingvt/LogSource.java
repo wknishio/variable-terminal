@@ -33,18 +33,18 @@ import org.apache.commons.loggingvt.impl.NoOpLog;
  * algorithm:</p>
  * <ul>
  * <li>If Log4J is available, return an instance of
- *     <code>org.apache.commons.logging.impl.Log4JLogger</code>.</li>
+ *     <code>org.apache.commons.loggingvt.impl.Log4JLogger</code>.</li>
  * <li>If JDK 1.4 or later is available, return an instance of
- *     <code>org.apache.commons.logging.impl.Jdk14Logger</code>.</li>
+ *     <code>org.apache.commons.loggingvt.impl.Jdk14Logger</code>.</li>
  * <li>Otherwise, return an instance of
- *     <code>org.apache.commons.logging.impl.NoOpLog</code>.</li>
+ *     <code>org.apache.commons.loggingvt.impl.NoOpLog</code>.</li>
  * </ul>
  *
  * <p>You can change the default behavior in one of two ways:</p>
  * <ul>
  * <li>On the startup command line, set the system property
- *     <code>org.apache.commons.logging.log</code> to the name of the
- *     <code>org.apache.commons.logging.Log</code> implementation class
+ *     <code>org.apache.commons.loggingvt.log</code> to the name of the
+ *     <code>org.apache.commons.loggingvt.Log</code> implementation class
  *     you want to use.</li>
  * <li>At runtime, call <code>LogSource.setLogImplementation()</code>.</li>
  * </ul>
@@ -89,7 +89,7 @@ public class LogSource {
         // Is JDK 1.4 Logging Available?
         try {
             if ((null != Class.forName("java.util.logging.Logger")) &&
-                (null != Class.forName("org.apache.commons.logging.impl.Jdk14Logger"))) {
+                (null != Class.forName("org.apache.commons.loggingvt.impl.Jdk14Logger"))) {
                 jdk14IsAvailable = true;
             } else {
                 jdk14IsAvailable = false;
@@ -101,9 +101,9 @@ public class LogSource {
         // Set the default Log implementation
         String name = null;
         try {
-            name = System.getProperty("org.apache.commons.logging.log");
+            name = System.getProperty("org.apache.commons.loggingvt.log");
             if (name == null) {
-                name = System.getProperty("org.apache.commons.logging.Log");
+                name = System.getProperty("org.apache.commons.loggingvt.Log");
             }
         } catch (Throwable t) {
         }
@@ -113,7 +113,7 @@ public class LogSource {
             } catch (Throwable t) {
                 try {
                     setLogImplementation
-                            ("org.apache.commons.logging.impl.NoOpLog");
+                            ("org.apache.commons.loggingvt.impl.NoOpLog");
                 } catch (Throwable u) {
                     ;
                 }
@@ -122,18 +122,18 @@ public class LogSource {
             try {
                 if (log4jIsAvailable) {
                     setLogImplementation
-                            ("org.apache.commons.logging.impl.Log4JLogger");
+                            ("org.apache.commons.loggingvt.impl.Log4JLogger");
                 } else if (jdk14IsAvailable) {
                     setLogImplementation
-                            ("org.apache.commons.logging.impl.Jdk14Logger");
+                            ("org.apache.commons.loggingvt.impl.Jdk14Logger");
                 } else {
                     setLogImplementation
-                            ("org.apache.commons.logging.impl.NoOpLog");
+                            ("org.apache.commons.loggingvt.impl.NoOpLog");
                 }
             } catch (Throwable t) {
                 try {
                     setLogImplementation
-                            ("org.apache.commons.logging.impl.NoOpLog");
+                            ("org.apache.commons.loggingvt.impl.NoOpLog");
                 } catch (Throwable u) {
                     ;
                 }
@@ -214,15 +214,15 @@ public class LogSource {
      * <p>
      * The specific {@link Log} implementation returned
      * is determined by the value of the
-     * <tt>org.apache.commons.logging.log</tt> property.
-     * The value of <tt>org.apache.commons.logging.log</tt> may be set to
+     * <tt>org.apache.commons.loggingvt.log</tt> property.
+     * The value of <tt>org.apache.commons.loggingvt.log</tt> may be set to
      * the fully specified name of a class that implements
      * the {@link Log} interface.  This class must also
      * have a public constructor that takes a single
      * {@link String} argument (containing the <i>name</i>
      * of the {@link Log} to be constructed.
      * <p>
-     * When <tt>org.apache.commons.logging.log</tt> is not set,
+     * When <tt>org.apache.commons.loggingvt.log</tt> is not set,
      * or when no corresponding class can be found,
      * this method will return a Log4JLogger
      * if the log4j Logger class is

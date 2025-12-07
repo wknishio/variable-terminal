@@ -93,20 +93,20 @@ public abstract class LogFactory {
     public static final String TCCL_KEY = "use_tccl";
 
     /**
-     * The name (<code>org.apache.commons.logging.LogFactory</code>) of the property 
+     * The name (<code>org.apache.commons.loggingvt.LogFactory</code>) of the property 
      * used to identify the LogFactory implementation
      * class name. This can be used as a system property, or as an entry in a
      * configuration properties file.
      */
     public static final String FACTORY_PROPERTY =
-        "org.apache.commons.logging.LogFactory";
+        "org.apache.commons.loggingvt.LogFactory";
 
     /**
      * The fully qualified class name of the fallback <code>LogFactory</code>
      * implementation class to use, if no other can be found.
      */
     public static final String FACTORY_DEFAULT =
-        "org.apache.commons.logging.impl.LogFactoryImpl";
+        "org.apache.commons.loggingvt.impl.LogFactoryImpl";
 
     /**
      * The name (<code>commons-logging.properties</code>) of the properties file to search for.
@@ -120,10 +120,10 @@ public abstract class LogFactory {
      * 
      */
     protected static final String SERVICE_ID =
-        "META-INF/services/org.apache.commons.logging.LogFactory";
+        "META-INF/services/org.apache.commons.loggingvt.LogFactory";
 
     /**
-     * The name (<code>org.apache.commons.logging.diagnostics.dest</code>) 
+     * The name (<code>org.apache.commons.loggingvt.diagnostics.dest</code>) 
      * of the property used to enable internal commons-logging
      * diagnostic output, in order to get information on what logging
      * implementations are being discovered, what classloaders they 
@@ -138,7 +138,7 @@ public abstract class LogFactory {
      * configurations and should not be set in normal production use.
      */
     public static final String DIAGNOSTICS_DEST_PROPERTY =
-        "org.apache.commons.logging.diagnostics.dest";
+        "org.apache.commons.loggingvt.diagnostics.dest";
 
     /**
      * When null (the usual case), no diagnostic output will be
@@ -156,7 +156,7 @@ public abstract class LogFactory {
     
     /**
      * <p>Setting this system property 
-     * (<code>org.apache.commons.logging.LogFactory.HashtableImpl</code>) 
+     * (<code>org.apache.commons.loggingvt.LogFactory.HashtableImpl</code>) 
      * value allows the <code>Hashtable</code> used to store
      * classloaders to be substituted by an alternative implementation.
      * </p>
@@ -176,12 +176,12 @@ public abstract class LogFactory {
      *  &lt;java classname="${test.runner}" fork="yes" failonerror="${test.failonerror}"&gt;
      *     ...
      *     &lt;sysproperty 
-     *        key="org.apache.commons.logging.LogFactory.HashtableImpl"
-     *        value="org.apache.commons.logging.AltHashtable"/&gt;
+     *        key="org.apache.commons.loggingvt.LogFactory.HashtableImpl"
+     *        value="org.apache.commons.loggingvt.AltHashtable"/&gt;
      *  &lt;/java&gt;
      * </pre></code>
      * will mean that <code>LogFactory</code> will load an instance of
-     * <code>org.apache.commons.logging.AltHashtable</code>.
+     * <code>org.apache.commons.loggingvt.AltHashtable</code>.
      * </p>
      * <p>
      * A typical use case is to allow a custom
@@ -191,10 +191,10 @@ public abstract class LogFactory {
      * </p>
      */
     public static final String HASHTABLE_IMPLEMENTATION_PROPERTY =
-        "org.apache.commons.logging.LogFactory.HashtableImpl";
+        "org.apache.commons.loggingvt.LogFactory.HashtableImpl";
     /** Name used to load the weak hashtable implementation by names */
     private static final String WEAK_HASHTABLE_CLASSNAME = 
-        "org.apache.commons.logging.impl.WeakHashtable";
+        "org.apache.commons.loggingvt.impl.WeakHashtable";
 
     /**
      * A reference to the classloader that loaded this class. This is the
@@ -393,7 +393,7 @@ public abstract class LogFactory {
      * instance, using the following ordered lookup procedure to determine
      * the name of the implementation class to be loaded.</p>
      * <ul>
-     * <li>The <code>org.apache.commons.logging.LogFactory</code> system
+     * <li>The <code>org.apache.commons.loggingvt.LogFactory</code> system
      *     property.</li>
      * <li>The JDK 1.3 Service Discovery mechanism</li>
      * <li>Use the properties file <code>commons-logging.properties</code>
@@ -402,7 +402,7 @@ public abstract class LogFactory {
      *     contains the fully qualified name of the implementation class
      *     with the key being the system property defined above.</li>
      * <li>Fall back to a default implementation class
-     *     (<code>org.apache.commons.logging.impl.LogFactoryImpl</code>).</li>
+     *     (<code>org.apache.commons.loggingvt.impl.LogFactoryImpl</code>).</li>
      * </ul>
      *
      * <p><em>NOTE</em> - If the properties file method of identifying the
@@ -1299,7 +1299,7 @@ public abstract class LogFactory {
                 } else {
                     logHierarchy("[CUSTOM LOG FACTORY] ", logFactoryClassLoader);
                     Class factoryFromCustomLoader
-                        = Class.forName("org.apache.commons.logging.LogFactory", false, logFactoryClassLoader);
+                        = Class.forName("org.apache.commons.loggingvt.LogFactory", false, logFactoryClassLoader);
                     implementsLogFactory = factoryFromCustomLoader.isAssignableFrom(logFactoryClass);
                     if (implementsLogFactory) {
                         logDiagnostic("[CUSTOM LOG FACTORY] " + logFactoryClass.getName()

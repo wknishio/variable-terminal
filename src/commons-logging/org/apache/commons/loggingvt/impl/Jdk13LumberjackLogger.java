@@ -32,7 +32,7 @@ import java.io.StringWriter;
 
 
 /**
- * <p>Implementation of the <code>org.apache.commons.logging.Log</code>
+ * <p>Implementation of the <code>org.apache.commons.loggingvt.Log</code>
  * interface that wraps the standard JDK logging mechanisms that are
  * available in SourceForge's Lumberjack for JDKs prior to 1.4.</p>
  *
