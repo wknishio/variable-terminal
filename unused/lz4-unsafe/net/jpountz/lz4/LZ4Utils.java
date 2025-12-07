@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package net.jpountz.lz4;
+package net.jpountz.lz4vt;
 
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,15 +27,15 @@ package net.jpountz.lz4;
  * limitations under the License.
  */
 
-import static net.jpountz.lz4.LZ4Constants.HASH_LOG;
-import static net.jpountz.lz4.LZ4Constants.HASH_LOG_64K;
-import static net.jpountz.lz4.LZ4Constants.HASH_LOG_HC;
-import static net.jpountz.lz4.LZ4Constants.LAST_LITERALS;
-import static net.jpountz.lz4.LZ4Constants.MIN_MATCH;
-import static net.jpountz.lz4.LZ4Constants.ML_BITS;
-import static net.jpountz.lz4.LZ4Constants.ML_MASK;
-import static net.jpountz.lz4.LZ4Constants.RUN_MASK;
-import net.jpountz.util.SafeUtils;
+import static net.jpountz.lz4vt.LZ4Constants.HASH_LOG;
+import static net.jpountz.lz4vt.LZ4Constants.HASH_LOG_64K;
+import static net.jpountz.lz4vt.LZ4Constants.HASH_LOG_HC;
+import static net.jpountz.lz4vt.LZ4Constants.LAST_LITERALS;
+import static net.jpountz.lz4vt.LZ4Constants.MIN_MATCH;
+import static net.jpountz.lz4vt.LZ4Constants.ML_BITS;
+import static net.jpountz.lz4vt.LZ4Constants.ML_MASK;
+import static net.jpountz.lz4vt.LZ4Constants.RUN_MASK;
+import net.jpountz.utilvt.SafeUtils;
 
 enum LZ4Utils {
   ;

@@ -18,7 +18,7 @@ import org.vash.vate.stream.pipe.VTPipedInputStream;
 import org.vash.vate.stream.pipe.VTPipedOutputStream;
 import org.vash.vate.task.VTTask;
 
-import com.martiansoftware.jsap.CommandLineTokenizerMKII;
+import com.martiansoftware.jsapvt.CommandLineTokenizerMKII;
 
 public class VTClientRemoteConsoleWriter extends VTTask
 {

@@ -40,7 +40,7 @@ import org.vash.vate.shell.adapter.VTShellProcessor;
 import org.vash.vate.tunnel.connection.VTTunnelConnection;
 import org.vash.vate.tunnel.connection.VTTunnelConnectionHandler;
 
-import com.martiansoftware.jsap.CommandLineTokenizerMKII;
+import com.martiansoftware.jsapvt.CommandLineTokenizerMKII;
 
 public class VTServerSession
 {

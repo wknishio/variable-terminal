@@ -3,9 +3,9 @@ package org.vash.vate.ftp.server;
 import java.io.File;
 import java.net.InetAddress;
 
-import com.guichaguri.minimalftp.FTPConnection;
-import com.guichaguri.minimalftp.api.IFileSystem;
-import com.guichaguri.minimalftp.api.IUserAuthenticator;
+import com.guichaguri.minimalftpvt.FTPConnection;
+import com.guichaguri.minimalftpvt.api.IFileSystem;
+import com.guichaguri.minimalftpvt.api.IUserAuthenticator;
 
 public class VTFTPAuthenticator implements IUserAuthenticator<File>
 {

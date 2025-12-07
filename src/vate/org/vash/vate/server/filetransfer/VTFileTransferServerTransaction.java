@@ -17,8 +17,9 @@ import org.vash.vate.security.VTBlake3MessageDigest;
 import org.vash.vate.security.VTXXHash64MessageDigest;
 import org.vash.vate.stream.compress.VTCompressorSelector;
 
-import com.martiansoftware.jsap.CommandLineTokenizerMKII;
-import net.jpountz.xxhash.XXHashFactory;
+import com.martiansoftware.jsapvt.CommandLineTokenizerMKII;
+
+import net.jpountz.xxhashvt.XXHashFactory;
 
 public class VTFileTransferServerTransaction implements Runnable
 {

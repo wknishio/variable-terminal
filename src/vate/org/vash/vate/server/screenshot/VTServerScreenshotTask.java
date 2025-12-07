@@ -32,7 +32,8 @@ import org.vash.vate.task.VTTask;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import com.pngencoder.PngEncoder;
+
+import com.pngencodervt.PngEncoder;
 
 // import org.eclipse.swt.SWT;
 

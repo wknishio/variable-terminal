@@ -23,7 +23,7 @@ import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 
-import net.jpountz.xxhash.XXHashFactory;
+import net.jpountz.xxhashvt.XXHashFactory;
 
 public class VTClientConnection
 {

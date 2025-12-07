@@ -13,17 +13,17 @@
  *******************************************************************************/
 // Auto-generated: DO NOT EDIT
 
-package net.jpountz.lz4;
+package net.jpountz.lz4vt;
 
-import static net.jpountz.lz4.LZ4Constants.*;
-import static net.jpountz.lz4.LZ4Utils.*;
+import static net.jpountz.lz4vt.LZ4Constants.*;
+import static net.jpountz.lz4vt.LZ4Utils.*;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
-import net.jpountz.lz4.LZ4Utils.Match;
-import net.jpountz.util.ByteBufferUtils;
-import net.jpountz.util.UnsafeUtils;
+import net.jpountz.lz4vt.LZ4Utils.Match;
+import net.jpountz.utilvt.ByteBufferUtils;
+import net.jpountz.utilvt.UnsafeUtils;
 
 /**
  * High compression compressor.

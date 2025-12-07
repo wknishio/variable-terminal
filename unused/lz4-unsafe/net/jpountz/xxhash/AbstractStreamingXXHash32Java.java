@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package net.jpountz.xxhash;
+package net.jpountz.xxhashvt;
 
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,8 +27,8 @@ package net.jpountz.xxhash;
  * limitations under the License.
  */
 
-import static net.jpountz.xxhash.XXHashConstants.PRIME1;
-import static net.jpountz.xxhash.XXHashConstants.PRIME2;
+import static net.jpountz.xxhashvt.XXHashConstants.PRIME1;
+import static net.jpountz.xxhashvt.XXHashConstants.PRIME2;
 
 abstract class AbstractStreamingXXHash32Java extends StreamingXXHash32 {
 

@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package net.jpountz.lz4;
+package net.jpountz.lz4vt;
 
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,13 +27,13 @@ package net.jpountz.lz4;
  * limitations under the License.
  */
 
-import static net.jpountz.lz4.LZ4BlockOutputStream.COMPRESSION_LEVEL_BASE;
-import static net.jpountz.lz4.LZ4BlockOutputStream.COMPRESSION_METHOD_LZ4;
-import static net.jpountz.lz4.LZ4BlockOutputStream.COMPRESSION_METHOD_RAW;
-import static net.jpountz.lz4.LZ4BlockOutputStream.DEFAULT_SEED;
-import static net.jpountz.lz4.LZ4BlockOutputStream.HEADER_LENGTH;
-import static net.jpountz.lz4.LZ4BlockOutputStream.MAGIC;
-import static net.jpountz.lz4.LZ4BlockOutputStream.MAGIC_LENGTH;
+import static net.jpountz.lz4vt.LZ4BlockOutputStream.COMPRESSION_LEVEL_BASE;
+import static net.jpountz.lz4vt.LZ4BlockOutputStream.COMPRESSION_METHOD_LZ4;
+import static net.jpountz.lz4vt.LZ4BlockOutputStream.COMPRESSION_METHOD_RAW;
+import static net.jpountz.lz4vt.LZ4BlockOutputStream.DEFAULT_SEED;
+import static net.jpountz.lz4vt.LZ4BlockOutputStream.HEADER_LENGTH;
+import static net.jpountz.lz4vt.LZ4BlockOutputStream.MAGIC;
+import static net.jpountz.lz4vt.LZ4BlockOutputStream.MAGIC_LENGTH;
 
 import java.io.EOFException;
 import java.io.FilterInputStream;
@@ -41,10 +41,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.zip.Checksum;
 
-import net.jpountz.util.SafeUtils;
-import net.jpountz.xxhash.StreamingXXHash32;
-import net.jpountz.xxhash.XXHash32;
-import net.jpountz.xxhash.XXHashFactory;
+import net.jpountz.utilvt.SafeUtils;
+import net.jpountz.xxhashvt.StreamingXXHash32;
+import net.jpountz.xxhashvt.XXHash32;
+import net.jpountz.xxhashvt.XXHashFactory;
 
 /**
  * {@link InputStream} implementation to decode data written with

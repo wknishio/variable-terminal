@@ -5,10 +5,10 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 
-import net.sourceforge.jsocks.socks.Socks4Proxy;
-import net.sourceforge.jsocks.socks.Socks5Proxy;
-import net.sourceforge.jsocks.socks.SocksSocket;
-import net.sourceforge.jsocks.socks.UserPasswordAuthentication;
+import net.sourceforge.jsocksvt.socks.Socks4Proxy;
+import net.sourceforge.jsocksvt.socks.Socks5Proxy;
+import net.sourceforge.jsocksvt.socks.SocksSocket;
+import net.sourceforge.jsocksvt.socks.UserPasswordAuthentication;
 
 public class VTSocksProxySocket extends VTProxySocket
 {

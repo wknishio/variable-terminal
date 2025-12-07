@@ -51,34 +51,35 @@ import org.vash.vate.nativeutils.VTMainNativeUtils;
 import org.vash.vate.reflection.VTReflectionUtils;
 import org.vash.vate.runtime.VTRuntimeExit;
 import org.vash.vate.stream.filter.VTDoubledOutputStream;
-import com.googlecode.lanterna.TerminalPosition;
-import com.googlecode.lanterna.TerminalSize;
-import com.googlecode.lanterna.TextColor;
-import com.googlecode.lanterna.TextColor.ANSI;
-import com.googlecode.lanterna.graphics.PropertyTheme;
-import com.googlecode.lanterna.gui2.BasicWindow;
-import com.googlecode.lanterna.gui2.DefaultWindowManager;
-import com.googlecode.lanterna.gui2.InputFilter;
-import com.googlecode.lanterna.gui2.Interactable;
-import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
-import com.googlecode.lanterna.gui2.Window.Hint;
-import com.googlecode.lanterna.input.KeyStroke;
-import com.googlecode.lanterna.input.KeyType;
-import com.googlecode.lanterna.input.MouseAction;
-import com.googlecode.lanterna.input.MouseActionType;
-import com.googlecode.lanterna.screen.Screen;
-import com.googlecode.lanterna.screen.Screen.RefreshType;
-import com.googlecode.lanterna.screen.TabBehaviour;
-import com.googlecode.lanterna.screen.TerminalScreen;
-import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
-import com.googlecode.lanterna.terminal.MouseCaptureMode;
-import com.googlecode.lanterna.terminal.Terminal;
-import com.googlecode.lanterna.terminal.swing.AWTTerminal;
-import com.googlecode.lanterna.terminal.swing.AWTTerminalFontConfiguration;
-import com.googlecode.lanterna.terminal.swing.AWTTerminalFrame;
-import com.googlecode.lanterna.terminal.swing.AWTTerminalPanel;
-import com.googlecode.lanterna.terminal.swing.TerminalEmulatorColorConfiguration;
-import com.googlecode.lanterna.terminal.swing.TerminalEmulatorPalette;
+
+import com.googlecode.lanternavt.TerminalPosition;
+import com.googlecode.lanternavt.TerminalSize;
+import com.googlecode.lanternavt.TextColor;
+import com.googlecode.lanternavt.TextColor.ANSI;
+import com.googlecode.lanternavt.graphics.PropertyTheme;
+import com.googlecode.lanternavt.gui2.BasicWindow;
+import com.googlecode.lanternavt.gui2.DefaultWindowManager;
+import com.googlecode.lanternavt.gui2.InputFilter;
+import com.googlecode.lanternavt.gui2.Interactable;
+import com.googlecode.lanternavt.gui2.MultiWindowTextGUI;
+import com.googlecode.lanternavt.gui2.Window.Hint;
+import com.googlecode.lanternavt.input.KeyStroke;
+import com.googlecode.lanternavt.input.KeyType;
+import com.googlecode.lanternavt.input.MouseAction;
+import com.googlecode.lanternavt.input.MouseActionType;
+import com.googlecode.lanternavt.screen.Screen;
+import com.googlecode.lanternavt.screen.TabBehaviour;
+import com.googlecode.lanternavt.screen.TerminalScreen;
+import com.googlecode.lanternavt.screen.Screen.RefreshType;
+import com.googlecode.lanternavt.terminal.DefaultTerminalFactory;
+import com.googlecode.lanternavt.terminal.MouseCaptureMode;
+import com.googlecode.lanternavt.terminal.Terminal;
+import com.googlecode.lanternavt.terminal.swing.AWTTerminal;
+import com.googlecode.lanternavt.terminal.swing.AWTTerminalFontConfiguration;
+import com.googlecode.lanternavt.terminal.swing.AWTTerminalFrame;
+import com.googlecode.lanternavt.terminal.swing.AWTTerminalPanel;
+import com.googlecode.lanternavt.terminal.swing.TerminalEmulatorColorConfiguration;
+import com.googlecode.lanternavt.terminal.swing.TerminalEmulatorPalette;
 
 public class VTLanternaConsole extends VTConsole
 {
@@ -883,8 +884,8 @@ public class VTLanternaConsole extends VTConsole
     //terminal.setBackgroundColor(TextColor.ANSI.BLACK);
     //terminal.setForegroundColor(TextColor.ANSI.GREEN_BRIGHT);
     
-    com.googlecode.lanterna.gui2.Panel mainPanel = new com.googlecode.lanterna.gui2.Panel();
-    mainPanel.setLayoutManager(new com.googlecode.lanterna.gui2.BorderLayout());
+    com.googlecode.lanternavt.gui2.Panel mainPanel = new com.googlecode.lanternavt.gui2.Panel();
+    mainPanel.setLayoutManager(new com.googlecode.lanternavt.gui2.BorderLayout());
     
     // outputBox.setReadOnly(true);
     outputBox.setTerminal(terminal);
@@ -1519,14 +1520,14 @@ public class VTLanternaConsole extends VTConsole
       }
     });
     
-    com.googlecode.lanterna.gui2.Panel bottonPanel = new com.googlecode.lanterna.gui2.Panel();
-    bottonPanel.setLayoutManager(new com.googlecode.lanterna.gui2.BorderLayout());
+    com.googlecode.lanternavt.gui2.Panel bottonPanel = new com.googlecode.lanternavt.gui2.Panel();
+    bottonPanel.setLayoutManager(new com.googlecode.lanternavt.gui2.BorderLayout());
     
     // bottonPanel.addComponent(promptLabel, BorderLayout.Location.LEFT);
-    bottonPanel.addComponent(inputBox, com.googlecode.lanterna.gui2.BorderLayout.Location.CENTER);
+    bottonPanel.addComponent(inputBox, com.googlecode.lanternavt.gui2.BorderLayout.Location.CENTER);
     
-    mainPanel.addComponent(outputBox, com.googlecode.lanterna.gui2.BorderLayout.Location.CENTER);
-    mainPanel.addComponent(bottonPanel, com.googlecode.lanterna.gui2.BorderLayout.Location.BOTTOM);
+    mainPanel.addComponent(outputBox, com.googlecode.lanternavt.gui2.BorderLayout.Location.CENTER);
+    mainPanel.addComponent(bottonPanel, com.googlecode.lanternavt.gui2.BorderLayout.Location.BOTTOM);
     
     // Create window to hold the panel
     window = new BasicWindow();

@@ -5,7 +5,7 @@ import java.io.OutputStream;
 
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
 
-import io.airlift.compress.Compressor;
+import io.airlift.compressvt.Compressor;
 
 public class VTAirliftOutputStream extends OutputStream
 {

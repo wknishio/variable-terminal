@@ -4,7 +4,11 @@
 	<classpathentry kind="src" path="src/base85"/>
 	<classpathentry kind="src" path="src/bouncycastle"/>
 	<classpathentry kind="src" path="src/bric"/>
+	<classpathentry kind="src" path="src/commons-codec"/>
 	<classpathentry kind="src" path="src/commons-httpclient"/>
+	<classpathentry kind="src" path="src/commons-io"/>
+	<classpathentry kind="src" path="src/commons-lang3"/>
+	<classpathentry kind="src" path="src/commons-logging"/>
 	<classpathentry kind="src" path="src/commons-rng"/>
 	<classpathentry kind="src" path="src/compat"/>
 	<classpathentry kind="src" path="src/javapng"/>
@@ -22,10 +26,6 @@
 	<classpathentry kind="src" path="src/vate"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/beanshell-2.1.8-interpreter.jar"/>
-	<classpathentry kind="lib" path="lib/commons-codec-1.5.jar"/>
-	<classpathentry kind="lib" path="lib/commons-io-2.2.jar"/>
-	<classpathentry kind="lib" path="lib/commons-lang3-3.1.jar"/>
-	<classpathentry kind="lib" path="lib/commons-logging-1.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/concentus-opus.jar"/>
 	<classpathentry kind="lib" path="lib/jspeex.jar"/>
 	<classpathentry kind="lib" path="lib/objectplanet-png-encoder.jar"/>

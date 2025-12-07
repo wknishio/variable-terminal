@@ -9,9 +9,9 @@ import java.util.concurrent.ExecutorService;
 import javax.net.ServerSocketFactory;
 import javax.net.SocketFactory;
 
-import com.guichaguri.minimalftp.FTPServer;
-import com.guichaguri.minimalftp.api.IFTPListener;
-import com.guichaguri.minimalftp.api.IUserAuthenticator;
+import com.guichaguri.minimalftpvt.FTPServer;
+import com.guichaguri.minimalftpvt.api.IFTPListener;
+import com.guichaguri.minimalftpvt.api.IUserAuthenticator;
 
 public class VTFTPServer extends FTPServer
 {

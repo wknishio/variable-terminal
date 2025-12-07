@@ -8,30 +8,30 @@ import java.io.OutputStream;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
-import org.iq80.snappy.SnappyFramedInputStream;
-import org.iq80.snappy.SnappyFramedOutputStream;
+import org.iq80.snappyvt.SnappyFramedInputStream;
+import org.iq80.snappyvt.SnappyFramedOutputStream;
 import org.vash.vate.VTSystem;
 import org.vash.vate.stream.array.VTByteArrayOutputStream;
 import org.vash.vate.stream.filter.VTBlockSplitOutputStream;
 import org.vash.vate.stream.filter.VTBufferedOutputStream;
 
-import com.jcraft.jzlib.JZlib;
-import com.jcraft.jzlib.ZInputStream;
-import com.jcraft.jzlib.ZOutputStream;
+import com.jcraft.jzlibvt.JZlib;
+import com.jcraft.jzlibvt.ZInputStream;
+import com.jcraft.jzlibvt.ZOutputStream;
 
-import io.airlift.compress.zstd.ZstdCompressor;
-import io.airlift.compress.zstd.ZstdDecompressor;
-import io.airlift.compress.zstd.ZstdHadoopInputStream;
-import io.airlift.compress.zstd.ZstdHadoopOutputStream;
-import io.airlift.compress.zstd.ZstdInputStream;
-import io.airlift.compress.zstd.ZstdOutputStream;
-import net.jpountz.lz4.LZ4BlockInputStream;
-import net.jpountz.lz4.LZ4BlockOutputStream;
-import net.jpountz.lz4.LZ4Factory;
-import net.jpountz.lz4.LZ4FrameInputStream;
-import net.jpountz.lz4.LZ4FrameOutputStream;
-import net.jpountz.lz4.LZ4FrameOutputStream.BLOCKSIZE;
-import net.jpountz.xxhash.XXHashFactory;
+import io.airlift.compressvt.zstd.ZstdCompressor;
+import io.airlift.compressvt.zstd.ZstdDecompressor;
+import io.airlift.compressvt.zstd.ZstdHadoopInputStream;
+import io.airlift.compressvt.zstd.ZstdHadoopOutputStream;
+import io.airlift.compressvt.zstd.ZstdInputStream;
+import io.airlift.compressvt.zstd.ZstdOutputStream;
+import net.jpountz.lz4vt.LZ4BlockInputStream;
+import net.jpountz.lz4vt.LZ4BlockOutputStream;
+import net.jpountz.lz4vt.LZ4Factory;
+import net.jpountz.lz4vt.LZ4FrameInputStream;
+import net.jpountz.lz4vt.LZ4FrameOutputStream;
+import net.jpountz.lz4vt.LZ4FrameOutputStream.BLOCKSIZE;
+import net.jpountz.xxhashvt.XXHashFactory;
 
 @SuppressWarnings(
 { "unused", "deprecation" })

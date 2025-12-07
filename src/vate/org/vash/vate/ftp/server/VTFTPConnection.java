@@ -7,7 +7,7 @@ import java.util.concurrent.ExecutorService;
 import javax.net.ServerSocketFactory;
 import javax.net.SocketFactory;
 
-import com.guichaguri.minimalftp.FTPConnection;
+import com.guichaguri.minimalftpvt.FTPConnection;
 
 public class VTFTPConnection extends FTPConnection
 {

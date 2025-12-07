@@ -11,7 +11,7 @@ import org.vash.vate.server.connection.VTServerConnection;
 import org.vash.vate.server.session.VTServerSession;
 import org.vash.vate.task.VTTask;
 
-import com.martiansoftware.jsap.CommandLineTokenizerMKII;
+import com.martiansoftware.jsapvt.CommandLineTokenizerMKII;
 
 public class VTServerRemoteConsoleReader extends VTTask
 {

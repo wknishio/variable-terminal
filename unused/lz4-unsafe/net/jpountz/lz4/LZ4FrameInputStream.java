@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package net.jpountz.lz4;
+package net.jpountz.lz4vt;
 
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,8 +27,8 @@ package net.jpountz.lz4;
  * limitations under the License.
  */
 
-import net.jpountz.xxhash.XXHash32;
-import net.jpountz.xxhash.XXHashFactory;
+import net.jpountz.xxhashvt.XXHash32;
+import net.jpountz.xxhashvt.XXHashFactory;
 
 import java.io.FilterInputStream;
 import java.io.IOException;

@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package net.jpountz.lz4;
+package net.jpountz.lz4vt;
 
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,12 +27,12 @@ package net.jpountz.lz4;
  * limitations under the License.
  */
 
-import static net.jpountz.lz4.LZ4Constants.DEFAULT_COMPRESSION_LEVEL;
+import static net.jpountz.lz4vt.LZ4Constants.DEFAULT_COMPRESSION_LEVEL;
 
 import java.nio.ByteBuffer;
 
-import net.jpountz.util.ByteBufferUtils;
-import net.jpountz.util.SafeUtils;
+import net.jpountz.utilvt.ByteBufferUtils;
+import net.jpountz.utilvt.SafeUtils;
 
 /**
  * High compression {@link LZ4Compressor}s implemented with JNI bindings to the

@@ -6,7 +6,7 @@ import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.server.connection.VTServerConnectionHandler;
 import org.vash.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
 
-import com.martiansoftware.jsap.CommandLineTokenizerMKII;
+import com.martiansoftware.jsapvt.CommandLineTokenizerMKII;
 
 public class VTTEXT extends VTServerStandardRemoteConsoleCommandProcessor
 {

@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package net.jpountz.lz4;
+package net.jpountz.lz4vt;
 
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,9 +27,9 @@ package net.jpountz.lz4;
  * limitations under the License.
  */
 
-import static net.jpountz.util.ByteBufferUtils.checkNotReadOnly;
-import static net.jpountz.util.ByteBufferUtils.checkRange;
-import static net.jpountz.util.SafeUtils.checkRange;
+import static net.jpountz.utilvt.ByteBufferUtils.checkNotReadOnly;
+import static net.jpountz.utilvt.ByteBufferUtils.checkRange;
+import static net.jpountz.utilvt.SafeUtils.checkRange;
 
 import java.nio.ByteBuffer;
 

@@ -1,8 +1,5 @@
 package org.vash.vate.graphics.capture;
 
-import com.bric.image.VTARGBPixelGrabber;
-//import com.sun.jna.Platform;
-
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
@@ -29,6 +26,8 @@ import org.vash.vate.graphics.font.VTFontManager;
 import org.vash.vate.graphics.image.VTImageIO;
 import org.vash.vate.graphics.image.VTRectangle;
 import org.vash.vate.reflection.VTReflectionUtils;
+
+import com.bric.imagevt.VTARGBPixelGrabber;
 
 public final class VTAWTScreenCaptureProvider
 {

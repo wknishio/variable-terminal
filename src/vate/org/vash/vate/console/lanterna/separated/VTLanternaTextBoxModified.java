@@ -12,20 +12,6 @@
  */
 package org.vash.vate.console.lanterna.separated;
 
-import com.googlecode.lanterna.TerminalTextUtils;
-import com.googlecode.lanterna.SGR;
-import com.googlecode.lanterna.TerminalPosition;
-import com.googlecode.lanterna.TerminalSize;
-import com.googlecode.lanterna.graphics.ThemeDefinition;
-import com.googlecode.lanterna.gui2.AbstractInteractableComponent;
-import com.googlecode.lanterna.gui2.Direction;
-//import com.googlecode.lanterna.gui2.Interactable;
-import com.googlecode.lanterna.gui2.InteractableRenderer;
-import com.googlecode.lanterna.gui2.ScrollBar;
-import com.googlecode.lanterna.gui2.TextGUIGraphics;
-//import com.googlecode.lanterna.gui2.Interactable.Result;
-import com.googlecode.lanterna.input.KeyStroke;
-import com.googlecode.lanterna.input.KeyType;
 import java.awt.Adjustable;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
@@ -33,6 +19,19 @@ import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
+
+import com.googlecode.lanternavt.SGR;
+import com.googlecode.lanternavt.TerminalPosition;
+import com.googlecode.lanternavt.TerminalSize;
+import com.googlecode.lanternavt.TerminalTextUtils;
+import com.googlecode.lanternavt.graphics.ThemeDefinition;
+import com.googlecode.lanternavt.gui2.AbstractInteractableComponent;
+import com.googlecode.lanternavt.gui2.Direction;
+import com.googlecode.lanternavt.gui2.InteractableRenderer;
+import com.googlecode.lanternavt.gui2.ScrollBar;
+import com.googlecode.lanternavt.gui2.TextGUIGraphics;
+import com.googlecode.lanternavt.input.KeyStroke;
+import com.googlecode.lanternavt.input.KeyType;
 
 /**
  * This component keeps a text content that is editable by the user. A TextBox

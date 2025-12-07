@@ -12,7 +12,7 @@ import org.vash.vate.runtime.VTRuntimeExit;
 import org.vash.vate.server.VTServer;
 import org.vash.vate.task.VTTask;
 
-import com.martiansoftware.jsap.CommandLineTokenizerMKII;
+import com.martiansoftware.jsapvt.CommandLineTokenizerMKII;
 
 public class VTServerLocalConsoleReader extends VTTask
 {

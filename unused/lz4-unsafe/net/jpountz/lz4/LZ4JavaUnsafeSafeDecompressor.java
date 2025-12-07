@@ -13,14 +13,14 @@
  *******************************************************************************/
 // Auto-generated: DO NOT EDIT
 
-package net.jpountz.lz4;
+package net.jpountz.lz4vt;
 
-import static net.jpountz.lz4.LZ4Constants.*;
+import static net.jpountz.lz4vt.LZ4Constants.*;
 
 import java.nio.ByteBuffer;
 
-import net.jpountz.util.ByteBufferUtils;
-import net.jpountz.util.UnsafeUtils;
+import net.jpountz.utilvt.ByteBufferUtils;
+import net.jpountz.utilvt.UnsafeUtils;
 
 /**
  * Decompressor.

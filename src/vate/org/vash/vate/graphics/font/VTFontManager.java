@@ -16,8 +16,8 @@ import org.vash.vate.compatibility.VTArrays;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.reflection.VTReflectionUtils;
 
-import com.googlecode.lanterna.terminal.swing.AWTTerminalFrame;
-import com.googlecode.lanterna.terminal.swing.AWTTerminalPanel;
+import com.googlecode.lanternavt.terminal.swing.AWTTerminalFrame;
+import com.googlecode.lanternavt.terminal.swing.AWTTerminalPanel;
 
 public class VTFontManager
 {
