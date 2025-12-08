@@ -178,6 +178,11 @@ public class VTSystem
   
   static
   {
+    if (!initialized)
+    {
+      initialize();
+    }
+    
     int sampleSizeInBits = 16;
     int channels = 1;
     boolean signed = true;
@@ -201,11 +206,6 @@ public class VTSystem
     
     VT_ERA_DATEFORMAT = new SimpleDateFormat("G", Locale.ENGLISH);
     VT_YEAR_CALENDAR = Calendar.getInstance();
-    
-    if (!initialized)
-    {
-      initialize();
-    }
   }
   
   public static void initialize()
