@@ -20,13 +20,13 @@ import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.vash.vate.com.offbynull.portmapper.gateway.BasicBus;
 import org.vash.vate.com.offbynull.portmapper.gateway.Bus;
 import org.vash.vate.com.offbynull.portmapper.helpers.ByteBufferUtils;
 import org.vash.vate.org.apache.commons.io.IOUtils;
 import org.vash.vate.org.apache.commons.lang3.Validate;
+import org.vash.vate.org.slf4j.Logger;
+import org.vash.vate.org.slf4j.LoggerFactory;
 
 final class ProcessWriterRunnable implements Runnable {
     private static final Logger LOG = LoggerFactory.getLogger(ProcessWriterRunnable.class);

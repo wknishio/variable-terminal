@@ -19,14 +19,14 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.vash.vate.com.offbynull.portmapper.gateway.Bus;
 import org.vash.vate.com.offbynull.portmapper.mapper.PortMapper;
 import org.vash.vate.com.offbynull.portmapper.mappers.natpmp.NatPmpPortMapper;
 import org.vash.vate.com.offbynull.portmapper.mappers.pcp.PcpPortMapper;
 import org.vash.vate.com.offbynull.portmapper.mappers.upnpigd.UpnpIgdPortMapper;
 import org.vash.vate.org.apache.commons.lang3.Validate;
+import org.vash.vate.org.slf4j.Logger;
+import org.vash.vate.org.slf4j.LoggerFactory;
 
 /**
  * Port mapper factory that attempts to find all port mappers.

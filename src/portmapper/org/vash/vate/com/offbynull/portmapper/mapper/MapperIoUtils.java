@@ -41,8 +41,6 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.vash.vate.com.offbynull.portmapper.gateway.BasicBus;
 import org.vash.vate.com.offbynull.portmapper.gateway.Bus;
 import org.vash.vate.com.offbynull.portmapper.gateways.network.internalmessages.CloseNetworkRequest;
@@ -68,6 +66,8 @@ import org.vash.vate.com.offbynull.portmapper.gateways.process.internalmessages.
 import org.vash.vate.com.offbynull.portmapper.gateways.process.internalmessages.ReadProcessNotification;
 import org.vash.vate.compatibility.VTArrays;
 import org.vash.vate.org.apache.commons.lang3.Validate;
+import org.vash.vate.org.slf4j.Logger;
+import org.vash.vate.org.slf4j.LoggerFactory;
 
 /**
  * Utility class that simplifies IO for mappers.

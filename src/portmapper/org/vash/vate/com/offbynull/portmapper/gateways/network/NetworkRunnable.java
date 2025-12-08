@@ -36,8 +36,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.vash.vate.com.offbynull.portmapper.gateway.Bus;
 import org.vash.vate.com.offbynull.portmapper.gateways.network.UdpNetworkEntry.AddressedByteBuffer;
 import org.vash.vate.com.offbynull.portmapper.gateways.network.internalmessages.CloseNetworkRequest;
@@ -66,6 +64,8 @@ import org.vash.vate.com.offbynull.portmapper.gateways.network.internalmessages.
 import org.vash.vate.com.offbynull.portmapper.gateways.network.internalmessages.WriteUdpNetworkResponse;
 import org.vash.vate.com.offbynull.portmapper.helpers.ByteBufferUtils;
 import org.vash.vate.org.apache.commons.io.IOUtils;
+import org.vash.vate.org.slf4j.Logger;
+import org.vash.vate.org.slf4j.LoggerFactory;
 
 final class NetworkRunnable implements Runnable {
     private static final Logger LOG = LoggerFactory.getLogger(NetworkRunnable.class);

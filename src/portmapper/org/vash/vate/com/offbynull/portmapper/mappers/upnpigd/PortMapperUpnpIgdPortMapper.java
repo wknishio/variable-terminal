@@ -22,8 +22,6 @@ import java.net.InetSocketAddress;
 import java.net.URL;
 import java.util.Collections;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.vash.vate.com.offbynull.portmapper.gateway.Bus;
 import org.vash.vate.com.offbynull.portmapper.mapper.MappedPort;
 import org.vash.vate.com.offbynull.portmapper.mapper.PortType;
@@ -41,6 +39,8 @@ import org.vash.vate.compatibility.VTObjects;
 import org.vash.vate.org.apache.commons.lang3.RandomUtils;
 import org.vash.vate.org.apache.commons.lang3.Range;
 import org.vash.vate.org.apache.commons.lang3.Validate;
+import org.vash.vate.org.slf4j.Logger;
+import org.vash.vate.org.slf4j.LoggerFactory;
 
 /**
  * Port mapper implementation that interfaces with a UPnP-IGD IPv4 port mapping service (both 1.0 and 2.0 variants).

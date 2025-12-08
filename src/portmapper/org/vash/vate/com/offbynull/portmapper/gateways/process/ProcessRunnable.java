@@ -22,8 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.LinkedBlockingQueue;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.vash.vate.com.offbynull.portmapper.gateway.BasicBus;
 import org.vash.vate.com.offbynull.portmapper.gateway.Bus;
 import org.vash.vate.com.offbynull.portmapper.gateways.process.internalmessages.CloseProcessRequest;
@@ -38,6 +37,8 @@ import org.vash.vate.com.offbynull.portmapper.gateways.process.internalmessages.
 import org.vash.vate.com.offbynull.portmapper.gateways.process.internalmessages.ReadType;
 import org.vash.vate.com.offbynull.portmapper.gateways.process.internalmessages.WriteEmptyProcessNotification;
 import org.vash.vate.com.offbynull.portmapper.gateways.process.internalmessages.WriteProcessRequest;
+import org.vash.vate.org.slf4j.Logger;
+import org.vash.vate.org.slf4j.LoggerFactory;
 
 final class ProcessRunnable implements Runnable {
     private static final Logger LOG = LoggerFactory.getLogger(ProcessRunnable.class);

@@ -14,8 +14,8 @@ public class VTShellAdapter
 {
   private static final String GROOVYSHELL_MAIN_CLASS = "org.codehaus.groovy.tools.shell.Main";
   private static final String BEANSHELL_MAIN_CLASS = "bsh.Interpreter";
-  private static final String DISABLE_COMMONS_LOGGING = "-Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.NoOpLog";
-  private static final String DISABLE_UTIL_LOGGING_CLASS = "-Djava.util.logging.config.class=org.vash.vate.shell.adapter.VTSilenceJavaUtilLogging";
+  //private static final String DISABLE_COMMONS_LOGGING = "-Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.NoOpLog";
+  //private static final String DISABLE_UTIL_LOGGING_CLASS = "-Djava.util.logging.config.class=org.vash.vate.shell.adapter.VTSilenceJavaUtilLogging";
   
   private int shellType = VTShellProcessor.SHELL_TYPE_PROCESS;
   // private boolean supressEchoShell = true;
@@ -45,7 +45,8 @@ public class VTShellAdapter
     if (shellType == VTShellProcessor.SHELL_TYPE_GROOVYSH)
     {
       //command = "java -cp " + '"' + cp + '"' + " " + DISABLE_COMMONS_LOGGING + " " + DISABLE_UTIL_LOGGING_CLASS + " " + GROOVYSHELL_MAIN_CLASS;
-      command = new String[] {"java", "-cp", cp, DISABLE_COMMONS_LOGGING, DISABLE_UTIL_LOGGING_CLASS, GROOVYSHELL_MAIN_CLASS};
+      //command = new String[] {"java", "-cp", cp, DISABLE_COMMONS_LOGGING, DISABLE_UTIL_LOGGING_CLASS, GROOVYSHELL_MAIN_CLASS};
+      command = new String[] {"java", "-cp", cp, GROOVYSHELL_MAIN_CLASS};
       javaBuilder = new ProcessBuilder(command);
       //javaBuilder = new ProcessBuilder(new String[]
       //{
@@ -55,7 +56,8 @@ public class VTShellAdapter
     else if (shellType == VTShellProcessor.SHELL_TYPE_BEANSHELL)
     {
       //command = "java -cp " + '"' + cp + '"' + " " + DISABLE_COMMONS_LOGGING + " " + DISABLE_UTIL_LOGGING_CLASS + " " + BEANSHELL_MAIN_CLASS;
-      command = new String[] {"java", "-cp", cp, DISABLE_COMMONS_LOGGING, DISABLE_UTIL_LOGGING_CLASS, BEANSHELL_MAIN_CLASS};
+      //command = new String[] {"java", "-cp", cp, DISABLE_COMMONS_LOGGING, DISABLE_UTIL_LOGGING_CLASS, BEANSHELL_MAIN_CLASS};
+      command = new String[] {"java", "-cp", cp, BEANSHELL_MAIN_CLASS};
       javaBuilder = new ProcessBuilder(command);
       //javaBuilder = new ProcessBuilder(new String[]
       //{

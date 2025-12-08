@@ -31,8 +31,6 @@ import java.net.InetSocketAddress;
 import java.util.HashSet;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.vash.vate.com.offbynull.portmapper.gateway.Bus;
 import org.vash.vate.com.offbynull.portmapper.helpers.NetworkUtils;
 import org.vash.vate.com.offbynull.portmapper.mapper.PortMapper;
@@ -53,6 +51,8 @@ import org.vash.vate.com.offbynull.portmapper.mappers.upnpigd.externalmessages.S
 import org.vash.vate.com.offbynull.portmapper.mappers.upnpigd.externalmessages.ServiceDiscoveryUpnpIgdRequest.ProbeDeviceType;
 import org.vash.vate.org.apache.commons.lang3.Range;
 import org.vash.vate.org.apache.commons.lang3.Validate;
+import org.vash.vate.org.slf4j.Logger;
+import org.vash.vate.org.slf4j.LoggerFactory;
 
 /**
  * UPNP-IGD {@link PortMapper} implementation.

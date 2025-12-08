@@ -32,8 +32,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.vash.vate.com.offbynull.portmapper.gateway.Bus;
 import org.vash.vate.com.offbynull.portmapper.helpers.TextUtils;
 import org.vash.vate.com.offbynull.portmapper.mapper.MappedPort;
@@ -54,6 +52,8 @@ import org.vash.vate.com.offbynull.portmapper.mappers.natpmp.externalmessages.Ud
 import org.vash.vate.com.offbynull.portmapper.mappers.natpmp.externalmessages.UdpMappingNatPmpResponse;
 import org.vash.vate.compatibility.VTObjects;
 import org.vash.vate.org.apache.commons.lang3.Validate;
+import org.vash.vate.org.slf4j.Logger;
+import org.vash.vate.org.slf4j.LoggerFactory;
 
 /**
  * A NAT-PMP {@link PortMapper} implementation.

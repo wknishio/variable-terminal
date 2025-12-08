@@ -18,13 +18,13 @@ package org.vash.vate.com.offbynull.portmapper.gateways.process;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.vash.vate.com.offbynull.portmapper.gateway.Bus;
 import org.vash.vate.com.offbynull.portmapper.gateways.process.internalmessages.ReadType;
 import org.vash.vate.compatibility.VTArrays;
 import org.vash.vate.org.apache.commons.io.IOUtils;
 import org.vash.vate.org.apache.commons.lang3.Validate;
+import org.vash.vate.org.slf4j.Logger;
+import org.vash.vate.org.slf4j.LoggerFactory;
 
 final class ProcessReaderRunnable implements Runnable {
     private static final Logger LOG = LoggerFactory.getLogger(ProcessReaderRunnable.class);

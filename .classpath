@@ -21,6 +21,8 @@
 	<classpathentry kind="src" path="src/minimalftp"/>
 	<classpathentry kind="src" path="src/pngencoder"/>
 	<classpathentry kind="src" path="src/portmapper"/>
+	<classpathentry kind="src" path="src/slf4j-api"/>
+	<classpathentry kind="src" path="src/slf4j-nop"/>
 	<classpathentry kind="src" path="src/snappy"/>
 	<classpathentry kind="src" path="src/throttle"/>
 	<classpathentry kind="src" path="src/vate"/>
@@ -29,7 +31,5 @@
 	<classpathentry kind="lib" path="lib/concentus-opus.jar"/>
 	<classpathentry kind="lib" path="lib/jspeex.jar"/>
 	<classpathentry kind="lib" path="lib/objectplanet-png-encoder.jar"/>
-	<classpathentry kind="lib" path="lib/slf4j-api-1.7.25.jar"/>
-	<classpathentry kind="lib" path="lib/slf4j-nop-1.7.25.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

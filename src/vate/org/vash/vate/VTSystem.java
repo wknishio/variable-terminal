@@ -10,12 +10,9 @@ import java.nio.charset.CodingErrorAction;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.LogManager;
 
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioFormat;
@@ -24,7 +21,6 @@ import org.vash.vate.graphics.font.VTFontManager;
 import org.vash.vate.help.VTHelpManager;
 import org.vash.vate.io.airlift.compress.zstd.ZstdUtil;
 import org.vash.vate.net.jpountz.lz4.LZ4Utils;
-import org.vash.vate.tls.VTTLSVerificationDisabler;
 
 @SuppressWarnings("deprecation")
 public class VTSystem
@@ -227,28 +223,28 @@ public class VTSystem
     
     ImageIO.setUseCache(false);
     //disableAccessWarnings();
-    System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
-    System.setProperty("jdk.http.auth.proxying.disabledSchemes", "");
+    //System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
+    //System.setProperty("jdk.http.auth.proxying.disabledSchemes", "");
     //Authenticator.setDefault(VTProxyAuthenticator.getInstance());
-    VTTLSVerificationDisabler.install();
+    //VTTLSVerificationDisabler.install();
     VTHelpManager.initialize();
     
-    try
-    {
-      System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.NoOpLog");
-      LogManager logManager = java.util.logging.LogManager.getLogManager();
-      Enumeration<String> loggerNames = logManager.getLoggerNames();
-      java.util.logging.Logger.global.setLevel(Level.OFF);
-      while (loggerNames.hasMoreElements())
-      {
-        String loggerName = loggerNames.nextElement();
-        logManager.getLogger(loggerName).setLevel(Level.OFF);
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+//    try
+//    {
+//      System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.NoOpLog");
+//      LogManager logManager = java.util.logging.LogManager.getLogManager();
+//      Enumeration<String> loggerNames = logManager.getLoggerNames();
+//      java.util.logging.Logger.global.setLevel(Level.OFF);
+//      while (loggerNames.hasMoreElements())
+//      {
+//        String loggerName = loggerNames.nextElement();
+//        logManager.getLogger(loggerName).setLevel(Level.OFF);
+//      }
+//    }
+//    catch (Throwable t)
+//    {
+//      
+//    }
     
     initialized = true;
   }

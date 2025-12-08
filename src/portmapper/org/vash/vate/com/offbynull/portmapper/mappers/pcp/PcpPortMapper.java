@@ -35,8 +35,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.vash.vate.com.offbynull.portmapper.gateway.Bus;
 import org.vash.vate.com.offbynull.portmapper.helpers.TextUtils;
 import org.vash.vate.com.offbynull.portmapper.mapper.MappedPort;
@@ -51,6 +49,8 @@ import org.vash.vate.com.offbynull.portmapper.mappers.pcp.externalmessages.MapPc
 import org.vash.vate.com.offbynull.portmapper.mappers.pcp.externalmessages.MapPcpResponse;
 import org.vash.vate.compatibility.VTObjects;
 import org.vash.vate.org.apache.commons.lang3.Validate;
+import org.vash.vate.org.slf4j.Logger;
+import org.vash.vate.org.slf4j.LoggerFactory;
 
 /**
  * A PCP {@link PortMapper} implementation.

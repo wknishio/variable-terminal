@@ -15,10 +15,10 @@
  */
 package org.vash.vate.com.offbynull.portmapper.gateways.process;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.vash.vate.com.offbynull.portmapper.gateway.Bus;
 import org.vash.vate.org.apache.commons.lang3.Validate;
+import org.vash.vate.org.slf4j.Logger;
+import org.vash.vate.org.slf4j.LoggerFactory;
 
 final class ProcessMonitorRunnable implements Runnable {
     private static final Logger LOG = LoggerFactory.getLogger(ProcessMonitorRunnable.class);
