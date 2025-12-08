@@ -1,6 +1,6 @@
-package org.vtbouncycastle;
+package org.vash.vate.org.bouncycastle;
 
-import org.vtbouncycastle.util.Strings;
+import org.vash.vate.org.bouncycastle.util.Strings;
 
 /**
  * The Bouncy Castle License
