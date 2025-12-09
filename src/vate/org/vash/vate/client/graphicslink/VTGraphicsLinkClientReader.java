@@ -235,7 +235,7 @@ public class VTGraphicsLinkClientReader implements Runnable
     {
       if (failed)
       {
-        VTMainConsole.print("\rVT>Remote graphics link failed to start on client!\nVT>");
+        VTMainConsole.print("\rVT>Remote graphics link start on client failed!\nVT>");
       }
       else
       {

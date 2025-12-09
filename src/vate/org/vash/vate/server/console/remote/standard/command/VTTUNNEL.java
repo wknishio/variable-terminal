@@ -115,7 +115,7 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
             {
               listener.close();
               session.getTunnelsHandler().getConnection().removeBindListener(listener);
-              connection.getResultWriter().write("\rVT>Tunnel bound in server address [" + listener.getChannel().getBindHost() + " " + listener.getChannel().getBindPort() + "] removed!\nVT>");
+              connection.getResultWriter().write("\rVT>Server tunnel bind in address [" + listener.getChannel().getBindHost() + " " + listener.getChannel().getBindPort() + "] removed!\nVT>");
               connection.getResultWriter().flush();
             }
             else
@@ -124,12 +124,12 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
               {
                 if (session.getTunnelsHandler().getConnection().bindFTPListener(channelType, 0, 0, "", bindPort, proxy))
                 {
-                  connection.getResultWriter().write("\rVT>FTP tunnel bound in server address [*" + " " + bindPort + "] set!\nVT>");
+                  connection.getResultWriter().write("\rVT>Server FTP tunnel bind to address [*" + " " + bindPort + "] set!\nVT>");
                   connection.getResultWriter().flush();
                 }
                 else
                 {
-                  connection.getResultWriter().write("\rVT>FTP tunnel bound in server address [*" + " " + bindPort + "] cannot be set!\nVT>");
+                  connection.getResultWriter().write("\rVT>Server FTP tunnel bind to address [*" + " " + bindPort + "] failed!\nVT>");
                   connection.getResultWriter().flush();
                 }
               }
@@ -137,12 +137,12 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
               {
                 if (session.getTunnelsHandler().getConnection().bindSOCKSListener(channelType, 0, 0, "", bindPort, proxy))
                 {
-                  connection.getResultWriter().write("\rVT>SOCKS/HTTP tunnel bound in server address [*" + " " + bindPort + "] set!\nVT>");
+                  connection.getResultWriter().write("\rVT>Server SOCKS/HTTP tunnel bind to address [*" + " " + bindPort + "] set!\nVT>");
                   connection.getResultWriter().flush();
                 }
                 else
                 {
-                  connection.getResultWriter().write("\rVT>SOCKS/HTTP tunnel bound in server address [*" + " " + bindPort + "] cannot be set!\nVT>");
+                  connection.getResultWriter().write("\rVT>Server SOCKS/HTTP tunnel bind to address [*" + " " + bindPort + "] failed!\nVT>");
                   connection.getResultWriter().flush();
                 }
               }
@@ -294,12 +294,12 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
                   {
                     if (session.getTunnelsHandler().getConnection().bindFTPListener(channelType, 0, 0, "", bindPort, tunnelUser, tunnelPassword, proxy))
                     {
-                      connection.getResultWriter().write("\rVT>FTP tunnel bound in server address [*" + " " + bindPort + "] set!\nVT>");
+                      connection.getResultWriter().write("\rVT>Server FTP tunnel bind to address [*" + " " + bindPort + "] set!\nVT>");
                       connection.getResultWriter().flush();
                     }
                     else
                     {
-                      connection.getResultWriter().write("\rVT>FTP tunnel bound in server address [*" + " " + bindPort + "] cannot be set!\nVT>");
+                      connection.getResultWriter().write("\rVT>Server FTP tunnel bind to address [*" + " " + bindPort + "] failed!\nVT>");
                       connection.getResultWriter().flush();
                     }
                   }
@@ -307,7 +307,7 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
                   {
                     listener.close();
                     session.getTunnelsHandler().getConnection().removeBindListener(listener);
-                    connection.getResultWriter().write("\rVT>Tunnel bound in server address [" + listener.getChannel().getBindHost() + " " + listener.getChannel().getBindPort() + "] removed!\nVT>");
+                    connection.getResultWriter().write("\rVT>Server tunnel bind in address [" + listener.getChannel().getBindHost() + " " + listener.getChannel().getBindPort() + "] removed!\nVT>");
                     connection.getResultWriter().flush();
                   }
                 }
@@ -317,12 +317,12 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
                   {
                     if (session.getTunnelsHandler().getConnection().bindSOCKSListener(channelType, 0, 0, "", bindPort, tunnelUser, tunnelPassword, proxy))
                     {
-                      connection.getResultWriter().write("\rVT>SOCKS/HTTP tunnel bound in server address [*" + " " + bindPort + "] set!\nVT>");
+                      connection.getResultWriter().write("\rVT>Server SOCKS/HTTP tunnel bind to address [*" + " " + bindPort + "] set!\nVT>");
                       connection.getResultWriter().flush();
                     }
                     else
                     {
-                      connection.getResultWriter().write("\rVT>SOCKS/HTTP tunnel bound in server address [*" + " " + bindPort + "] cannot be set!\nVT>");
+                      connection.getResultWriter().write("\rVT>Server SOCKS/HTTP tunnel bind to address [*" + " " + bindPort + "] failed!\nVT>");
                       connection.getResultWriter().flush();
                     }
                   }
@@ -330,7 +330,7 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
                   {
                     listener.close();
                     session.getTunnelsHandler().getConnection().removeBindListener(listener);
-                    connection.getResultWriter().write("\rVT>Tunnel bound in server address [" + listener.getChannel().getBindHost() + " " + listener.getChannel().getBindPort() + "] removed!\nVT>");
+                    connection.getResultWriter().write("\rVT>Server tunnel bind in address [" + listener.getChannel().getBindHost() + " " + listener.getChannel().getBindPort() + "] removed!\nVT>");
                     connection.getResultWriter().flush();
                   }
                 }
@@ -341,12 +341,12 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
                 {
                   if (session.getTunnelsHandler().getConnection().bindFTPListener(channelType, 0, 0, "", bindPort, tunnelUser, tunnelPassword, proxy))
                   {
-                    connection.getResultWriter().write("\rVT>FTP tunnel bound in server address [*" + " " + bindPort + "] set!\nVT>");
+                    connection.getResultWriter().write("\rVT>Server FTP tunnel bind to address [*" + " " + bindPort + "] set!\nVT>");
                     connection.getResultWriter().flush();
                   }
                   else
                   {
-                    connection.getResultWriter().write("\rVT>FTP tunnel bound in server address [*" + " " + bindPort + "] cannot be set!\nVT>");
+                    connection.getResultWriter().write("\rVT>Server FTP tunnel bind to address [*" + " " + bindPort + "] failed!\nVT>");
                     connection.getResultWriter().flush();
                   }
                 }
@@ -354,12 +354,12 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
                 {
                   if (session.getTunnelsHandler().getConnection().bindSOCKSListener(channelType, 0, 0, "", bindPort, tunnelUser, tunnelPassword, proxy))
                   {
-                    connection.getResultWriter().write("\rVT>SOCKS/HTTP tunnel bound in server address [*" + " " + bindPort + "] set!\nVT>");
+                    connection.getResultWriter().write("\rVT>Server SOCKS/HTTP tunnel bind to address [*" + " " + bindPort + "] set!\nVT>");
                     connection.getResultWriter().flush();
                   }
                   else
                   {
-                    connection.getResultWriter().write("\rVT>SOCKS/HTTP tunnel bound in server address [*" + " " + bindPort + "] cannot be set!\nVT>");
+                    connection.getResultWriter().write("\rVT>Server SOCKS/HTTP tunnel bind to address [*" + " " + bindPort + "] failed!\nVT>");
                     connection.getResultWriter().flush();
                   }
                 }
@@ -387,12 +387,12 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
             {
               if (session.getTunnelsHandler().getConnection().bindTCPRedirectListener(channelType, 0, 0, "", bindPort, "", redirectPort, proxy))
               {
-                connection.getResultWriter().write("\rVT>TCP tunnel bound in server address [*" + " " + bindPort + "] set!\nVT>");
+                connection.getResultWriter().write("\rVT>TCP tunnel bind to server address [*" + " " + bindPort + "] set!\nVT>");
                 connection.getResultWriter().flush();
               }
               else
               {
-                connection.getResultWriter().write("\rVT>TCP tunnel bound in server address [*" + " " + bindPort + "] cannot be set!\nVT>");
+                connection.getResultWriter().write("\rVT>TCP tunnel bind to server address [*" + " " + bindPort + "] failed!\nVT>");
                 connection.getResultWriter().flush();
               }
             }
@@ -417,12 +417,12 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
                   {
                     if (session.getTunnelsHandler().getConnection().bindFTPListener(channelType, 0, 0, bindAddress, bindPort, tunnelUser, tunnelPassword, proxy))
                     {
-                      connection.getResultWriter().write("\rVT>FTP tunnel bound in server address [" + bindAddress + " " + bindPort + "] set!\nVT>");
+                      connection.getResultWriter().write("\rVT>Server FTP tunnel bind to address [" + bindAddress + " " + bindPort + "] set!\nVT>");
                       connection.getResultWriter().flush();
                     }
                     else
                     {
-                      connection.getResultWriter().write("\rVT>FTP tunnel bound in server address [" + bindAddress + " " + bindPort + "] cannot be set!\nVT>");
+                      connection.getResultWriter().write("\rVT>Server FTP tunnel bind to address [" + bindAddress + " " + bindPort + "] failed!\nVT>");
                       connection.getResultWriter().flush();
                     }
                   }
@@ -430,7 +430,7 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
                   {
                     listener.close();
                     session.getTunnelsHandler().getConnection().removeBindListener(listener);
-                    connection.getResultWriter().write("\rVT>Tunnel bound in server address [" + listener.getChannel().getBindHost() + " " + listener.getChannel().getBindPort() + "] removed!\nVT>");
+                    connection.getResultWriter().write("\rVT>Server tunnel bind in address [" + listener.getChannel().getBindHost() + " " + listener.getChannel().getBindPort() + "] removed!\nVT>");
                     connection.getResultWriter().flush();
                   }
                 }
@@ -440,12 +440,12 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
                   {
                     if (session.getTunnelsHandler().getConnection().bindSOCKSListener(channelType, 0, 0, bindAddress, bindPort, tunnelUser, tunnelPassword, proxy))
                     {
-                      connection.getResultWriter().write("\rVT>SOCKS/HTTP tunnel bound in server address [" + bindAddress + " " + bindPort + "] set!\nVT>");
+                      connection.getResultWriter().write("\rVT>Server SOCKS/HTTP tunnel bind to address [" + bindAddress + " " + bindPort + "] set!\nVT>");
                       connection.getResultWriter().flush();
                     }
                     else
                     {
-                      connection.getResultWriter().write("\rVT>SOCKS/HTTP tunnel bound in server address [" + bindAddress + " " + bindPort + "] cannot be set!\nVT>");
+                      connection.getResultWriter().write("\rVT>Server SOCKS/HTTP tunnel bind to address [" + bindAddress + " " + bindPort + "] failed!\nVT>");
                       connection.getResultWriter().flush();
                     }
                   }
@@ -453,7 +453,7 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
                   {
                     listener.close();
                     session.getTunnelsHandler().getConnection().removeBindListener(listener);
-                    connection.getResultWriter().write("\rVT>Tunnel bound in server address [" + listener.getChannel().getBindHost() + " " + listener.getChannel().getBindPort() + "] removed!\nVT>");
+                    connection.getResultWriter().write("\rVT>Server tunnel bind in address [" + listener.getChannel().getBindHost() + " " + listener.getChannel().getBindPort() + "] removed!\nVT>");
                     connection.getResultWriter().flush();
                   }
                 }
@@ -464,12 +464,12 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
                 {
                   if (session.getTunnelsHandler().getConnection().bindFTPListener(channelType, 0, 0, bindAddress, bindPort, tunnelUser, tunnelPassword, proxy))
                   {
-                    connection.getResultWriter().write("\rVT>FTP tunnel bound in server address [" + bindAddress + " " + bindPort + "] set!\nVT>");
+                    connection.getResultWriter().write("\rVT>Server FTP tunnel bind to address [" + bindAddress + " " + bindPort + "] set!\nVT>");
                     connection.getResultWriter().flush();
                   }
                   else
                   {
-                    connection.getResultWriter().write("\rVT>FTP tunnel bound in server address [" + bindAddress + " " + bindPort + "] cannot be set!\nVT>");
+                    connection.getResultWriter().write("\rVT>Server FTP tunnel bind to address [" + bindAddress + " " + bindPort + "] failed!\nVT>");
                     connection.getResultWriter().flush();
                   }
                 }
@@ -477,12 +477,12 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
                 {
                   if (session.getTunnelsHandler().getConnection().bindSOCKSListener(channelType, 0, 0, bindAddress, bindPort, tunnelUser, tunnelPassword, proxy))
                   {
-                    connection.getResultWriter().write("\rVT>SOCKS/HTTP tunnel bound in server address [" + bindAddress + " " + bindPort + "] set!\nVT>");
+                    connection.getResultWriter().write("\rVT>Server SOCKS/HTTP tunnel bind to address [" + bindAddress + " " + bindPort + "] set!\nVT>");
                     connection.getResultWriter().flush();
                   }
                   else
                   {
-                    connection.getResultWriter().write("\rVT>SOCKS/HTTP tunnel bound in server address [" + bindAddress + " " + bindPort + "] cannot be set!\nVT>");
+                    connection.getResultWriter().write("\rVT>Server SOCKS/HTTP tunnel bind to address [" + bindAddress + " " + bindPort + "] failed!\nVT>");
                     connection.getResultWriter().flush();
                   }
                 }
@@ -511,12 +511,12 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
             {
               if (session.getTunnelsHandler().getConnection().bindTCPRedirectListener(channelType, 0, 0, "", bindPort, redirectAddress, redirectPort, proxy))
               {
-                connection.getResultWriter().write("\rVT>TCP tunnel bound in server address [*" + " " + bindPort + "] set!\nVT>");
+                connection.getResultWriter().write("\rVT>TCP tunnel bind to server address [*" + " " + bindPort + "] set!\nVT>");
                 connection.getResultWriter().flush();
               }
               else
               {
-                connection.getResultWriter().write("\rVT>TCP tunnel bound in server address [*" + " " + bindPort + "] cannot be set!\nVT>");
+                connection.getResultWriter().write("\rVT>TCP tunnel bind to server address [*" + " " + bindPort + "] failed!\nVT>");
                 connection.getResultWriter().flush();
               }
             }
@@ -535,12 +535,12 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
             {
               if (session.getTunnelsHandler().getConnection().bindTCPRedirectListener(channelType, 0, 0, bindAddress, bindPort, "", redirectPort, proxy))
               {
-                connection.getResultWriter().write("\rVT>TCP tunnel bound in server address [" + bindAddress + " " + bindPort + "] set!\nVT>");
+                connection.getResultWriter().write("\rVT>TCP tunnel bind to server address [" + bindAddress + " " + bindPort + "] set!\nVT>");
                 connection.getResultWriter().flush();
               }
               else
               {
-                connection.getResultWriter().write("\rVT>TCP tunnel bound in server address [" + bindAddress + " " + bindPort + "] cannot be set!\nVT>");
+                connection.getResultWriter().write("\rVT>TCP tunnel bind to server address [" + bindAddress + " " + bindPort + "] failed!\nVT>");
                 connection.getResultWriter().flush();
               }
             }
@@ -568,12 +568,12 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
             {
               if (session.getTunnelsHandler().getConnection().bindTCPRedirectListener(channelType, 0, 0, bindAddress, bindPort, redirectAddress, redirectPort, proxy))
               {
-                connection.getResultWriter().write("\rVT>TCP tunnel bound in server address [" + bindAddress + " " + bindPort + "] set!\nVT>");
+                connection.getResultWriter().write("\rVT>TCP tunnel bind to server address [" + bindAddress + " " + bindPort + "] set!\nVT>");
                 connection.getResultWriter().flush();
               }
               else
               {
-                connection.getResultWriter().write("\rVT>TCP tunnel bound in server address [" + bindAddress + " " + bindPort + "] cannot be set!\nVT>");
+                connection.getResultWriter().write("\rVT>TCP tunnel bind to server address [" + bindAddress + " " + bindPort + "] failed!\nVT>");
                 connection.getResultWriter().flush();
               }
             }

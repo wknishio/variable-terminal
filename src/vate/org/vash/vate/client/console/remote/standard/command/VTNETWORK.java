@@ -59,7 +59,7 @@ public class VTNETWORK extends VTClientStandardRemoteConsoleCommandProcessor
             {
               continue;
             }
-            message.append("\rVT>Name: [" + networkInterface.getName() + "]" + "\nVT>Display name: [" + networkInterface.getDisplayName() + "]");
+            message.append("\nVT>Name: [" + networkInterface.getName() + "]" + "\nVT>Display name: [" + networkInterface.getDisplayName() + "]");
             
             try
             {

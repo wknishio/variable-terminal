@@ -289,7 +289,7 @@ public class VTServerPrintDataTask extends VTTask
       {
         synchronized (this)
         {
-          session.getConnection().getResultWriter().write("\rVT>Print service number [" + printServiceNumber + "] not found!" + "\nVT>");
+          session.getConnection().getResultWriter().write("\rVT>Print service number [" + printServiceNumber + "] not found on server!" + "\nVT>");
           session.getConnection().getResultWriter().flush();
           finished = true;
         }
@@ -612,7 +612,7 @@ public class VTServerPrintDataTask extends VTTask
             }
             else
             {
-              session.getConnection().getResultWriter().write("\rVT>File for printing [" + data + "] not found!" + "\nVT>");
+              session.getConnection().getResultWriter().write("\rVT>File for printing [" + data + "] not found on server!" + "\nVT>");
               session.getConnection().getResultWriter().flush();
               finished = true;
               return;
@@ -629,7 +629,7 @@ public class VTServerPrintDataTask extends VTTask
       {
         try
         {
-          session.getConnection().getResultWriter().write("\rVT>File for printing [" + data + "] not found!" + "\nVT>");
+          session.getConnection().getResultWriter().write("\rVT>File for printing [" + data + "] not found on server!" + "\nVT>");
           session.getConnection().getResultWriter().flush();
           finished = true;
         }

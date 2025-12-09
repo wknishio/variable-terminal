@@ -62,7 +62,7 @@ public class VTServerHostResolver extends VTTask
       {
         try
         {
-          session.getConnection().getResultWriter().write("\rVT>Host [" + host + "] not found!\nVT>");
+          session.getConnection().getResultWriter().write("\rVT>Host [" + host + "] not found on server!\nVT>");
           session.getConnection().getResultWriter().flush();
         }
         catch (IOException e1)

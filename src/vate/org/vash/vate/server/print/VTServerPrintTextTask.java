@@ -349,7 +349,7 @@ public class VTServerPrintTextTask extends VTTask
         {
           synchronized (this)
           {
-            session.getConnection().getResultWriter().write("\rVT>Print service number [" + printServiceNumber + "] not found!" + "\nVT>");
+            session.getConnection().getResultWriter().write("\rVT>Print service number [" + printServiceNumber + "] not found on server!" + "\nVT>");
             session.getConnection().getResultWriter().flush();
             finished = true;
           }
@@ -359,7 +359,7 @@ public class VTServerPrintTextTask extends VTTask
       {
         synchronized (this)
         {
-          session.getConnection().getResultWriter().write("\rVT>Print service number [" + printServiceNumber + "] not found!" + "\nVT>");
+          session.getConnection().getResultWriter().write("\rVT>Print service number [" + printServiceNumber + "] not found on server!" + "\nVT>");
           session.getConnection().getResultWriter().flush();
           finished = true;
         }
