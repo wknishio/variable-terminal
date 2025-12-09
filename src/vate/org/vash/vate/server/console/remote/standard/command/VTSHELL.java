@@ -12,8 +12,8 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
   {
     this.setFullName("*VTSHELL");
     this.setAbbreviatedName("*VTSH");
-    this.setFullSyntax("*VTSHELL <OPTIONS> [.]");
-    this.setAbbreviatedSyntax("*VTSH <OP> [.]");
+    this.setFullSyntax("*VTSHELL <MODE> [.]");
+    this.setAbbreviatedSyntax("*VTSH <MD> [.]");
   }
   
   public void execute(String command, String[] parsed) throws Exception
