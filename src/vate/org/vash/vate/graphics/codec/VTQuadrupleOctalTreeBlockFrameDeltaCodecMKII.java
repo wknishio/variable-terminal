@@ -133,7 +133,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
       return d4;
     }
     
-    out.write((((newPixelData[position - 1 - width] + newPixelData[position - 1 - width] + newPixelData[position - width] + newPixelData[position - 1]) >> 2) ^ newPixelData[position]) /* & 0xFF */);
+    out.write((((newPixelData[position - 1 - width] * 2 + newPixelData[position - width] + newPixelData[position - 1]) >> 2) ^ newPixelData[position]) /* & 0xFF */);
     return d4 | c4;
   }
   
@@ -144,7 +144,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
       return d4;
     }
     
-    out.writeShort((((newPixelData[position - 1 - width] + newPixelData[position - 1 - width] + newPixelData[position - width] + newPixelData[position - 1]) >> 2) ^ newPixelData[position]) /* & 0x7FFF */);
+    out.writeShort((((newPixelData[position - 1 - width] * 2 + newPixelData[position - width] + newPixelData[position - 1]) >> 2) ^ newPixelData[position]) /* & 0x7FFF */);
     return d4 | c4;
   }
   
@@ -155,7 +155,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
       return d4;
     }
     
-    out.writeSubInt((((newPixelData[position - 1 - width] + newPixelData[position - 1 - width] + newPixelData[position - width] + newPixelData[position - 1]) >> 2) ^ newPixelData[position]) /* & 0x00FFFFFF */);
+    out.writeSubInt((((newPixelData[position - 1 - width] * 2 + newPixelData[position - width] + newPixelData[position - 1]) >> 2) ^ newPixelData[position]) /* & 0x00FFFFFF */);
     return d4 | c4;
   }
   
@@ -166,7 +166,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
       return d4;
     }
     
-    out.writeInt((((newPixelData[position - 1 - width] + newPixelData[position - 1 - width] + newPixelData[position - width] + newPixelData[position - 1]) >> 2) ^ newPixelData[position]) /*  & 0x3FFFFFFF */);
+    out.writeInt((((newPixelData[position - 1 - width] * 2 + newPixelData[position - width] + newPixelData[position - 1]) >> 2) ^ newPixelData[position]) /*  & 0x3FFFFFFF */);
     return d4 | c4;
   }
   
@@ -177,7 +177,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
       return;
     }
     
-    newPixelData[position] = (byte) ((((newPixelData[position - 1 - width] + newPixelData[position - 1 - width] + newPixelData[position - width] + newPixelData[position - 1]) >> 2) ^ in.read()) /* & 0xFF */);
+    newPixelData[position] = (byte) ((((newPixelData[position - 1 - width] * 2 + newPixelData[position - width] + newPixelData[position - 1]) >> 2) ^ in.read()) /* & 0xFF */);
   }
   
   private static final void decodePixel15(final VTLittleEndianInputStream in, final short[] newPixelData, final int position, final int width, final int d4, final int c4) throws IOException
@@ -187,7 +187,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
       return;
     }
     
-    newPixelData[position] = (short) ((((newPixelData[position - 1 - width] + newPixelData[position - 1 - width] + newPixelData[position - width] + newPixelData[position - 1]) >> 2) ^ in.readShort()) /* & 0x7FFF */);
+    newPixelData[position] = (short) ((((newPixelData[position - 1 - width] * 2 + newPixelData[position - width] + newPixelData[position - 1]) >> 2) ^ in.readShort()) /* & 0x7FFF */);
   }
   
   private static final void decodePixel24(final VTLittleEndianInputStream in, final int[] newPixelData, final int position, final int width, final int d4, final int c4) throws IOException
@@ -197,7 +197,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
       return;
     }
     
-    newPixelData[position] = ((((newPixelData[position - 1 - width] + newPixelData[position - 1 - width] + newPixelData[position - width] + newPixelData[position - 1]) >> 2) ^ in.readSubInt()) /* & 0x00FFFFFF */);
+    newPixelData[position] = ((((newPixelData[position - 1 - width] * 2 + newPixelData[position - width] + newPixelData[position - 1]) >> 2) ^ in.readSubInt()) /* & 0x00FFFFFF */);
   }
   
   private static final void decodePixel30(final VTLittleEndianInputStream in, final int[] newPixelData, final int position, final int width, final int d4, final int c4) throws IOException
@@ -207,7 +207,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
       return;
     }
     
-    newPixelData[position] = ((((newPixelData[position - 1 - width] + newPixelData[position - 1 - width] + newPixelData[position - width] + newPixelData[position - 1]) >> 2) ^ in.readInt()) /* & 0x3FFFFFFF */);
+    newPixelData[position] = ((((newPixelData[position - 1 - width] * 2 + newPixelData[position - width] + newPixelData[position - 1]) >> 2) ^ in.readInt()) /* & 0x3FFFFFFF */);
   }
   
   private final void encodeBlock4Tree8(final VTLittleEndianOutputStream out, final byte[] oldPixelData, final byte[] newPixelData) throws IOException
