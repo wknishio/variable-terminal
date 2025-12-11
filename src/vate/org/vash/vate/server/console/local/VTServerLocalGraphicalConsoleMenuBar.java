@@ -50,17 +50,17 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
     
     sessionMenu = new Menu("Session ");
     sessionMenu.add(new VTGraphicalConsoleMenuItem(console, "Close Server Application", "*VTSTOP\n"));
-    sessionMenu.add(new VTGraphicalConsoleMenuItem(console, "Toggle Server Cover", "*VTCOVER\n"));
     sessionMenu.add(new VTGraphicalConsoleMenuItem(console, "List Connected Clients", "*VTUSER\n"));
     sessionMenu.add(new VTGraphicalConsoleMenuItem(console, "Send Message To Clients", "*VTTEXT "));
     sessionMenu.add(new VTGraphicalConsoleMenuItem(console, "Disconnect Client", "*VTKICK "));
     
+    consoleMenu = new Menu("Console ");
+    consoleMenu.add(new VTGraphicalConsoleMenuItem(console, "Clear Server Console", "*VTCLEAR\n"));
+    consoleMenu.add(new VTGraphicalConsoleMenuItem(console, "Show Local System Time", "*VTDATE\n"));
+    consoleMenu.add(new VTGraphicalConsoleMenuItem(console, "Toggle Server Cover", "*VTCOVER\n"));
+    
     trafficMenu = new Menu("Traffic ");
     trafficMenu.add(new VTGraphicalConsoleMenuItem(console, "Check Connection Latencies", "*VTPING\n"));
-    
-    consoleMenu = new Menu("Console ");
-    consoleMenu.add(new VTGraphicalConsoleMenuItem(console, "Clear Local Console", "*VTCLEAR\n"));
-    consoleMenu.add(new VTGraphicalConsoleMenuItem(console, "Show Local System Time", "*VTDATE\n"));
     
     settingsMenu = new Menu("Setting ");
     connectionSettingsMenu = new Menu("Connection ");

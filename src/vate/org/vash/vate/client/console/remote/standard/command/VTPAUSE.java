@@ -44,16 +44,16 @@ public class VTPAUSE extends VTClientStandardRemoteConsoleCommandProcessor
       {
         if (pause > 0)
         {
-          VTMainConsole.print("\rVT>Pausing local console for: [" + pause + "] ms, wait or resume with enter\nVT>");
+          VTMainConsole.print("\rVT>Pausing client console for: [" + pause + "] ms, wait or resume with enter\nVT>");
         }
         else
         {
-          VTMainConsole.print("\rVT>Pausing local console, resume with enter\nVT>");
+          VTMainConsole.print("\rVT>Pausing client console, resume with enter\nVT>");
         }
       }
       else
       {
-        VTMainConsole.print("\rVT>Pausing local console for: [" + pause + "] ms\nVT>");
+        VTMainConsole.print("\rVT>Pausing client console for: [" + pause + "] ms\nVT>");
       }
       long start = System.nanoTime();
       VTMainConsole.createInterruptibleReadline(false, session.getExecutorService(), new Runnable()
@@ -86,7 +86,7 @@ public class VTPAUSE extends VTClientStandardRemoteConsoleCommandProcessor
       }
       if (!session.isStopped())
       {
-        VTMainConsole.print("\rVT>Resuming local console after: [" + elapsed + "] ms\nVT>");
+        VTMainConsole.print("\rVT>Resuming client console after: [" + elapsed + "] ms\nVT>");
       }
     }
     catch (Throwable t)

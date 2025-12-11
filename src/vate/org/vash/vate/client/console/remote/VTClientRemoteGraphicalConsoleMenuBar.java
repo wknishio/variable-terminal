@@ -159,8 +159,8 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     filesMenu.add(fileRemoteMenu);
     // fileSystemMenu.add(zipFileMenu);
     
-    fileTransferMenu.add(new VTGraphicalConsoleMenuItem(console, "Send File To Server", "*VTFILETRANSFER P"));
-    fileTransferMenu.add(new VTGraphicalConsoleMenuItem(console, "Receive File From Server", "*VTFILETRANSFER G"));
+    fileTransferMenu.add(new VTGraphicalConsoleMenuItem(console, "Send Files To Server", "*VTFILETRANSFER P"));
+    fileTransferMenu.add(new VTGraphicalConsoleMenuItem(console, "Receive Files From Server", "*VTFILETRANSFER G"));
     fileTransferMenu.add(new VTGraphicalConsoleMenuItem(console, "Report File Transfer", "*VTFILETRANSFER\n"));
     fileTransferMenu.add(new VTGraphicalConsoleMenuItem(console, "Stop File Transfer", "*VTFILETRANSFER S\n"));
     fileTransferMenu.add(new VTGraphicalConsoleMenuItem(console, "Wait File Transfer", "*VTFILETRANSFER W"));
@@ -214,23 +214,28 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     sessionMenu.add(new VTGraphicalConsoleMenuItem(console, "Disconnect From Server", "*VTEXIT\n"));
     sessionMenu.add(new VTGraphicalConsoleMenuItem(console, "Close Client Application", "*VTQUIT\n"));
     sessionMenu.add(new VTGraphicalConsoleMenuItem(console, "Close Server Application", "*VTSTOP\n"));
-    sessionMenu.add(new VTGraphicalConsoleMenuItem(console, "Toggle Server Cover", "*VTCOVER\n"));
     sessionMenu.add(new VTGraphicalConsoleMenuItem(console, "Save Client Settings File", "*VTSAVE "));
     sessionMenu.add(new VTGraphicalConsoleMenuItem(console, "Detect Chained Sessions", "*VTCHAIN\n"));
     sessionMenu.add(new VTGraphicalConsoleMenuItem(console, "List Connected Clients", "*VTUSER\n"));
     sessionMenu.add(new VTGraphicalConsoleMenuItem(console, "Send Message To Server", "*VTTEXT "));
     
     consoleMenu = new Menu("Console ");
-    consoleMenu.add(new VTGraphicalConsoleMenuItem(console, "Clear Remote Console", "*VTCLEAR\n"));
-    consoleMenu.add(new VTGraphicalConsoleMenuItem(console, "Toggle Console Echo", "*VTECHO\n"));
-    consoleMenu.add(new VTGraphicalConsoleMenuItem(console, "Show Remote System Time", "*VTDATE\n"));
-    consoleMenu.add(new VTGraphicalConsoleMenuItem(console, "Pause Local Console", "*VTPAUSE "));
+    consoleMenu.add(new VTGraphicalConsoleMenuItem(console, "Clear Client Console", "*VTCLEAR\n"));
+    consoleMenu.add(new VTGraphicalConsoleMenuItem(console, "Pause Client Console", "*VTPAUSE "));
+    consoleMenu.add(new VTGraphicalConsoleMenuItem(console, "Toggle Command Echo", "*VTECHO\n"));
     consoleMenu.add(new VTGraphicalConsoleMenuItem(console, "Execute Commands In Files", "*VTREAD "));
     consoleMenu.add(new VTGraphicalConsoleMenuItem(console, "Record Commands To File", "*VTLOG "));
     consoleMenu.add(new VTGraphicalConsoleMenuItem(console, "Record Console To File", "*VTOUT "));
+    consoleMenu.add(new VTGraphicalConsoleMenuItem(console, "Show Remote System Time", "*VTDATE\n"));
+    consoleMenu.add(new VTGraphicalConsoleMenuItem(console, "Toggle Server Cover", "*VTCOVER\n"));
     // consoleMenu.add(new VTGraphicalConsoleMenuItem("Toggle Remote Console
     // Echo",
     // "*VTECHO\n"));
+    trafficMenu = new Menu("Traffic ");
+    trafficMenu.add(new VTGraphicalConsoleMenuItem(console, "Check Connection Latency", "*VTPING\n"));
+    trafficMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Connection Rate Limits", "*VTLIMIT "));
+    trafficMenu.add(new VTGraphicalConsoleMenuItem(console, "Command Usages", "*VTHELP *VTPING\n*VTHELP *VTLIMIT\n"));
+    
     shellMenu = new Menu("Shell ");
     shellMenu.add(new VTGraphicalConsoleMenuItem(console, "Run Remote Shell", "*VTSHELL R\n"));
     shellMenu.add(new VTGraphicalConsoleMenuItem(console, "Stop Remote Shell", "*VTSHELL S\n"));
@@ -292,11 +297,6 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     manageRuntimeMenu.add(new VTGraphicalConsoleMenuItem(console, "Drop Managed Processes", "*VTRUNTIME DA\n"));
     manageRuntimeMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Runtime Path", "*VTRUNTIME P "));
     manageRuntimeMenu.add(new VTGraphicalConsoleMenuItem(console, "Command Usage", "*VTHELP *VTRUNTIME\n"));
-    
-    trafficMenu = new Menu("Traffic ");
-    trafficMenu.add(new VTGraphicalConsoleMenuItem(console, "Check Connection Latency", "*VTPING\n"));
-    trafficMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Connection Rate Limits", "*VTLIMIT "));
-    trafficMenu.add(new VTGraphicalConsoleMenuItem(console, "Command Usages", "*VTHELP *VTPING\n*VTHELP *VTLIMIT\n"));
     
     networkMenu = new Menu("Network ");
     

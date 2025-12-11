@@ -65,7 +65,7 @@ public class VTAUDIOLINK extends VTClientStandardRemoteConsoleCommandProcessor
                   catch (Throwable t)
                   {
                     
-                    VTMainConsole.print("\rVT>Invalid local input audio mixer number [" + mixer + "]!");
+                    VTMainConsole.print("\rVT>Invalid client input audio mixer number [" + mixer + "]!");
                     // ok = false;
                   }
                 }
@@ -78,7 +78,7 @@ public class VTAUDIOLINK extends VTClientStandardRemoteConsoleCommandProcessor
                   }
                   catch (Throwable t)
                   {
-                    VTMainConsole.print("\rVT>Invalid local output audio mixer number [" + mixer + "]!");
+                    VTMainConsole.print("\rVT>Invalid client output audio mixer number [" + mixer + "]!");
                     // ok = false;
                   }
                 }

@@ -69,7 +69,7 @@ public class VTAUDIOLINK extends VTServerStandardRemoteConsoleCommandProcessor
                   }
                   catch (Throwable t)
                   {
-                    connection.getResultWriter().write("\rVT>Invalid remote input audio mixer number [" + mixer + "]!");
+                    connection.getResultWriter().write("\rVT>Invalid server input audio mixer number [" + mixer + "]!");
                     connection.getResultWriter().flush();
                     // ok = false;
                   }
@@ -83,7 +83,7 @@ public class VTAUDIOLINK extends VTServerStandardRemoteConsoleCommandProcessor
                   }
                   catch (Throwable t)
                   {
-                    connection.getResultWriter().write("\rVT>Invalid remote output audio mixer number [" + mixer + "]!");
+                    connection.getResultWriter().write("\rVT>Invalid server output audio mixer number [" + mixer + "]!");
                     connection.getResultWriter().flush();
                     // ok = false;
                   }
