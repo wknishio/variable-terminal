@@ -226,7 +226,7 @@ public class VTSystem
     //System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
     //System.setProperty("jdk.http.auth.proxying.disabledSchemes", "");
     //Authenticator.setDefault(VTProxyAuthenticator.getInstance());
-    //VTTLSVerificationDisabler.install();
+    //VTTLSUtilities.install();
     VTHelpManager.initialize();
     
 //    try

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import org.vash.vate.VTSystem;
-import org.vash.vate.tls.VTTLSVerificationDisabler;
+import org.vash.vate.tls.VTTLSUtilities;
 
 public class VTURLInvoker
 {
@@ -19,7 +19,7 @@ public class VTURLInvoker
   {
     try
     {
-      VTTLSVerificationDisabler.install();
+      VTTLSUtilities.disableHttpsTLSVerifications();
     }
     catch (Throwable t)
     {

@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.net.Socket;
 import java.security.Principal;
 import java.security.PrivateKey;
+import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 
 import javax.net.ssl.HostnameVerifier;
@@ -14,7 +15,7 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-public class VTTLSVerificationDisabler
+public class VTTLSUtilities
 {
   private static class OverlyOptimisticHostnameVerifier implements HostnameVerifier
   {
@@ -87,7 +88,7 @@ public class VTTLSVerificationDisabler
     }
   }
   
-  public static boolean install()
+  public static boolean disableHttpsTLSVerifications()
   {
     try
     {
@@ -120,13 +121,56 @@ public class VTTLSVerificationDisabler
     return true;
   }
   
-  public SSLContext createOverlyOptimisticTLSContext() throws Exception
+  public static SSLContext createOptimisticTLSClientContext() throws Throwable
   {
     TrustManager[] trustAnything = new TrustManager[]
     { new OverlyOptimisticTrustManager() };
-    //KeyManager[] manageNothing = new KeyManager[] { new OverlyOptimisticKeyManager() };
     SSLContext unverifiedTLS = SSLContext.getInstance("TLS");
-    unverifiedTLS.init(null, trustAnything, new java.security.SecureRandom());
+    unverifiedTLS.init(null, trustAnything, new SecureRandom());
     return unverifiedTLS;
   }
+  
+//  public static SSLContext createUnsafeTLSServerContext() throws Throwable
+//  {
+//    Certificate certificate = CertificateFactory.getInstance("X.509").generateCertificate(new ByteArrayInputStream(createSelfSignedCertificateData(1024)));
+//    KeyStore keyStore = KeyStore.getInstance("PKCS12");
+//    keyStore.load(null, null);
+//    keyStore.setCertificateEntry("", certificate);
+//    TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+//    trustManagerFactory.init(keyStore);
+//    KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+//    keyManagerFactory.init(keyStore, null);
+//    SSLContext sslContext = SSLContext.getInstance("TLS");
+//    sslContext.init(keyManagerFactory.getKeyManagers(), trustManagerFactory.getTrustManagers(), new SecureRandom());
+//    return sslContext;
+//  }
+//  
+//  private static byte[] createSelfSignedCertificateData(int bitStrength) throws Throwable
+//  {
+//    RSAKeyPairGenerator generator = new RSAKeyPairGenerator();
+//    RSAKeyGenerationParameters parameters = new RSAKeyGenerationParameters(BigInteger.valueOf(65537), new SecureRandom(), bitStrength, 128);
+//    generator.init(parameters);
+//    AsymmetricCipherKeyPair keyPair = generator.generateKeyPair();
+//    
+//    X500Name subjectName = new X500Name("CN=" + UUID.randomUUID());
+//    BigInteger serial = BigInteger.valueOf(new SecureRandom().nextLong());
+//    Date notBefore = new Date(System.currentTimeMillis() - (1000L * 60 * 60 * 24 * 30)); // 30 days ago
+//    Date notAfter = new Date(System.currentTimeMillis() + (1000L * 60 * 60 * 24 * 365 * 10)); // 10 years from now
+//    
+//    String signatureAlgorithm = "SHA512WITHRSA";
+//    
+//    DefaultSignatureAlgorithmIdentifierFinder sigAlgFinder = new DefaultSignatureAlgorithmIdentifierFinder();
+//    AlgorithmIdentifier sigAlgId = sigAlgFinder.find(signatureAlgorithm);
+//    DigestAlgorithmIdentifierFinder digAlgFinder = new DefaultDigestAlgorithmIdentifierFinder();
+//    AlgorithmIdentifier digAlgId = digAlgFinder.find(sigAlgId);
+//    
+//    ContentSigner signer = new BcRSAContentSignerBuilder(sigAlgId, digAlgId).build(keyPair.getPrivate());
+//    
+//    X509v3CertificateBuilder certBuilder = new BcX509v3CertificateBuilder(subjectName, serial, notBefore, notAfter, subjectName, keyPair.getPublic());
+//    
+//    X509CertificateHolder certificateHolder = certBuilder.build(signer);
+//    
+//    byte[] encodedCert = certificateHolder.getEncoded();
+//    return encodedCert;
+//  }
 }
