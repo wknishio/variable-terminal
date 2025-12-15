@@ -96,15 +96,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
 //      }
       message.append("\nVT>Proxy user(PU): [" + proxyUser + "]");
       message.append("\nVT>Proxy password(PK): [" + proxyPassword + "]");
-      if (encryptionType.toUpperCase().startsWith("G"))
-      {
-        message.append("\nVT>Encryption type(ET): [GRAIN]");
-      }
-      else if (encryptionType.toUpperCase().startsWith("Z"))
-      {
-        message.append("\nVT>Encryption type(ET): [ZUC]");
-      }
-      else if (encryptionType.toUpperCase().startsWith("S"))
+      if (encryptionType.toUpperCase().startsWith("S"))
       {
         message.append("\nVT>Encryption type(ET): [SALSA]");
       }
@@ -112,9 +104,13 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
       {
         message.append("\nVT>Encryption type(ET): [HC]");
       }
-      else if (encryptionType.toUpperCase().startsWith("R"))
+      else if (encryptionType.toUpperCase().startsWith("Z"))
       {
-        message.append("\nVT>Encryption type(ET): [RABBIT]");
+        message.append("\nVT>Encryption type(ET): [ZUC]");
+      }
+      else if (encryptionType.toUpperCase().startsWith("T"))
+      {
+        message.append("\nVT>Encryption type(ET): [THREEFISH]");
       }
       else
       {
@@ -604,17 +600,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
         if (parsed.length == 2)
         {
           String encryptionType = session.getServer().getServerConnector().getEncryptionType();
-          if (encryptionType.toUpperCase().startsWith("G"))
-          {
-            connection.getResultWriter().write("\rVT>Encryption type(ET): [GRAIN]\nVT>");
-            connection.getResultWriter().flush();
-          }
-          else if (encryptionType.toUpperCase().startsWith("Z"))
-          {
-            connection.getResultWriter().write("\rVT>Encryption type(ET): [ZUC]\nVT>");
-            connection.getResultWriter().flush();
-          }
-          else if (encryptionType.toUpperCase().startsWith("S"))
+          if (encryptionType.toUpperCase().startsWith("S"))
           {
             connection.getResultWriter().write("\rVT>Encryption type(ET): [SALSA]\nVT>");
             connection.getResultWriter().flush();
@@ -624,9 +610,14 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
             connection.getResultWriter().write("\rVT>Encryption type(ET): [HC]\nVT>");
             connection.getResultWriter().flush();
           }
-          else if (encryptionType.toUpperCase().startsWith("R"))
+          else if (encryptionType.toUpperCase().startsWith("Z"))
           {
-            connection.getResultWriter().write("\rVT>Encryption type(ET): [RABBIT]\nVT>");
+            connection.getResultWriter().write("\rVT>Encryption type(ET): [ZUC]\nVT>");
+            connection.getResultWriter().flush();
+          }
+          else if (encryptionType.toUpperCase().startsWith("T"))
+          {
+            connection.getResultWriter().write("\rVT>Encryption type(ET): [THREEFISH]\nVT>");
             connection.getResultWriter().flush();
           }
           else
@@ -645,17 +636,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
             connector.interruptConnector();
             connector.notify();
           }
-          if (encryptionType.toUpperCase().startsWith("G"))
-          {
-            connection.getResultWriter().write("\rVT>Encryption type(ET) set to: [GRAIN]\nVT>");
-            connection.getResultWriter().flush();
-          }
-          else if (encryptionType.toUpperCase().startsWith("Z"))
-          {
-            connection.getResultWriter().write("\rVT>Encryption type(ET) set to: [ZUC]\nVT>");
-            connection.getResultWriter().flush();
-          }
-          else if (encryptionType.toUpperCase().startsWith("S"))
+          if (encryptionType.toUpperCase().startsWith("S"))
           {
             connection.getResultWriter().write("\rVT>Encryption type(ET) set to: [SALSA]\nVT>");
             connection.getResultWriter().flush();
@@ -665,9 +646,14 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
             connection.getResultWriter().write("\rVT>Encryption type(ET) set to: [HC]\nVT>");
             connection.getResultWriter().flush();
           }
-          else if (encryptionType.toUpperCase().startsWith("R"))
+          else if (encryptionType.toUpperCase().startsWith("Z"))
           {
-            connection.getResultWriter().write("\rVT>Encryption type(ET) set to: [RABBIT]\nVT>");
+            connection.getResultWriter().write("\rVT>Encryption type(ET) set to: [ZUC]\nVT>");
+            connection.getResultWriter().flush();
+          }
+          else if (encryptionType.toUpperCase().startsWith("T"))
+          {
+            connection.getResultWriter().write("\rVT>Encryption type(ET) set to: [THREEFISH]\nVT>");
             connection.getResultWriter().flush();
           }
           else

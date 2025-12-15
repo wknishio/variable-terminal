@@ -6,12 +6,15 @@ import java.io.OutputStream;
 import org.vash.vate.VTSystem;
 import org.vash.vate.org.bouncycastle.crypto.StreamCipher;
 import org.vash.vate.org.bouncycastle.crypto.engines.ChaChaEngine;
-import org.vash.vate.org.bouncycastle.crypto.engines.Grain128Engine;
-import org.vash.vate.org.bouncycastle.crypto.engines.HC128Engine;
-import org.vash.vate.org.bouncycastle.crypto.engines.RabbitEngine;
-import org.vash.vate.org.bouncycastle.crypto.engines.Zuc128Engine;
+//import org.vash.vate.org.bouncycastle.crypto.engines.Grain128Engine;
+import org.vash.vate.org.bouncycastle.crypto.engines.HC256Engine;
+//import org.vash.vate.org.bouncycastle.crypto.engines.RabbitEngine;
+import org.vash.vate.org.bouncycastle.crypto.engines.ThreefishEngine;
+import org.vash.vate.org.bouncycastle.crypto.engines.Zuc256Engine;
+import org.vash.vate.org.bouncycastle.crypto.modes.SICBlockCipher;
 import org.vash.vate.org.bouncycastle.crypto.params.KeyParameter;
 import org.vash.vate.org.bouncycastle.crypto.params.ParametersWithIV;
+import org.vash.vate.org.bouncycastle.crypto.params.TweakableBlockCipherParameters;
 
 public class VTCryptographicEngine
 {
@@ -87,45 +90,56 @@ public class VTCryptographicEngine
     }
     else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_HC)
     {
-      encryptionStreamCipher = new HC128Engine();
-      decryptionStreamCipher = new HC128Engine();
-      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(16, first, second, encryptionKeys), 0, 16);
-      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(16, second, first, encryptionKeys), 0, 16);
-      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(16, first, second, encryptionKeys), 0, 16);
-      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(16, second, first, encryptionKeys), 0, 16);
+      encryptionStreamCipher = new HC256Engine();
+      decryptionStreamCipher = new HC256Engine();
+      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 32);
+      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, second, first, encryptionKeys), 0, 32);
+      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(32, first, second, encryptionKeys), 0, 32);
+      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(32, second, first, encryptionKeys), 0, 32);
       encryptionStreamCipher.init(true, encryptionIvParameterSpec);
       decryptionStreamCipher.init(false, decryptionIvParameterSpec);
     }
-    else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_GRAIN)
-    {
-      encryptionStreamCipher = new Grain128Engine();
-      decryptionStreamCipher = new Grain128Engine();
-      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(16, first, second, encryptionKeys), 0, 16);
-      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(16, second, first, encryptionKeys), 0, 16);
-      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(12, first, second, encryptionKeys), 0, 12);
-      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(12, second, first, encryptionKeys), 0, 12);
-      encryptionStreamCipher.init(true, encryptionIvParameterSpec);
-      decryptionStreamCipher.init(false, decryptionIvParameterSpec);
-    }
-    else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_RABBIT)
-    {
-      encryptionStreamCipher = new RabbitEngine();
-      decryptionStreamCipher = new RabbitEngine();
-      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(16, first, second, encryptionKeys), 0, 16);
-      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(16, second, first, encryptionKeys), 0, 16);
-      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(8, first, second, encryptionKeys), 0, 8);
-      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(8, second, first, encryptionKeys), 0, 8);
-      encryptionStreamCipher.init(true, encryptionIvParameterSpec);
-      decryptionStreamCipher.init(false, decryptionIvParameterSpec);
-    }
+//    else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_GRAIN)
+//    {
+//      encryptionStreamCipher = new Grain128Engine();
+//      decryptionStreamCipher = new Grain128Engine();
+//      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(16, first, second, encryptionKeys), 0, 16);
+//      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(16, second, first, encryptionKeys), 0, 16);
+//      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(12, first, second, encryptionKeys), 0, 12);
+//      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(12, second, first, encryptionKeys), 0, 12);
+//      encryptionStreamCipher.init(true, encryptionIvParameterSpec);
+//      decryptionStreamCipher.init(false, decryptionIvParameterSpec);
+//    }
+//    else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_RABBIT)
+//    {
+//      encryptionStreamCipher = new RabbitEngine();
+//      decryptionStreamCipher = new RabbitEngine();
+//      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(16, first, second, encryptionKeys), 0, 16);
+//      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(16, second, first, encryptionKeys), 0, 16);
+//      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(8, first, second, encryptionKeys), 0, 8);
+//      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(8, second, first, encryptionKeys), 0, 8);
+//      encryptionStreamCipher.init(true, encryptionIvParameterSpec);
+//      decryptionStreamCipher.init(false, decryptionIvParameterSpec);
+//    }
     else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_ZUC)
     {
-      encryptionStreamCipher = new Zuc128Engine();
-      decryptionStreamCipher = new Zuc128Engine();
-      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(16, first, second, encryptionKeys), 0, 16);
-      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(16, second, first, encryptionKeys), 0, 16);
-      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(16, first, second, encryptionKeys), 0, 16);
-      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(16, second, first, encryptionKeys), 0, 16);
+      encryptionStreamCipher = new Zuc256Engine();
+      decryptionStreamCipher = new Zuc256Engine();
+      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 32);
+      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, second, first, encryptionKeys), 0, 32);
+      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(25, first, second, encryptionKeys), 0, 25);
+      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(25, second, first, encryptionKeys), 0, 25);
+      encryptionStreamCipher.init(true, encryptionIvParameterSpec);
+      decryptionStreamCipher.init(false, decryptionIvParameterSpec);
+    }
+    else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_THREEFISH)
+    {
+      encryptionStreamCipher = new SICBlockCipher(new ThreefishEngine(256));
+      decryptionStreamCipher = new SICBlockCipher(new ThreefishEngine(256));
+      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 32);
+      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, second, first, encryptionKeys), 0, 32);
+      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(new TweakableBlockCipherParameters(decryptionKeySpec, generateIVBLAKE3(16, first, second, encryptionKeys)), generateIVBLAKE3(32, first, second, encryptionKeys), 0, 32);
+      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(new TweakableBlockCipherParameters(encryptionKeySpec, generateIVBLAKE3(16, second, first, encryptionKeys)), generateIVBLAKE3(32, second, first, encryptionKeys), 0, 32);
       encryptionStreamCipher.init(true, encryptionIvParameterSpec);
       decryptionStreamCipher.init(false, decryptionIvParameterSpec);
     }
@@ -197,45 +211,56 @@ public class VTCryptographicEngine
     }
     else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_HC)
     {
-      encryptionStreamCipher = new HC128Engine();
-      decryptionStreamCipher = new HC128Engine();
-      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(16, first, second, encryptionKeys), 0, 16);
-      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(16, second, first, encryptionKeys), 0, 16);
-      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(16, first, second, encryptionKeys), 0, 16);
-      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(16, second, first, encryptionKeys), 0, 16);
+      encryptionStreamCipher = new HC256Engine();
+      decryptionStreamCipher = new HC256Engine();
+      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 32);
+      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, second, first, encryptionKeys), 0, 32);
+      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(32, first, second, encryptionKeys), 0, 32);
+      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(32, second, first, encryptionKeys), 0, 32);
       encryptionStreamCipher.init(true, encryptionIvParameterSpec);
       decryptionStreamCipher.init(false, decryptionIvParameterSpec);
     }
-    else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_GRAIN)
-    {
-      encryptionStreamCipher = new Grain128Engine();
-      decryptionStreamCipher = new Grain128Engine();
-      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(16, first, second, encryptionKeys), 0, 16);
-      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(16, second, first, encryptionKeys), 0, 16);
-      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(12, first, second, encryptionKeys), 0, 12);
-      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(12, second, first, encryptionKeys), 0, 12);
-      encryptionStreamCipher.init(true, encryptionIvParameterSpec);
-      decryptionStreamCipher.init(false, decryptionIvParameterSpec);
-    }
-    else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_RABBIT)
-    {
-      encryptionStreamCipher = new RabbitEngine();
-      decryptionStreamCipher = new RabbitEngine();
-      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(16, first, second, encryptionKeys), 0, 16);
-      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(16, second, first, encryptionKeys), 0, 16);
-      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(8, first, second, encryptionKeys), 0, 8);
-      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(8, second, first, encryptionKeys), 0, 8);
-      encryptionStreamCipher.init(true, encryptionIvParameterSpec);
-      decryptionStreamCipher.init(false, decryptionIvParameterSpec);
-    }
+//    else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_GRAIN)
+//    {
+//      encryptionStreamCipher = new Grain128Engine();
+//      decryptionStreamCipher = new Grain128Engine();
+//      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(16, first, second, encryptionKeys), 0, 16);
+//      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(16, second, first, encryptionKeys), 0, 16);
+//      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(12, first, second, encryptionKeys), 0, 12);
+//      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(12, second, first, encryptionKeys), 0, 12);
+//      encryptionStreamCipher.init(true, encryptionIvParameterSpec);
+//      decryptionStreamCipher.init(false, decryptionIvParameterSpec);
+//    }
+//    else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_RABBIT)
+//    {
+//      encryptionStreamCipher = new RabbitEngine();
+//      decryptionStreamCipher = new RabbitEngine();
+//      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(16, first, second, encryptionKeys), 0, 16);
+//      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(16, second, first, encryptionKeys), 0, 16);
+//      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(8, first, second, encryptionKeys), 0, 8);
+//      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(8, second, first, encryptionKeys), 0, 8);
+//      encryptionStreamCipher.init(true, encryptionIvParameterSpec);
+//      decryptionStreamCipher.init(false, decryptionIvParameterSpec);
+//    }
     else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_ZUC)
     {
-      encryptionStreamCipher = new Zuc128Engine();
-      decryptionStreamCipher = new Zuc128Engine();
-      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(16, first, second, encryptionKeys), 0, 16);
-      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(16, second, first, encryptionKeys), 0, 16);
-      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(16, first, second, encryptionKeys), 0, 16);
-      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(16, second, first, encryptionKeys), 0, 16);
+      encryptionStreamCipher = new Zuc256Engine();
+      decryptionStreamCipher = new Zuc256Engine();
+      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 32);
+      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, second, first, encryptionKeys), 0, 32);
+      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(25, first, second, encryptionKeys), 0, 25);
+      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(25, second, first, encryptionKeys), 0, 25);
+      encryptionStreamCipher.init(true, encryptionIvParameterSpec);
+      decryptionStreamCipher.init(false, decryptionIvParameterSpec);
+    }
+    else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_THREEFISH)
+    {
+      encryptionStreamCipher = new SICBlockCipher(new ThreefishEngine(256));
+      decryptionStreamCipher = new SICBlockCipher(new ThreefishEngine(256));
+      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 32);
+      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, second, first, encryptionKeys), 0, 32);
+      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(new TweakableBlockCipherParameters(encryptionKeySpec, generateIVBLAKE3(16, first, second, encryptionKeys)), generateIVBLAKE3(32, first, second, encryptionKeys), 0, 32);
+      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(new TweakableBlockCipherParameters(decryptionKeySpec, generateIVBLAKE3(16, second, first, encryptionKeys)), generateIVBLAKE3(32, second, first, encryptionKeys), 0, 32);
       encryptionStreamCipher.init(true, encryptionIvParameterSpec);
       decryptionStreamCipher.init(false, decryptionIvParameterSpec);
     }

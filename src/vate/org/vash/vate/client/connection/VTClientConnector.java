@@ -609,10 +609,10 @@ public class VTClientConnector implements Runnable
 //      {
 //        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_VMPC);
 //      }
-      else if (encryptionType.toUpperCase().startsWith("G"))
-      {
-        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_GRAIN);
-      }
+//      else if (encryptionType.toUpperCase().startsWith("G"))
+//      {
+//        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_GRAIN);
+//      }
       else if (encryptionType.toUpperCase().startsWith("S"))
       {
         connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_SALSA);
@@ -621,10 +621,14 @@ public class VTClientConnector implements Runnable
       {
         connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_HC);
       }
-      else if (encryptionType.toUpperCase().startsWith("R"))
+      else if (encryptionType.toUpperCase().startsWith("T"))
       {
-        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_RABBIT);
+        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_THREEFISH);
       }
+//      else if (encryptionType.toUpperCase().startsWith("R"))
+//      {
+//        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_RABBIT);
+//      }
       else
       {
         connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_NONE);
@@ -696,10 +700,10 @@ public class VTClientConnector implements Runnable
 //      {
 //        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_VMPC);
 //      }
-      else if (encryptionType.toUpperCase().startsWith("G"))
-      {
-        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_GRAIN);
-      }
+//      else if (encryptionType.toUpperCase().startsWith("G"))
+//      {
+//        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_GRAIN);
+//      }
       else if (encryptionType.toUpperCase().startsWith("S"))
       {
         connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_SALSA);
@@ -708,10 +712,14 @@ public class VTClientConnector implements Runnable
       {
         connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_HC);
       }
-      else if (encryptionType.toUpperCase().startsWith("R"))
+      else if (encryptionType.toUpperCase().startsWith("T"))
       {
-        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_RABBIT);
+        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_THREEFISH);
       }
+//      else if (encryptionType.toUpperCase().startsWith("R"))
+//      {
+//        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_RABBIT);
+//      }
       else
       {
         connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_NONE);
@@ -1253,7 +1261,7 @@ public class VTClientConnector implements Runnable
       }
       if (line.toUpperCase().startsWith("Y"))
       {
-        VTMainConsole.print("VT>Enter encryption type(SALSA(S)/HC(H)/GRAIN(G)/RABBIT(R)/ZUC(Z)):");
+        VTMainConsole.print("VT>Enter encryption type(SALSA(S)/HC(H)/ZUC(Z)/THREEFISH(T)):");
         line = VTMainConsole.readLine(false);
         if (line == null)
         {
@@ -1264,22 +1272,22 @@ public class VTClientConnector implements Runnable
           return true;
         }
         encryptionType = "SALSA";
-        if (line.toUpperCase().startsWith("Z"))
-        {
-          encryptionType = "ZUC";
-        }
-        if (line.toUpperCase().startsWith("R"))
-        {
-          encryptionType = "RABBIT";
-        }
         if (line.toUpperCase().startsWith("H"))
         {
           encryptionType = "HC";
         }
-        if (line.toUpperCase().startsWith("G"))
+        if (line.toUpperCase().startsWith("Z"))
         {
-          encryptionType = "GRAIN";
+          encryptionType = "ZUC";
         }
+        if (line.toUpperCase().startsWith("T"))
+        {
+          encryptionType = "THREEFISH";
+        }
+//        if (line.toUpperCase().startsWith("G"))
+//        {
+//          encryptionType = "GRAIN";
+//        }
         VTMainConsole.print("VT>Enter encryption password:");
         line = VTMainConsole.readLine(false);
         if (line == null)

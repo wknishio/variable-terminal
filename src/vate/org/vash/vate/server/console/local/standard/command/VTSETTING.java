@@ -97,15 +97,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
 //      }
       message.append("\nVT>Proxy user(PU): [" + proxyUser + "]");
       message.append("\nVT>Proxy password(PK): [" + proxyPassword + "]");
-      if (encryptionType.toUpperCase().startsWith("G"))
-      {
-        message.append("\nVT>Encryption type(ET): [GRAIN]");
-      }
-      else if (encryptionType.toUpperCase().startsWith("Z"))
-      {
-        message.append("\nVT>Encryption type(ET): [ZUC]");
-      }
-      else if (encryptionType.toUpperCase().startsWith("S"))
+      if (encryptionType.toUpperCase().startsWith("S"))
       {
         message.append("\nVT>Encryption type(ET): [SALSA]");
       }
@@ -113,9 +105,13 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
       {
         message.append("\nVT>Encryption type(ET): [HC]");
       }
-      else if (encryptionType.toUpperCase().startsWith("R"))
+      else if (encryptionType.toUpperCase().startsWith("Z"))
       {
-        message.append("\nVT>Encryption type(ET): [RABBIT]");
+        message.append("\nVT>Encryption type(ET): [ZUC]");
+      }
+      else if (encryptionType.toUpperCase().startsWith("T"))
+      {
+        message.append("\nVT>Encryption type(ET): [THREEFISH]");
       }
       else
       {
@@ -570,15 +566,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
         if (parsed.length == 2)
         {
           String encryptionType = server.getServerConnector().getEncryptionType();
-          if (encryptionType.toUpperCase().startsWith("G"))
-          {
-            VTMainConsole.print("\rVT>Encryption type(ET): [GRAIN]\nVT>");
-          }
-          else if (encryptionType.toUpperCase().startsWith("Z"))
-          {
-            VTMainConsole.print("\rVT>Encryption type(ET): [ZUC]\nVT>");
-          }
-          else if (encryptionType.toUpperCase().startsWith("S"))
+          if (encryptionType.toUpperCase().startsWith("S"))
           {
             VTMainConsole.print("\rVT>Encryption type(ET): [SALSA]\nVT>");
           }
@@ -586,9 +574,13 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           {
             VTMainConsole.print("\rVT>Encryption type(ET): [HC]\nVT>");
           }
-          else if (encryptionType.toUpperCase().startsWith("R"))
+          else if (encryptionType.toUpperCase().startsWith("Z"))
           {
-            VTMainConsole.print("\rVT>Encryption type(ET): [RABBIT]\nVT>");
+            VTMainConsole.print("\rVT>Encryption type(ET): [ZUC]\nVT>");
+          }
+          else if (encryptionType.toUpperCase().startsWith("T"))
+          {
+            VTMainConsole.print("\rVT>Encryption type(ET): [THREEFISH]\nVT>");
           }
           else
           {
@@ -605,15 +597,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
             connector.interruptConnector();
             connector.notify();
           }
-          if (encryptionType.toUpperCase().startsWith("G"))
-          {
-            VTMainConsole.print("\rVT>Encryption type(ET) set to: [GRAIN]\nVT>");
-          }
-          else if (encryptionType.toUpperCase().startsWith("Z"))
-          {
-            VTMainConsole.print("\rVT>Encryption type(ET) set to: [ZUC]\nVT>");
-          }
-          else if (encryptionType.toUpperCase().startsWith("S"))
+          if (encryptionType.toUpperCase().startsWith("S"))
           {
             VTMainConsole.print("\rVT>Encryption type(ET) set to: [SALSA]\nVT>");
           }
@@ -621,9 +605,13 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           {
             VTMainConsole.print("\rVT>Encryption type(ET) set to: [HC]\nVT>");
           }
-          else if (encryptionType.toUpperCase().startsWith("R"))
+          else if (encryptionType.toUpperCase().startsWith("Z"))
           {
-            VTMainConsole.print("\rVT>Encryption type(ET) set to: [RABBIT]\nVT>");
+            VTMainConsole.print("\rVT>Encryption type(ET) set to: [ZUC]\nVT>");
+          }
+          else if (encryptionType.toUpperCase().startsWith("T"))
+          {
+            VTMainConsole.print("\rVT>Encryption type(ET) set to: [THREEFISH]\nVT>");
           }
           else
           {

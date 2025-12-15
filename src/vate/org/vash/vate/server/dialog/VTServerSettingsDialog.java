@@ -416,9 +416,10 @@ public class VTServerSettingsDialog extends Dialog
     //encryptionTypeChoice.add("VMPC");
     encryptionTypeChoice.add("SALSA");
     encryptionTypeChoice.add("HC");
-    encryptionTypeChoice.add("GRAIN");
-    encryptionTypeChoice.add("RABBIT");
+    //encryptionTypeChoice.add("GRAIN");
+    //encryptionTypeChoice.add("RABBIT");
     encryptionTypeChoice.add("ZUC");
+    encryptionTypeChoice.add("THREEFISH");
     // encryptionTypeChoice.add("BLOWFISH");
     encryptionTypeChoice.select("NONE");
     encryptionTypeChoice.addItemListener(new ItemListener()
@@ -431,14 +432,6 @@ public class VTServerSettingsDialog extends Dialog
           {
             setEncryptionType("NONE");
           }
-          else if (e.getItem().equals("GRAIN"))
-          {
-            setEncryptionType("GRAIN");
-          }
-          else if (e.getItem().equals("ZUC"))
-          {
-            setEncryptionType("ZUC");
-          }
           else if (e.getItem().equals("SALSA"))
           {
             setEncryptionType("SALSA");
@@ -447,9 +440,13 @@ public class VTServerSettingsDialog extends Dialog
           {
             setEncryptionType("HC");
           }
-          else if (e.getItem().equals("RABBIT"))
+          else if (e.getItem().equals("ZUC"))
           {
-            setEncryptionType("RABBIT");
+            setEncryptionType("ZUC");
+          }
+          else if (e.getItem().equals("THREEFISH"))
+          {
+            setEncryptionType("THREEFISH");
           }
         }
       }
@@ -1359,16 +1356,6 @@ public class VTServerSettingsDialog extends Dialog
       encryptionType.setParameter("NONE");
       // encryptionPassword.setEnabled(false);
     }
-    else if (encryption.toUpperCase().startsWith("G"))
-    {
-      encryptionType.setParameter("GRAIN");
-      // encryptionPassword.setEnabled(true);
-    }
-    else if (encryption.toUpperCase().startsWith("Z"))
-    {
-      encryptionType.setParameter("ZUC");
-      // encryptionPassword.setEnabled(true);
-    }
     else if (encryption.toUpperCase().startsWith("S"))
     {
       encryptionType.setParameter("SALSA");
@@ -1379,9 +1366,14 @@ public class VTServerSettingsDialog extends Dialog
       encryptionType.setParameter("HC");
       // encryptionPassword.setEnabled(true);
     }
-    else if (encryption.toUpperCase().startsWith("R"))
+    else if (encryption.toUpperCase().startsWith("Z"))
     {
-      encryptionType.setParameter("RABBIT");
+      encryptionType.setParameter("ZUC");
+      // encryptionPassword.setEnabled(true);
+    }
+    else if (encryption.toUpperCase().startsWith("T"))
+    {
+      encryptionType.setParameter("THREEFISH");
       // encryptionPassword.setEnabled(true);
     }
     else
