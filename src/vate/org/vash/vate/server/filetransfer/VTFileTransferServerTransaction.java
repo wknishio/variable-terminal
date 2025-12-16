@@ -80,6 +80,8 @@ public class VTFileTransferServerTransaction implements Runnable
     System.arraycopy(localNonce, 0, blake3Seed, VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES, VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES);
     
     VTBlake3MessageDigest blake3Digest = new VTBlake3MessageDigest(blake3Seed);
+    blake3Digest.update(session.getServer().getConnection().getRemoteNonce());
+    blake3Digest.update(session.getServer().getConnection().getLocalNonce());
     blake3Digest.update(session.getServer().getConnection().getEncryptionKey());
     blake3Digest.update(session.getServer().getConnection().getDigestedCredentials());
     long digestSeed = blake3Digest.digestLong();

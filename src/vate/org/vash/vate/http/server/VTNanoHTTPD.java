@@ -1165,7 +1165,7 @@ public class VTNanoHTTPD implements Runnable, Closeable
     protected String generateNonce(String realm) throws IOException
     {
       //long currentTime = System.currentTimeMillis();
-      byte[] randomBytes = new byte[64];
+      byte[] randomBytes = new byte[VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES];
       random.nextBytes(randomBytes);
       String nonceValue = realm + ":" + Hex.toHexString(randomBytes);
       nonceValue = Hex.toHexString(xxhash64.digest(nonceValue.getBytes("ISO-8859-1")));

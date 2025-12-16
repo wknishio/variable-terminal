@@ -1443,7 +1443,7 @@ public class VTClientConnector implements Runnable
     while (running)
     {
       stopConnectionRetryTimeoutThread();
-      byte[] secureSeed = new byte[64];
+      byte[] secureSeed = new byte[VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES];
       secureRandom.nextBytes(secureSeed);
       connection.setSecureRandomSeed(secureSeed);
       if (active)

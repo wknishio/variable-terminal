@@ -2,6 +2,7 @@ package org.vash.vate.security;
 
 import java.security.MessageDigest;
 
+import org.vash.vate.VTSystem;
 import org.vash.vate.org.bouncycastle.crypto.params.Blake3Parameters;
 
 public class VTBlake3MessageDigest extends MessageDigest
@@ -93,7 +94,7 @@ public class VTBlake3MessageDigest extends MessageDigest
   
   protected byte[] engineDigest()
   {
-    byte[] digest = new byte[64];
+    byte[] digest = new byte[VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES];
     blake3.doFinal(digest, 0, digest.length);
     return digest;
   }

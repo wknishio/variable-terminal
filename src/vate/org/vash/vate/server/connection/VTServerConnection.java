@@ -604,14 +604,7 @@ public class VTServerConnection
   
   public boolean setConnectionStreams(byte[] digestedCredentials) throws IOException
   {
-    try
-    {
-      exchangeNonces(true);
-    }
-    catch (Throwable t)
-    {
-      return false;
-    }
+    exchangeNonces(true);
     this.digestedCredentials = digestedCredentials;
     //cryptoEngine.initializeServerEngine(encryptionType, encryptionKey, remoteNonce, localNonce, digestedCredentials, user != null ? user.getBytes("UTF-8") : null, password != null ? password.getBytes("UTF-8") : null);
     cryptoEngine.initializeServerEngine(encryptionType, remoteNonce, localNonce, encryptionKey, digestedCredentials);
@@ -928,7 +921,7 @@ public class VTServerConnection
   
   public void startConnection() throws IOException
   {
-    exchangeNonces(true);
+    //exchangeNonces(true);
     setMultiplexedStreams();
     multiplexedConnectionInputStream.startPacketReader();
   }

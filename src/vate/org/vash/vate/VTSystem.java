@@ -41,7 +41,7 @@ public class VTSystem
   public static final int VT_FILE_BUFFER_SIZE_BYTES = 1024 * 64;
   public static final int VT_REDUCED_BUFFER_SIZE_BYTES = 1024 * 16;
   
-  public static final int VT_SECURITY_DIGEST_SIZE_BYTES = 64;
+  public static final int VT_SECURITY_DIGEST_SIZE_BYTES = 128;
   public static final int VT_SECURITY_SEED_SIZE_BYTES = VT_SECURITY_DIGEST_SIZE_BYTES << 1;
   
   public static final int VT_CONNECT_TIMEOUT_MILLISECONDS = 60000;
