@@ -15,7 +15,7 @@ public class VTBlake3SecureRandom extends SecureRandom
   
   public VTBlake3SecureRandom()
   {
-    byte[] secureSeed = new byte[VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES];
+    byte[] secureSeed = new byte[VTSystem.VT_SECURITY_SEED_SIZE_BYTES];
     new SecureRandom().nextBytes(secureSeed);
     setSeed(secureSeed);
   }

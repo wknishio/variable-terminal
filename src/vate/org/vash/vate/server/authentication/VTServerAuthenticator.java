@@ -1,6 +1,8 @@
 package org.vash.vate.server.authentication;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.vash.vate.VTSystem;
 import org.vash.vate.security.VTArrayComparator;
@@ -109,6 +111,19 @@ public class VTServerAuthenticator
     return digestedCredential;
   }
   
+  private byte[] computeSecurityDigest(byte[]... values)
+  {
+    blake3Digest.reset();
+    for (byte[] value : values)
+    {
+      if (value != null && value.length > 0)
+      {
+        blake3Digest.update(value);
+      }
+    }
+    return blake3Digest.digest(VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES);
+  }
+  
   public boolean tryAuthentication() throws IOException
   {
     localNonce = connection.getLocalNonce();
@@ -122,51 +137,49 @@ public class VTServerAuthenticator
     blake3Digest.setSeed(seed);
     blake3Digest.reset();
     
-    connection.getSecureRandom().nextBytes(digestedCredential);
-    connection.getAuthenticationWriter().write(digestedCredential);
-    connection.getAuthenticationWriter().flush();
-    connection.getAuthenticationReader().readFully(receivedCredential);
-    
+    List<byte[]> possibleCredentials = new ArrayList<byte[]>();
+    VTCredential[] serverCredentials = server.getUserCredentials().toArray(new VTCredential[] {});
     if (server.getUserCredentials().size() > 0)
     {
       for (VTCredential credential : server.getUserCredentials())
       {
         String credentialUser = credential.getUser();
         String credentialPassword = credential.getPassword();
-        blake3Digest.reset();
-        blake3Digest.update(localNonce);
-        blake3Digest.update(remoteNonce);
-        blake3Digest.update(encryptionKey);
-        blake3Digest.update(credentialUser.getBytes("UTF-8"));
-        blake3Digest.update(credentialPassword.getBytes("UTF-8"));
-        digestedCredential = blake3Digest.digest(VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES);
-        
-        if (VTArrayComparator.arrayEquals(digestedCredential, receivedCredential))
-        {
-          user = credential.getUser();
-          password = credential.getPassword();
-          accepted = true;
-          stopTimeoutThread();
-          return true;
-        }
+        possibleCredentials.add(computeSecurityDigest(localNonce, remoteNonce, encryptionKey, credentialUser.getBytes("UTF-8"), credentialPassword.getBytes("UTF-8")));
       }
     }
     else
     {
-      blake3Digest.reset();
-      blake3Digest.update(localNonce);
-      blake3Digest.update(remoteNonce);
-      blake3Digest.update(encryptionKey);
-      digestedCredential = blake3Digest.digest(VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES);
-      
-      if (VTArrayComparator.arrayEquals(digestedCredential, receivedCredential))
+      possibleCredentials.add(computeSecurityDigest(localNonce, remoteNonce, encryptionKey));
+    }
+    
+    connection.getSecureRandom().nextBytes(digestedCredential);
+    connection.getAuthenticationWriter().write(digestedCredential);
+    connection.getAuthenticationWriter().flush();
+    connection.getAuthenticationReader().readFully(receivedCredential);
+    
+    int i = 0;
+    for (byte[] possibleCredential : possibleCredentials)
+    {
+      if (VTArrayComparator.arrayEquals(possibleCredential, receivedCredential))
       {
-        user = "";
-        password = "";
+        if (serverCredentials.length > 0)
+        {
+          VTCredential credential = serverCredentials[i];
+          user = credential.getUser();
+          password = credential.getPassword();
+        }
+        else
+        {
+          user = "";
+          password = "";
+        }
+        digestedCredential = possibleCredential;
         accepted = true;
         stopTimeoutThread();
         return true;
       }
+      i++;
     }
     stopTimeoutThread();
     return false;

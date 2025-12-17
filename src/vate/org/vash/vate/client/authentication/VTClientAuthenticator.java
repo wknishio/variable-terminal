@@ -106,6 +106,19 @@ public class VTClientAuthenticator
     return password;
   }
   
+  private byte[] computeSecurityDigest(byte[]... values)
+  {
+    blake3Digest.reset();
+    for (byte[] value : values)
+    {
+      if (value != null && value.length > 0)
+      {
+        blake3Digest.update(value);
+      }
+    }
+    return blake3Digest.digest(VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES);
+  }
+  
   public boolean tryAuthentication() throws IOException
   {
     localNonce = connection.getLocalNonce();
@@ -119,38 +132,7 @@ public class VTClientAuthenticator
     blake3Digest.setSeed(seed);
     blake3Digest.reset();
     
-    blake3Digest.update(remoteNonce);
-    blake3Digest.update(localNonce);
-    blake3Digest.update(encryptionKey);
-    
-    String line = "";
-    //byte[] credentialData = null;
-    
-    if (client.getUser() != null)
-    {
-      line = client.getUser();
-      user = line;
-    }
-    else
-    {
-      line = "";
-    }
-    
-    blake3Digest.update(line.getBytes("UTF-8"));
-    
-    if (client.getPassword() != null)
-    {
-      line = client.getPassword();
-      password = line;
-    }
-    else
-    {
-      line = "";
-    }
-    
-    blake3Digest.update(line.getBytes("UTF-8"));
-    
-    digestedCredential = blake3Digest.digest(VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES);
+    digestedCredential = computeSecurityDigest(remoteNonce, localNonce, encryptionKey, client.getUser().getBytes("UTF-8"), client.getPassword().getBytes("UTF-8"));
     
     connection.getAuthenticationWriter().write(digestedCredential);
     connection.getAuthenticationWriter().flush();
