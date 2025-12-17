@@ -134,7 +134,7 @@ public class VTServerSession
     // this.printTextTask = new VTServerPrintTextTask(this);
     // this.printFileTask = new VTServerPrintFileTask(this);
     this.printDataTask = new VTServerPrintDataTask(this);
-    this.tunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(executorService, sessionCloseables));
+    this.tunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(executorService, sessionCloseables, connection.getSecureRandom()));
     // this.socksTunnelsHandler = new VTTunnelConnectionHandler(new
     // VTTunnelConnection(executor), executor);
     this.pingServiceClient = new VTNanoPingService(server.getPingIntervalMilliseconds(), server.getPingIntervalMilliseconds() / 2, false, executorService);

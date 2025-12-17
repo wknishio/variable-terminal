@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.util.Collection;
 import java.util.LinkedHashSet;
+import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 
@@ -40,13 +41,15 @@ public class VTTunnelConnection
   private Collection<Closeable> closeables;
   private final Collection<String> nonces = new LinkedHashSet<String>();
   //private final Random random = new VTSplitMix64Random(new VTBlake3SecureRandom().nextLong());
+  private final Random random;
   private volatile boolean closed = false;
   
-  public VTTunnelConnection(ExecutorService executorService, Collection<Closeable> closeables)
+  public VTTunnelConnection(ExecutorService executorService, Collection<Closeable> closeables, Random random)
   {
-    this.responseChannelDirect = new VTTunnelChannel(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT, this);
-    this.responseChannelQuick = new VTTunnelChannel(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT | VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED | VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_QUICK, this);
-    this.responseChannelHeavy = new VTTunnelChannel(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT | VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED | VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_HEAVY, this);
+    this.random = random;
+    this.responseChannelDirect = new VTTunnelChannel(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT, this, random);
+    this.responseChannelQuick = new VTTunnelChannel(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT | VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED | VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_QUICK, this, random);
+    this.responseChannelHeavy = new VTTunnelChannel(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT | VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED | VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_HEAVY, this, random);
     this.bindListeners = new ConcurrentLinkedQueue<VTTunnelChannelBindSocketListener>();
     // this.tunnelType = tunnelType;
     this.executorService = executorService;
@@ -108,7 +111,7 @@ public class VTTunnelConnection
         return false;
       }
     }
-    VTTunnelChannel channel = new VTTunnelChannel(channelType, this, connectTimeout, dataTimeout, bindHost, bindPort, true, proxy);
+    VTTunnelChannel channel = new VTTunnelChannel(channelType, this, connectTimeout, dataTimeout, bindHost, bindPort, true, proxy, random);
     listener = new VTTunnelChannelBindSocketListener(channel);
     if (listener.bind())
     {
@@ -151,7 +154,7 @@ public class VTTunnelConnection
         return false;
       }
     }
-    VTTunnelChannel channel = new VTTunnelChannel(channelType, this, connectTimeout, dataTimeout, bindHost, bindPort, username, password, true, proxy);
+    VTTunnelChannel channel = new VTTunnelChannel(channelType, this, connectTimeout, dataTimeout, bindHost, bindPort, username, password, true, proxy, random);
     listener = new VTTunnelChannelBindSocketListener(channel);
     if (listener.bind())
     {
@@ -194,7 +197,7 @@ public class VTTunnelConnection
         return false;
       }
     }
-    VTTunnelChannel channel = new VTTunnelChannel(channelType, this, connectTimeout, dataTimeout, bindHost, bindPort, false, proxy);
+    VTTunnelChannel channel = new VTTunnelChannel(channelType, this, connectTimeout, dataTimeout, bindHost, bindPort, false, proxy, random);
     listener = new VTTunnelChannelBindSocketListener(channel);
     if (listener.bind())
     {
@@ -237,7 +240,7 @@ public class VTTunnelConnection
         return false;
       }
     }
-    VTTunnelChannel channel = new VTTunnelChannel(channelType, this, connectTimeout, dataTimeout, bindHost, bindPort, username, password, false, proxy);
+    VTTunnelChannel channel = new VTTunnelChannel(channelType, this, connectTimeout, dataTimeout, bindHost, bindPort, username, password, false, proxy, random);
     listener = new VTTunnelChannelBindSocketListener(channel);
     if (listener.bind())
     {
@@ -279,7 +282,7 @@ public class VTTunnelConnection
         return false;
       }
     }
-    VTTunnelChannel channel = new VTTunnelChannel(channelType, this, connectTimeout, dataTimeout, bindHost, bindPort, redirectHost, redirectPort, proxy);
+    VTTunnelChannel channel = new VTTunnelChannel(channelType, this, connectTimeout, dataTimeout, bindHost, bindPort, redirectHost, redirectPort, proxy, random);
     listener = new VTTunnelChannelBindSocketListener(channel);
     if (listener.bind())
     {

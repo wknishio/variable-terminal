@@ -3,6 +3,7 @@ package org.vash.vate.proxy.server.launcher;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.security.SecureRandom;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Properties;
@@ -17,7 +18,6 @@ import org.vash.vate.proxy.server.VTSocksHttpProxyAuthenticatorNone;
 import org.vash.vate.proxy.server.VTSocksHttpProxyAuthenticatorUsernamePassword;
 import org.vash.vate.proxy.server.VTSocksMultipleUserValidation;
 import org.vash.vate.proxy.server.VTSocksProxyServer;
-import org.vash.vate.security.VTBlake3SecureRandom;
 import org.vash.vate.security.VTCredential;
 import org.vash.vate.security.VTSplitMix64Random;
 
@@ -222,6 +222,7 @@ public class VTSocksPlusHttpProxyServerLauncher
   
   public static void main(String[] args)
   {
+    SecureRandom secureRandom = new SecureRandom();
     VTSocksPlusHttpProxyServerLauncher socksPlusHttpProxyServer = new VTSocksPlusHttpProxyServerLauncher();
     try
     {
@@ -251,7 +252,7 @@ public class VTSocksPlusHttpProxyServerLauncher
     }
     if (validation != null)
     {
-      VTSocksProxyServer socksServer = new VTSocksProxyServer(new VTSocksHttpProxyAuthenticatorUsernamePassword(validation, new LinkedHashSet<String>(), new VTSplitMix64Random(new VTBlake3SecureRandom().nextLong()), socksPlusHttpProxyServer.executorService, socksPlusHttpProxyServer.bind, 0, 0, null), socksPlusHttpProxyServer.executorService, false, false, 0, null);
+      VTSocksProxyServer socksServer = new VTSocksProxyServer(new VTSocksHttpProxyAuthenticatorUsernamePassword(validation, new LinkedHashSet<String>(), new VTSplitMix64Random(secureRandom.nextLong()), socksPlusHttpProxyServer.executorService, socksPlusHttpProxyServer.bind, 0, 0, null), socksPlusHttpProxyServer.executorService, false, false, 0, null);
       socksServer.start(socksPlusHttpProxyServer.port, socksPlusHttpProxyServer.host, socksPlusHttpProxyServer.bind);
     }
     else

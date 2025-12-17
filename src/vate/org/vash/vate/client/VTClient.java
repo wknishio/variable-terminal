@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.security.SecureRandom;
 import java.util.Collection;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -2303,7 +2304,7 @@ public class VTClient implements Runnable
     {
       executorService.execute(monitorService);
     }
-    clientConnector = new VTClientConnector(this, new VTBlake3SecureRandom(), proxy);
+    clientConnector = new VTClientConnector(this, new VTBlake3SecureRandom(new SecureRandom()), proxy);
     clientConnector.setActive(active);
     clientConnector.setAddress(hostAddress);
     clientConnector.setPort(hostPort);

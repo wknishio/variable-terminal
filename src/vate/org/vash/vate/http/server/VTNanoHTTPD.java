@@ -14,6 +14,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URLEncoder;
+import java.security.SecureRandom;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Enumeration;
@@ -30,7 +31,6 @@ import org.vash.vate.org.apache.commons.codec.binary.Base64;
 import org.vash.vate.org.apache.commons.codec.digest.DigestUtils;
 import org.vash.vate.org.bouncycastle.util.encoders.Hex;
 import org.vash.vate.parser.VTConfigurationProperties;
-import org.vash.vate.security.VTBlake3SecureRandom;
 import org.vash.vate.security.VTSplitMix64Random;
 import org.vash.vate.security.VTXXHash64MessageDigest;
 import org.vash.vate.stream.array.VTByteArrayInputStream;
@@ -246,7 +246,7 @@ public class VTNanoHTTPD implements Runnable, Closeable
     passwords = authPasswords;
     
     nonces = new LinkedHashSet<String>();
-    random = new VTSplitMix64Random(new VTBlake3SecureRandom().nextLong());
+    random = new VTSplitMix64Random(new SecureRandom().nextLong());
     
     if (usernames == null || passwords == null || usernames.length == 0 || passwords.length == 0)
     {

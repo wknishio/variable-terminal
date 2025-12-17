@@ -1,6 +1,7 @@
 package org.vash.vate.security;
 
 import java.security.SecureRandom;
+import java.util.Random;
 
 import org.vash.vate.VTSystem;
 import org.vash.vate.org.bouncycastle.crypto.params.Blake3Parameters;
@@ -13,10 +14,10 @@ public class VTBlake3SecureRandom extends SecureRandom
   private final VTBlake3RoundsDigest blake3 = new VTBlake3RoundsDigest(64, 16);
   private final RandomGenerator generator = new DigestRandomGenerator(blake3);
   
-  public VTBlake3SecureRandom()
+  public VTBlake3SecureRandom(Random random)
   {
     byte[] secureSeed = new byte[VTSystem.VT_SECURITY_SEED_SIZE_BYTES];
-    new SecureRandom().nextBytes(secureSeed);
+    random.nextBytes(secureSeed);
     setSeed(secureSeed);
   }
   

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.security.SecureRandom;
 import java.util.Collection;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -2401,7 +2402,7 @@ public class VTServer implements Runnable
     {
       executorService.execute(monitorService);
     }
-    serverConnector = new VTServerConnector(this, new VTBlake3SecureRandom(), proxy);
+    serverConnector = new VTServerConnector(this, new VTBlake3SecureRandom(new SecureRandom()), proxy);
     serverConnector.setPassive(passive);
     serverConnector.setAddress(hostAddress);
     serverConnector.setPort(hostPort);

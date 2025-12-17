@@ -7,7 +7,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.vash.vate.VTSystem;
 import org.vash.vate.proxy.client.VTProxy;
-import org.vash.vate.security.VTBlake3SecureRandom;
 import org.vash.vate.security.VTSplitMix64Random;
 import org.vash.vate.tunnel.connection.VTTunnelConnection;
 import org.vash.vate.tunnel.session.VTTunnelSessionHandler;
@@ -24,7 +23,7 @@ public class VTTunnelChannel
   private int channelType = VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT;
   private final VTTunnelConnection connection;
   private final Collection<VTTunnelSessionHandler> sessions;
-  private final Random random = new VTSplitMix64Random(new VTBlake3SecureRandom().nextLong());
+  private final Random random;// = new VTSplitMix64Random(new VTBlake3SecureRandom().nextLong());
   
   private int connectTimeout;
   private int dataTimeout;
@@ -59,8 +58,9 @@ public class VTTunnelChannel
   }
   
   // SOCKS/HTTP/FTP bind tunnel without authentication
-  public VTTunnelChannel(int channelType, VTTunnelConnection connection, int connectTimeout, int dataTimeout, String bindHost, int bindPort, boolean ftp, VTProxy proxy)
+  public VTTunnelChannel(int channelType, VTTunnelConnection connection, int connectTimeout, int dataTimeout, String bindHost, int bindPort, boolean ftp, VTProxy proxy, Random random)
   {
+    this.random = new VTSplitMix64Random(random.nextLong());
     String remoteBind = "";
     int idx = bindHost.indexOf(';');
     if (idx >= 0)
@@ -96,8 +96,9 @@ public class VTTunnelChannel
   }
   
   // SOCKS/HTTP/FTP bind tunnel with authentication
-  public VTTunnelChannel(int channelType, VTTunnelConnection connection, int connectTimeout, int dataTimeout, String bindHost, int bindPort, String username, String password, boolean ftp, VTProxy proxy)
+  public VTTunnelChannel(int channelType, VTTunnelConnection connection, int connectTimeout, int dataTimeout, String bindHost, int bindPort, String username, String password, boolean ftp, VTProxy proxy, Random random)
   {
+    this.random = new VTSplitMix64Random(random.nextLong());
     String remoteBind = "";
     int idx = bindHost.indexOf(';');
     if (idx >= 0)
@@ -135,8 +136,9 @@ public class VTTunnelChannel
   }
   
   // TCP bind redirect tunnel
-  public VTTunnelChannel(int channelType, VTTunnelConnection connection, int connectTimeout, int dataTimeout, String bindHost, int bindPort, String redirectHost, int redirectPort, VTProxy proxy)
+  public VTTunnelChannel(int channelType, VTTunnelConnection connection, int connectTimeout, int dataTimeout, String bindHost, int bindPort, String redirectHost, int redirectPort, VTProxy proxy, Random random)
   {
+    this.random = new VTSplitMix64Random(random.nextLong());
     String remoteBind = "";
     int idx = bindHost.indexOf(';');
     if (idx >= 0)
@@ -167,8 +169,9 @@ public class VTTunnelChannel
   }
   
   //Generic response channel
-  public VTTunnelChannel(int channelType, VTTunnelConnection connection)
+  public VTTunnelChannel(int channelType, VTTunnelConnection connection, Random random)
   {
+    this.random = new VTSplitMix64Random(random.nextLong());
     this.tunnelType = TUNNEL_TYPE_ANY;
     this.channelType = channelType;
     this.connection = connection;
