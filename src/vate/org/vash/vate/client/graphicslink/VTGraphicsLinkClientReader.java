@@ -239,15 +239,13 @@ public class VTGraphicsLinkClientReader implements Runnable
       }
       else
       {
-        VTMainConsole.print("\rVT>Remote graphics link started!\nVT>");
         vtCustomCodec = new VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII();
-        // pngImageReader = ImageIO.getImageReadersByFormatName("PNG").next();
         pngImageReader = new PngImageReader(new PngImageReaderSpi());
         jpegImageReader = ImageIO.getImageReadersByFormatName("JPEG").next();
         limitedInputStream = new VTSizedInputStream(connection.getGraphicsDirectImageDataInputStream());
         pngImageReader.addIIOReadUpdateListener(incrementalImageReader);
         jpegImageReader.addIIOReadUpdateListener(incrementalImageReader);
-        //jpgReaderParam = jpegImageReader.getDefaultReadParam();
+        VTMainConsole.print("\rVT>Remote graphics link started!\nVT>");
       }
     }
     catch (Throwable e)

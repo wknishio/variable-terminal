@@ -314,7 +314,7 @@ public class VTGraphicsLinkServerWriter implements Runnable
     //long startTime = System.nanoTime();
     //long pixels = 0;
     needRefresh = false;
-    List<VTRectangle> blockAreas = VTImageDataUtils.splitBlockArea(imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea, 64, 64);
+    List<VTRectangle> blockAreas = VTImageDataUtils.splitBlockArea(imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea, 16, 16);
     //System.out.println("blocks_before:" + blockAreas.size());
     blockAreas = VTImageDataUtils.mergeNeighbourAreas(blockAreas);
     //System.out.println("blocks_after:" + blockAreas.size());
@@ -460,15 +460,15 @@ public class VTGraphicsLinkServerWriter implements Runnable
     List<VTRectangle> blockAreas = null;
     if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)
     {
-      blockAreas = VTImageDataUtils.compareBlockArea(lastImageBufferByte, previousImageBufferByte, 0, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea, 64, 64);
+      blockAreas = VTImageDataUtils.compareBlockArea(lastImageBufferByte, previousImageBufferByte, 0, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea, 16, 16);
     }
     else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_USHORT)
     {
-      blockAreas = VTImageDataUtils.compareBlockArea(lastImageBufferUShort, previousImageBufferUShort, 0, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea, 64, 64);
+      blockAreas = VTImageDataUtils.compareBlockArea(lastImageBufferUShort, previousImageBufferUShort, 0, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea, 16, 16);
     }
     else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT)
     {
-      blockAreas = VTImageDataUtils.compareBlockArea(lastImageBufferInt, previousImageBufferInt, 0, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea, 64, 64);
+      blockAreas = VTImageDataUtils.compareBlockArea(lastImageBufferInt, previousImageBufferInt, 0, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea, 16, 16);
     }
     //System.out.println("blocks_before:" + blockAreas.size());
     blockAreas = VTImageDataUtils.mergeNeighbourAreas(blockAreas);
