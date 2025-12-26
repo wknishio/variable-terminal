@@ -1374,10 +1374,8 @@ public class VTGraphicsLinkClientWriter implements Runnable
         try
         {
           selfControlProvider = new VTAWTControlProvider();
-          selfControlProvider.initializeInputControl();
-          // selfControlProvider.setAutoWaitForIdle(true);
-          suppressLocalKeyCombinations = true;
-          menuBar.setSuppressLocalKeyCombinations(true);
+          suppressLocalKeyCombinations = selfControlProvider.initializeInputControl();
+          menuBar.setSuppressLocalKeyCombinations(suppressLocalKeyCombinations);
         }
         catch (Throwable e)
         {

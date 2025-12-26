@@ -65,25 +65,7 @@ public class VTGraphicalDeviceResolver
     }
     if (graphicsDevice == null)
     {
-      Rectangle virtualBounds = new Rectangle();
-      GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
-      GraphicsDevice[] devices = environment.getScreenDevices();
-      for (int j = 0; j < devices.length; j++)
-      {
-        GraphicsDevice device = devices[j];
-        if (device.getType() == GraphicsDevice.TYPE_RASTER_SCREEN)
-        {
-          Rectangle bounds = device.getDefaultConfiguration().getBounds();
-          DisplayMode mode = device.getDisplayMode();
-          virtualBounds = virtualBounds.union(new Rectangle(bounds.x, bounds.y, mode.getWidth(), mode.getHeight()));
-        }
-      }
-      // VTConsole.println("virtualBounds:" + virtualBounds.x + " " +
-      // virtualBounds.y + " " + virtualBounds.width + " " +
-      // virtualBounds.height);
-      // virtualBounds.x = 0;
-      // virtualBounds.y = 0;
-      return virtualBounds;
+      return getUnifiedDeviceBounds();
     }
     Rectangle configuration = graphicsDevice.getDefaultConfiguration().getBounds();
     DisplayMode mode = graphicsDevice.getDisplayMode();
@@ -91,6 +73,28 @@ public class VTGraphicalDeviceResolver
     // bounds.x = 0;
     // bounds.y = 0;
     return deviceBounds;
+  }
+  
+  public static Rectangle getUnifiedDeviceBounds()
+  {
+    if (VTReflectionUtils.isAWTHeadless())
+    {
+      return null;
+    }
+    Rectangle unifiedBounds = new Rectangle();
+    GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    GraphicsDevice[] devices = environment.getScreenDevices();
+    for (int j = 0; j < devices.length; j++)
+    {
+      GraphicsDevice device = devices[j];
+      if (device.getType() == GraphicsDevice.TYPE_RASTER_SCREEN)
+      {
+        Rectangle bounds = device.getDefaultConfiguration().getBounds();
+        DisplayMode mode = device.getDisplayMode();
+        unifiedBounds = unifiedBounds.union(new Rectangle(bounds.x, bounds.y, mode.getWidth(), mode.getHeight()));
+      }
+    }
+    return unifiedBounds;
   }
   
   /*

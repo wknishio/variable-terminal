@@ -241,7 +241,7 @@ public class VTGraphicsLinkClientReader implements Runnable
       {
         vtCustomCodec = new VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII();
         pngImageReader = new PngImageReader(new PngImageReaderSpi());
-        jpegImageReader = ImageIO.getImageReadersByFormatName("JPEG").next();
+        jpegImageReader = ImageIO.getImageReadersByFormatName("jpeg").next();
         limitedInputStream = new VTSizedInputStream(connection.getGraphicsDirectImageDataInputStream());
         pngImageReader.addIIOReadUpdateListener(incrementalImageReader);
         jpegImageReader.addIIOReadUpdateListener(incrementalImageReader);
