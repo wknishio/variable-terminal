@@ -305,7 +305,8 @@ public class VTGraphicsLinkServerReader implements Runnable
           }
           case VTSystem.VT_GRAPHICS_LINK_CLIPBOARD_TRANSFER_CANCEL_REQUEST:
           {
-            connection.getGraphicsClipboardOutputStream().close();
+            connection.closeClipboardStreams();
+            session.getSession().getClipboardTransferTask().interruptThread();
             session.getSession().getClipboardTransferTask().joinThread();
             session.getSession().getConnection().resetClipboardStreams();
             session.getSession().getClipboardTransferTask().setInputStream(connection.getGraphicsClipboardDataInputStream());
