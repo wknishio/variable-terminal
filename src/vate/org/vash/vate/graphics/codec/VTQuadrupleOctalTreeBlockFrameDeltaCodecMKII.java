@@ -133,14 +133,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
       return d4;
     }
     
-    int diag1, top1, left1, pred1, pixel1;
-    diag1 = newPixelData[position - 1 - width];
-    top1 = newPixelData[position - width];
-    left1 = newPixelData[position - 1];
-    pixel1 = newPixelData[position];
-    
-    pred1 = (diag1 + diag1 + left1 + top1) >> 2;
-    out.write(pixel1 ^ pred1);
+    out.write(((newPixelData[position - 1 - width] >> 1) + ((newPixelData[position - width] + newPixelData[position - 1]) >> 2)) ^ newPixelData[position]);
     return d4 | c4;
   }
   
@@ -151,14 +144,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
       return d4;
     }
     
-    int diag1, top1, left1, pred1, pixel1;
-    diag1 = newPixelData[position - 1 - width];
-    top1 = newPixelData[position - width];
-    left1 = newPixelData[position - 1];
-    pixel1 = newPixelData[position];
-    
-    pred1 = (diag1 + diag1 + left1 + top1) >> 2;
-    out.writeShort(pixel1 ^ pred1);
+    out.writeShort(((newPixelData[position - 1 - width] >> 1) + ((newPixelData[position - width] + newPixelData[position - 1]) >> 2)) ^ newPixelData[position]);
     return d4 | c4;
   }
   
@@ -169,14 +155,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
       return d4;
     }
     
-    int diag1, top1, left1, pred1, pixel1;
-    diag1 = newPixelData[position - 1 - width];
-    top1 = newPixelData[position - width];
-    left1 = newPixelData[position - 1];
-    pixel1 = newPixelData[position];
-    
-    pred1 = (diag1 + diag1 + left1 + top1) >> 2;
-    out.writeSubInt(pixel1 ^ pred1);
+    out.writeSubInt(((newPixelData[position - 1 - width] >> 1) + ((newPixelData[position - width] + newPixelData[position - 1]) >> 2)) ^ newPixelData[position]);
     return d4 | c4;
   }
   
@@ -187,14 +166,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
       return d4;
     }
     
-    int diag1, top1, left1, pred1, pixel1;
-    diag1 = newPixelData[position - 1 - width];
-    top1 = newPixelData[position - width];
-    left1 = newPixelData[position - 1];
-    pixel1 = newPixelData[position];
-    
-    pred1 = (diag1 + diag1 + left1 + top1) >> 2;
-    out.writeInt(pixel1 ^ pred1);
+    out.writeInt(((newPixelData[position - 1 - width] >> 1) + ((newPixelData[position - width] + newPixelData[position - 1]) >> 2)) ^ newPixelData[position]);
     return d4 | c4;
   }
   
@@ -205,13 +177,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
       return;
     }
     
-    int diag1, top1, left1, pred1;
-    diag1 = newPixelData[position - 1 - width];
-    top1 = newPixelData[position - width];
-    left1 = newPixelData[position - 1];
-    
-    pred1 = (diag1 + diag1 + left1 + top1) >> 2;
-    newPixelData[position] = (byte) (in.read() ^ pred1);
+    newPixelData[position] = (byte) (((newPixelData[position - 1 - width] >> 1) + ((newPixelData[position - width] + newPixelData[position - 1]) >> 2)) ^ in.read());
   }
   
   private static final void decodePixel15(final VTLittleEndianInputStream in, final short[] newPixelData, final int position, final int width, final int d4, final int c4) throws IOException
@@ -221,13 +187,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
       return;
     }
     
-    int diag1, top1, left1, pred1;
-    diag1 = newPixelData[position - 1 - width];
-    top1 = newPixelData[position - width];
-    left1 = newPixelData[position - 1];
-    
-    pred1 = (diag1 + diag1 + left1 + top1) >> 2;
-    newPixelData[position] = (short) (in.readShort() ^ pred1);
+    newPixelData[position] = (short) (((newPixelData[position - 1 - width] >> 1) + ((newPixelData[position - width] + newPixelData[position - 1]) >> 2)) ^ in.readShort());
   }
   
   private static final void decodePixel24(final VTLittleEndianInputStream in, final int[] newPixelData, final int position, final int width, final int d4, final int c4) throws IOException
@@ -237,13 +197,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
       return;
     }
     
-    int diag1, top1, left1, pred1;
-    diag1 = newPixelData[position - 1 - width];
-    top1 = newPixelData[position - width];
-    left1 = newPixelData[position - 1];
-    
-    pred1 = (diag1 + diag1 + left1 + top1) >> 2;
-    newPixelData[position] = (in.readSubInt() ^ pred1);
+    newPixelData[position] = (((newPixelData[position - 1 - width] >> 1) + ((newPixelData[position - width] + newPixelData[position - 1]) >> 2)) ^ in.readSubInt());
   }
   
   private static final void decodePixel30(final VTLittleEndianInputStream in, final int[] newPixelData, final int position, final int width, final int d4, final int c4) throws IOException
@@ -253,13 +207,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
       return;
     }
     
-    int diag1, top1, left1, pred1;
-    diag1 = newPixelData[position - 1 - width];
-    top1 = newPixelData[position - width];
-    left1 = newPixelData[position - 1];
-    
-    pred1 = (diag1 + diag1 + left1 + top1) >> 2;
-    newPixelData[position] = (in.readInt() ^ pred1);
+    newPixelData[position] = (((newPixelData[position - 1 - width] >> 1) + ((newPixelData[position - width] + newPixelData[position - 1]) >> 2)) ^ in.readInt());
   }
   
   private final void encodeBlock4Tree8(final VTLittleEndianOutputStream out, final byte[] oldPixelData, final byte[] newPixelData) throws IOException
