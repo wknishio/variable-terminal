@@ -106,7 +106,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                 
                 final boolean unbound = proxyTypeLetter.toUpperCase().startsWith("U") ? true : false;
                 final boolean bound = proxyTypeLetter.toUpperCase().startsWith("B") ? true : false;
-                final boolean connect = proxyTypeLetter.toUpperCase().startsWith("A") ? false : true;
+                final boolean accept = proxyTypeLetter.toUpperCase().startsWith("A") ? true : false;
                 
                 if (unbound)
                 {
@@ -174,13 +174,13 @@ public class VTTunnelConnectionControlThread implements Runnable
                           return;
                         }
                         
-                        if (connect)
+                        if (accept)
                         {
-                          remoteSocket = connect(bind, host, port, connectTimeout, dataTimeout, proxy);
+                          remoteSocket = accept(bind, host, port, connectTimeout, dataTimeout);
                         }
                         else
                         {
-                          remoteSocket = accept(bind, host, port, connectTimeout, dataTimeout);
+                          remoteSocket = connect(bind, host, port, connectTimeout, dataTimeout, proxy);
                         }
                         socketInputStream = remoteSocket.getInputStream();
                         socketOutputStream = remoteSocket.getOutputStream();

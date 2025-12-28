@@ -25,7 +25,6 @@ public class VTFileTransferClientSessionHandler implements Runnable
   {
     try
     {
-      session.getClient().getConnection().resetFileTransferStreams();
       session.startSession();
       session.getTransaction().run();
       session.endSession();

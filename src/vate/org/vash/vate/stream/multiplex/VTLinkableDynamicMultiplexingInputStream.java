@@ -394,6 +394,24 @@ public final class VTLinkableDynamicMultiplexingInputStream
       return closed;
     }
     
+    public final void ready()
+    {
+      synchronized (this)
+      {
+        if (closed)
+        {
+          try
+          {
+            wait();
+          }
+          catch (Throwable t)
+          {
+            
+          }
+        }
+      }
+    }
+    
     private final OutputStream getOutputStream()
     {
       if (directOutputStream != null)
@@ -444,7 +462,6 @@ public final class VTLinkableDynamicMultiplexingInputStream
     
     private final void open() throws IOException
     {
-      closed = false;
       packetSequencer.setSeed(seed);
       if (bufferedInputStream != null)
       {
@@ -470,16 +487,27 @@ public final class VTLinkableDynamicMultiplexingInputStream
       {
         //work already done by setDirectOutputStream
       }
+      synchronized (this)
+      {
+        closed = false;
+        notifyAll();
+      }
     }
     
     public final void close() throws IOException
     {
-      closed = true;
       compressedInputStream = null;
       compressedInputPipe = null;
       if (directCloseable != null)
       {
-        directCloseable.close();
+        try
+        {
+          directCloseable.close();
+        }
+        catch (Throwable t)
+        {
+          
+        }
         directCloseable = null;
       }
       if (directOutputStream != null)
@@ -489,7 +517,14 @@ public final class VTLinkableDynamicMultiplexingInputStream
       }
       if (bufferedOutputStream != null)
       {
-        bufferedOutputStream.close();
+        try
+        {
+          bufferedOutputStream.close();
+        }
+        catch (Throwable t)
+        {
+          
+        }
       }
       if (propagated.size() > 0)
       {
@@ -504,6 +539,11 @@ public final class VTLinkableDynamicMultiplexingInputStream
             
           }
         }
+      }
+      synchronized (this)
+      {
+        closed = true;
+        notifyAll();
       }
     }
     

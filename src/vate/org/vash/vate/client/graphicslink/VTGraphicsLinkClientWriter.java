@@ -475,8 +475,6 @@ public class VTGraphicsLinkClientWriter implements Runnable
       connection.getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_CLIPBOARD_TRANSFER_CANCEL_REQUEST);
       connection.getGraphicsControlDataOutputStream().flush();
       connection.getGraphicsClipboardOutputStream().close();
-      session.getSession().getClipboardTransferTask().interruptThread();
-      // session.getSession().getClipboardTransferThread().stop();
       session.getSession().getClipboardTransferTask().joinThread();
       session.getSession().getConnection().resetClipboardStreams();
       session.getSession().getClipboardTransferTask().setInputStream(connection.getGraphicsClipboardDataInputStream());

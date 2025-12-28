@@ -1,7 +1,5 @@
 package org.vash.vate.client.filetransfer;
 
-import org.vash.vate.VTSystem;
-
 public class VTFileTransferClientSession
 {
   private VTFileTransferClient client;
@@ -27,9 +25,7 @@ public class VTFileTransferClientSession
   {
     try
     {
-      client.getConnection().getFileTransferStartDataOutputStream().write(VTSystem.VT_FILE_TRANSFER_SESSION_STARTED);
-      client.getConnection().getFileTransferStartDataOutputStream().flush();
-      client.getConnection().getFileTransferStartDataInputStream().read();
+      client.getConnection().resetFileTransferStreams();
     }
     catch (Throwable e)
     {
@@ -42,9 +38,6 @@ public class VTFileTransferClientSession
     try
     {
       client.getConnection().closeFileTransferStreams();
-      //client.getConnection().getFileTransferStartDataOutputStream().write(VT.VT_FILE_TRANSFER_SESSION_FINISHED);
-      //client.getConnection().getFileTransferStartDataOutputStream().flush();
-      //client.getConnection().getFileTransferStartDataInputStream().read();
     }
     catch (Throwable e)
     {

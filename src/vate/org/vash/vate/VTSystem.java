@@ -69,21 +69,17 @@ public class VTSystem
   public static final int VT_CONNECTION_ENCRYPTION_HC = 2;
   public static final int VT_CONNECTION_ENCRYPTION_ZUC = 3;
   public static final int VT_CONNECTION_ENCRYPTION_THREEFISH = 4;
-//public static final int VT_CONNECTION_ENCRYPTION_GRAIN = 3;
-//public static final int VT_CONNECTION_ENCRYPTION_RABBIT = 4;
   
-  public static final int VT_FILE_TRANSFER_SESSION_STARTED = 0;
-  public static final int VT_FILE_TRANSFER_SESSION_FINISHED = 1;
-  public static final int VT_FILE_TRANSFER_STATUS_INEXISTENT = 2;
-  public static final int VT_FILE_TRANSFER_STATUS_NORMAL = 3;
-  public static final int VT_FILE_TRANSFER_STATUS_DIRECTORY = 4;
-  public static final int VT_FILE_TRANSFER_STATUS_ANOTHER = 5;
-  public static final int VT_FILE_TRANSFER_STATUS_ERROR = 6;
-  public static final int VT_FILE_TRANSFER_ACCESS_DENIED = 7;
-  public static final int VT_FILE_TRANSFER_ACCESS_READ_ONLY = 8;
-  public static final int VT_FILE_TRANSFER_ACCESS_WRITE_ONLY = 9;
-  public static final int VT_FILE_TRANSFER_ACCESS_READ_AND_WRITE = 10;
-  public static final int VT_FILE_TRANSFER_ACCESS_ERROR = 11;
+  public static final int VT_FILE_TRANSFER_STATUS_INEXISTENT = 0;
+  public static final int VT_FILE_TRANSFER_STATUS_NORMAL = 1;
+  public static final int VT_FILE_TRANSFER_STATUS_DIRECTORY = 2;
+  public static final int VT_FILE_TRANSFER_STATUS_ANOTHER = 3;
+  public static final int VT_FILE_TRANSFER_STATUS_ERROR = 4;
+  public static final int VT_FILE_TRANSFER_ACCESS_DENIED = 5;
+  public static final int VT_FILE_TRANSFER_ACCESS_READ_ONLY = 6;
+  public static final int VT_FILE_TRANSFER_ACCESS_WRITE_ONLY = 7;
+  public static final int VT_FILE_TRANSFER_ACCESS_READ_AND_WRITE = 8;
+  public static final int VT_FILE_TRANSFER_ACCESS_ERROR = 9;
   
   public static final int VT_GRAPHICS_LINK_SESSION_STARTED = 0;
   public static final int VT_GRAPHICS_LINK_SESSION_UNSTARTED = 1;
@@ -163,8 +159,6 @@ public class VTSystem
   public static final String VT_CONNECTION_ENCRYPTION_HC_STRING = "HC";
   public static final String VT_CONNECTION_ENCRYPTION_ZUC_STRING = "ZUC";
   public static final String VT_CONNECTION_ENCRYPTION_THREEFISH_STRING = "THREEFISH";
-//public static final String VT_CONNECTION_ENCRYPTION_GRAIN_STRING = "GRAIN";
-//public static final String VT_CONNECTION_ENCRYPTION_RABBIT_STRING = "RABBIT";
   
   private static final DateFormat VT_ERA_DATEFORMAT;
   private static final Calendar VT_YEAR_CALENDAR;

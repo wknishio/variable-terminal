@@ -32,13 +32,13 @@ public class VTManagedServerSocket
   private Thread acceptThread;
   private VTManagedSocketListener socketListener;
   
-  private class VTCloseableServerConnection implements VTManagedConnection
+  private class VTManagedServerConnection implements VTManagedConnection
   {
     private VTServerSession session;
     private VTServerConnection connection;
     private VTManagedSocketPingListener pingListener;
     
-    private VTCloseableServerConnection(VTServerSession session)
+    private VTManagedServerConnection(VTServerSession session)
     {
       this.session = session;
       this.connection = session.getConnection();
@@ -207,7 +207,7 @@ public class VTManagedServerSocket
   {
     public void sessionStarted(VTServerSession session)
     {
-      VTManagedSocket socket = new VTManagedSocket(new VTCloseableServerConnection(session));
+      VTManagedSocket socket = new VTManagedSocket(new VTManagedServerConnection(session));
       //session.addSessionCloseable(socket);
       sessions.put(session, socket);
       if (socketListener != null)

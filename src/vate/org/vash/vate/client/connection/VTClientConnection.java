@@ -47,13 +47,9 @@ public class VTClientConnection
   private int availableOutputChannel;
   private byte[] encryptionKey;
   private byte[] digestedCredentials;
-  // private byte[] digestedClient;
-  // private byte[] digestedServer;
   private final byte[] localNonce = new byte[VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES];
   private final byte[] remoteNonce = new byte[VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES];
   private final byte[] randomData = new byte[VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES];
-  // private byte[] paddingData = new byte[1024];
-  // private MessageDigest sha256Digester;
   private final VTCryptographicEngine cryptoEngine;
   private final VTBlake3MessageDigest blake3Digest;
   private VTBlake3SecureRandom secureRandom;
@@ -67,12 +63,9 @@ public class VTClientConnection
   private VTLinkableDynamicMultiplexingInputStream multiplexedConnectionInputStream;
   private VTLinkableDynamicMultiplexingOutputStream multiplexedConnectionOutputStream;
   
-  // private InputStream authenticationInputStream;
   private VTLinkableDynamicMultiplexedInputStream shellInputStream;
-  private VTLinkableDynamicMultiplexedInputStream fileTransferStartInputStream;
   private VTLinkableDynamicMultiplexedInputStream fileTransferControlInputStream;
   private VTLinkableDynamicMultiplexedInputStream fileTransferDataInputStream;
-  // private VTMultiplexedInputStream graphicsCheckInputStream;
   private VTLinkableDynamicMultiplexedInputStream graphicsControlInputStream;
   private VTLinkableDynamicMultiplexedInputStream graphicsDirectImageInputStream;
   private VTLinkableDynamicMultiplexedInputStream graphicsHeavyImageInputStream;
@@ -83,14 +76,10 @@ public class VTClientConnection
   private VTLinkableDynamicMultiplexedInputStream pingClientInputStream;
   private VTLinkableDynamicMultiplexedInputStream pingServerInputStream;
   private VTLinkableDynamicMultiplexedInputStream tunnelControlInputStream;
-  // private VTLinkableDynamicMultiplexedInputStream socksControlInputStream;
   
-  // private OutputStream authenticationOutputStream;
   private VTLinkableDynamicMultiplexedOutputStream shellOutputStream;
-  private VTLinkableDynamicMultiplexedOutputStream fileTransferStartOutputStream;
   private VTLinkableDynamicMultiplexedOutputStream fileTransferControlOutputStream;
   private VTLinkableDynamicMultiplexedOutputStream fileTransferDataOutputStream;
-  // private VTMultiplexedOutputStream graphicsCheckOutputStream;
   private VTLinkableDynamicMultiplexedOutputStream graphicsControlOutputStream;
   private VTLinkableDynamicMultiplexedOutputStream graphicsDirectImageOutputStream;
   private VTLinkableDynamicMultiplexedOutputStream graphicsHeavyImageOutputStream;
@@ -101,13 +90,9 @@ public class VTClientConnection
   private VTLinkableDynamicMultiplexedOutputStream pingClientOutputStream;
   private VTLinkableDynamicMultiplexedOutputStream pingServerOutputStream;
   private VTLinkableDynamicMultiplexedOutputStream tunnelControlOutputStream;
-  // private VTLinkableDynamicMultiplexedOutputStream socksControlOutputStream;
   
-  // private VTLittleEndianInputStream verificationReader;
-  // private VTLittleEndianOutputStream verificationWriter;
   private VTLittleEndianInputStream authenticationReader;
   private VTLittleEndianOutputStream authenticationWriter;
-  
   private VTLittleEndianInputStream resultReader;
   private VTLittleEndianOutputStream commandWriter;
   private InputStream shellDataInputStream;
@@ -115,15 +100,11 @@ public class VTClientConnection
   private InputStream clipboardDataInputStream;
   private OutputStream clipboardDataOutputStream;
   
-  private VTLittleEndianInputStream fileTransferStartDataInputStream;
-  private VTLittleEndianOutputStream fileTransferStartDataOutputStream;
   private VTLittleEndianInputStream fileTransferControlDataInputStream;
   private VTLittleEndianOutputStream fileTransferControlDataOutputStream;
-  // private VTLittleEndianInputStream graphicsCheckDataInputStream;
-  // private VTLittleEndianOutputStream graphicsCheckDataOutputStream;
+  
   private VTLittleEndianInputStream graphicsControlDataInputStream;
   private VTLittleEndianOutputStream graphicsControlDataOutputStream;
-  
   private VTLittleEndianInputStream directImageDataInputStream;
   private VTLittleEndianOutputStream directImageDataOutputStream;
   private VTLittleEndianInputStream heavyImageDataInputStream;
@@ -132,13 +113,6 @@ public class VTClientConnection
   private VTLittleEndianOutputStream fastImageDataOutputStream;
   
   private final ExecutorService executorService;
-  
-  // private boolean zstdAvailable;
-  
-  // private ZstdInputStream zstdImageInputStream;
-  
-  // private ZstdInputStream zstdClipboardInputStream;
-  // private ZstdOutputStream zstdClipboardOutputStream;
   
   public VTClientConnection(final ExecutorService executorService)
   {
@@ -210,11 +184,6 @@ public class VTClientConnection
     this.closed = false;
   }
   
-  /*
-   * public InputStream getAuthenticationInputStream() { return
-   * authenticationInputStream; }
-   */
-  
   public InputStream getShellInputStream()
   {
     return shellInputStream;
@@ -229,11 +198,6 @@ public class VTClientConnection
   {
     return graphicsControlInputStream;
   }
-  
-  /*
-   * public InputStream getGraphicsImageInputStream() { return
-   * graphicsImageInputStream; }
-   */
   
   public InputStream getAudioDataInputStream()
   {
@@ -260,16 +224,6 @@ public class VTClientConnection
     return tunnelControlInputStream;
   }
   
-  // public InputStream getSocksControlInputStream()
-  // {
-  // return socksControlInputStream;
-  // }
-  
-  /*
-   * public OutputStream getAuthenticationOutputStream() { return
-   * authenticationOutputStream; }
-   */
-  
   public OutputStream getShellOutputStream()
   {
     return shellOutputStream;
@@ -279,11 +233,6 @@ public class VTClientConnection
   {
     return fileTransferDataOutputStream;
   }
-  
-  /*
-   * public OutputStream getGraphicsImageOutputStream() { return
-   * graphicsImageOutputStream; }
-   */
   
   public OutputStream getAudioDataOutputStream()
   {
@@ -309,11 +258,6 @@ public class VTClientConnection
   {
     return tunnelControlOutputStream;
   }
-  
-  // public OutputStream getSocksControlOutputStream()
-  // {
-  // return socksControlOutputStream;
-  // }
   
   public VTLittleEndianInputStream getAuthenticationReader()
   {
@@ -344,26 +288,6 @@ public class VTClientConnection
   {
     return fileTransferControlDataOutputStream;
   }
-  
-  public VTLittleEndianInputStream getFileTransferStartDataInputStream()
-  {
-    return fileTransferStartDataInputStream;
-  }
-  
-  public VTLittleEndianOutputStream getFileTransferStartDataOutputStream()
-  {
-    return fileTransferStartDataOutputStream;
-  }
-  
-  // public VTLittleEndianInputStream getGraphicsCheckDataInputStream()
-  // {
-  // return graphicsCheckDataInputStream;
-  // }
-  
-  // public VTLittleEndianOutputStream getGraphicsCheckDataOutputStream()
-  // {
-  // return graphicsCheckDataOutputStream;
-  // }
   
   public VTLittleEndianInputStream getGraphicsControlDataInputStream()
   {
@@ -431,13 +355,6 @@ public class VTClientConnection
     {
       return;
     }
-//    StringBuilder message = new StringBuilder();
-//    StackTraceElement[] stackStrace = Thread.currentThread().getStackTrace();
-//    for (int i = stackStrace.length - 1; i >= 0; i--)
-//    {
-//      message.append(stackStrace[i].toString() + "\n");
-//    }
-//    System.err.println(message.toString());
     VTMainConsole.setCommandEcho(true);
     if (connectionSocket != null)
     {
@@ -445,7 +362,7 @@ public class VTClientConnection
       {
         connectionSocket.close();
       }
-      catch (IOException e)
+      catch (Throwable e)
       {
         
       }
@@ -497,12 +414,6 @@ public class VTClientConnection
     closed = true;
   }
   
-//	public void closeSocketsFromDialog()
-//	{
-//		dialog = true;
-//		closeSockets();
-//	}
-  
   public void closeConnection()
   {
     // VTConsole.setLogReadLine(null);
@@ -511,28 +422,7 @@ public class VTClientConnection
     {
       VTMainConsole.print("\nVT>Connection with server closed!");
     }
-    // VTConsole.setCommandEcho(true);
     closeSockets();
-//    if (connected)
-//    {
-//      try
-//      {
-//        VTConsole.interruptReadLine(client);
-//      }
-//      catch (Throwable t)
-//      {
-//        
-//      }
-//      try
-//      {
-//        VTConsole.setLogOutput(null);
-//        VTConsole.setLogReadLine(null);
-//      }
-//      catch (Throwable t)
-//      {
-//        
-//      }
-//    }
     connected = false;
     synchronized (this)
     {
@@ -547,14 +437,10 @@ public class VTClientConnection
   
   private void setNonceStreams() throws IOException
   {
-    //connectionSocketInputStream = new BufferedInputStream(connectionSocket.getInputStream(), VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES);
-    //connectionSocketOutputStream = new VTBufferedOutputStream(connectionSocket.getOutputStream(), VT.VT_PACKET_DATA_SIZE_BYTES * 2, true);
     connectionSocketInputStream = connectionSocket.getInputStream();
     connectionSocketOutputStream = connectionSocket.getOutputStream();
     nonceReader = new VTLittleEndianInputStream(connectionSocketInputStream);
     nonceWriter = new VTLittleEndianOutputStream(connectionSocketOutputStream);
-    // Arrays.fill(localNonce, (byte)0);
-    // Arrays.fill(remoteNonce, (byte)0);
   }
   
   private void exchangeNonces(boolean update) throws IOException
@@ -596,7 +482,6 @@ public class VTClientConnection
     byte[] seed = new byte[VTSystem.VT_SECURITY_SEED_SIZE_BYTES];
     System.arraycopy(localNonce, 0, seed, 0, VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES);
     System.arraycopy(remoteNonce, 0, seed, VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES, VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES);
-    //secureRandom.setSeed(seed);
     blake3Digest.setSeed(seed);
     blake3Digest.reset();
   }
@@ -612,29 +497,20 @@ public class VTClientConnection
   
   public void setAuthenticationStreams() throws IOException
   {
-    //exchangeNonces(true);
     cryptoEngine.initializeClientEngine(encryptionType, localNonce, remoteNonce, encryptionKey);
     authenticationReader.setIntputStream(cryptoEngine.getDecryptedInputStream(connectionSocketInputStream, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES));
     authenticationWriter.setOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES));
     nonceReader.setIntputStream(authenticationReader.getInputStream());
     nonceWriter.setOutputStream(authenticationWriter.getOutputStream());
-    //exchangeNonces(true);
   }
   
   public boolean setConnectionStreams(byte[] digestedCredentials) throws IOException
   {
     exchangeNonces(true);
     this.digestedCredentials = digestedCredentials;
-    //cryptoEngine.initializeClientEngine(encryptionType, encryptionKey, localNonce, remoteNonce, digestedCredentials, user != null ? user.getBytes("UTF-8") : null, password != null ? password.getBytes("UTF-8") : null);
     cryptoEngine.initializeClientEngine(encryptionType, localNonce, remoteNonce, encryptionKey, digestedCredentials);
-    //connectionInputStream = cryptoEngine.getDecryptedInputStream(connectionSocketInputStream);
-    //connectionOutputStream = cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream);
     connectionInputStream = new BufferedInputStream(cryptoEngine.getDecryptedInputStream(connectionSocketInputStream, VTSystem.VT_CONNECTION_INPUT_PACKET_BUFFER_SIZE_BYTES), VTSystem.VT_CONNECTION_INPUT_PACKET_BUFFER_SIZE_BYTES);
     connectionOutputStream = new BufferedOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream, VTSystem.VT_CONNECTION_OUTPUT_PACKET_BUFFER_SIZE_BYTES), VTSystem.VT_CONNECTION_OUTPUT_PACKET_BUFFER_SIZE_BYTES);
-    //authenticationReader.setIntputStream(connectionInputStream);
-    //authenticationWriter.setOutputStream(connectionOutputStream);
-    //nonceReader.setIntputStream(authenticationReader.getInputStream());
-    //nonceWriter.setOutputStream(authenticationWriter.getOutputStream());
     return true;
   }
   
@@ -672,8 +548,6 @@ public class VTClientConnection
     shellInputStream = multiplexedConnectionInputStream.linkInputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
     shellOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
     
-    fileTransferStartInputStream = multiplexedConnectionInputStream.linkInputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
-    fileTransferStartOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
     fileTransferControlInputStream = multiplexedConnectionInputStream.linkInputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
     fileTransferControlOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
     fileTransferDataInputStream = multiplexedConnectionInputStream.linkInputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
@@ -702,14 +576,8 @@ public class VTClientConnection
     availableOutputChannel = outputChannel;
     
     shellDataInputStream = VTCompressorSelector.createBufferedLz4InputStream(shellInputStream);
-    // shellDataInputStream =
-    // VTCompressorSelector.createFlushBufferedSyncFlushInflaterInputStream(shellInputStream);
-    // shellDataInputStream = shellInputStream;
     
     shellDataOutputStream = VTCompressorSelector.createBufferedLz4OutputStream(shellOutputStream);
-    // shellDataOutputStream =
-    // VTCompressorSelector.createFlushBufferedSyncFlushDeflaterOutputStream(shellOutputStream);
-    // shellDataOutputStream = shellOutputStream;
     
     resultReader = new VTLittleEndianInputStream(shellDataInputStream);
     commandWriter = new VTLittleEndianOutputStream(shellDataOutputStream);
@@ -731,28 +599,7 @@ public class VTClientConnection
     
     fileTransferControlDataInputStream = new VTLittleEndianInputStream(fileTransferControlInputStream);
     fileTransferControlDataOutputStream = new VTLittleEndianOutputStream(fileTransferControlOutputStream);
-    
-    fileTransferStartDataInputStream = new VTLittleEndianInputStream(fileTransferStartInputStream);
-    fileTransferStartDataOutputStream = new VTLittleEndianOutputStream(fileTransferStartOutputStream);
   }
-  
-//  public boolean exchangeConnectionPadding() throws IOException
-//  {
-//    secureRandom.nextBytes(paddingData);
-//    authenticationWriter.write(paddingData);
-//    authenticationWriter.flush();
-//    authenticationReader.readFully(paddingData);
-//    return true;
-//  }
-//  
-//  public boolean exchangeAuthenticationPadding() throws IOException
-//  {
-//    secureRandom.nextBytes(paddingData);
-//    authenticationWriter.write(paddingData);
-//    authenticationWriter.flush();
-//    authenticationReader.readFully(paddingData);
-//    return true;
-//  }
   
   private byte[] exchangeCheckString(byte[] localNonce, byte[] remoteNonce, byte[] encryptionKey, byte[] localCheckString) throws IOException
   {
@@ -897,23 +744,11 @@ public class VTClientConnection
     return false;
   }
   
-  /*
-   * public void startConnection() {
-   * multiplexedConnectionInputStream.startPacketReader(); }
-   */
-  
   public void startConnection() throws IOException
   {
-    //exchangeNonces(true);
     setMultiplexedStreams();
     multiplexedConnectionInputStream.startPacketReader();
   }
-  
-  /*
-   * public boolean startedConnection() { return
-   * multiplexedConnectionInputStream != null &&
-   * multiplexedConnectionInputStream.isPacketReaderStarted(); }
-   */
   
   public void closeGraphicsLinkStreams() throws IOException
   {
@@ -943,65 +778,25 @@ public class VTClientConnection
     }
     try
     {
-      graphicsControlOutputStream.close();
-    }
-    catch (Throwable t)
-    {
-      
-    }
-    try
-    {
       graphicsControlInputStream.close();
     }
     catch (Throwable t)
     {
       
     }
-  }
-  
-  // public void resetDirectGraphicsLinkStreams() throws IOException
-  // {
-  // graphicsDirectImageOutputStream.open();
-  // graphicsDirectImageInputStream.open();
-  // }
-  
-  public void resetGraphicsLinkStreams() throws IOException
-  {
-    graphicsControlOutputStream.open();
-    //graphicsControlInputStream.open();
-    
-    graphicsDirectImageOutputStream.open();
-    //graphicsDirectImageInputStream.open();
-    graphicsHeavyImageOutputStream.open();
-    //graphicsHeavyImageInputStream.open();
-    graphicsFastImageOutputStream.open();
-    //graphicsFastImageInputStream.open();
-    
-    graphicsControlDataInputStream.setIntputStream(VTCompressorSelector.createBufferedLz4InputStream(graphicsControlInputStream));
-    graphicsControlDataOutputStream.setOutputStream(VTCompressorSelector.createBufferedLz4OutputStream(graphicsControlOutputStream));
-    
-    heavyImageDataInputStream = new VTLittleEndianInputStream(VTCompressorSelector.createBufferedZstdInputStream(graphicsHeavyImageInputStream));
-    heavyImageDataOutputStream = new VTLittleEndianOutputStream(graphicsHeavyImageOutputStream);
-    
-    fastImageDataInputStream = new VTLittleEndianInputStream(VTCompressorSelector.createBufferedSyncFlushZlibInputStream(graphicsFastImageInputStream));
-    fastImageDataOutputStream = new VTLittleEndianOutputStream(graphicsFastImageOutputStream);
-    
-    // graphicsControlInputStream.addPropagated(deflatedImageDataInputStream);
-    // graphicsControlInputStream.addPropagated(fastImageDataInputStream);
-    
-    resetClipboardStreams();
-  }
-  
-  public void resetClipboardStreams() throws IOException
-  {
     try
     {
-      clipboardDataOutputStream.close();
+      graphicsControlOutputStream.close();
     }
     catch (Throwable t)
     {
       
     }
+    closeClipboardStreams();
+  }
+  
+  public void closeClipboardStreams() throws IOException
+  {
     try
     {
       clipboardDataInputStream.close();
@@ -1010,48 +805,107 @@ public class VTClientConnection
     {
       
     }
-    // graphicsControlInputStream.removePropagated(clipboardDataOutputStream);
-    // graphicsControlInputStream.removePropagated(clipboardDataInputStream);
-    
+    try
+    {
+      clipboardDataOutputStream.close();
+    }
+    catch (Throwable t)
+    {
+      
+    }
+  }
+  
+  public void resetGraphicsLinkStreams() throws IOException
+  {
+    graphicsDirectImageOutputStream.open();
+    graphicsHeavyImageOutputStream.open();
+    graphicsFastImageOutputStream.open();
+    graphicsControlOutputStream.open();
+    graphicsControlInputStream.ready();
+    graphicsControlDataInputStream.setIntputStream(VTCompressorSelector.createBufferedLz4InputStream(graphicsControlInputStream));
+    graphicsControlDataOutputStream.setOutputStream(VTCompressorSelector.createBufferedLz4OutputStream(graphicsControlOutputStream));
+    heavyImageDataInputStream = new VTLittleEndianInputStream(VTCompressorSelector.createBufferedZstdInputStream(graphicsHeavyImageInputStream));
+    heavyImageDataOutputStream = new VTLittleEndianOutputStream(graphicsHeavyImageOutputStream);
+    fastImageDataInputStream = new VTLittleEndianInputStream(VTCompressorSelector.createBufferedSyncFlushZlibInputStream(graphicsFastImageInputStream));
+    fastImageDataOutputStream = new VTLittleEndianOutputStream(graphicsFastImageOutputStream);
+    resetClipboardStreams();
+  }
+  
+  public void resetClipboardStreams() throws IOException
+  {
     graphicsClipboardOutputStream.open();
-    //graphicsClipboardInputStream.open();
-    
+    graphicsClipboardInputStream.ready();
     clipboardDataInputStream = VTCompressorSelector.createBufferedLz4InputStream(graphicsClipboardInputStream);
     clipboardDataOutputStream = VTCompressorSelector.createBufferedLz4OutputStream(graphicsClipboardOutputStream);
-    
-    // graphicsControlInputStream.addPropagated(clipboardDataOutputStream);
-    // graphicsControlInputStream.addPropagated(clipboardDataInputStream);
   }
   
   public void resetFileTransferStreams() throws IOException
   {
     fileTransferDataOutputStream.open();
     fileTransferControlOutputStream.open();
-    fileTransferControlDataInputStream = new VTLittleEndianInputStream(fileTransferControlInputStream);
-    fileTransferControlDataOutputStream = new VTLittleEndianOutputStream(fileTransferControlOutputStream);
-    //fileTransferDataInputStream.open();
+    fileTransferControlInputStream.ready();
   }
   
   public void closeFileTransferStreams() throws IOException
   {
-    fileTransferDataOutputStream.close();
-    fileTransferDataInputStream.close();
-    fileTransferControlOutputStream.close();
-    fileTransferControlInputStream.close();
+    try
+    {
+      fileTransferDataInputStream.close();
+    }
+    catch (Throwable t)
+    {
+      
+    }
+    try
+    {
+      fileTransferControlInputStream.close();
+    }
+    catch (Throwable t)
+    {
+      
+    }
+    try
+    {
+      fileTransferDataOutputStream.close();
+    }
+    catch (Throwable t)
+    {
+      
+    }
+    try
+    {
+      fileTransferControlOutputStream.close();
+    }
+    catch (Throwable t)
+    {
+      
+    }
   }
   
   public void closeAudioStreams() throws IOException
   {
-    audioDataOutputStream.close();
-    audioDataInputStream.close();
+    try
+    {
+      audioDataInputStream.close();
+    }
+    catch (Throwable t)
+    {
+      
+    }
+    try
+    {
+      audioDataOutputStream.close();
+    }
+    catch (Throwable t)
+    {
+      
+    }
   }
   
   public void resetAudioStreams() throws IOException
   {
     audioDataOutputStream.open();
-    //audioDataInputStream.open();
-    // audioDataOutputStream = audioOutputStream;
-    // audioDataInputStream = audioInputStream;
+    audioDataInputStream.ready();
   }
   
   public void setRateInBytesPerSecond(long bytesPerSecond)
@@ -1063,11 +917,6 @@ public class VTClientConnection
   {
     return multiplexedConnectionOutputStream.getBytesPerSecond();
   }
-  
-  // public boolean isRunningAudio()
-  // {
-  // return !audioDataOutputStream.closed();
-  // }
   
   public int getAvailableInputChannel()
   {
