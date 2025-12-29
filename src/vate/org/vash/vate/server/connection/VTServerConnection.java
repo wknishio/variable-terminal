@@ -740,67 +740,18 @@ public class VTServerConnection
   
   public void closeGraphicsStreams() throws IOException
   {
-    try
-    {
-      graphicsDirectImageOutputStream.close();
-    }
-    catch (Throwable t)
-    {
-      
-    }
-    try
-    {
-      graphicsHeavyImageDataOutputStream.close();
-    }
-    catch (Throwable t)
-    {
-      
-    }
-    try
-    {
-      graphicsFastImageDataOutputStream.close();
-    }
-    catch (Throwable t)
-    {
-      
-    }
-    try
-    {
-      graphicsControlInputStream.close();
-    }
-    catch (Throwable t)
-    {
-      
-    }
-    try
-    {
-      graphicsControlOutputStream.close();
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    graphicsDirectImageOutputStream.close();
+    graphicsHeavyImageDataOutputStream.close();
+    graphicsFastImageDataOutputStream.close();
+    graphicsControlInputStream.close();
+    graphicsControlOutputStream.close();
     closeClipboardStreams();
   }
   
   public void closeClipboardStreams() throws IOException
   {
-    try
-    {
-      clipboardDataInputStream.close();
-    }
-    catch (Throwable t)
-    {
-      
-    }
-    try
-    {
-      clipboardDataOutputStream.close();
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    clipboardDataInputStream.close();
+    clipboardDataOutputStream.close();
   }
   
   public void resetGraphicsStreams() throws IOException
@@ -836,58 +787,16 @@ public class VTServerConnection
   
   public void closeFileTransferStreams() throws IOException
   {
-    try
-    {
-      fileTransferDataInputStream.close();
-    }
-    catch (Throwable t)
-    {
-      
-    }
-    try
-    {
-      fileTransferControlInputStream.close();
-    }
-    catch (Throwable t)
-    {
-      
-    }
-    try
-    {
-      fileTransferDataOutputStream.close();
-    }
-    catch (Throwable t)
-    {
-      
-    }
-    try
-    {
-      fileTransferControlOutputStream.close();
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    fileTransferDataInputStream.close();
+    fileTransferControlInputStream.close();
+    fileTransferDataOutputStream.close();
+    fileTransferControlOutputStream.close();
   }
   
   public void closeAudioStreams() throws IOException
   {
-    try
-    {
-      audioDataInputStream.close();
-    }
-    catch (Throwable t)
-    {
-      
-    }
-    try
-    {
-      audioDataOutputStream.close();
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    audioDataInputStream.close();
+    audioDataOutputStream.close();
   }
   
   public void resetAudioStreams() throws IOException
