@@ -63,6 +63,8 @@ public class VTClientConnection
   private VTLinkableDynamicMultiplexingInputStream multiplexedConnectionInputStream;
   private VTLinkableDynamicMultiplexingOutputStream multiplexedConnectionOutputStream;
   
+  private VTLinkableDynamicMultiplexedInputStream pingClientInputStream;
+  private VTLinkableDynamicMultiplexedInputStream pingServerInputStream;
   private VTLinkableDynamicMultiplexedInputStream shellInputStream;
   private VTLinkableDynamicMultiplexedInputStream fileTransferControlInputStream;
   private VTLinkableDynamicMultiplexedInputStream fileTransferDataInputStream;
@@ -72,11 +74,10 @@ public class VTClientConnection
   private VTLinkableDynamicMultiplexedInputStream graphicsFastImageInputStream;
   private VTLinkableDynamicMultiplexedInputStream graphicsClipboardInputStream;
   private VTLinkableDynamicMultiplexedInputStream audioDataInputStream;
-  private VTLinkableDynamicMultiplexedInputStream audioControlInputStream;
-  private VTLinkableDynamicMultiplexedInputStream pingClientInputStream;
-  private VTLinkableDynamicMultiplexedInputStream pingServerInputStream;
   private VTLinkableDynamicMultiplexedInputStream tunnelControlInputStream;
   
+  private VTLinkableDynamicMultiplexedOutputStream pingClientOutputStream;
+  private VTLinkableDynamicMultiplexedOutputStream pingServerOutputStream;
   private VTLinkableDynamicMultiplexedOutputStream shellOutputStream;
   private VTLinkableDynamicMultiplexedOutputStream fileTransferControlOutputStream;
   private VTLinkableDynamicMultiplexedOutputStream fileTransferDataOutputStream;
@@ -86,31 +87,30 @@ public class VTClientConnection
   private VTLinkableDynamicMultiplexedOutputStream graphicsFastImageOutputStream;
   private VTLinkableDynamicMultiplexedOutputStream graphicsClipboardOutputStream;
   private VTLinkableDynamicMultiplexedOutputStream audioDataOutputStream;
-  private VTLinkableDynamicMultiplexedOutputStream audioControlOutputStream;
-  private VTLinkableDynamicMultiplexedOutputStream pingClientOutputStream;
-  private VTLinkableDynamicMultiplexedOutputStream pingServerOutputStream;
   private VTLinkableDynamicMultiplexedOutputStream tunnelControlOutputStream;
   
   private VTLittleEndianInputStream authenticationReader;
   private VTLittleEndianOutputStream authenticationWriter;
   private VTLittleEndianInputStream resultReader;
   private VTLittleEndianOutputStream commandWriter;
+  
   private InputStream shellDataInputStream;
   private OutputStream shellDataOutputStream;
-  private InputStream clipboardDataInputStream;
-  private OutputStream clipboardDataOutputStream;
   
   private VTLittleEndianInputStream fileTransferControlDataInputStream;
   private VTLittleEndianOutputStream fileTransferControlDataOutputStream;
   
   private VTLittleEndianInputStream graphicsControlDataInputStream;
   private VTLittleEndianOutputStream graphicsControlDataOutputStream;
-  private VTLittleEndianInputStream directImageDataInputStream;
-  private VTLittleEndianOutputStream directImageDataOutputStream;
-  private VTLittleEndianInputStream heavyImageDataInputStream;
-  private VTLittleEndianOutputStream heavyImageDataOutputStream;
-  private VTLittleEndianInputStream fastImageDataInputStream;
-  private VTLittleEndianOutputStream fastImageDataOutputStream;
+  private VTLittleEndianInputStream graphicsDirectImageDataInputStream;
+  private VTLittleEndianOutputStream graphicsDirectImageDataOutputStream;
+  private VTLittleEndianInputStream graphicsHeavyImageDataInputStream;
+  private VTLittleEndianOutputStream graphicsHeavyImageDataOutputStream;
+  private VTLittleEndianInputStream graphicsFastImageDataInputStream;
+  private VTLittleEndianOutputStream graphicsFastImageDataOutputStream;
+  
+  private VTLittleEndianInputStream clipboardDataInputStream;
+  private VTLittleEndianOutputStream clipboardDataOutputStream;
   
   private final ExecutorService executorService;
   
@@ -204,11 +204,6 @@ public class VTClientConnection
     return audioDataInputStream;
   }
   
-  public InputStream getAudioControlInputStream()
-  {
-    return audioControlInputStream;
-  }
-  
   public InputStream getPingClientInputStream()
   {
     return pingClientInputStream;
@@ -237,11 +232,6 @@ public class VTClientConnection
   public OutputStream getAudioDataOutputStream()
   {
     return audioDataOutputStream;
-  }
-  
-  public OutputStream getAudioControlOutputStream()
-  {
-    return audioControlOutputStream;
   }
   
   public OutputStream getPingClientOutputStream()
@@ -301,32 +291,32 @@ public class VTClientConnection
   
   public VTLittleEndianInputStream getGraphicsDirectImageDataInputStream()
   {
-    return directImageDataInputStream;
+    return graphicsDirectImageDataInputStream;
   }
   
   public VTLittleEndianInputStream getGraphicsHeavyImageDataInputStream()
   {
-    return heavyImageDataInputStream;
+    return graphicsHeavyImageDataInputStream;
   }
   
   public VTLittleEndianInputStream getGraphicsFastImageDataInputStream()
   {
-    return fastImageDataInputStream;
+    return graphicsFastImageDataInputStream;
   }
   
   public VTLittleEndianOutputStream getGraphicsDirectImageDataOutputStream()
   {
-    return directImageDataOutputStream;
+    return graphicsDirectImageDataOutputStream;
   }
   
   public VTLittleEndianOutputStream getGraphicsHeavyImageDataOutputStream()
   {
-    return heavyImageDataOutputStream;
+    return graphicsHeavyImageDataOutputStream;
   }
   
   public VTLittleEndianOutputStream getGraphicsFastImageDataOutputStream()
   {
-    return fastImageDataOutputStream;
+    return graphicsFastImageDataOutputStream;
   }
   
   public InputStream getGraphicsClipboardInputStream()
@@ -339,12 +329,12 @@ public class VTClientConnection
     return graphicsClipboardOutputStream;
   }
   
-  public InputStream getGraphicsClipboardDataInputStream()
+  public VTLittleEndianInputStream getGraphicsClipboardDataInputStream()
   {
     return clipboardDataInputStream;
   }
   
-  public OutputStream getGraphicsClipboardDataOutputStream()
+  public VTLittleEndianOutputStream getGraphicsClipboardDataOutputStream()
   {
     return clipboardDataOutputStream;
   }
@@ -564,8 +554,6 @@ public class VTClientConnection
     graphicsClipboardInputStream = multiplexedConnectionInputStream.linkInputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
     graphicsClipboardOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
     
-    audioControlInputStream = multiplexedConnectionInputStream.linkInputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
-    audioControlOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
     audioDataInputStream = multiplexedConnectionInputStream.linkInputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
     audioDataOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
     
@@ -576,29 +564,28 @@ public class VTClientConnection
     availableOutputChannel = outputChannel;
     
     shellDataInputStream = VTCompressorSelector.createBufferedLz4InputStream(shellInputStream);
-    
     shellDataOutputStream = VTCompressorSelector.createBufferedLz4OutputStream(shellOutputStream);
     
     resultReader = new VTLittleEndianInputStream(shellDataInputStream);
     commandWriter = new VTLittleEndianOutputStream(shellDataOutputStream);
     
+    fileTransferControlDataInputStream = new VTLittleEndianInputStream(fileTransferControlInputStream);
+    fileTransferControlDataOutputStream = new VTLittleEndianOutputStream(fileTransferControlOutputStream);
+    
     graphicsControlDataInputStream = new VTLittleEndianInputStream(VTCompressorSelector.createBufferedLz4InputStream(graphicsControlInputStream));
     graphicsControlDataOutputStream = new VTLittleEndianOutputStream(VTCompressorSelector.createBufferedLz4OutputStream(graphicsControlOutputStream));
     
-    directImageDataInputStream = new VTLittleEndianInputStream(new BufferedInputStream(graphicsDirectImageInputStream, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES));
-    directImageDataOutputStream = new VTLittleEndianOutputStream(graphicsDirectImageOutputStream);
+    graphicsDirectImageDataInputStream = new VTLittleEndianInputStream(new BufferedInputStream(graphicsDirectImageInputStream, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES));
+    graphicsDirectImageDataOutputStream = new VTLittleEndianOutputStream(graphicsDirectImageOutputStream);
     
-    heavyImageDataInputStream = new VTLittleEndianInputStream(VTCompressorSelector.createBufferedZstdInputStream(graphicsHeavyImageInputStream));
-    heavyImageDataOutputStream = new VTLittleEndianOutputStream(graphicsHeavyImageOutputStream);
+    graphicsHeavyImageDataInputStream = new VTLittleEndianInputStream(VTCompressorSelector.createBufferedZstdInputStream(graphicsHeavyImageInputStream));
+    graphicsHeavyImageDataOutputStream = new VTLittleEndianOutputStream(graphicsHeavyImageOutputStream);
     
-    fastImageDataInputStream = new VTLittleEndianInputStream(VTCompressorSelector.createBufferedSyncFlushZlibInputStream(graphicsFastImageInputStream));
-    fastImageDataOutputStream = new VTLittleEndianOutputStream((graphicsFastImageOutputStream));
+    graphicsFastImageDataInputStream = new VTLittleEndianInputStream(VTCompressorSelector.createBufferedSyncFlushZlibInputStream(graphicsFastImageInputStream));
+    graphicsFastImageDataOutputStream = new VTLittleEndianOutputStream(graphicsFastImageOutputStream);
     
-    clipboardDataInputStream = VTCompressorSelector.createBufferedLz4InputStream(graphicsClipboardInputStream);
-    clipboardDataOutputStream = VTCompressorSelector.createBufferedLz4OutputStream(graphicsClipboardOutputStream);
-    
-    fileTransferControlDataInputStream = new VTLittleEndianInputStream(fileTransferControlInputStream);
-    fileTransferControlDataOutputStream = new VTLittleEndianOutputStream(fileTransferControlOutputStream);
+    clipboardDataInputStream = new VTLittleEndianInputStream(VTCompressorSelector.createBufferedLz4InputStream(graphicsClipboardInputStream));
+    clipboardDataOutputStream = new VTLittleEndianOutputStream(VTCompressorSelector.createBufferedLz4OutputStream(graphicsClipboardOutputStream));
   }
   
   private byte[] exchangeCheckString(byte[] localNonce, byte[] remoteNonce, byte[] encryptionKey, byte[] localCheckString) throws IOException
@@ -750,7 +737,7 @@ public class VTClientConnection
     multiplexedConnectionInputStream.startPacketReader();
   }
   
-  public void closeGraphicsLinkStreams() throws IOException
+  public void closeGraphicsStreams() throws IOException
   {
     try
     {
@@ -762,7 +749,7 @@ public class VTClientConnection
     }
     try
     {
-      heavyImageDataInputStream.close();
+      graphicsHeavyImageDataInputStream.close();
     }
     catch (Throwable t)
     {
@@ -770,7 +757,7 @@ public class VTClientConnection
     }
     try
     {
-      fastImageDataInputStream.close();
+      graphicsFastImageDataInputStream.close();
     }
     catch (Throwable t)
     {
@@ -815,7 +802,7 @@ public class VTClientConnection
     }
   }
   
-  public void resetGraphicsLinkStreams() throws IOException
+  public void resetGraphicsStreams() throws IOException
   {
     graphicsDirectImageOutputStream.open();
     graphicsHeavyImageOutputStream.open();
@@ -824,10 +811,10 @@ public class VTClientConnection
     graphicsControlInputStream.ready();
     graphicsControlDataInputStream.setIntputStream(VTCompressorSelector.createBufferedLz4InputStream(graphicsControlInputStream));
     graphicsControlDataOutputStream.setOutputStream(VTCompressorSelector.createBufferedLz4OutputStream(graphicsControlOutputStream));
-    heavyImageDataInputStream = new VTLittleEndianInputStream(VTCompressorSelector.createBufferedZstdInputStream(graphicsHeavyImageInputStream));
-    heavyImageDataOutputStream = new VTLittleEndianOutputStream(graphicsHeavyImageOutputStream);
-    fastImageDataInputStream = new VTLittleEndianInputStream(VTCompressorSelector.createBufferedSyncFlushZlibInputStream(graphicsFastImageInputStream));
-    fastImageDataOutputStream = new VTLittleEndianOutputStream(graphicsFastImageOutputStream);
+    graphicsHeavyImageDataInputStream.setIntputStream(VTCompressorSelector.createBufferedZstdInputStream(graphicsHeavyImageInputStream));
+    graphicsHeavyImageDataOutputStream.setOutputStream(graphicsHeavyImageOutputStream);
+    graphicsFastImageDataInputStream.setIntputStream(VTCompressorSelector.createBufferedSyncFlushZlibInputStream(graphicsFastImageInputStream));
+    graphicsFastImageDataOutputStream.setOutputStream(graphicsFastImageOutputStream);
     resetClipboardStreams();
   }
   
@@ -835,8 +822,8 @@ public class VTClientConnection
   {
     graphicsClipboardOutputStream.open();
     graphicsClipboardInputStream.ready();
-    clipboardDataInputStream = VTCompressorSelector.createBufferedLz4InputStream(graphicsClipboardInputStream);
-    clipboardDataOutputStream = VTCompressorSelector.createBufferedLz4OutputStream(graphicsClipboardOutputStream);
+    clipboardDataInputStream.setIntputStream(VTCompressorSelector.createBufferedLz4InputStream(graphicsClipboardInputStream));
+    clipboardDataOutputStream.setOutputStream(VTCompressorSelector.createBufferedLz4OutputStream(graphicsClipboardOutputStream));
   }
   
   public void resetFileTransferStreams() throws IOException

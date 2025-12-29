@@ -206,7 +206,7 @@ public class VTGraphicsLinkServerWriter implements Runnable
     {
       try
       {
-        connection.closeGraphicsLinkStreams();
+        connection.closeGraphicsStreams();
       }
       catch (Throwable e)
       {

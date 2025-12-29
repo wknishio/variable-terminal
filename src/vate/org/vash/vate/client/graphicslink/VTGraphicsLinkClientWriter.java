@@ -474,7 +474,7 @@ public class VTGraphicsLinkClientWriter implements Runnable
     {
       connection.getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_CLIPBOARD_TRANSFER_CANCEL_REQUEST);
       connection.getGraphicsControlDataOutputStream().flush();
-      connection.closeClipboardStreams();
+      session.getSession().getConnection().closeClipboardStreams();
       session.getSession().getClipboardTransferTask().interruptThread();
       session.getSession().getClipboardTransferTask().joinThread();
       session.getSession().getConnection().resetClipboardStreams();
@@ -585,7 +585,7 @@ public class VTGraphicsLinkClientWriter implements Runnable
       }
       try
       {
-        connection.closeGraphicsLinkStreams();
+        connection.closeGraphicsStreams();
       }
       catch (Throwable e)
       {

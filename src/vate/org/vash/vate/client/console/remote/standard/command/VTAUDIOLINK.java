@@ -26,15 +26,11 @@ public class VTAUDIOLINK extends VTClientStandardRemoteConsoleCommandProcessor
     try
     {
       VTAudioSystem formatAudioSystem = session.getClient().getAudioSystem();
-      
       if (formatAudioSystem.isRunning())
       {
         connection.closeAudioStreams();
         formatAudioSystem.stop();
-        connection.getCommandWriter().writeLine(command);
-        connection.getCommandWriter().flush();
-        connection.getAudioControlOutputStream().write(0);
-        connection.getAudioControlOutputStream().flush();
+        VTMainConsole.print("\rVT>Remote audio link stopped!\nVT>");
       }
       else
       {
@@ -84,11 +80,7 @@ public class VTAUDIOLINK extends VTClientStandardRemoteConsoleCommandProcessor
                 }
                 else
                 {
-                  // ok = false;
-                  // VTConsole.print("\nVT>Invalid
-                  // command syntax!" +
-                  // VTHelpManager.getHelpForClientCommand(splitCommand[0]));
-                  // break;
+                  
                 }
               }
               else if (side.toUpperCase().startsWith("R"))
@@ -101,10 +93,7 @@ public class VTAUDIOLINK extends VTClientStandardRemoteConsoleCommandProcessor
                   }
                   catch (Throwable t)
                   {
-                    // VTConsole.print("\nVT>Invalid
-                    // remote audio mixer number [" +
-                    // mixer + "]!");
-                    // ok = false;
+                    
                   }
                 }
                 else if (type.toUpperCase().startsWith("O"))
@@ -115,28 +104,17 @@ public class VTAUDIOLINK extends VTClientStandardRemoteConsoleCommandProcessor
                   }
                   catch (Throwable t)
                   {
-                    // VTConsole.print("\nVT>Invalid
-                    // remote audio mixer number [" +
-                    // mixer + "]!");
-                    // ok = false;
+                    
                   }
                 }
                 else
                 {
-                  // ok = false;
-                  // VTConsole.print("\nVT>Invalid
-                  // command syntax!" +
-                  // VTHelpManager.getHelpForClientCommand(splitCommand[0]));
-                  // break;
+                  
                 }
               }
               else
               {
-                // ok = false;
-                // VTConsole.print("\nVT>Invalid command
-                // syntax!" +
-                // VTHelpManager.getHelpForClientCommand(splitCommand[0]));
-                // break;
+                
               }
             }
             else
@@ -209,11 +187,9 @@ public class VTAUDIOLINK extends VTClientStandardRemoteConsoleCommandProcessor
         
         connection.getCommandWriter().writeLine(command);
         connection.getCommandWriter().flush();
-        connection.getAudioControlOutputStream().write(1);
-        connection.getAudioControlOutputStream().flush();
-        if (connection.getAudioControlInputStream().read() == 1)
+        connection.resetAudioStreams();
+        if (connection.getAudioDataInputStream().read() == 1)
         {
-          connection.resetAudioStreams();
           formatAudioSystem.start();
         }
         else

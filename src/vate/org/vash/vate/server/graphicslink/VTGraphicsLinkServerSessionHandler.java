@@ -40,7 +40,7 @@ public class VTGraphicsLinkServerSessionHandler implements Runnable
   {
     try
     {
-      session.getSession().getConnection().resetGraphicsLinkStreams();
+      session.getSession().getConnection().resetGraphicsStreams();
       if (session.verifySession())
       {
         session.sendInitialScreenSize();
