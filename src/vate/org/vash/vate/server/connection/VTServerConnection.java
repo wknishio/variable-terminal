@@ -475,18 +475,18 @@ public class VTServerConnection
   private void setVerificationStreams() throws IOException
   {
     cryptoEngine.initializeServerEngine(VTSystem.VT_CONNECTION_ENCRYPTION_NONE, remoteNonce, localNonce, encryptionKey);
-    authenticationReader.setIntputStream(cryptoEngine.getDecryptedInputStream(connectionSocketInputStream, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES));
+    authenticationReader.setInputStream(cryptoEngine.getDecryptedInputStream(connectionSocketInputStream, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES));
     authenticationWriter.setOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES));
-    nonceReader.setIntputStream(authenticationReader.getInputStream());
+    nonceReader.setInputStream(authenticationReader.getInputStream());
     nonceWriter.setOutputStream(authenticationWriter.getOutputStream());
   }
   
   public void setAuthenticationStreams() throws IOException
   {
     cryptoEngine.initializeServerEngine(encryptionType, remoteNonce, localNonce, encryptionKey);
-    authenticationReader.setIntputStream(cryptoEngine.getDecryptedInputStream(connectionSocketInputStream, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES));
+    authenticationReader.setInputStream(cryptoEngine.getDecryptedInputStream(connectionSocketInputStream, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES));
     authenticationWriter.setOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES));
-    nonceReader.setIntputStream(authenticationReader.getInputStream());
+    nonceReader.setInputStream(authenticationReader.getInputStream());
     nonceWriter.setOutputStream(authenticationWriter.getOutputStream());
   }
   
@@ -583,6 +583,10 @@ public class VTServerConnection
     clipboardDataInputStream = new VTLittleEndianInputStream(VTCompressorSelector.createBufferedLz4InputStream(graphicsClipboardInputStream));
     clipboardDataOutputStream = new VTLittleEndianOutputStream(VTCompressorSelector.createBufferedLz4OutputStream(graphicsClipboardOutputStream));
     
+    fileTransferControlInputStream.close();
+    graphicsControlInputStream.close();
+    graphicsClipboardInputStream.close();
+    audioDataInputStream.close();
   }
   
   private byte[] exchangeCheckString(byte[] localNonce, byte[] remoteNonce, byte[] encryptionKey, byte[] localCheckString) throws IOException
@@ -806,11 +810,11 @@ public class VTServerConnection
     graphicsFastImageOutputStream.open();
     graphicsControlOutputStream.open();
     graphicsControlInputStream.ready();
-    graphicsControlDataInputStream.setIntputStream(VTCompressorSelector.createBufferedLz4InputStream(graphicsControlInputStream));
+    graphicsControlDataInputStream.setInputStream(VTCompressorSelector.createBufferedLz4InputStream(graphicsControlInputStream));
     graphicsControlDataOutputStream.setOutputStream(VTCompressorSelector.createBufferedLz4OutputStream(graphicsControlOutputStream));
-    graphicsHeavyImageDataInputStream.setIntputStream(graphicsHeavyImageInputStream);
+    graphicsHeavyImageDataInputStream.setInputStream(graphicsHeavyImageInputStream);
     graphicsHeavyImageDataOutputStream.setOutputStream(VTCompressorSelector.createBufferedZstdOutputStream(graphicsHeavyImageOutputStream));
-    graphicsFastImageDataInputStream.setIntputStream(graphicsFastImageInputStream);
+    graphicsFastImageDataInputStream.setInputStream(graphicsFastImageInputStream);
     graphicsFastImageDataOutputStream.setOutputStream(VTCompressorSelector.createBufferedSyncFlushZlibOutputStream(graphicsFastImageOutputStream, Deflater.DEFAULT_STRATEGY));
     resetClipboardStreams();
   }
@@ -819,7 +823,7 @@ public class VTServerConnection
   {
     graphicsClipboardOutputStream.open();
     graphicsClipboardInputStream.ready();
-    clipboardDataInputStream.setIntputStream(VTCompressorSelector.createBufferedLz4InputStream(graphicsClipboardInputStream));
+    clipboardDataInputStream.setInputStream(VTCompressorSelector.createBufferedLz4InputStream(graphicsClipboardInputStream));
     clipboardDataOutputStream.setOutputStream(VTCompressorSelector.createBufferedLz4OutputStream(graphicsClipboardOutputStream));
   }
   

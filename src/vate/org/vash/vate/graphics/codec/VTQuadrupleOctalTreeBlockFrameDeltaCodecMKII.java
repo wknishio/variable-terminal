@@ -2033,7 +2033,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     pixelStepY = frameWidth + CODEC_PADDING_SIZE;
     microblockStepY = pixelStepY * 8;
     macroblockStepY = microblockStepY * 8;
-    lin.setIntputStream(in);
+    lin.setInputStream(in);
     offset = lin.readInt();
     limitX = lin.readInt();
     limitY = lin.readInt();
@@ -2101,7 +2101,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     pixelStepY = frameWidth + CODEC_PADDING_SIZE;
     microblockStepY = pixelStepY * 8;
     macroblockStepY = microblockStepY * 8;
-    lin.setIntputStream(in);
+    lin.setInputStream(in);
     offset = lin.readInt();
     limitX = lin.readInt();
     limitY = lin.readInt();
@@ -2169,7 +2169,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     pixelStepY = frameWidth + CODEC_PADDING_SIZE;
     microblockStepY = pixelStepY * 8;
     macroblockStepY = microblockStepY * 8;
-    lin.setIntputStream(in);
+    lin.setInputStream(in);
     offset = lin.readInt();
     limitX = lin.readInt();
     limitY = lin.readInt();
@@ -2237,7 +2237,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     pixelStepY = frameWidth + CODEC_PADDING_SIZE;
     microblockStepY = pixelStepY * 8;
     macroblockStepY = microblockStepY * 8;
-    lin.setIntputStream(in);
+    lin.setInputStream(in);
     offset = lin.readInt();
     limitX = lin.readInt();
     limitY = lin.readInt();

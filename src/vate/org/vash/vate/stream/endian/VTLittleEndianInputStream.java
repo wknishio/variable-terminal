@@ -26,7 +26,7 @@ public final class VTLittleEndianInputStream extends InputStream implements Data
     this.longBuffer = new byte[8];
   }
   
-  public final void setIntputStream(final InputStream in)
+  public final void setInputStream(final InputStream in)
   {
     this.in = in;
   }

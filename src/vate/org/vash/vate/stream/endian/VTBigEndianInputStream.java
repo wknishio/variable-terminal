@@ -29,7 +29,7 @@ public final class VTBigEndianInputStream extends InputStream implements DataInp
     this.longBuffer = new byte[8];
   }
   
-  public final void setIntputStream(InputStream in)
+  public final void setInputStream(InputStream in)
   {
     this.in = in;
   }
