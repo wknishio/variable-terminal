@@ -188,6 +188,8 @@ public class VTAUDIOLINK extends VTClientStandardRemoteConsoleCommandProcessor
         connection.getCommandWriter().writeLine(command);
         connection.getCommandWriter().flush();
         connection.resetAudioStreams();
+        connection.getAudioDataOutputStream().write(1);
+        connection.getAudioDataOutputStream().flush();
         if (connection.getAudioDataInputStream().read() == 1)
         {
           formatAudioSystem.start();
