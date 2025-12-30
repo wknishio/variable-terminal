@@ -42,7 +42,7 @@ class CompressionParameters
                 new CompressionParameters(19, 12, 13, 1, 6, 1, Strategy.FAST),  /* base for negative levels */
                 new CompressionParameters(19, 13, 14, 1, 7, 0, Strategy.FAST),  /* level  1 */
                 new CompressionParameters(19, 15, 16, 1, 6, 0, Strategy.FAST),  /* level  2 */
-                new CompressionParameters(20, 16, 17, 1, 5, 1, Strategy.DFAST),  /* level  3 */
+                new CompressionParameters(20, 16, 17, 1, 3, 1, Strategy.DFAST),  /* level  3 */
                 new CompressionParameters(20, 18, 18, 1, 5, 1, Strategy.DFAST),  /* level  4 */
                 new CompressionParameters(20, 18, 18, 2, 5, 2, Strategy.GREEDY),  /* level  5 */
                 new CompressionParameters(21, 18, 19, 2, 5, 4, Strategy.LAZY),  /* level  6 */
@@ -68,7 +68,7 @@ class CompressionParameters
                 new CompressionParameters(18, 12, 13, 1, 5, 1, Strategy.FAST),  /* base for negative levels */
                 new CompressionParameters(18, 13, 14, 1, 6, 0, Strategy.FAST),  /* level  1 */
                 new CompressionParameters(18, 14, 14, 1, 5, 1, Strategy.DFAST),  /* level  2 */
-                new CompressionParameters(18, 16, 16, 1, 4, 1, Strategy.DFAST),  /* level  3 */
+                new CompressionParameters(18, 16, 16, 1, 3, 1, Strategy.DFAST),  /* level  3 */
                 new CompressionParameters(18, 16, 17, 2, 5, 2, Strategy.GREEDY),  /* level  4.*/
                 new CompressionParameters(18, 18, 18, 3, 5, 2, Strategy.GREEDY),  /* level  5.*/
                 new CompressionParameters(18, 18, 19, 3, 5, 4, Strategy.LAZY),  /* level  6.*/
@@ -94,7 +94,7 @@ class CompressionParameters
                 new CompressionParameters(17, 12, 12, 1, 5, 1, Strategy.FAST),  /* base for negative levels */
                 new CompressionParameters(17, 12, 13, 1, 6, 0, Strategy.FAST),  /* level  1 */
                 new CompressionParameters(17, 13, 15, 1, 5, 0, Strategy.FAST),  /* level  2 */
-                new CompressionParameters(17, 15, 16, 2, 5, 1, Strategy.DFAST),  /* level  3 */
+                new CompressionParameters(17, 15, 16, 2, 3, 1, Strategy.DFAST),  /* level  3 */
                 new CompressionParameters(17, 17, 17, 2, 4, 1, Strategy.DFAST),  /* level  4 */
                 new CompressionParameters(17, 16, 17, 3, 4, 2, Strategy.GREEDY),  /* level  5 */
                 new CompressionParameters(17, 17, 17, 3, 4, 4, Strategy.LAZY),  /* level  6 */
