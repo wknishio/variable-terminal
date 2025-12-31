@@ -202,7 +202,6 @@ Those are the third party libraries used in this software:
 * Lanterna by mabe02 for graphical console
 * Sixlegs Java PNG Decoder for PNG decoding
 * bouncycastle by Legion of the Bouncy Castle for encryption
-* beanshell2 by pejobo for alternative shell
 * airlift-aircompressor by Martin Traverso for zstd and lzo compression
 * nanohttpd-1.1 by elonen, for HTTP proxy tunneling
 * commons-httpclient by Apache Software Foundation, for HTTP proxy client
@@ -210,12 +209,12 @@ Those are the third party libraries used in this software:
 * Base85 by Sheep-y, for backported Base85 encoder/decoder
 * PngEncoder by Looklet, for better PNG image encoding
 * MinimalFTP by Guilherme Chaguri, for FTP server tunneling
+* BeanShell by Pat Niemeyer for alternative shell
 
 ## Additional utilities
 
 Some additional utilities are included with distributions:
 
-* beanshell2 by pejobo
 * autologon for windows
 * lockstation for windows
 * logon for windows
@@ -226,7 +225,7 @@ Some additional utilities are included with distributions:
 
 <pre>This software is under MIT license
 
-Copyright (c) AD 2020 William Kendi Nishio
+Copyright (c) AD 2025 William Kendi Nishio
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

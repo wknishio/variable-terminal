@@ -1,7 +1,4 @@
-﻿(*) Add option to configure client reconnector thread timeout value
-(*) Add audio line buffer size option for command *VTAUDIOLINK
-(*) Research dynamic multiplexed channel negotiation
-(*) Add support for i18n internationalization standards
+﻿(*) Research dynamic multiplexed channel negotiation
 (*) Instead of enforcing connection, it may be a command in client
 (*) Create standards for all task commands using class abstraction
 	(*) Must have unique full name
