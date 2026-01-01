@@ -5,8 +5,6 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.Socket;
 
-import org.vash.vate.socket.remote.VTRemoteSocketAdapter;
-
 public class VTProxy
 {
   public enum VTProxyType
@@ -266,12 +264,6 @@ public class VTProxy
       host = "";
     }
     
-    if (currentSocket instanceof VTRemoteSocketAdapter)
-    {
-      VTRemoteSocketAdapter remoteSocketAdapter = (VTRemoteSocketAdapter)currentSocket;
-      return remoteSocketAdapter.connect(bind, host, port, timeout, 0, proxy);
-    }
-    
     InetSocketAddress socketAddress = null;
     
     Socket connectionSocket = next(currentSocket, bind, timeout, proxy);
@@ -308,12 +300,6 @@ public class VTProxy
     if (host == null || host.length() == 0 || host.equals("*"))
     {
       host = "";
-    }
-    
-    if (currentSocket instanceof VTRemoteSocketAdapter)
-    {
-      VTRemoteSocketAdapter remoteSocketAdapter = (VTRemoteSocketAdapter)currentSocket;
-      return remoteSocketAdapter.connect(bind, host, port, timeout, 0);
     }
     
     InetSocketAddress socketAddress = null;

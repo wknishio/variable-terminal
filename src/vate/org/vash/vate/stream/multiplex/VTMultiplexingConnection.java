@@ -54,21 +54,13 @@ public class VTMultiplexingConnection
     }
   }
   
-  public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int type, Object link)
+  public VTLinkableDynamicMultiplexedOutputStream linkOutputStream(int type, Object link)
   {
     if (link instanceof Integer)
     {
-      //int number = (Integer) link;
-      //return dataOutputStream.linkOutputStream(type, number);
       return dataOutputStream.linkOutputStream(type, (Integer) link);
     }
     return dataOutputStream.linkOutputStream(type, link);
-  }
-  
-  public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int type, int number, Object link)
-  {
-    VTLinkableDynamicMultiplexedOutputStream stream = dataOutputStream.linkOutputStream(type, number, link);
-    return stream;
   }
   
   public void releaseOutputStream(VTLinkableDynamicMultiplexedOutputStream stream)
@@ -79,29 +71,13 @@ public class VTMultiplexingConnection
     }
   }
   
-  // public synchronized VTLinkableDynamicMultiplexedInputStream
-  // getInputStream(short type, int number)
-  // {
-  // VTLinkableDynamicMultiplexedInputStream stream =
-  // dataInputStream.getInputStream(type, number);
-  // return stream;
-  // }
-  
-  public VTLinkableDynamicMultiplexedInputStream getInputStream(int type, Object link)
+  public VTLinkableDynamicMultiplexedInputStream linkInputStream(int type, Object link)
   {
     if (link instanceof Integer)
     {
-      //int number = (Integer) link;
-      //return dataInputStream.linkInputStream(type, number);
       return dataInputStream.linkInputStream(type, (Integer) link);
     }
     return dataInputStream.linkInputStream(type, link);
-  }
-  
-  public VTLinkableDynamicMultiplexedInputStream getInputStream(int type, int number, Object link)
-  {
-    VTLinkableDynamicMultiplexedInputStream stream = dataInputStream.linkInputStream(type, number, link);
-    return stream;
   }
   
   public void releaseInputStream(VTLinkableDynamicMultiplexedInputStream stream)
