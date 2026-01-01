@@ -20,8 +20,6 @@ import java.io.*;
 import java.net.*;
 
 import org.vash.vate.net.sourceforge.jsocks.socks.server.ServerAuthenticator;
-import org.vash.vate.proxy.client.VTProxy;
-import org.vash.vate.socket.remote.VTRemoteSocketAdapter;
 /**
  * SOCKS4 and SOCKS5 proxy, handles both protocols simultaniously. Implements
  * all SOCKS commands, including UDP relaying.
