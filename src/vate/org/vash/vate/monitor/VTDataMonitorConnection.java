@@ -1,25 +1,25 @@
 package org.vash.vate.monitor;
 
-import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream;
-import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream;
+import org.vash.vate.stream.multiplex.VTMultiplexingInputStream;
+import org.vash.vate.stream.multiplex.VTMultiplexingOutputStream;
 
 public class VTDataMonitorConnection
 {
-  private final VTLinkableDynamicMultiplexingInputStream input;
-  private final VTLinkableDynamicMultiplexingOutputStream output;
+  private final VTMultiplexingInputStream input;
+  private final VTMultiplexingOutputStream output;
   
-  public VTDataMonitorConnection(VTLinkableDynamicMultiplexingInputStream input, VTLinkableDynamicMultiplexingOutputStream output)
+  public VTDataMonitorConnection(VTMultiplexingInputStream input, VTMultiplexingOutputStream output)
   {
     this.input = input;
     this.output = output;
   }
   
-  public VTLinkableDynamicMultiplexingInputStream getInput()
+  public VTMultiplexingInputStream getInput()
   {
     return input;
   }
   
-  public VTLinkableDynamicMultiplexingOutputStream getOutput()
+  public VTMultiplexingOutputStream getOutput()
   {
     return output;
   }

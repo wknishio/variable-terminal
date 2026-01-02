@@ -12,14 +12,14 @@ import java.net.SocketAddress;
 import java.net.SocketException;
 
 import org.vash.vate.VTSystem;
-import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
-import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
+import org.vash.vate.stream.multiplex.VTMultiplexingInputStream.VTMultiplexedInputStream;
+import org.vash.vate.stream.multiplex.VTMultiplexingOutputStream.VTMultiplexedOutputStream;
 
 public class VTManagedSocket extends Socket implements Closeable
 {
   private final VTManagedConnection connection;
-  private final VTLinkableDynamicMultiplexedInputStream in;
-  private final VTLinkableDynamicMultiplexedOutputStream out;
+  private final VTMultiplexedInputStream in;
+  private final VTMultiplexedOutputStream out;
   private final InputStream input;
   private final OutputStream output;
   
@@ -67,22 +67,22 @@ public class VTManagedSocket extends Socket implements Closeable
     return output;
   }
   
-  public VTLinkableDynamicMultiplexedInputStream getInputStream(Object link)
+  public VTMultiplexedInputStream getInputStream(Object link)
   {
     return connection.getInputStream(link);
   }
   
-  public VTLinkableDynamicMultiplexedOutputStream getOutputStream(Object link)
+  public VTMultiplexedOutputStream getOutputStream(Object link)
   {
     return connection.getOutputStream(link);
   }
   
-  public VTLinkableDynamicMultiplexedInputStream getInputStream(int type, Object link)
+  public VTMultiplexedInputStream getInputStream(int type, Object link)
   {
     return connection.getInputStream(type, link);
   }
   
-  public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int type, Object link)
+  public VTMultiplexedOutputStream getOutputStream(int type, Object link)
   {
     return connection.getOutputStream(type, link);
   }
@@ -137,12 +137,12 @@ public class VTManagedSocket extends Socket implements Closeable
     return connection.createBufferedOutputStream(type, link);
   }
   
-  public void releaseInputStream(VTLinkableDynamicMultiplexedInputStream stream)
+  public void releaseInputStream(VTMultiplexedInputStream stream)
   {
     connection.releaseInputStream(stream);
   }
   
-  public void releaseOutputStream(VTLinkableDynamicMultiplexedOutputStream stream)
+  public void releaseOutputStream(VTMultiplexedOutputStream stream)
   {
     connection.releaseOutputStream(stream);
   }

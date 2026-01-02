@@ -7,8 +7,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import org.vash.vate.proxy.client.VTProxy.VTProxyType;
-import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
-import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
+import org.vash.vate.stream.multiplex.VTMultiplexingInputStream.VTMultiplexedInputStream;
+import org.vash.vate.stream.multiplex.VTMultiplexingOutputStream.VTMultiplexedOutputStream;
 import org.vash.vate.tunnel.session.VTTunnelCloseableSocket;
 import org.vash.vate.tunnel.session.VTTunnelSession;
 import org.vash.vate.tunnel.session.VTTunnelSessionHandler;
@@ -182,8 +182,8 @@ public class VTTunnelChannelBindSocketListener implements Runnable
           
           handler = new VTTunnelSessionHandler(session, channel);
           
-          VTLinkableDynamicMultiplexedInputStream input = channel.getConnection().getInputStream(channelType, handler);
-          VTLinkableDynamicMultiplexedOutputStream output = channel.getConnection().getOutputStream(channelType, handler);
+          VTMultiplexedInputStream input = channel.getConnection().getInputStream(channelType, handler);
+          VTMultiplexedOutputStream output = channel.getConnection().getOutputStream(channelType, handler);
           
           if (output != null && input != null)
           {

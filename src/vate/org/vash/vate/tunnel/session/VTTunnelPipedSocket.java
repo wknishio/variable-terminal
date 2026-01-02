@@ -12,14 +12,14 @@ import java.net.SocketAddress;
 import java.net.SocketException;
 
 import org.vash.vate.VTSystem;
-import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
+import org.vash.vate.stream.multiplex.VTMultiplexingOutputStream.VTMultiplexedOutputStream;
 import org.vash.vate.stream.pipe.VTPipedInputStream;
 import org.vash.vate.stream.pipe.VTPipedOutputStream;
 
 public class VTTunnelPipedSocket extends Socket implements Closeable
 {
   private InputStream in;
-  private VTLinkableDynamicMultiplexedOutputStream out;
+  private VTMultiplexedOutputStream out;
   private OutputStream pipe;
   private Closeable closeable;
   private String host;
@@ -43,7 +43,7 @@ public class VTTunnelPipedSocket extends Socket implements Closeable
     this.pipe = pipeSource;
   }
   
-  public void setOutputStream(VTLinkableDynamicMultiplexedOutputStream output) throws IOException
+  public void setOutputStream(VTMultiplexedOutputStream output) throws IOException
   {
     this.out = output;
   }

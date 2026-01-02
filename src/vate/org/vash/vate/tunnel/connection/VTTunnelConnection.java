@@ -14,10 +14,10 @@ import org.vash.vate.VTSystem;
 import org.vash.vate.proxy.client.VTProxy;
 import org.vash.vate.stream.endian.VTLittleEndianInputStream;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
-import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream;
-import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream;
-import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
-import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
+import org.vash.vate.stream.multiplex.VTMultiplexingInputStream;
+import org.vash.vate.stream.multiplex.VTMultiplexingOutputStream;
+import org.vash.vate.stream.multiplex.VTMultiplexingInputStream.VTMultiplexedInputStream;
+import org.vash.vate.stream.multiplex.VTMultiplexingOutputStream.VTMultiplexedOutputStream;
 import org.vash.vate.tunnel.channel.VTTunnelChannel;
 import org.vash.vate.tunnel.channel.VTTunnelChannelBindSocketListener;
 import org.vash.vate.tunnel.channel.VTTunnelChannelRemoteSocketBuilder;
@@ -25,8 +25,8 @@ import org.vash.vate.tunnel.channel.VTTunnelRemoteSocketFactory;
 
 public class VTTunnelConnection
 {
-  private VTLinkableDynamicMultiplexingInputStream dataInputStream;
-  private VTLinkableDynamicMultiplexingOutputStream dataOutputStream;
+  private VTMultiplexingInputStream dataInputStream;
+  private VTMultiplexingOutputStream dataOutputStream;
   private VTLittleEndianInputStream controlInputStream;
   private VTLittleEndianOutputStream controlOutputStream;
   // private VTLittleEndianInputStream relayInputStream;
@@ -437,7 +437,7 @@ public class VTTunnelConnection
     }
   }
   
-  public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int channelType, Object link)
+  public VTMultiplexedOutputStream getOutputStream(int channelType, Object link)
   {
     if (link instanceof Integer)
     {
@@ -446,13 +446,13 @@ public class VTTunnelConnection
     return dataOutputStream.linkOutputStream((VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT | channelType), link);
   }
   
-  public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int channelType, int number, Object link)
+  public VTMultiplexedOutputStream getOutputStream(int channelType, int number, Object link)
   {
-    VTLinkableDynamicMultiplexedOutputStream stream = dataOutputStream.linkOutputStream((VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT | channelType), number, link);
+    VTMultiplexedOutputStream stream = dataOutputStream.linkOutputStream((VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT | channelType), number, link);
     return stream;
   }
   
-  public void releaseOutputStream(VTLinkableDynamicMultiplexedOutputStream stream)
+  public void releaseOutputStream(VTMultiplexedOutputStream stream)
   {
     if (stream != null)
     {
@@ -460,7 +460,7 @@ public class VTTunnelConnection
     }
   }
   
-  public VTLinkableDynamicMultiplexedInputStream getInputStream(int channelType, Object link)
+  public VTMultiplexedInputStream getInputStream(int channelType, Object link)
   {
     if (link instanceof Integer)
     {
@@ -469,13 +469,13 @@ public class VTTunnelConnection
     return dataInputStream.linkInputStream((VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT | channelType), link);
   }
   
-  public VTLinkableDynamicMultiplexedInputStream getInputStream(int channelType, int number, Object link)
+  public VTMultiplexedInputStream getInputStream(int channelType, int number, Object link)
   {
-    VTLinkableDynamicMultiplexedInputStream stream = dataInputStream.linkInputStream((VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT | channelType), number, link);
+    VTMultiplexedInputStream stream = dataInputStream.linkInputStream((VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT | channelType), number, link);
     return stream;
   }
   
-  public void releaseInputStream(VTLinkableDynamicMultiplexedInputStream stream)
+  public void releaseInputStream(VTMultiplexedInputStream stream)
   {
     if (stream != null)
     {
@@ -493,7 +493,7 @@ public class VTTunnelConnection
     return controlOutputStream;
   }
   
-  public void setDataInputStream(VTLinkableDynamicMultiplexingInputStream in)
+  public void setDataInputStream(VTMultiplexingInputStream in)
   {
     this.dataInputStream = in;
   }
@@ -503,7 +503,7 @@ public class VTTunnelConnection
     controlInputStream = new VTLittleEndianInputStream(in);
   }
   
-  public void setDataOutputStream(VTLinkableDynamicMultiplexingOutputStream out)
+  public void setDataOutputStream(VTMultiplexingOutputStream out)
   {
     this.dataOutputStream = out;
   }

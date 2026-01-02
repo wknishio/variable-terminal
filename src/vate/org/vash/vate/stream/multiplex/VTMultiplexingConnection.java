@@ -5,13 +5,13 @@ import java.io.OutputStream;
 import java.util.concurrent.ExecutorService;
 import org.vash.vate.stream.endian.VTLittleEndianInputStream;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
-import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
-import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
+import org.vash.vate.stream.multiplex.VTMultiplexingInputStream.VTMultiplexedInputStream;
+import org.vash.vate.stream.multiplex.VTMultiplexingOutputStream.VTMultiplexedOutputStream;
 
 public class VTMultiplexingConnection
 {
-  private VTLinkableDynamicMultiplexingInputStream dataInputStream;
-  private VTLinkableDynamicMultiplexingOutputStream dataOutputStream;
+  private VTMultiplexingInputStream dataInputStream;
+  private VTMultiplexingOutputStream dataOutputStream;
   private VTLittleEndianInputStream controlInputStream;
   private VTLittleEndianOutputStream controlOutputStream;
   private final ExecutorService executorService;
@@ -54,7 +54,7 @@ public class VTMultiplexingConnection
     }
   }
   
-  public VTLinkableDynamicMultiplexedOutputStream linkOutputStream(int type, Object link)
+  public VTMultiplexedOutputStream linkOutputStream(int type, Object link)
   {
     if (link instanceof Integer)
     {
@@ -63,7 +63,7 @@ public class VTMultiplexingConnection
     return dataOutputStream.linkOutputStream(type, link);
   }
   
-  public void releaseOutputStream(VTLinkableDynamicMultiplexedOutputStream stream)
+  public void releaseOutputStream(VTMultiplexedOutputStream stream)
   {
     if (stream != null)
     {
@@ -71,7 +71,7 @@ public class VTMultiplexingConnection
     }
   }
   
-  public VTLinkableDynamicMultiplexedInputStream linkInputStream(int type, Object link)
+  public VTMultiplexedInputStream linkInputStream(int type, Object link)
   {
     if (link instanceof Integer)
     {
@@ -80,7 +80,7 @@ public class VTMultiplexingConnection
     return dataInputStream.linkInputStream(type, link);
   }
   
-  public void releaseInputStream(VTLinkableDynamicMultiplexedInputStream stream)
+  public void releaseInputStream(VTMultiplexedInputStream stream)
   {
     if (stream != null)
     {
@@ -98,7 +98,7 @@ public class VTMultiplexingConnection
     return controlOutputStream;
   }
   
-  public void setDataInputStream(VTLinkableDynamicMultiplexingInputStream in)
+  public void setDataInputStream(VTMultiplexingInputStream in)
   {
     this.dataInputStream = in;
   }
@@ -108,7 +108,7 @@ public class VTMultiplexingConnection
     controlInputStream = new VTLittleEndianInputStream(in);
   }
   
-  public void setDataOutputStream(VTLinkableDynamicMultiplexingOutputStream out)
+  public void setDataOutputStream(VTMultiplexingOutputStream out)
   {
     this.dataOutputStream = out;
   }

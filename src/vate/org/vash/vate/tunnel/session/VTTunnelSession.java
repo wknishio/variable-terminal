@@ -6,8 +6,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
-import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
+import org.vash.vate.stream.multiplex.VTMultiplexingInputStream.VTMultiplexedInputStream;
+import org.vash.vate.stream.multiplex.VTMultiplexingOutputStream.VTMultiplexedOutputStream;
 import org.vash.vate.tunnel.connection.VTTunnelConnection;
 
 public class VTTunnelSession implements Closeable
@@ -16,8 +16,8 @@ public class VTTunnelSession implements Closeable
   private Socket socket;
   private InputStream socketInputStream;
   private OutputStream socketOutputStream;
-  private VTLinkableDynamicMultiplexedInputStream tunnelInputStream;
-  private VTLinkableDynamicMultiplexedOutputStream tunnelOutputStream;
+  private VTMultiplexedInputStream tunnelInputStream;
+  private VTMultiplexedOutputStream tunnelOutputStream;
   private final boolean originator;
   private Object waiter = new Object();
   private Boolean result = null;
@@ -40,7 +40,7 @@ public class VTTunnelSession implements Closeable
     this.originator = originator;
   }
   
-//  public VTTunnelSession(VTTunnelConnection connection, VTLinkableDynamicMultiplexedInputStream inputStream)
+//  public VTTunnelSession(VTTunnelConnection connection, VTMultiplexedInputStream inputStream)
 //  {
 //    this.connection = connection;
 //    this.inputStream = inputStream;
@@ -124,23 +124,23 @@ public class VTTunnelSession implements Closeable
     this.socket = socket; 
   }
   
-  public VTLinkableDynamicMultiplexedInputStream getTunnelInputStream()
+  public VTMultiplexedInputStream getTunnelInputStream()
   {
     return tunnelInputStream;
   }
   
-  public void setTunnelInputStream(VTLinkableDynamicMultiplexedInputStream tunnelInputStream)
+  public void setTunnelInputStream(VTMultiplexedInputStream tunnelInputStream)
   {
     this.tunnelInputStream = tunnelInputStream;
     //this.inputStream.addPropagated(this);
   }
   
-  public VTLinkableDynamicMultiplexedOutputStream getTunnelOutputStream()
+  public VTMultiplexedOutputStream getTunnelOutputStream()
   {
     return tunnelOutputStream;
   }
   
-  public void setTunnelOutputStream(VTLinkableDynamicMultiplexedOutputStream outputStream)
+  public void setTunnelOutputStream(VTMultiplexedOutputStream outputStream)
   {
     this.tunnelOutputStream = outputStream;
   }

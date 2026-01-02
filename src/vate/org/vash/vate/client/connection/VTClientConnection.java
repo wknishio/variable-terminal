@@ -19,10 +19,10 @@ import org.vash.vate.security.VTXXHash64MessageDigest;
 import org.vash.vate.stream.compress.VTCompressorSelector;
 import org.vash.vate.stream.endian.VTLittleEndianInputStream;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
-import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream;
-import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream;
-import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
-import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
+import org.vash.vate.stream.multiplex.VTMultiplexingInputStream;
+import org.vash.vate.stream.multiplex.VTMultiplexingOutputStream;
+import org.vash.vate.stream.multiplex.VTMultiplexingInputStream.VTMultiplexedInputStream;
+import org.vash.vate.stream.multiplex.VTMultiplexingOutputStream.VTMultiplexedOutputStream;
 
 public class VTClientConnection
 {
@@ -60,34 +60,34 @@ public class VTClientConnection
   private OutputStream connectionOutputStream;
   private VTLittleEndianInputStream nonceReader;
   private VTLittleEndianOutputStream nonceWriter;
-  private VTLinkableDynamicMultiplexingInputStream multiplexedConnectionInputStream;
-  private VTLinkableDynamicMultiplexingOutputStream multiplexedConnectionOutputStream;
+  private VTMultiplexingInputStream multiplexedConnectionInputStream;
+  private VTMultiplexingOutputStream multiplexedConnectionOutputStream;
   
-  private VTLinkableDynamicMultiplexedInputStream pingClientInputStream;
-  private VTLinkableDynamicMultiplexedInputStream pingServerInputStream;
-  private VTLinkableDynamicMultiplexedInputStream shellInputStream;
-  private VTLinkableDynamicMultiplexedInputStream fileTransferControlInputStream;
-  private VTLinkableDynamicMultiplexedInputStream fileTransferDataInputStream;
-  private VTLinkableDynamicMultiplexedInputStream graphicsControlInputStream;
-  private VTLinkableDynamicMultiplexedInputStream graphicsDirectImageInputStream;
-  private VTLinkableDynamicMultiplexedInputStream graphicsHeavyImageInputStream;
-  private VTLinkableDynamicMultiplexedInputStream graphicsFastImageInputStream;
-  private VTLinkableDynamicMultiplexedInputStream graphicsClipboardInputStream;
-  private VTLinkableDynamicMultiplexedInputStream audioDataInputStream;
-  private VTLinkableDynamicMultiplexedInputStream tunnelControlInputStream;
+  private VTMultiplexedInputStream pingClientInputStream;
+  private VTMultiplexedInputStream pingServerInputStream;
+  private VTMultiplexedInputStream shellInputStream;
+  private VTMultiplexedInputStream fileTransferControlInputStream;
+  private VTMultiplexedInputStream fileTransferDataInputStream;
+  private VTMultiplexedInputStream graphicsControlInputStream;
+  private VTMultiplexedInputStream graphicsDirectImageInputStream;
+  private VTMultiplexedInputStream graphicsHeavyImageInputStream;
+  private VTMultiplexedInputStream graphicsFastImageInputStream;
+  private VTMultiplexedInputStream graphicsClipboardInputStream;
+  private VTMultiplexedInputStream audioDataInputStream;
+  private VTMultiplexedInputStream tunnelControlInputStream;
   
-  private VTLinkableDynamicMultiplexedOutputStream pingClientOutputStream;
-  private VTLinkableDynamicMultiplexedOutputStream pingServerOutputStream;
-  private VTLinkableDynamicMultiplexedOutputStream shellOutputStream;
-  private VTLinkableDynamicMultiplexedOutputStream fileTransferControlOutputStream;
-  private VTLinkableDynamicMultiplexedOutputStream fileTransferDataOutputStream;
-  private VTLinkableDynamicMultiplexedOutputStream graphicsControlOutputStream;
-  private VTLinkableDynamicMultiplexedOutputStream graphicsDirectImageOutputStream;
-  private VTLinkableDynamicMultiplexedOutputStream graphicsHeavyImageOutputStream;
-  private VTLinkableDynamicMultiplexedOutputStream graphicsFastImageOutputStream;
-  private VTLinkableDynamicMultiplexedOutputStream graphicsClipboardOutputStream;
-  private VTLinkableDynamicMultiplexedOutputStream audioDataOutputStream;
-  private VTLinkableDynamicMultiplexedOutputStream tunnelControlOutputStream;
+  private VTMultiplexedOutputStream pingClientOutputStream;
+  private VTMultiplexedOutputStream pingServerOutputStream;
+  private VTMultiplexedOutputStream shellOutputStream;
+  private VTMultiplexedOutputStream fileTransferControlOutputStream;
+  private VTMultiplexedOutputStream fileTransferDataOutputStream;
+  private VTMultiplexedOutputStream graphicsControlOutputStream;
+  private VTMultiplexedOutputStream graphicsDirectImageOutputStream;
+  private VTMultiplexedOutputStream graphicsHeavyImageOutputStream;
+  private VTMultiplexedOutputStream graphicsFastImageOutputStream;
+  private VTMultiplexedOutputStream graphicsClipboardOutputStream;
+  private VTMultiplexedOutputStream audioDataOutputStream;
+  private VTMultiplexedOutputStream tunnelControlOutputStream;
   
   private VTLittleEndianInputStream authenticationReader;
   private VTLittleEndianOutputStream authenticationWriter;
@@ -133,12 +133,12 @@ public class VTClientConnection
     secureRandom = new VTBlake3SecureRandom(seed);
   }
   
-  public VTLinkableDynamicMultiplexingInputStream getMultiplexedConnectionInputStream()
+  public VTMultiplexingInputStream getMultiplexedConnectionInputStream()
   {
     return multiplexedConnectionInputStream;
   }
   
-  public VTLinkableDynamicMultiplexingOutputStream getMultiplexedConnectionOutputStream()
+  public VTMultiplexingOutputStream getMultiplexedConnectionOutputStream()
   {
     return multiplexedConnectionOutputStream;
   }
@@ -526,8 +526,8 @@ public class VTClientConnection
     int inputChannel = 0;
     int outputChannel = 0;
     
-    multiplexedConnectionInputStream = new VTLinkableDynamicMultiplexingInputStream(connectionInputStream, false, VTSystem.VT_PACKET_DATA_SIZE_BYTES, VTSystem.VT_CHANNEL_PACKET_BUFFER_SIZE_BYTES, secureInputSeed, executorService, false);
-    multiplexedConnectionOutputStream = new VTLinkableDynamicMultiplexingOutputStream(connectionOutputStream, false, VTSystem.VT_PACKET_DATA_SIZE_BYTES, VTSystem.VT_CONNECTION_OUTPUT_PACKET_BUFFER_SIZE_BYTES, secureOutputSeed, executorService);
+    multiplexedConnectionInputStream = new VTMultiplexingInputStream(connectionInputStream, false, VTSystem.VT_PACKET_DATA_SIZE_BYTES, VTSystem.VT_CHANNEL_PACKET_BUFFER_SIZE_BYTES, secureInputSeed, executorService, false);
+    multiplexedConnectionOutputStream = new VTMultiplexingOutputStream(connectionOutputStream, false, VTSystem.VT_PACKET_DATA_SIZE_BYTES, VTSystem.VT_CONNECTION_OUTPUT_PACKET_BUFFER_SIZE_BYTES, secureOutputSeed, executorService);
     
     pingClientInputStream = multiplexedConnectionInputStream.linkInputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED | VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED, inputChannel++);
     pingClientOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED | VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED, outputChannel++);

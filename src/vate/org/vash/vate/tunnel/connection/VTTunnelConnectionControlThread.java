@@ -12,8 +12,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.vash.vate.VTSystem;
 import org.vash.vate.proxy.client.VTProxy;
 import org.vash.vate.proxy.client.VTProxy.VTProxyType;
-import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
-import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
+import org.vash.vate.stream.multiplex.VTMultiplexingInputStream.VTMultiplexedInputStream;
+import org.vash.vate.stream.multiplex.VTMultiplexingOutputStream.VTMultiplexedOutputStream;
 import org.vash.vate.tunnel.channel.VTTunnelChannel;
 import org.vash.vate.tunnel.session.VTTunnelCloseableServerSocket;
 import org.vash.vate.tunnel.session.VTTunnelCloseableSocket;
@@ -117,8 +117,8 @@ public class VTTunnelConnectionControlThread implements Runnable
                 final VTTunnelSession session = new VTTunnelSession(connection, false);
                 final VTTunnelSessionHandler handler = new VTTunnelSessionHandler(session, connection.getResponseChannel(channelType));
                 
-                VTLinkableDynamicMultiplexedInputStream input = connection.getInputStream(channelType, inputNumber, handler);
-                VTLinkableDynamicMultiplexedOutputStream output = connection.getOutputStream(channelType, outputNumber, handler);
+                VTMultiplexedInputStream input = connection.getInputStream(channelType, inputNumber, handler);
+                VTMultiplexedOutputStream output = connection.getOutputStream(channelType, outputNumber, handler);
                 
                 if (output != null && input != null)
                 {
@@ -281,8 +281,8 @@ public class VTTunnelConnectionControlThread implements Runnable
                 session.setSocket(pipedSocket);
                 VTTunnelSocksSessionHandler handler = new VTTunnelSocksSessionHandler(session, connection.getResponseChannel(channelType), username, password, bind, connectTimeout, dataTimeout, proxy);
                 
-                VTLinkableDynamicMultiplexedInputStream input = connection.getInputStream(channelType, inputNumber, handler);
-                VTLinkableDynamicMultiplexedOutputStream output = connection.getOutputStream(channelType, outputNumber, handler);
+                VTMultiplexedInputStream input = connection.getInputStream(channelType, inputNumber, handler);
+                VTMultiplexedOutputStream output = connection.getOutputStream(channelType, outputNumber, handler);
                 
                 if (output != null && input != null)
                 {
@@ -343,8 +343,8 @@ public class VTTunnelConnectionControlThread implements Runnable
                 
                 VTTunnelRunnableSessionHandler handler = new VTTunnelRunnableSessionHandler(session, connection.getResponseChannel(channelType), datagramSocket);
                 
-                VTLinkableDynamicMultiplexedInputStream input = connection.getInputStream(channelType, inputNumber, handler);
-                VTLinkableDynamicMultiplexedOutputStream output = connection.getOutputStream(channelType, outputNumber, handler);
+                VTMultiplexedInputStream input = connection.getInputStream(channelType, inputNumber, handler);
+                VTMultiplexedOutputStream output = connection.getOutputStream(channelType, outputNumber, handler);
                   
                 if (output != null && input != null)
                 {
@@ -455,8 +455,8 @@ public class VTTunnelConnectionControlThread implements Runnable
                 session.setSocket(pipedSocket);
                 VTTunnelFTPSessionHandler handler = new VTTunnelFTPSessionHandler(session, connection.getResponseChannel(channelType), username, password, bind, connectTimeout, dataTimeout, proxy);
                 
-                VTLinkableDynamicMultiplexedInputStream input = connection.getInputStream(channelType, inputNumber, handler);
-                VTLinkableDynamicMultiplexedOutputStream output = connection.getOutputStream(channelType, outputNumber, handler);
+                VTMultiplexedInputStream input = connection.getInputStream(channelType, inputNumber, handler);
+                VTMultiplexedOutputStream output = connection.getOutputStream(channelType, outputNumber, handler);
                 
                 if (output != null && input != null)
                 {

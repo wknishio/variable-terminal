@@ -19,10 +19,10 @@ import org.vash.vate.server.VTServer;
 import org.vash.vate.server.connection.VTServerConnection;
 import org.vash.vate.server.session.VTServerSession;
 import org.vash.vate.server.session.VTServerSessionListener;
-import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream;
-import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream;
-import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
-import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
+import org.vash.vate.stream.multiplex.VTMultiplexingInputStream;
+import org.vash.vate.stream.multiplex.VTMultiplexingOutputStream;
+import org.vash.vate.stream.multiplex.VTMultiplexingInputStream.VTMultiplexedInputStream;
+import org.vash.vate.stream.multiplex.VTMultiplexingOutputStream.VTMultiplexedOutputStream;
 
 public class VTManagedServerSocket
 {
@@ -59,36 +59,36 @@ public class VTManagedServerSocket
       connection.closeSockets();
     }
     
-    public VTLinkableDynamicMultiplexedInputStream getInputStream(Object link)
+    public VTMultiplexedInputStream getInputStream(Object link)
     {
       return getInputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, link);
     }
     
-    public VTLinkableDynamicMultiplexedOutputStream getOutputStream(Object link)
+    public VTMultiplexedOutputStream getOutputStream(Object link)
     {
       return getOutputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, link);
     }
     
-    public VTLinkableDynamicMultiplexedInputStream getInputStream(int type, Object link)
+    public VTMultiplexedInputStream getInputStream(int type, Object link)
     {
       return connection.getMultiplexedConnectionInputStream().linkInputStream(type, link);
     }
     
-    public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int type, Object link)
+    public VTMultiplexedOutputStream getOutputStream(int type, Object link)
     {
       return connection.getMultiplexedConnectionOutputStream().linkOutputStream(type, link);
     }
     
     public int setOutputStream(Object link, OutputStream output, Closeable closeable)
     {
-      VTLinkableDynamicMultiplexedInputStream stream = getInputStream(link);
+      VTMultiplexedInputStream stream = getInputStream(link);
       stream.setOutputStream(output, closeable);
       return stream.number();
     }
     
     public int setOutputStream(int type, Object link, OutputStream output, Closeable closeable)
     {
-      VTLinkableDynamicMultiplexedInputStream stream = getInputStream(type, link);
+      VTMultiplexedInputStream stream = getInputStream(type, link);
       stream.setOutputStream(output, closeable);
       return stream.number();
     }
@@ -172,22 +172,22 @@ public class VTManagedServerSocket
       return new BufferedOutputStream(getOutputStream(type, link), VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES);
     }
     
-    public void releaseInputStream(VTLinkableDynamicMultiplexedInputStream stream)
+    public void releaseInputStream(VTMultiplexedInputStream stream)
     {
       connection.getMultiplexedConnectionInputStream().releaseInputStream(stream);
     }
     
-    public void releaseOutputStream(VTLinkableDynamicMultiplexedOutputStream stream)
+    public void releaseOutputStream(VTMultiplexedOutputStream stream)
     {
       connection.getMultiplexedConnectionOutputStream().releaseOutputStream(stream);
     }
     
-    public VTLinkableDynamicMultiplexingInputStream getMultiplexedConnectionInputStream()
+    public VTMultiplexingInputStream getMultiplexedConnectionInputStream()
     {
       return connection.getMultiplexedConnectionInputStream();
     }
     
-    public VTLinkableDynamicMultiplexingOutputStream getMultiplexedConnectionOutputStream()
+    public VTMultiplexingOutputStream getMultiplexedConnectionOutputStream()
     {
       return connection.getMultiplexedConnectionOutputStream();
     }
