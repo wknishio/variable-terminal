@@ -21,7 +21,7 @@ import org.vash.vate.stream.multiplex.VTMultiplexingOutputStream.VTMultiplexedOu
 import org.vash.vate.tunnel.channel.VTTunnelChannel;
 import org.vash.vate.tunnel.channel.VTTunnelChannelBindSocketListener;
 import org.vash.vate.tunnel.channel.VTTunnelChannelRemoteSocketBuilder;
-import org.vash.vate.tunnel.channel.VTTunnelRemoteSocketFactory;
+import org.vash.vate.tunnel.channel.VTTunnelChannelRemoteSocketFactory;
 
 public class VTTunnelConnection
 {
@@ -301,12 +301,12 @@ public class VTTunnelConnection
     return new VTTunnelChannelRemoteSocketBuilder(channel); 
   }
   
-  public VTTunnelRemoteSocketFactory createRemoteSocketFactory(VTTunnelChannel channel)
+  public VTTunnelChannelRemoteSocketFactory createRemoteSocketFactory(VTTunnelChannel channel)
   {
-    return new VTTunnelRemoteSocketFactory(createRemoteSocketBuilder(channel));
+    return new VTTunnelChannelRemoteSocketFactory(createRemoteSocketBuilder(channel));
   }
   
-//  public VTTunnelRemoteSocketFactory createRemoteSocketFactory()
+//  public VTTunnelChannelRemoteSocketFactory createRemoteSocketFactory()
 //  {
 //    return createRemoteSocketFactory(responseChannel);
 //  }

@@ -15,12 +15,12 @@ public class VTMultiplexingConnection
   private VTLittleEndianInputStream controlInputStream;
   private VTLittleEndianOutputStream controlOutputStream;
   private final ExecutorService executorService;
-  private final VTMultiplexingControlThread controlThread;
+  private final VTMultiplexingConnectionControlThread controlThread;
   
   public VTMultiplexingConnection(ExecutorService executorService)
   {
     this.executorService = executorService;
-    this.controlThread = new VTMultiplexingControlThread(this, executorService);
+    this.controlThread = new VTMultiplexingConnectionControlThread(this, executorService);
   }
   
   public void start()

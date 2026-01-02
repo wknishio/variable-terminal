@@ -8,12 +8,12 @@ import java.net.Socket;
 import org.vash.vate.proxy.client.VTProxy;
 import org.vash.vate.socket.remote.VTRemoteSocketFactory;
 
-public class VTTunnelRemoteSocketFactory extends VTRemoteSocketFactory
+public class VTTunnelChannelRemoteSocketFactory extends VTRemoteSocketFactory
 {
   private final VTTunnelChannelRemoteSocketBuilder socketBuilder;
   private static final VTProxy PROXY_NONE = new VTProxy(VTProxy.VTProxyType.GLOBAL, "", 0, "", "");
   
-  public VTTunnelRemoteSocketFactory(VTTunnelChannelRemoteSocketBuilder socketBuilder)
+  public VTTunnelChannelRemoteSocketFactory(VTTunnelChannelRemoteSocketBuilder socketBuilder)
   {
     this.socketBuilder = socketBuilder;
   }

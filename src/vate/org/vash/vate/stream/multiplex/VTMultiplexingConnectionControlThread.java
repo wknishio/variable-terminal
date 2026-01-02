@@ -2,13 +2,13 @@ package org.vash.vate.stream.multiplex;
 
 import java.util.concurrent.ExecutorService;
 
-public class VTMultiplexingControlThread implements Runnable
+public class VTMultiplexingConnectionControlThread implements Runnable
 {
   private final VTMultiplexingConnection connection;
   private final ExecutorService executorService;
   // private int tunnelType = VTTunnelConnection.TUNNEL_TYPE_TCP;
   
-  public VTMultiplexingControlThread(VTMultiplexingConnection connection, ExecutorService executorService)
+  public VTMultiplexingConnectionControlThread(VTMultiplexingConnection connection, ExecutorService executorService)
   {
     this.connection = connection;
     this.executorService = executorService;
