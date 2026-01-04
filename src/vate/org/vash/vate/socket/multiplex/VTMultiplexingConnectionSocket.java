@@ -1,4 +1,4 @@
-package org.vash.vate.stream.multiplex;
+package org.vash.vate.socket.multiplex;
 
 import java.net.Socket;
 

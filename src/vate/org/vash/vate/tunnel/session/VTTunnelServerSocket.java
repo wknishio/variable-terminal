@@ -25,6 +25,8 @@ public class VTTunnelServerSocket extends ServerSocket
     this.bind = bind;
     this.host = host;
     this.port = port;
+    this.connectTimeout = connectTimeout;
+    this.dataTimeout = dataTimeout;
   }
   
   public Socket accept() throws IOException
