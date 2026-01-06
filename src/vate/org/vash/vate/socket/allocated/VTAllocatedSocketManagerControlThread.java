@@ -1,17 +1,17 @@
-package org.vash.vate.socket.multiplex;
+package org.vash.vate.socket.allocated;
 
 import java.util.concurrent.ExecutorService;
 
-public class VTMultiplexingConnectionControlThread implements Runnable
+public class VTAllocatedSocketManagerControlThread implements Runnable
 {
-  private final VTMultiplexingConnection connection;
+  private final VTAllocatedSocketManager connection;
   private final ExecutorService executorService;
   // private int tunnelType = VTTunnelConnection.TUNNEL_TYPE_TCP;
   
-  public VTMultiplexingConnectionControlThread(VTMultiplexingConnection connection, ExecutorService executorService)
+  public VTAllocatedSocketManagerControlThread(VTAllocatedSocketManager connection)
   {
     this.connection = connection;
-    this.executorService = executorService;
+    this.executorService = connection.getExecutorService();
   }
   
   public void run()

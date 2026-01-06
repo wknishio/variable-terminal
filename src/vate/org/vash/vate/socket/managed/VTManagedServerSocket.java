@@ -1,11 +1,6 @@
 package org.vash.vate.socket.managed;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.Closeable;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Properties;
 import java.util.concurrent.BlockingQueue;
@@ -21,8 +16,6 @@ import org.vash.vate.server.session.VTServerSession;
 import org.vash.vate.server.session.VTServerSessionListener;
 import org.vash.vate.stream.multiplex.VTMultiplexingInputStream;
 import org.vash.vate.stream.multiplex.VTMultiplexingOutputStream;
-import org.vash.vate.stream.multiplex.VTMultiplexingInputStream.VTMultiplexedInputStream;
-import org.vash.vate.stream.multiplex.VTMultiplexingOutputStream.VTMultiplexedOutputStream;
 
 public class VTManagedServerSocket
 {
@@ -57,40 +50,6 @@ public class VTManagedServerSocket
     public void close() throws IOException
     {
       connection.closeSockets();
-    }
-    
-    public VTMultiplexedInputStream getInputStream(Object link)
-    {
-      return getInputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, link);
-    }
-    
-    public VTMultiplexedOutputStream getOutputStream(Object link)
-    {
-      return getOutputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, link);
-    }
-    
-    public VTMultiplexedInputStream getInputStream(int type, Object link)
-    {
-      return connection.getMultiplexedConnectionInputStream().linkInputStream(type, link);
-    }
-    
-    public VTMultiplexedOutputStream getOutputStream(int type, Object link)
-    {
-      return connection.getMultiplexedConnectionOutputStream().linkOutputStream(type, link);
-    }
-    
-    public int setOutputStream(Object link, OutputStream output, Closeable closeable)
-    {
-      VTMultiplexedInputStream stream = getInputStream(link);
-      stream.setOutputStream(output, closeable);
-      return stream.number();
-    }
-    
-    public int setOutputStream(int type, Object link, OutputStream output, Closeable closeable)
-    {
-      VTMultiplexedInputStream stream = getInputStream(type, link);
-      stream.setOutputStream(output, closeable);
-      return stream.number();
     }
     
     public Class<VTServerSession> getSessionClass()
@@ -152,36 +111,6 @@ public class VTManagedServerSocket
       }
     }
     
-    public InputStream createBufferedInputStream(Object link)
-    {
-      return new BufferedInputStream(getInputStream(link), VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES);
-    }
-    
-    public OutputStream createBufferedOutputStream(Object link)
-    {
-      return new BufferedOutputStream(getOutputStream(link), VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES);
-    }
-    
-    public InputStream createBufferedInputStream(int type, Object link)
-    {
-      return new BufferedInputStream(getInputStream(type, link), VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES);
-    }
-    
-    public OutputStream createBufferedOutputStream(int type, Object link)
-    {
-      return new BufferedOutputStream(getOutputStream(type, link), VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES);
-    }
-    
-    public void releaseInputStream(VTMultiplexedInputStream stream)
-    {
-      connection.getMultiplexedConnectionInputStream().releaseInputStream(stream);
-    }
-    
-    public void releaseOutputStream(VTMultiplexedOutputStream stream)
-    {
-      connection.getMultiplexedConnectionOutputStream().releaseOutputStream(stream);
-    }
-    
     public VTMultiplexingInputStream getMultiplexedConnectionInputStream()
     {
       return connection.getMultiplexedConnectionInputStream();
@@ -191,24 +120,13 @@ public class VTManagedServerSocket
     {
       return connection.getMultiplexedConnectionOutputStream();
     }
-    
-    public int getInputStreamIndexStart()
-    {
-      return connection.getAvailableInputChannel();
-    }
-    
-    public int getOutputStreamIndexStart()
-    {
-      return connection.getAvailableOutputChannel();
-    }
   }
   
   private class VTManagedServerSocketServerSessionListener implements VTServerSessionListener
   {
     public void sessionStarted(VTServerSession session)
     {
-      VTManagedSocket socket = new VTManagedSocket(new VTManagedServerConnection(session));
-      //session.addSessionCloseable(socket);
+      VTManagedSocket socket = new VTManagedSocket(new VTManagedServerConnection(session), session.getConnection().getMultiplexedConnectionInputStream().linkInputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, session.getConnection().getAvailableInputChannel()), session.getConnection().getMultiplexedConnectionOutputStream().linkOutputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, session.getConnection().getAvailableOutputChannel()));
       sessions.put(session, socket);
       if (socketListener != null)
       {

@@ -1,4 +1,4 @@
-package org.vash.vate.socket.multiplex;
+package org.vash.vate.socket.allocated;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -10,24 +10,27 @@ import org.vash.vate.stream.multiplex.VTMultiplexingOutputStream;
 import org.vash.vate.stream.multiplex.VTMultiplexingInputStream.VTMultiplexedInputStream;
 import org.vash.vate.stream.multiplex.VTMultiplexingOutputStream.VTMultiplexedOutputStream;
 
-public class VTMultiplexingConnection
+public class VTAllocatedSocketManager
 {
   private VTMultiplexingInputStream dataInputStream;
   private VTMultiplexingOutputStream dataOutputStream;
   private VTLittleEndianInputStream controlInputStream;
   private VTLittleEndianOutputStream controlOutputStream;
   private final ExecutorService executorService;
-  private final VTMultiplexingConnectionControlThread controlThread;
   
-  public VTMultiplexingConnection(ExecutorService executorService)
+  public VTAllocatedSocketManager(ExecutorService executorService)
   {
     this.executorService = executorService;
-    this.controlThread = new VTMultiplexingConnectionControlThread(this, executorService);
+  }
+  
+  public ExecutorService getExecutorService()
+  {
+    return executorService;
   }
   
   public void start()
   {
-    executorService.execute(controlThread);
+    //executorService.execute(controlThread);
   }
   
   public void stop()

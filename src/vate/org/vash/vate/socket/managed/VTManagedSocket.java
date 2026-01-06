@@ -23,19 +23,19 @@ public class VTManagedSocket extends Socket implements Closeable
   private final InputStream input;
   private final OutputStream output;
   
-  public VTManagedSocket(VTManagedConnection connection)
+  public VTManagedSocket(VTManagedConnection connection, VTMultiplexedInputStream in, VTMultiplexedOutputStream out)
   {
     this.connection = connection;
-    this.in = connection.getInputStream(connection.getInputStreamIndexStart());
-    this.out = connection.getOutputStream(connection.getOutputStreamIndexStart());
+    this.in = in;
+    this.out = out;
     this.input = new BufferedInputStream(in, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES);
     this.output = new BufferedOutputStream(out, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES);
   }
   
-//  public Socket getConnectionSocket()
-//  {
-//    return managedConnection.getConnectionSocket();
-//  }
+  public Socket getSocket()
+  {
+    return connection.getSocket();
+  }
   
   public VTManagedConnection getConnection()
   {
@@ -65,96 +65,6 @@ public class VTManagedSocket extends Socket implements Closeable
   public OutputStream getOutputStream()
   {
     return output;
-  }
-  
-  public VTMultiplexedInputStream getInputStream(Object link)
-  {
-    return connection.getInputStream(link);
-  }
-  
-  public VTMultiplexedOutputStream getOutputStream(Object link)
-  {
-    return connection.getOutputStream(link);
-  }
-  
-  public VTMultiplexedInputStream getInputStream(int type, Object link)
-  {
-    return connection.getInputStream(type, link);
-  }
-  
-  public VTMultiplexedOutputStream getOutputStream(int type, Object link)
-  {
-    return connection.getOutputStream(type, link);
-  }
-  
-  public int setOutputStream(Object link, OutputStream output, Closeable closeable)
-  {
-    return connection.setOutputStream(link, output, closeable);
-  }
-  
-  public int setOutputStream(int type, Object link, OutputStream output, Closeable closeable)
-  {
-    return connection.setOutputStream(type, link, output, closeable);
-  }
-  
-  public InputStream createBufferedInputStream(int number)
-  {
-    return connection.createBufferedInputStream(number);
-  }
-  
-  public OutputStream createBufferedOutputStream(int number)
-  {
-    return connection.createBufferedOutputStream(number);
-  }
-  
-  public InputStream createBufferedInputStream(int type, int number)
-  {
-    return connection.createBufferedInputStream(type, number);
-  }
-  
-  public OutputStream createBufferedOutputStream(int type, int number)
-  {
-    return connection.createBufferedOutputStream(type, number);
-  }
-  
-  public InputStream createBufferedInputStream(Object link)
-  {
-    return connection.createBufferedInputStream(link);
-  }
-  
-  public OutputStream createBufferedOutputStream(Object link)
-  {
-    return connection.createBufferedOutputStream(link);
-  }
-  
-  public InputStream createBufferedInputStream(int type, Object link)
-  {
-    return connection.createBufferedInputStream(type, link);
-  }
-  
-  public OutputStream createBufferedOutputStream(int type, Object link)
-  {
-    return connection.createBufferedOutputStream(type, link);
-  }
-  
-  public void releaseInputStream(VTMultiplexedInputStream stream)
-  {
-    connection.releaseInputStream(stream);
-  }
-  
-  public void releaseOutputStream(VTMultiplexedOutputStream stream)
-  {
-    connection.releaseOutputStream(stream);
-  }
-  
-  public int getInputStreamIndexStart()
-  {
-    return connection.getInputStreamIndexStart();
-  }
-  
-  public int getOutputStreamIndexStart()
-  {
-    return connection.getOutputStreamIndexStart();
   }
   
   public void shutdownOutput() throws IOException
