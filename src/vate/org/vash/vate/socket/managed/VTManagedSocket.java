@@ -12,6 +12,8 @@ import java.net.SocketAddress;
 import java.net.SocketException;
 
 import org.vash.vate.VTSystem;
+import org.vash.vate.stream.multiplex.VTMultiplexingInputStream;
+import org.vash.vate.stream.multiplex.VTMultiplexingOutputStream;
 import org.vash.vate.stream.multiplex.VTMultiplexingInputStream.VTMultiplexedInputStream;
 import org.vash.vate.stream.multiplex.VTMultiplexingOutputStream.VTMultiplexedOutputStream;
 
@@ -32,14 +34,24 @@ public class VTManagedSocket extends Socket implements Closeable
     this.output = new BufferedOutputStream(out, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES);
   }
   
-  public Socket getSocket()
+  public VTMultiplexingInputStream getMultiplexedConnectionInputStream()
   {
-    return connection.getSocket();
+    return connection.getMultiplexedConnectionInputStream();
+  }
+  
+  public VTMultiplexingOutputStream getMultiplexedConnectionOutputStream()
+  {
+    return connection.getMultiplexedConnectionOutputStream();
   }
   
   public VTManagedConnection getConnection()
   {
     return connection;
+  }
+  
+  public Socket getSocket()
+  {
+    return connection.getSocket();
   }
   
   public void requestPing()
