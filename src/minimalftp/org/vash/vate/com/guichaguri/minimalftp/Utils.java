@@ -77,14 +77,14 @@ public class Utils {
         return mdtmFormat.parse(time).getTime();
     }
 
-    public static <F> String format(IFileSystem<F> fs, F file) {
+    public static <F> String format(IFileSystem<F> fs, F file, StringBuilder perm) {
         // Intended Format
         // -rw-rw-rw-   1 owner   group    7045120 Aug 08  5:24 video.mp4
         // -rw-rw-rw-   1 owner   group        380 May 26 21:50 data.txt
         // drwxrwxrwx   3 owner   group          0 Oct 12  8:21 directory
 
         return String.format("%s %3d %-8s %-8s %8d %s %s\r\n",
-                getPermission(fs, file),
+                getPermission(fs, file, perm),
                 fs.getHardLinks(file),
                 fs.getOwner(file),
                 fs.getGroup(file),
@@ -93,30 +93,31 @@ public class Utils {
                 fs.getName(file));
     }
 
-    public static <F> String getPermission(IFileSystem<F> fs, F file) {
+    public static <F> String getPermission(IFileSystem<F> fs, F file, StringBuilder perm) {
         // Intended Format
         // -rw-rw-rw-
         // -rwxrwxrwx
         // drwxrwxrwx
 
-        String perm = "";
+        //String perm = "";
+        perm.setLength(0);
         int perms = fs.getPermissions(file);
 
-        perm += fs.isDirectory(file) ? 'd' : '-';
+        perm.append(fs.isDirectory(file) ? 'd' : '-');
 
-        perm += hasPermission(perms, CAT_OWNER + TYPE_READ) ? 'r' : '-';
-        perm += hasPermission(perms, CAT_OWNER + TYPE_WRITE) ? 'w' : '-';
-        perm += hasPermission(perms, CAT_OWNER + TYPE_EXECUTE) ? 'x' : '-';
+        perm.append(hasPermission(perms, CAT_OWNER + TYPE_READ) ? 'r' : '-');
+        perm.append(hasPermission(perms, CAT_OWNER + TYPE_WRITE) ? 'w' : '-');
+        perm.append(hasPermission(perms, CAT_OWNER + TYPE_EXECUTE) ? 'x' : '-');
 
-        perm += hasPermission(perms, CAT_GROUP + TYPE_READ) ? 'r' : '-';
-        perm += hasPermission(perms, CAT_GROUP + TYPE_WRITE) ? 'w' : '-';
-        perm += hasPermission(perms, CAT_GROUP + TYPE_EXECUTE) ? 'x' : '-';
+        perm.append(hasPermission(perms, CAT_GROUP + TYPE_READ) ? 'r' : '-');
+        perm.append(hasPermission(perms, CAT_GROUP + TYPE_WRITE) ? 'w' : '-');
+        perm.append(hasPermission(perms, CAT_GROUP + TYPE_EXECUTE) ? 'x' : '-');
 
-        perm += hasPermission(perms, CAT_PUBLIC + TYPE_READ) ? 'r' : '-';
-        perm += hasPermission(perms, CAT_PUBLIC + TYPE_WRITE) ? 'w' : '-';
-        perm += hasPermission(perms, CAT_PUBLIC + TYPE_EXECUTE) ? 'x' : '-';
+        perm.append(hasPermission(perms, CAT_PUBLIC + TYPE_READ) ? 'r' : '-');
+        perm.append(hasPermission(perms, CAT_PUBLIC + TYPE_WRITE) ? 'w' : '-');
+        perm.append(hasPermission(perms, CAT_PUBLIC + TYPE_EXECUTE) ? 'x' : '-');
 
-        return perm;
+        return perm.toString();
     }
 
     public static <F> void getFacts(IFileSystem<F> fs, F file, String[] options, StringBuilder facts) {
@@ -140,17 +141,16 @@ public class Utils {
               facts.append("type=" + (dir ? "dir" : "file") + ";");
             } else if(opt.equals("perm")) {
                 int perms = fs.getPermissions(file);
-                String perm = "";
-
+                facts.append("perm=");
+                
                 if(hasPermission(perms, CAT_OWNER + TYPE_READ)) {
-                    perm += dir ? "el" : "r";
+                  facts.append(dir ? "el" : "r");
                 }
                 if(hasPermission(perms, CAT_OWNER + TYPE_WRITE)) {
-                    perm += "f";
-                    perm += dir ? "pcm" : "adw";
+                  facts.append("f" + (dir ? "pcm" : "adw"));
                 }
-
-                facts.append("perm=" + perm + ";");
+                
+                facts.append(";");
             }
         }
 

@@ -33,7 +33,7 @@ public class VTFileTransferServerTransaction implements Runnable
   private boolean directory;
   private boolean heavier;
   private int readedBytes;
-  private int writtenBytes;
+  private int neededBytes;
   private int bufferedBytes;
   private int remoteFileStatus;
   private int localFileStatus;
@@ -758,38 +758,44 @@ public class VTFileTransferServerTransaction implements Runnable
     {
       while (!stopped && ok && currentOffset < localFileSize)
       {
-        readedBytes = fileTransferFileInputStream.read(fileTransferBuffer, 0, (int) Math.min(fileTransferBufferSize, localFileSize - currentOffset));
-        if (readedBytes <= 0)
+        neededBytes = (int) Math.min(fileTransferBufferSize, localFileSize - currentOffset);
+        bufferedBytes = 0;
+        while (!stopped && ok && neededBytes > 0)
         {
-          localFileSize = currentOffset;
-          ok = writeNextFileChunkSize(0);
-          break;
-        }
-        else
-        {
-          ok = writeNextFileChunkSize(readedBytes);
-          if (ok)
+          readedBytes = fileTransferFileInputStream.read(fileTransferBuffer, bufferedBytes, neededBytes);
+          if (readedBytes >= 0)
           {
-            if (resumable && currentOffset < remoteFileSize)
-            {
-              ok = checkNextFileChunkChecksum(fileTransferBuffer, 0, readedBytes);
-              if (ok)
-              {
-                if (localDigest != remoteDigest)
-                {
-                  fileTransferRemoteOutputStream.write(fileTransferBuffer, 0, readedBytes);
-                  fileTransferRemoteOutputStream.flush();
-                }
-              }
-            }
-            else
-            {
-              fileTransferRemoteOutputStream.write(fileTransferBuffer, 0, readedBytes);
-              fileTransferRemoteOutputStream.flush();
-            }
+            neededBytes -= readedBytes;
+            currentOffset += readedBytes;
+            bufferedBytes += readedBytes;
+          }
+          else
+          {
+            localFileSize = currentOffset;
+            break;
           }
         }
-        currentOffset += readedBytes;
+        ok = writeNextFileChunkSize(bufferedBytes);
+        if (ok)
+        {
+          if (resumable && currentOffset < remoteFileSize)
+          {
+            ok = checkNextFileChunkChecksum(fileTransferBuffer, 0, bufferedBytes);
+            if (ok)
+            {
+              if (localDigest != remoteDigest)
+              {
+                fileTransferRemoteOutputStream.write(fileTransferBuffer, 0, bufferedBytes);
+                fileTransferRemoteOutputStream.flush();
+              }
+            }
+          }
+          else
+          {
+            fileTransferRemoteOutputStream.write(fileTransferBuffer, 0, bufferedBytes);
+            fileTransferRemoteOutputStream.flush();
+          }
+        }
       }
       fileTransferRemoteOutputStream.flush();
     }
@@ -1092,7 +1098,6 @@ public class VTFileTransferServerTransaction implements Runnable
   private boolean downloadFileData()
   {
     boolean ok = true;
-    writtenBytes = 0;
     List<Long> localFileChunkChecksums = new LinkedList<Long>();
     if (resumable)
     {
@@ -1102,12 +1107,13 @@ public class VTFileTransferServerTransaction implements Runnable
     {
       while (!stopped && ok && currentOffset < remoteFileSize)
       {
-        writtenBytes = readNextFileChunkSize();
-        if (writtenBytes == 0)
+        neededBytes = readNextFileChunkSize();
+        bufferedBytes = 0;
+        if (neededBytes == 0)
         {
           remoteFileSize = currentOffset;
         }
-        else if (writtenBytes == -1)
+        else if (neededBytes == -1)
         {
           ok = false;
           break;
@@ -1121,19 +1127,18 @@ public class VTFileTransferServerTransaction implements Runnable
             {
               if (localDigest == remoteDigest)
               {
-                currentOffset += writtenBytes;
+                currentOffset += neededBytes;
                 fileTransferRandomAccessFile.seek(currentOffset);
                 continue;
               }
             }
           }
-          bufferedBytes = 0;
-          while (!stopped && ok && writtenBytes > 0)
+          while (!stopped && ok && neededBytes > 0)
           {
-            readedBytes = fileTransferRemoteInputStream.read(fileTransferBuffer, bufferedBytes, writtenBytes);
+            readedBytes = fileTransferRemoteInputStream.read(fileTransferBuffer, bufferedBytes, neededBytes);
             if (readedBytes >= 0)
             {
-              writtenBytes -= readedBytes;
+              neededBytes -= readedBytes;
               currentOffset += readedBytes;
               bufferedBytes += readedBytes;
             }
@@ -1281,7 +1286,7 @@ public class VTFileTransferServerTransaction implements Runnable
     {
       if (fileTransferChecksumInputStream == null)
       {
-        fileTransferChecksumInputStream = new DigestInputStream(new FileInputStream(fileTransferRandomAccessFile.getFD()), messageDigest); 
+        fileTransferChecksumInputStream = new DigestInputStream(new FileInputStream(fileTransferRandomAccessFile.getFD()), messageDigest);
       }
       if (remoteFileSize < localFileSize)
       {
@@ -1294,12 +1299,22 @@ public class VTFileTransferServerTransaction implements Runnable
       while (!stopped && maxOffset > currentOffset)
       {
         messageDigest.reset();
-        readedBytes = fileTransferChecksumInputStream.read(fileTransferBuffer, 0, (int) Math.min(fileTransferBufferSize, maxOffset - currentOffset));
-        if (readedBytes < 0)
+        neededBytes = (int) Math.min(fileTransferBufferSize, maxOffset - currentOffset);
+        bufferedBytes = 0;
+        while (!stopped && neededBytes > 0)
         {
-          break;
+          readedBytes = fileTransferChecksumInputStream.read(fileTransferBuffer, bufferedBytes, neededBytes);
+          if (readedBytes >= 0)
+          {
+            neededBytes -= readedBytes;
+            currentOffset += readedBytes;
+            bufferedBytes += readedBytes;
+          }
+          else
+          {
+            break;
+          }
         }
-        currentOffset += readedBytes;
         checksums.add(messageDigest.digestLong());
       }
     }

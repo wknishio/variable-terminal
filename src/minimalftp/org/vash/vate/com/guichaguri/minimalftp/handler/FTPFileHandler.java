@@ -358,11 +358,11 @@ public class FTPFileHandler {
               con.sendResponse(550, "Not a directory");
               return;
           }
-          //StringBuilder data = new StringBuilder();
+          StringBuilder perm = new StringBuilder();
           response.setLength(0);
           for(Object file : fs.listFiles(dir))
           {
-            response.append(Utils.format(fs, file));
+            response.append(Utils.format(fs, file, perm));
           }
           con.sendData(response.toString().getBytes("UTF-8"), false);
           con.sendResponse(226, "The list was sent");
