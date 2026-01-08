@@ -21,6 +21,8 @@ import org.vash.vate.security.VTBlake3SecureRandom;
 
 public class VTClientConnector implements Runnable
 {
+  @SuppressWarnings("unused")
+  private final boolean managed;
   private boolean active;
   //private boolean connecting = false;
   private boolean running = true;
@@ -53,12 +55,13 @@ public class VTClientConnector implements Runnable
   private final VTBlake3SecureRandom secureRandom;
   private final VTProxy proxy;
   
-  public VTClientConnector(VTClient client, VTBlake3SecureRandom secureRandom, VTProxy proxy)
+  public VTClientConnector(VTClient client, VTBlake3SecureRandom secureRandom, VTProxy proxy, boolean managed)
   {
+    this.managed = managed;
     this.client = client;
     this.secureRandom = secureRandom;
     this.proxy = proxy;
-    this.connection = new VTClientConnection(client.getExecutorService());
+    this.connection = new VTClientConnection(client.getExecutorService(), managed);
     this.handler = new VTClientConnectionHandler(client, connection);
     portMappingManager = new VTNATSinglePortMappingManagerMKII(5, 300, client.getExecutorService());
     portMappingManager.start();

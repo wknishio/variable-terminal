@@ -38,6 +38,7 @@ import org.vash.vate.server.session.VTServerSessionListener;
 public class VTServer implements Runnable
 {
   private static final Thread.UncaughtExceptionHandler uncaughtExceptionHandler = new VTUncaughtExceptionHandler();
+  private final boolean managed;
   private boolean passive = true;
   private String hostAddress = "";
   private Integer hostPort = null;
@@ -100,6 +101,7 @@ public class VTServer implements Runnable
   
   public VTServer()
   {
+    this.managed = false;
     this.executorService = Executors.newCachedThreadPool(new ThreadFactory()
     {
       public Thread newThread(Runnable runnable)
@@ -120,8 +122,9 @@ public class VTServer implements Runnable
     // loadServerSettingsFile();
   }
   
-  public VTServer(VTProxy proxy)
+  public VTServer(VTProxy proxy, boolean managed)
   {
+    this.managed = managed;
     this.proxy = proxy;
     this.executorService = Executors.newCachedThreadPool(new ThreadFactory()
     {
@@ -2402,7 +2405,7 @@ public class VTServer implements Runnable
     {
       executorService.execute(monitorService);
     }
-    serverConnector = new VTServerConnector(this, new VTBlake3SecureRandom(new SecureRandom()), proxy);
+    serverConnector = new VTServerConnector(this, new VTBlake3SecureRandom(new SecureRandom()), proxy, managed);
     serverConnector.setPassive(passive);
     serverConnector.setAddress(hostAddress);
     serverConnector.setPort(hostPort);

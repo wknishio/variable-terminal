@@ -45,6 +45,7 @@ public class VTServerConnection
   private volatile boolean connected = false;
   private volatile boolean closed = true;
   
+  private final boolean managed;
   private int encryptionType;
   private int availableInputChannel;
   private int availableOutputChannel;
@@ -117,8 +118,19 @@ public class VTServerConnection
   
   private final ExecutorService executorService;
   
-  public VTServerConnection(final ExecutorService executorService)
+//  public VTServerConnection(final ExecutorService executorService)
+//  {
+//    this.managed = false;
+//    this.executorService = executorService;
+//    this.cryptoEngine = new VTCryptographicEngine();
+//    this.blake3Digest = new VTBlake3MessageDigest();
+//    this.authenticationReader = new VTLittleEndianInputStream(null);
+//    this.authenticationWriter = new VTLittleEndianOutputStream(null);
+//  }
+  
+  public VTServerConnection(final ExecutorService executorService, final boolean managed)
   {
+    this.managed = managed;
     this.executorService = executorService;
     this.cryptoEngine = new VTCryptographicEngine();
     this.blake3Digest = new VTBlake3MessageDigest();
@@ -592,6 +604,10 @@ public class VTServerConnection
   private byte[] exchangeCheckString(byte[] localNonce, byte[] remoteNonce, byte[] encryptionKey, byte[] localCheckString) throws IOException
   {
     blake3Digest.reset();
+    if (managed)
+    {
+      blake3Digest.update(localCheckString);
+    }
     blake3Digest.update(remoteNonce);
     blake3Digest.update(localNonce);
     if (encryptionKey != null)
@@ -608,6 +624,13 @@ public class VTServerConnection
   private byte[] computeSecurityDigest(byte[]... values)
   {
     blake3Digest.reset();
+    if (managed)
+    {
+      if (values.length > 0 && values[values.length - 1] != null && values[values.length - 1].length > 0)
+      {
+        blake3Digest.update(values[values.length - 1]);
+      }
+    }
     for (byte[] value : values)
     {
       if (value != null && value.length > 0)

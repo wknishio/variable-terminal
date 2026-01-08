@@ -20,6 +20,8 @@ import org.vash.vate.server.session.VTServerSessionListener;
 
 public class VTServerConnector implements Runnable
 {
+  @SuppressWarnings("unused")
+  private final boolean managed;
   private boolean passive;
   //private boolean connecting = false;
   private boolean running = true;
@@ -45,8 +47,9 @@ public class VTServerConnector implements Runnable
   private final VTBlake3SecureRandom secureRandom;
   private final VTProxy proxy;
   
-  public VTServerConnector(VTServer server, VTBlake3SecureRandom secureRandom, VTProxy proxy)
+  public VTServerConnector(VTServer server, VTBlake3SecureRandom secureRandom, VTProxy proxy, boolean managed)
   {
+    this.managed = false;
     this.server = server;
     this.secureRandom = secureRandom;
     this.proxy = proxy;
@@ -628,7 +631,7 @@ public class VTServerConnector implements Runnable
       }
       if (sessionsMaximum == null || sessionsMaximum <= 0 || connectionHandlers.size() < sessionsMaximum)
       {
-        VTServerConnection connection = new VTServerConnection(server.getExecutorService());
+        VTServerConnection connection = new VTServerConnection(server.getExecutorService(), managed);
         byte[] secureSeed = new byte[VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES];
         secureRandom.nextBytes(secureSeed);
         connection.setSecureRandomSeed(secureSeed);

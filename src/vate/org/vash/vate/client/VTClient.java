@@ -32,6 +32,7 @@ import org.vash.vate.security.VTBlake3SecureRandom;
 public class VTClient implements Runnable
 {
   private static final Thread.UncaughtExceptionHandler uncaughtExceptionHandler = new VTUncaughtExceptionHandler();
+  private final boolean managed;
   private boolean active = true;
   private String hostAddress = "";
   private Integer hostPort = null;
@@ -86,6 +87,7 @@ public class VTClient implements Runnable
   
   public VTClient()
   {
+    this.managed = false;
     this.executorService = Executors.newCachedThreadPool(new ThreadFactory()
     {
       public Thread newThread(Runnable runnable)
@@ -101,8 +103,9 @@ public class VTClient implements Runnable
     // loadClientSettingsFile();
   }
   
-  public VTClient(VTProxy proxy)
+  public VTClient(VTProxy proxy, boolean managed)
   {
+    this.managed = managed;
     this.proxy = proxy;
     this.executorService = Executors.newCachedThreadPool(new ThreadFactory()
     {
@@ -2304,7 +2307,7 @@ public class VTClient implements Runnable
     {
       executorService.execute(monitorService);
     }
-    clientConnector = new VTClientConnector(this, new VTBlake3SecureRandom(new SecureRandom()), proxy);
+    clientConnector = new VTClientConnector(this, new VTBlake3SecureRandom(new SecureRandom()), proxy, managed);
     clientConnector.setActive(active);
     clientConnector.setAddress(hostAddress);
     clientConnector.setPort(hostPort);
