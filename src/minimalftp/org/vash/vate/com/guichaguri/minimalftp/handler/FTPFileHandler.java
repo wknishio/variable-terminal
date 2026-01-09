@@ -22,6 +22,7 @@ import java.io.OutputStream;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
+import java.util.Formatter;
 import java.util.UUID;
 
 import org.vash.vate.com.guichaguri.minimalftp.FTPConnection;
@@ -358,11 +359,15 @@ public class FTPFileHandler {
               con.sendResponse(550, "Not a directory");
               return;
           }
-          StringBuilder perm = new StringBuilder();
+          StringBuilder permissions = new StringBuilder();
+          StringBuilder formatted = new StringBuilder();
+          Formatter formatter = new Formatter(formatted);
           response.setLength(0);
           for(Object file : fs.listFiles(dir))
           {
-            response.append(Utils.format(fs, file, perm));
+            formatted.setLength(0);
+            Utils.format(fs, file, permissions, formatter);
+            response.append(formatted);
           }
           con.sendData(response.toString().getBytes("UTF-8"), false);
           con.sendResponse(226, "The list was sent");

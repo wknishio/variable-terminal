@@ -421,11 +421,11 @@ public class VTManagedServerSocket
   
 //  public static void main(String[] args)
 //  {
-//    VTManagedServerSocket managed = new VTManagedServerSocket();
+//    VTManagedServerSocket managed = new VTManagedServerSocket(null);
 //    managed.start();
 //    try
 //    {
-//      VTManagedSocket socket = managed.accept();
+//      VTManagedSocket socket = managed.connect();
 //      System.out.println("server.socket.connected()");
 //      java.io.BufferedWriter writer = new java.io.BufferedWriter(new java.io.OutputStreamWriter(socket.getOutputStream()));
 //      java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(socket.getInputStream()));

@@ -49,7 +49,7 @@ public class VTServerConnector implements Runnable
   
   public VTServerConnector(VTServer server, VTBlake3SecureRandom secureRandom, VTProxy proxy, boolean managed)
   {
-    this.managed = false;
+    this.managed = managed;
     this.server = server;
     this.secureRandom = secureRandom;
     this.proxy = proxy;

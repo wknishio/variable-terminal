@@ -610,7 +610,8 @@ public class VTClientConnection
     blake3Digest.reset();
     if (managed)
     {
-      blake3Digest.update(localCheckString);
+      blake3Digest.update(remoteNonce);
+      blake3Digest.update(localNonce);
     }
     blake3Digest.update(remoteNonce);
     blake3Digest.update(localNonce);
@@ -630,9 +631,10 @@ public class VTClientConnection
     blake3Digest.reset();
     if (managed)
     {
-      if (values.length > 0 && values[values.length - 1] != null && values[values.length - 1].length > 0)
+      if (values.length > 1)
       {
-        blake3Digest.update(values[values.length - 1]);
+        blake3Digest.update(values[0]);
+        blake3Digest.update(values[1]);
       }
     }
     for (byte[] value : values)
