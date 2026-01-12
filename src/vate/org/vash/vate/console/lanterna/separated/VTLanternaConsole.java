@@ -106,7 +106,7 @@ public class VTLanternaConsole extends VTConsole
   private Frame frame;
   private Container container;
   private AWTTerminalPanel panel;
-  private Panel spacer1;
+  private Panel spacer;
   private Terminal terminal;
   private Screen screen;
   private AWTTerminal awtTerminal;
@@ -968,13 +968,13 @@ public class VTLanternaConsole extends VTConsole
         }
       });
       
-      spacer1 = new Panel();
-      spacer1.setBackground(SystemColor.control);
-      spacer1.setFocusable(false);
+      spacer = new Panel();
+      spacer.setBackground(SystemColor.control);
+      spacer.setFocusable(false);
       
       panel.getCenterPanel().add(verticalScrollbar, BorderLayout.EAST);
       panel.getBottomPanel().add(horizontalScrollbar, BorderLayout.CENTER);
-      panel.getBottomPanel().add(spacer1, BorderLayout.EAST);
+      panel.getBottomPanel().add(spacer, BorderLayout.EAST);
       
       panel.setDropTarget(new DropTarget());
       panel.getDropTarget().setActive(true);
@@ -1556,8 +1556,8 @@ public class VTLanternaConsole extends VTConsole
     
     if (panel != null)
     {
-      spacer1.setSize(verticalScrollbar.getPreferredSize().width, spacer1.getSize().height);
-      spacer1.setPreferredSize(new Dimension(verticalScrollbar.getPreferredSize().width, spacer1.getSize().height));
+      spacer.setSize(verticalScrollbar.getPreferredSize().width, spacer.getSize().height);
+      spacer.setPreferredSize(new Dimension(verticalScrollbar.getPreferredSize().width, spacer.getSize().height));
       
       panel.setDefaultTerminalSize(panel.getTerminalSize());
     }
