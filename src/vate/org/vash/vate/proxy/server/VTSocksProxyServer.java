@@ -590,7 +590,7 @@ public class VTSocksProxyServer implements Runnable {
 		// ":" + msg.port);
 		if (datagram_factory != null)
 		{
-		  relayServer = new UDPRelayServer(msg.ip, msg.port, Thread.currentThread(), sock, auth, proxy, connectTimeout, datagram_factory.createSocket("", 0, UDPRelayServer.getTimeout()));
+		  relayServer = new UDPRelayServer(msg.ip, msg.port, Thread.currentThread(), sock, auth, proxy, connectTimeout, datagram_factory.createSocket("", "", 0, UDPRelayServer.getTimeout()));
 		}
 		else
 		{

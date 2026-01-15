@@ -47,9 +47,9 @@ public class VTTunnelChannelRemoteSocketFactory extends VTRemoteSocketFactory
     socketBuilder.unbindSocket(bind);
   }
   
-  public DatagramSocket createSocket(String host, int port, int dataTimeout) throws IOException
+  public DatagramSocket createSocket(String bind, String host, int port, int dataTimeout) throws IOException
   {
-    return socketBuilder.createSocket(host, port, dataTimeout);
+    return socketBuilder.createSocket(bind, host, port, dataTimeout);
   }
   
 //  public DatagramSocket createSocket(InetAddress address, int port, int dataTimeout) throws IOException

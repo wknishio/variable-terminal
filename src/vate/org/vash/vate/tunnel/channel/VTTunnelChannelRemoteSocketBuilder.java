@@ -378,14 +378,17 @@ public class VTTunnelChannelRemoteSocketBuilder
 //    return create(address.getHostAddress(), port, dataTimeout);
 //  }
   
-  public DatagramSocket createSocket(String host, int port, int dataTimeout) throws IOException
+  public DatagramSocket createSocket(String bind, String host, int port, int dataTimeout) throws IOException
   {
     if (host == null)
     {
       host = "";
     }
     
-    String bind = "";
+    if (bind == null)
+    {
+      bind = "";
+    }
     
     VTTunnelSession session = null;
     VTTunnelSessionHandler handler = null;
