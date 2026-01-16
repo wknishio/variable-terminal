@@ -1,5 +1,7 @@
 package org.vash.vate.tunnel.session;
 
+import java.util.UUID;
+
 import org.vash.vate.stream.pipe.VTStreamRedirector;
 import org.vash.vate.tunnel.channel.VTTunnelChannel;
 
@@ -7,20 +9,41 @@ public class VTTunnelSessionHandler implements Runnable
 {
   private final VTTunnelChannel channel;
   private final VTTunnelSession session;
+  private final String key;
   
-  public VTTunnelSessionHandler(VTTunnelSession session, VTTunnelChannel channel)
+  public VTTunnelSessionHandler(VTTunnelChannel channel, VTTunnelSession session)
   {
-    this.session = session;
+    this(channel, session, UUID.randomUUID().toString());
+  }
+  
+  public VTTunnelSessionHandler(VTTunnelChannel channel, VTTunnelSession session, String key)
+  {
     this.channel = channel;
-    if (channel != null)
-    {
-      channel.addSession(this);
-    }
+    this.session = session;
+    this.key = key;
+  }
+  
+  public VTTunnelChannel getChannel()
+  {
+    return channel;
   }
   
   public VTTunnelSession getSession()
   {
     return session;
+  }
+  
+  public String getKey()
+  {
+    return key;
+  }
+  
+  public void open()
+  {
+    if (channel != null)
+    {
+      channel.addSessionHandler(this);
+    }
   }
   
   public void close()
@@ -35,7 +58,7 @@ public class VTTunnelSessionHandler implements Runnable
     }
     if (channel != null)
     {
-      channel.removeSession(this);
+      channel.removeSessionHandler(key);
     }
   }
   

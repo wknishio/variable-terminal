@@ -4,7 +4,6 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PushbackInputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -12,18 +11,17 @@ import java.net.SocketAddress;
 import java.net.SocketException;
 
 import org.vash.vate.VTSystem;
-import org.vash.vate.stream.multiplex.VTMultiplexingOutputStream.VTMultiplexedOutputStream;
 import org.vash.vate.stream.pipe.VTPipedInputStream;
 import org.vash.vate.stream.pipe.VTPipedOutputStream;
 
 public class VTTunnelPipedSocket extends Socket implements Closeable
 {
   private InputStream in;
-  private VTMultiplexedOutputStream out;
+  private OutputStream out;
   private OutputStream pipe;
   private Closeable closeable;
-  private String host;
-  private int port;
+  private String host = "";
+  private int port = 0;
   private volatile boolean closed = false;
   
   public VTTunnelPipedSocket(Closeable closeable)
@@ -39,11 +37,18 @@ public class VTTunnelPipedSocket extends Socket implements Closeable
     {
       
     }
-    this.in = new PushbackInputStream(pipeSink);
+    this.in = pipeSink;
     this.pipe = pipeSource;
   }
   
-  public void setOutputStream(VTMultiplexedOutputStream output) throws IOException
+//  public VTTunnelPipedSocket(Closeable closeable, InputStream in, OutputStream out)
+//  {
+//    this.closeable = closeable;
+//    this.in = in;
+//    this.out = out;
+//  }
+  
+  public void setOutputStream(OutputStream output) throws IOException
   {
     this.out = output;
   }
@@ -90,7 +95,7 @@ public class VTTunnelPipedSocket extends Socket implements Closeable
   
   public boolean isClosed()
   {
-    return closed && out.closed();
+    return closed;
   }
   
   public void close() throws IOException
@@ -133,17 +138,6 @@ public class VTTunnelPipedSocket extends Socket implements Closeable
         
       }
     }
-    //if (closeable != null)
-    //{
-      //try
-      //{
-        //closeable.close();
-      //}
-      //catch (Throwable e)
-      //{
-        
-      //}
-    //}
   }
   
   public void setSoTimeout(int timeout) throws SocketException

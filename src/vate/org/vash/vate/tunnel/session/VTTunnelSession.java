@@ -121,7 +121,7 @@ public class VTTunnelSession implements Closeable
   
   public void setSocket(Socket socket)
   {
-    this.socket = socket; 
+    this.socket = socket;
   }
   
   public VTMultiplexedInputStream getTunnelInputStream()

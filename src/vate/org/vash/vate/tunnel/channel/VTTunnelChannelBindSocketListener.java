@@ -180,7 +180,7 @@ public class VTTunnelChannelBindSocketListener implements Runnable
 //            continue;
 //          }
           
-          handler = new VTTunnelSessionHandler(session, channel);
+          handler = new VTTunnelSessionHandler(channel, session);
           
           VTMultiplexedInputStream input = channel.getConnection().getInputStream(channelType, handler);
           VTMultiplexedOutputStream output = channel.getConnection().getOutputStream(channelType, handler);
@@ -195,6 +195,7 @@ public class VTTunnelChannelBindSocketListener implements Runnable
             
             session.setTunnelInputStream(input);
             session.setTunnelOutputStream(output);
+            handler.open();
             
             if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_TCP)
             {

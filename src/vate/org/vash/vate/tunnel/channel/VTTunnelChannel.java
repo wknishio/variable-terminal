@@ -1,9 +1,9 @@
 package org.vash.vate.tunnel.channel;
 
 import java.net.InetSocketAddress;
-import java.util.Collection;
+import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.vash.vate.VTSystem;
 import org.vash.vate.proxy.client.VTProxy;
@@ -17,14 +17,17 @@ public class VTTunnelChannel
   public static final char TUNNEL_TYPE_SOCKS = 'S';
   public static final char TUNNEL_TYPE_UDP = 'U';
   public static final char TUNNEL_TYPE_FTP = 'F';
+  public static final char TUNNEL_TYPE_PIPE = 'P';
   public static final char TUNNEL_TYPE_ANY = 'A';
   
   private final char tunnelType;
   private int channelType = VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT;
   private final VTTunnelConnection connection;
-  private final Collection<VTTunnelSessionHandler> sessions;
+  private final Map<String, VTTunnelSessionHandler> sessions = new ConcurrentHashMap<String, VTTunnelSessionHandler>();
+  //private final Collection<VTTunnelSessionHandler> sessions;
   private final Random random;// = new VTSplitMix64Random(new VTBlake3SecureRandom().nextLong());
   
+  private volatile boolean closed = false;
   private int connectTimeout;
   private int dataTimeout;
   private InetSocketAddress bindAddress;
@@ -92,7 +95,7 @@ public class VTTunnelChannel
     {
       this.bindAddress = new InetSocketAddress(bindPort);
     }
-    this.sessions = new ConcurrentLinkedQueue<VTTunnelSessionHandler>();
+    //this.sessions = new ConcurrentLinkedQueue<VTTunnelSessionHandler>();
   }
   
   // SOCKS/HTTP/FTP bind tunnel with authentication
@@ -132,7 +135,6 @@ public class VTTunnelChannel
     }
     this.tunnelUsername = username;
     this.tunnelPassword = password;
-    this.sessions = new ConcurrentLinkedQueue<VTTunnelSessionHandler>();
   }
   
   // TCP bind redirect tunnel
@@ -165,7 +167,6 @@ public class VTTunnelChannel
     {
       this.bindAddress = new InetSocketAddress(bindPort);
     }
-    this.sessions = new ConcurrentLinkedQueue<VTTunnelSessionHandler>();
   }
   
   //Generic response channel
@@ -175,7 +176,15 @@ public class VTTunnelChannel
     this.tunnelType = TUNNEL_TYPE_ANY;
     this.channelType = channelType;
     this.connection = connection;
-    this.sessions = new ConcurrentLinkedQueue<VTTunnelSessionHandler>();
+  }
+  
+  //Generic pipe channel
+  public VTTunnelChannel(int channelType, VTTunnelConnection connection)
+  {
+    this.random = null;
+    this.tunnelType = TUNNEL_TYPE_PIPE;
+    this.channelType = channelType;
+    this.connection = connection;
   }
   
   public String toString()
@@ -190,10 +199,10 @@ public class VTTunnelChannel
   
   public void close()
   {
-    // closed = true;
-    //synchronized (sessions)
-    //{
-      for (VTTunnelSessionHandler handler : sessions)
+    synchronized (sessions)
+    {
+      closed = true;
+      for (VTTunnelSessionHandler handler : sessions.values())
       {
         try
         {
@@ -204,8 +213,9 @@ public class VTTunnelChannel
           // e.printStackTrace();
         }
       }
-    //}
-    sessions.clear();
+      sessions.clear();
+      sessions.notifyAll();
+    }
   }
   
   public VTTunnelConnection getConnection()
@@ -238,14 +248,51 @@ public class VTTunnelChannel
     this.tunnelPassword = password;
   }
   
-  public void addSession(VTTunnelSessionHandler handler)
+  public void addSessionHandler(VTTunnelSessionHandler handler)
   {
-    sessions.add(handler);
+    synchronized (sessions)
+    {
+      sessions.put(handler.getKey(), handler);
+      sessions.notifyAll();
+    }
   }
   
-  public boolean removeSession(VTTunnelSessionHandler handler)
+  public boolean removeSessionHandler(String key)
   {
-    return sessions.remove(handler);
+    boolean result = false;
+    synchronized (sessions)
+    {
+      result = sessions.remove(key) != null;
+      sessions.notifyAll();
+    }
+    return result;
+  }
+  
+  public VTTunnelSessionHandler getSessionHandler(String key, boolean wait)
+  {
+    VTTunnelSessionHandler handler = null;
+    if (!closed && wait)
+    {
+      while (!closed && (handler = sessions.get(key)) == null)
+      {
+        synchronized (sessions)
+        {
+          try
+          {
+            sessions.wait();
+          } 
+          catch (Throwable e)
+          {
+            
+          }
+        }
+      }
+    }
+    if (handler == null)
+    {
+      handler = sessions.get(key);
+    }
+    return handler;
   }
   
   public int getConnectTimeout()

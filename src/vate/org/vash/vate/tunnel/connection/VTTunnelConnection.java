@@ -34,13 +34,15 @@ public class VTTunnelConnection
   private VTTunnelChannel responseChannelDirect;
   private VTTunnelChannel responseChannelQuick;
   private VTTunnelChannel responseChannelHeavy;
+  private VTTunnelChannel pipedChannelBuffered;
 //  private VTTunnelChannelRemoteSocketBuilder remoteSocketBuilder;
   private Collection<VTTunnelChannelBindSocketListener> bindListeners;
   // private int tunnelType;
   private ExecutorService executorService;
   private Collection<Closeable> closeables;
   private final Collection<String> nonces = new LinkedHashSet<String>();
-  //private final Random random = new VTSplitMix64Random(new VTBlake3SecureRandom().nextLong());
+  //private final Random random = new VTSplitMix64Random(new VTBlake3SecureRandom().nextLong())
+  private final VTTunnelChannelRemoteSocketFactory remotePipedSocketFactory;
   private final Random random;
   private volatile boolean closed = false;
   
@@ -50,10 +52,12 @@ public class VTTunnelConnection
     this.responseChannelDirect = new VTTunnelChannel(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT, this, random);
     this.responseChannelQuick = new VTTunnelChannel(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT | VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED | VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_QUICK, this, random);
     this.responseChannelHeavy = new VTTunnelChannel(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT | VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED | VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_HEAVY, this, random);
+    this.pipedChannelBuffered = new VTTunnelChannel(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, this);
     this.bindListeners = new ConcurrentLinkedQueue<VTTunnelChannelBindSocketListener>();
     // this.tunnelType = tunnelType;
     this.executorService = executorService;
     this.closeables = closeables;
+    this.remotePipedSocketFactory = new VTTunnelChannelRemoteSocketFactory(createRemoteSocketBuilder(pipedChannelBuffered));
     //this.remoteSocketBuilder = createRemoteSocketBuilder();
   }
   
@@ -306,6 +310,11 @@ public class VTTunnelConnection
     return new VTTunnelChannelRemoteSocketFactory(createRemoteSocketBuilder(channel));
   }
   
+  public VTTunnelChannelRemoteSocketFactory getRemotePipedSocketFactory()
+  {
+    return remotePipedSocketFactory;
+  }
+  
 //  public VTTunnelChannelRemoteSocketFactory createRemoteSocketFactory()
 //  {
 //    return createRemoteSocketFactory(responseChannel);
@@ -376,6 +385,11 @@ public class VTTunnelConnection
     return responseChannelDirect;
   }
   
+  public VTTunnelChannel getPipedChannel()
+  {
+    return pipedChannelBuffered;
+  }
+  
   /* public OutputStream getDataOutputStream() { return dataOutputStream; } */
   
   public void start()
@@ -407,6 +421,7 @@ public class VTTunnelConnection
     responseChannelDirect.close();
     responseChannelQuick.close();
     responseChannelHeavy.close();
+    pipedChannelBuffered.close();
     for (VTTunnelChannelBindSocketListener listener : bindListeners)
     {
       try

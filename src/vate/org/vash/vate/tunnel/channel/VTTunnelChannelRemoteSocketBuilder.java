@@ -1,6 +1,7 @@
 package org.vash.vate.tunnel.channel;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.DatagramSocket;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -116,12 +117,13 @@ public class VTTunnelChannelRemoteSocketBuilder
     int channelType = channel.getChannelType();
     
     session = new VTTunnelSession(channel.getConnection(), true);
-    VTTunnelPipedSocket pipedSocket = new VTTunnelPipedSocket(session);
-    session.setSocket(pipedSocket);
-    handler = new VTTunnelSessionHandler(session, channel);
+    handler = new VTTunnelSessionHandler(channel, session);
     
     VTMultiplexedInputStream input = channel.getConnection().getInputStream(channelType, handler);
     VTMultiplexedOutputStream output = channel.getConnection().getOutputStream(channelType, handler);
+    
+    VTTunnelPipedSocket pipedSocket = new VTTunnelPipedSocket(session);
+    session.setSocket(pipedSocket);
     
     if (output != null && input != null)
     {
@@ -137,6 +139,7 @@ public class VTTunnelChannelRemoteSocketBuilder
       
       session.setTunnelInputStream(input);
       session.setTunnelOutputStream(output);
+      handler.open();
       
       if (proxyUser == null || proxyPassword == null || proxyUser.length() == 0 || proxyPassword.length() == 0)
       {
@@ -203,12 +206,13 @@ public class VTTunnelChannelRemoteSocketBuilder
     int channelType = channel.getChannelType();
     
     session = new VTTunnelSession(channel.getConnection(), true);
-    VTTunnelPipedSocket pipedSocket = new VTTunnelPipedSocket(session);
-    session.setSocket(pipedSocket);
-    handler = new VTTunnelSessionHandler(session, channel);
+    handler = new VTTunnelSessionHandler(channel, session);
     
     VTMultiplexedInputStream input = channel.getConnection().getInputStream(channelType, handler);
     VTMultiplexedOutputStream output = channel.getConnection().getOutputStream(channelType, handler);
+    
+    VTTunnelPipedSocket pipedSocket = new VTTunnelPipedSocket(session);
+    session.setSocket(pipedSocket);
     
     if (output != null && input != null)
     {
@@ -224,6 +228,7 @@ public class VTTunnelChannelRemoteSocketBuilder
       
       session.setTunnelInputStream(input);
       session.setTunnelOutputStream(output);
+      handler.open();
       
       if (proxyUser == null || proxyPassword == null || proxyUser.length() == 0 || proxyPassword.length() == 0)
       {
@@ -290,7 +295,7 @@ public class VTTunnelChannelRemoteSocketBuilder
     int channelType = channel.getChannelType();
     
     session = new VTTunnelSession(channel.getConnection(), true);
-    handler = new VTTunnelSessionHandler(session, channel);
+    handler = new VTTunnelSessionHandler(channel, session);
     
     VTMultiplexedInputStream input = channel.getConnection().getInputStream(channelType, handler);
     VTMultiplexedOutputStream output = channel.getConnection().getOutputStream(channelType, handler);
@@ -302,6 +307,7 @@ public class VTTunnelChannelRemoteSocketBuilder
       
       session.setTunnelInputStream(input);
       session.setTunnelOutputStream(output);
+      handler.open();
       
       // request message sent
       channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + connectTimeout + SESSION_SEPARATOR + dataTimeout + SESSION_SEPARATOR + bind + SESSION_SEPARATOR + host + SESSION_SEPARATOR + port + SESSION_SEPARATOR + proxyTypeLetter + SESSION_SEPARATOR + proxyHost + SESSION_SEPARATOR + proxyPort + SESSION_SEPARATOR + proxyUser + SESSION_SEPARATOR + proxyPassword).getBytes("UTF-8"));
@@ -395,12 +401,13 @@ public class VTTunnelChannelRemoteSocketBuilder
     int channelType = channel.getChannelType();
     
     session = new VTTunnelSession(channel.getConnection(), true);
-    VTTunnelPipedSocket pipedSocket = new VTTunnelPipedSocket(session);
-    session.setSocket(pipedSocket);
-    handler = new VTTunnelSessionHandler(session, channel);
+    handler = new VTTunnelSessionHandler(channel, session);
     
     VTMultiplexedInputStream input = channel.getConnection().getInputStream(channelType, handler);
     VTMultiplexedOutputStream output = channel.getConnection().getOutputStream(channelType, handler);
+    
+    VTTunnelPipedSocket pipedSocket = new VTTunnelPipedSocket(session);
+    session.setSocket(pipedSocket);
     
     if (output != null && input != null)
     {
@@ -416,6 +423,7 @@ public class VTTunnelChannelRemoteSocketBuilder
       
       session.setTunnelInputStream(input);
       session.setTunnelOutputStream(output);
+      handler.open();
       
       // request message sent
       channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "U" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + 0 + SESSION_SEPARATOR + dataTimeout + SESSION_SEPARATOR + bind + SESSION_SEPARATOR + host + SESSION_SEPARATOR + port).getBytes("UTF-8"));
@@ -447,5 +455,212 @@ public class VTTunnelChannelRemoteSocketBuilder
       handler.close();
     }
     throw new IOException("Failed to create datagram tunnel using host " + host + " port " + port + "");
+  }
+  
+  public Socket pipeSocket(String bind, int type, boolean originator) throws IOException
+  {
+    if (bind == null)
+    {
+      bind = "";
+    }
+    
+    String host = "";
+    int port = 0;
+    int connectTimeout = 0;
+    int dataTimeout = 0;
+    
+    String proxyTypeLetter = "G";
+    String proxyHost = "";
+    int proxyPort = 0;
+    String proxyUser = "";
+    String proxyPassword = "";
+    
+    if (proxyUser == null || proxyPassword == null || proxyUser.length() == 0 || proxyPassword.length() == 0)
+    {
+      proxyUser = "*";
+      proxyPassword = "*" + SESSION_SEPARATOR + "*";
+    }
+    
+    VTTunnelChannel channel = getChannel().getConnection().getPipedChannel();
+    
+    VTTunnelSession session = null;
+    VTTunnelSessionHandler handler = null;
+    int channelType = type;
+    
+    handler = channel.getSessionHandler(bind, !originator);
+    if (handler != null)
+    {
+      if (!originator && handler.getSession().getTunnelInputStream().closed())
+      {
+        handler.getSession().getTunnelOutputStream().open();
+        handler.getSession().getTunnelInputStream().ready();
+      }
+      return handler.getSession().getSocket();
+    }
+    
+    session = new VTTunnelSession(channel.getConnection(), true);
+    handler = new VTTunnelSessionHandler(channel, session, bind);
+    
+    VTMultiplexedInputStream input = channel.getConnection().getInputStream(channelType, handler);
+    VTMultiplexedOutputStream output = channel.getConnection().getOutputStream(channelType, handler);
+    
+    VTTunnelPipedSocket pipedSocket = new VTTunnelPipedSocket(session);
+    session.setSocket(pipedSocket);
+    
+    if (output != null && input != null)
+    {
+      final int inputNumber = input.number();
+      final int outputNumber = output.number();
+      
+      pipedSocket.setOutputStream(output);
+      session.setSocketInputStream(pipedSocket.getInputStream());
+      session.setSocketOutputStream(pipedSocket.getOutputStream());
+      
+      input.close();
+      input.setOutputStream(pipedSocket.getInputStreamSource(), pipedSocket);
+      //output.open();
+      
+      session.setTunnelInputStream(input);
+      session.setTunnelOutputStream(output);
+      handler.open();
+      
+      if (proxyUser == null || proxyPassword == null || proxyUser.length() == 0 || proxyPassword.length() == 0)
+      {
+        proxyUser = "*";
+        proxyPassword = "*" + SESSION_SEPARATOR + "*";
+      }
+      // request message sent
+      channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "P" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + connectTimeout + SESSION_SEPARATOR + dataTimeout + SESSION_SEPARATOR + bind + SESSION_SEPARATOR + host + SESSION_SEPARATOR + port + SESSION_SEPARATOR + proxyTypeLetter + SESSION_SEPARATOR + proxyHost + SESSION_SEPARATOR + proxyPort + SESSION_SEPARATOR + proxyUser + SESSION_SEPARATOR + proxyPassword).getBytes("UTF-8"));
+      channel.getConnection().getControlOutputStream().flush();
+      //System.out.println("sent.request:output=" + outputNumber);
+      boolean result = false;
+      try
+      {
+        result = session.waitResult();
+      }
+      catch (Throwable t)
+      {
+        //t.printStackTrace();
+      }
+      if (result)
+      {
+        output.open();
+        input.ready();
+        return pipedSocket;
+      }
+    }
+    else
+    {
+      // cannot handle more sessions
+    }
+    if (handler != null)
+    {
+      handler.close();
+    }
+    return null;
+  }
+  
+  public Socket pipeSocket(String bind, int type, boolean originator, OutputStream out) throws IOException
+  {
+    if (bind == null)
+    {
+      bind = "";
+    }
+    
+    String host = "";
+    int port = 0;
+    int connectTimeout = 0;
+    int dataTimeout = 0;
+    
+    String proxyTypeLetter = "G";
+    String proxyHost = "";
+    int proxyPort = 0;
+    String proxyUser = "";
+    String proxyPassword = "";
+    
+    if (proxyUser == null || proxyPassword == null || proxyUser.length() == 0 || proxyPassword.length() == 0)
+    {
+      proxyUser = "*";
+      proxyPassword = "*" + SESSION_SEPARATOR + "*";
+    }
+    
+    VTTunnelChannel channel = getChannel().getConnection().getPipedChannel();
+    
+    VTTunnelSession session = null;
+    VTTunnelSessionHandler handler = null;
+    int channelType = type;
+    
+    handler = channel.getSessionHandler(bind, !originator);
+    if (handler != null)
+    {
+      if (!originator && handler.getSession().getTunnelInputStream().closed())
+      {
+        handler.getSession().getTunnelInputStream().setOutputStream(out, handler.getSession().getSocket());
+        handler.getSession().getTunnelOutputStream().open();
+        handler.getSession().getTunnelInputStream().ready();
+      }
+      return handler.getSession().getSocket();
+    }
+    
+    session = new VTTunnelSession(channel.getConnection(), true);
+    handler = new VTTunnelSessionHandler(channel, session, bind);
+    
+    VTMultiplexedInputStream input = channel.getConnection().getInputStream(channelType, handler);
+    VTMultiplexedOutputStream output = channel.getConnection().getOutputStream(channelType, handler);
+    
+    VTTunnelPipedSocket pipedSocket = new VTTunnelPipedSocket(session);
+    session.setSocket(pipedSocket);
+    
+    if (output != null && input != null)
+    {
+      final int inputNumber = input.number();
+      final int outputNumber = output.number();
+      
+      pipedSocket.setOutputStream(output);
+      session.setSocketInputStream(pipedSocket.getInputStream());
+      session.setSocketOutputStream(pipedSocket.getOutputStream());
+      
+      input.close();
+      input.setOutputStream(out, pipedSocket);
+      //output.open();
+      
+      session.setTunnelInputStream(input);
+      session.setTunnelOutputStream(output);
+      handler.open();
+      
+      if (proxyUser == null || proxyPassword == null || proxyUser.length() == 0 || proxyPassword.length() == 0)
+      {
+        proxyUser = "*";
+        proxyPassword = "*" + SESSION_SEPARATOR + "*";
+      }
+      // request message sent
+      channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "P" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + connectTimeout + SESSION_SEPARATOR + dataTimeout + SESSION_SEPARATOR + bind + SESSION_SEPARATOR + host + SESSION_SEPARATOR + port + SESSION_SEPARATOR + proxyTypeLetter + SESSION_SEPARATOR + proxyHost + SESSION_SEPARATOR + proxyPort + SESSION_SEPARATOR + proxyUser + SESSION_SEPARATOR + proxyPassword).getBytes("UTF-8"));
+      channel.getConnection().getControlOutputStream().flush();
+      //System.out.println("sent.request:output=" + outputNumber);
+      boolean result = false;
+      try
+      {
+        result = session.waitResult();
+      }
+      catch (Throwable t)
+      {
+        //t.printStackTrace();
+      }
+      if (result)
+      {
+        output.open();
+        input.ready();
+        return pipedSocket;
+      }
+    }
+    else
+    {
+      // cannot handle more sessions
+    }
+    if (handler != null)
+    {
+      handler.close();
+    }
+    return null;
   }
 }

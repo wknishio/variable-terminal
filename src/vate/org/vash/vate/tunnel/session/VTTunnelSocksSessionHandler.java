@@ -26,11 +26,11 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
     //this.channel = channel;
   //}
   
-  public VTTunnelSocksSessionHandler(VTTunnelSession session, VTTunnelChannel channel, String username, String password, String bind, int connectTimeout, int dataTimeout, VTProxy proxy)
+  public VTTunnelSocksSessionHandler(VTTunnelChannel channel, VTTunnelSession session, String username, String password, String bind, int connectTimeout, int dataTimeout, VTProxy proxy)
   {
-    super(session, channel);
-    this.session = session;
+    super(channel, session);
     this.channel = channel;
+    this.session = session;
     this.proxy = proxy;
     //this.socketFactory = socketFactory;
     this.connectTimeout = connectTimeout;

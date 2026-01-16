@@ -14,6 +14,7 @@ import org.vash.vate.server.VTServer;
 import org.vash.vate.server.connection.VTServerConnection;
 import org.vash.vate.server.session.VTServerSession;
 import org.vash.vate.server.session.VTServerSessionListener;
+import org.vash.vate.socket.remote.VTRemoteSocketFactory;
 import org.vash.vate.stream.multiplex.VTMultiplexingInputStream;
 import org.vash.vate.stream.multiplex.VTMultiplexingOutputStream;
 
@@ -119,6 +120,11 @@ public class VTManagedServerSocket
     public VTMultiplexingOutputStream getMultiplexedConnectionOutputStream()
     {
       return connection.getMultiplexedConnectionOutputStream();
+    }
+    
+    public VTRemoteSocketFactory getRemotePipedSocketFactory()
+    {
+      return session.getRemotePipedSocketFactory();
     }
   }
   
@@ -429,14 +435,30 @@ public class VTManagedServerSocket
 //      System.out.println("server.socket.connected()");
 //      java.io.BufferedWriter writer = new java.io.BufferedWriter(new java.io.OutputStreamWriter(socket.getOutputStream()));
 //      java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(socket.getInputStream()));
+//      VTRemoteSocketFactory remoteSocketFactory = socket.getConnection().getRemotePipedSocketFactory();
+//      
 //      int i = 5;
 //      while (socket.isConnected())
 //      {
 //        System.out.println("server.ping():" + socket.getConnection().checkPing(500000000));
-//        long time = System.currentTimeMillis();
-//        writer.write("server.message:" + time + "\r\n");
+//        String serverUUID = java.util.UUID.randomUUID().toString();
+//        System.out.println("server.socketLocal():" + serverUUID);
+//        writer.write(serverUUID + "\r\n");
 //        writer.flush();
-//        System.out.println("server.readLine():" + reader.readLine());
+//        String clientUUID = reader.readLine();
+//        System.out.println("server.socketRemote():" + clientUUID);
+//        Socket pipeClient = remoteSocketFactory.pipeSocket(clientUUID, 0, false);
+//        Socket pipeServer = remoteSocketFactory.pipeSocket(serverUUID, 0, true);
+//        System.out.println("server.writing()");
+//        pipeServer.getOutputStream().write(1);
+//        pipeClient.getOutputStream().write(2);
+//        pipeServer.getOutputStream().flush();
+//        pipeClient.getOutputStream().flush();
+//        System.out.println("server.written()");
+//        System.out.println("server.reading()");
+//        System.out.println("server.readRemote():" + pipeClient.getInputStream().read());
+//        System.out.println("server.readLocal():" + pipeServer.getInputStream().read());
+//        System.out.println("server.reading()");
 //        Thread.sleep(1000);
 //        if (i > 0)
 //        {

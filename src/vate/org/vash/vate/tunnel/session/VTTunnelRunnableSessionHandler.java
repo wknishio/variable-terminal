@@ -8,11 +8,10 @@ public class VTTunnelRunnableSessionHandler extends VTTunnelSessionHandler
   private final VTTunnelSession session;
   private final Runnable runnable;
   
-  public VTTunnelRunnableSessionHandler(VTTunnelSession session, VTTunnelChannel channel, Runnable runnable)
+  public VTTunnelRunnableSessionHandler(VTTunnelChannel channel, VTTunnelSession session, Runnable runnable)
   {
-    super(session, channel);
+    super(channel, session);
     this.session = session;
-    //this.channel = channel;
     this.runnable = runnable;
   }
   
