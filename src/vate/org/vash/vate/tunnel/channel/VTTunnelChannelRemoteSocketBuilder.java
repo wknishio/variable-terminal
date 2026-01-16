@@ -485,12 +485,12 @@ public class VTTunnelChannelRemoteSocketBuilder
     
     VTTunnelSession session = null;
     VTTunnelSessionHandler handler = null;
-    int channelType = type;
+    //int channelType = type;
     
     handler = channel.getSessionHandler(bind, !originator);
     if (handler != null)
     {
-      if (!originator && handler.getSession().getTunnelInputStream().closed())
+      if (handler.getSession().getTunnelInputStream().closed())
       {
         handler.getSession().getTunnelOutputStream().open();
         handler.getSession().getTunnelInputStream().ready();
@@ -501,10 +501,10 @@ public class VTTunnelChannelRemoteSocketBuilder
     session = new VTTunnelSession(channel.getConnection(), true);
     handler = new VTTunnelSessionHandler(channel, session, bind);
     
-    VTMultiplexedInputStream input = channel.getConnection().getInputStream(channelType, handler);
-    VTMultiplexedOutputStream output = channel.getConnection().getOutputStream(channelType, handler);
+    VTMultiplexedInputStream input = channel.getConnection().getInputStream(type, handler);
+    VTMultiplexedOutputStream output = channel.getConnection().getOutputStream(type, handler);
     
-    VTTunnelPipedSocket pipedSocket = new VTTunnelPipedSocket(session);
+    VTTunnelPipedSocket pipedSocket = new VTTunnelPipedSocket(session, input, output);
     session.setSocket(pipedSocket);
     
     if (output != null && input != null)
@@ -512,12 +512,12 @@ public class VTTunnelChannelRemoteSocketBuilder
       final int inputNumber = input.number();
       final int outputNumber = output.number();
       
-      pipedSocket.setOutputStream(output);
+      //pipedSocket.setOutputStream(output);
       session.setSocketInputStream(pipedSocket.getInputStream());
       session.setSocketOutputStream(pipedSocket.getOutputStream());
       
       input.close();
-      input.setOutputStream(pipedSocket.getInputStreamSource(), pipedSocket);
+      //input.setOutputStream(pipedSocket.getInputStreamSource(), pipedSocket);
       //output.open();
       
       session.setTunnelInputStream(input);
@@ -530,7 +530,7 @@ public class VTTunnelChannelRemoteSocketBuilder
         proxyPassword = "*" + SESSION_SEPARATOR + "*";
       }
       // request message sent
-      channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "P" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + connectTimeout + SESSION_SEPARATOR + dataTimeout + SESSION_SEPARATOR + bind + SESSION_SEPARATOR + host + SESSION_SEPARATOR + port + SESSION_SEPARATOR + proxyTypeLetter + SESSION_SEPARATOR + proxyHost + SESSION_SEPARATOR + proxyPort + SESSION_SEPARATOR + proxyUser + SESSION_SEPARATOR + proxyPassword).getBytes("UTF-8"));
+      channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "P" + type + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + connectTimeout + SESSION_SEPARATOR + dataTimeout + SESSION_SEPARATOR + bind + SESSION_SEPARATOR + host + SESSION_SEPARATOR + port + SESSION_SEPARATOR + proxyTypeLetter + SESSION_SEPARATOR + proxyHost + SESSION_SEPARATOR + proxyPort + SESSION_SEPARATOR + proxyUser + SESSION_SEPARATOR + proxyPassword).getBytes("UTF-8"));
       channel.getConnection().getControlOutputStream().flush();
       //System.out.println("sent.request:output=" + outputNumber);
       boolean result = false;
@@ -588,12 +588,11 @@ public class VTTunnelChannelRemoteSocketBuilder
     
     VTTunnelSession session = null;
     VTTunnelSessionHandler handler = null;
-    int channelType = type;
     
     handler = channel.getSessionHandler(bind, !originator);
     if (handler != null)
     {
-      if (!originator && handler.getSession().getTunnelInputStream().closed())
+      if (handler.getSession().getTunnelInputStream().closed())
       {
         handler.getSession().getTunnelInputStream().setOutputStream(out, handler.getSession().getSocket());
         handler.getSession().getTunnelOutputStream().open();
@@ -605,10 +604,10 @@ public class VTTunnelChannelRemoteSocketBuilder
     session = new VTTunnelSession(channel.getConnection(), true);
     handler = new VTTunnelSessionHandler(channel, session, bind);
     
-    VTMultiplexedInputStream input = channel.getConnection().getInputStream(channelType, handler);
-    VTMultiplexedOutputStream output = channel.getConnection().getOutputStream(channelType, handler);
+    VTMultiplexedInputStream input = channel.getConnection().getInputStream(type, handler);
+    VTMultiplexedOutputStream output = channel.getConnection().getOutputStream(type, handler);
     
-    VTTunnelPipedSocket pipedSocket = new VTTunnelPipedSocket(session);
+    VTTunnelPipedSocket pipedSocket = new VTTunnelPipedSocket(session, input, output);
     session.setSocket(pipedSocket);
     
     if (output != null && input != null)
@@ -616,7 +615,7 @@ public class VTTunnelChannelRemoteSocketBuilder
       final int inputNumber = input.number();
       final int outputNumber = output.number();
       
-      pipedSocket.setOutputStream(output);
+      //pipedSocket.setOutputStream(output);
       session.setSocketInputStream(pipedSocket.getInputStream());
       session.setSocketOutputStream(pipedSocket.getOutputStream());
       
@@ -634,7 +633,7 @@ public class VTTunnelChannelRemoteSocketBuilder
         proxyPassword = "*" + SESSION_SEPARATOR + "*";
       }
       // request message sent
-      channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "P" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + connectTimeout + SESSION_SEPARATOR + dataTimeout + SESSION_SEPARATOR + bind + SESSION_SEPARATOR + host + SESSION_SEPARATOR + port + SESSION_SEPARATOR + proxyTypeLetter + SESSION_SEPARATOR + proxyHost + SESSION_SEPARATOR + proxyPort + SESSION_SEPARATOR + proxyUser + SESSION_SEPARATOR + proxyPassword).getBytes("UTF-8"));
+      channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "P" + type + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + connectTimeout + SESSION_SEPARATOR + dataTimeout + SESSION_SEPARATOR + bind + SESSION_SEPARATOR + host + SESSION_SEPARATOR + port + SESSION_SEPARATOR + proxyTypeLetter + SESSION_SEPARATOR + proxyHost + SESSION_SEPARATOR + proxyPort + SESSION_SEPARATOR + proxyUser + SESSION_SEPARATOR + proxyPassword).getBytes("UTF-8"));
       channel.getConnection().getControlOutputStream().flush();
       //System.out.println("sent.request:output=" + outputNumber);
       boolean result = false;

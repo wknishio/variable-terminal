@@ -41,12 +41,12 @@ public class VTTunnelPipedSocket extends Socket implements Closeable
     this.pipe = pipeSource;
   }
   
-//  public VTTunnelPipedSocket(Closeable closeable, InputStream in, OutputStream out)
-//  {
-//    this.closeable = closeable;
-//    this.in = in;
-//    this.out = out;
-//  }
+  public VTTunnelPipedSocket(Closeable closeable, InputStream in, OutputStream out)
+  {
+    this.closeable = closeable;
+    this.in = in;
+    this.out = out;
+  }
   
   public void setOutputStream(OutputStream output) throws IOException
   {

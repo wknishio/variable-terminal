@@ -456,14 +456,14 @@ public class VTTunnelConnection
   {
     if (link instanceof Integer)
     {
-      return dataOutputStream.linkOutputStream((VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT | channelType), (Integer) link);
+      return dataOutputStream.linkOutputStream(channelType, (Integer) link);
     }
-    return dataOutputStream.linkOutputStream((VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT | channelType), link);
+    return dataOutputStream.linkOutputStream(channelType, link);
   }
   
   public VTMultiplexedOutputStream getOutputStream(int channelType, int number, Object link)
   {
-    VTMultiplexedOutputStream stream = dataOutputStream.linkOutputStream((VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT | channelType), number, link);
+    VTMultiplexedOutputStream stream = dataOutputStream.linkOutputStream(channelType, number, link);
     return stream;
   }
   
@@ -479,14 +479,14 @@ public class VTTunnelConnection
   {
     if (link instanceof Integer)
     {
-      return dataInputStream.linkInputStream((VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT | channelType), (Integer) link);
+      return dataInputStream.linkInputStream(channelType, (Integer) link);
     }
-    return dataInputStream.linkInputStream((VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT | channelType), link);
+    return dataInputStream.linkInputStream(channelType, link);
   }
   
   public VTMultiplexedInputStream getInputStream(int channelType, int number, Object link)
   {
-    VTMultiplexedInputStream stream = dataInputStream.linkInputStream((VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT | channelType), number, link);
+    VTMultiplexedInputStream stream = dataInputStream.linkInputStream(channelType, number, link);
     return stream;
   }
   

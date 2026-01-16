@@ -503,17 +503,17 @@ public class VTTunnelConnectionControlThread implements Runnable
                 VTMultiplexedInputStream input = connection.getInputStream(channelType, inputNumber, handler);
                 VTMultiplexedOutputStream output = connection.getOutputStream(channelType, outputNumber, handler);
                 
-                VTTunnelPipedSocket pipedSocket = new VTTunnelPipedSocket(session);
+                VTTunnelPipedSocket pipedSocket = new VTTunnelPipedSocket(session, input, output);
                 session.setSocket(pipedSocket);
                 
                 if (output != null && input != null)
                 {
-                  pipedSocket.setOutputStream(output);
+                  //pipedSocket.setOutputStream(output);
                   session.setSocketInputStream(pipedSocket.getInputStream());
                   session.setSocketOutputStream(pipedSocket.getOutputStream());
                   
                   input.close();
-                  input.setOutputStream(pipedSocket.getInputStreamSource(), pipedSocket);
+                  //input.setOutputStream(pipedSocket.getInputStreamSource(), pipedSocket);
                   //output.open();
                   
                   session.setTunnelInputStream(input);
