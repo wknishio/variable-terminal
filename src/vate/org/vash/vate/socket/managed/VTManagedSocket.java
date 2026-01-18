@@ -12,7 +12,7 @@ import java.net.SocketAddress;
 import java.net.SocketException;
 
 import org.vash.vate.VTSystem;
-import org.vash.vate.socket.remote.VTRemoteSocketFactory;
+import org.vash.vate.socket.remote.VTRemotePipedSocketFactory;
 import org.vash.vate.stream.multiplex.VTMultiplexingInputStream;
 import org.vash.vate.stream.multiplex.VTMultiplexingOutputStream;
 import org.vash.vate.stream.multiplex.VTMultiplexingInputStream.VTMultiplexedInputStream;
@@ -45,7 +45,7 @@ public class VTManagedSocket extends Socket implements Closeable
     return connection.getMultiplexedConnectionOutputStream();
   }
   
-  public VTRemoteSocketFactory getRemotePipedSocketFactory()
+  public VTRemotePipedSocketFactory getRemotePipedSocketFactory()
   {
     return connection.getRemotePipedSocketFactory();
   }

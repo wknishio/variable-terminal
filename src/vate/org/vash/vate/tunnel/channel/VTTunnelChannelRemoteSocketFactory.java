@@ -1,7 +1,6 @@
 package org.vash.vate.tunnel.channel;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.DatagramSocket;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -52,19 +51,4 @@ public class VTTunnelChannelRemoteSocketFactory extends VTRemoteSocketFactory
   {
     return socketBuilder.createSocket(bind, host, port, dataTimeout);
   }
-  
-  public Socket pipeSocket(String bind, int type, boolean originator) throws IOException
-  {
-    return socketBuilder.pipeSocket(bind, type, originator);
-  }
-  
-  public Socket pipeSocket(String bind, int type, boolean originator, OutputStream out) throws IOException
-  {
-    return socketBuilder.pipeSocket(bind, type, originator, out);
-  }
-  
-//  public DatagramSocket createSocket(InetAddress address, int port, int dataTimeout) throws IOException
-//  {
-//    return socketBuilder.create(address, port, dataTimeout);
-//  }
 }

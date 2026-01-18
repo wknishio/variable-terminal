@@ -17,7 +17,7 @@ import org.vash.vate.client.graphicslink.VTGraphicsLinkClient;
 import org.vash.vate.graphics.clipboard.VTClipboardTransferTask;
 import org.vash.vate.ping.VTNanoPingListener;
 import org.vash.vate.ping.VTNanoPingService;
-import org.vash.vate.socket.remote.VTRemoteSocketFactory;
+import org.vash.vate.socket.remote.VTRemotePipedSocketFactory;
 import org.vash.vate.tunnel.connection.VTTunnelConnection;
 import org.vash.vate.tunnel.connection.VTTunnelConnectionHandler;
 
@@ -180,7 +180,7 @@ public class VTClientSession
     return tunnelsHandler;
   }
   
-  public VTRemoteSocketFactory getRemotePipedSocketFactory()
+  public VTRemotePipedSocketFactory getRemotePipedSocketFactory()
   {
     return tunnelsHandler.getConnection().getRemotePipedSocketFactory();
   }

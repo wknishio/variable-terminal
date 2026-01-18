@@ -14,7 +14,7 @@ import org.vash.vate.server.VTServer;
 import org.vash.vate.server.connection.VTServerConnection;
 import org.vash.vate.server.session.VTServerSession;
 import org.vash.vate.server.session.VTServerSessionListener;
-import org.vash.vate.socket.remote.VTRemoteSocketFactory;
+import org.vash.vate.socket.remote.VTRemotePipedSocketFactory;
 import org.vash.vate.stream.multiplex.VTMultiplexingInputStream;
 import org.vash.vate.stream.multiplex.VTMultiplexingOutputStream;
 
@@ -122,7 +122,7 @@ public class VTManagedServerSocket
       return connection.getMultiplexedConnectionOutputStream();
     }
     
-    public VTRemoteSocketFactory getRemotePipedSocketFactory()
+    public VTRemotePipedSocketFactory getRemotePipedSocketFactory()
     {
       return session.getRemotePipedSocketFactory();
     }

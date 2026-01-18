@@ -12,6 +12,8 @@ import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.VTSystem;
 import org.vash.vate.proxy.client.VTProxy;
+import org.vash.vate.socket.remote.VTRemotePipedSocketFactory;
+import org.vash.vate.socket.remote.VTRemoteSocketFactory;
 import org.vash.vate.stream.endian.VTLittleEndianInputStream;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
 import org.vash.vate.stream.multiplex.VTMultiplexingInputStream;
@@ -20,6 +22,7 @@ import org.vash.vate.stream.multiplex.VTMultiplexingInputStream.VTMultiplexedInp
 import org.vash.vate.stream.multiplex.VTMultiplexingOutputStream.VTMultiplexedOutputStream;
 import org.vash.vate.tunnel.channel.VTTunnelChannel;
 import org.vash.vate.tunnel.channel.VTTunnelChannelBindSocketListener;
+import org.vash.vate.tunnel.channel.VTTunnelChannelRemotePipedSocketFactory;
 import org.vash.vate.tunnel.channel.VTTunnelChannelRemoteSocketBuilder;
 import org.vash.vate.tunnel.channel.VTTunnelChannelRemoteSocketFactory;
 
@@ -42,7 +45,7 @@ public class VTTunnelConnection
   private Collection<Closeable> closeables;
   private final Collection<String> nonces = new LinkedHashSet<String>();
   //private final Random random = new VTSplitMix64Random(new VTBlake3SecureRandom().nextLong())
-  private final VTTunnelChannelRemoteSocketFactory remotePipedSocketFactory;
+  private final VTRemotePipedSocketFactory remotePipedSocketFactory;
   private final Random random;
   private volatile boolean closed = false;
   
@@ -57,7 +60,7 @@ public class VTTunnelConnection
     // this.tunnelType = tunnelType;
     this.executorService = executorService;
     this.closeables = closeables;
-    this.remotePipedSocketFactory = new VTTunnelChannelRemoteSocketFactory(createRemoteSocketBuilder(pipedChannelBuffered));
+    this.remotePipedSocketFactory = new VTTunnelChannelRemotePipedSocketFactory(createRemoteSocketBuilder(pipedChannelBuffered));
     //this.remoteSocketBuilder = createRemoteSocketBuilder();
   }
   
@@ -305,12 +308,12 @@ public class VTTunnelConnection
     return new VTTunnelChannelRemoteSocketBuilder(channel); 
   }
   
-  public VTTunnelChannelRemoteSocketFactory createRemoteSocketFactory(VTTunnelChannel channel)
+  public VTRemoteSocketFactory createRemoteSocketFactory(VTTunnelChannel channel)
   {
     return new VTTunnelChannelRemoteSocketFactory(createRemoteSocketBuilder(channel));
   }
   
-  public VTTunnelChannelRemoteSocketFactory getRemotePipedSocketFactory()
+  public VTRemotePipedSocketFactory getRemotePipedSocketFactory()
   {
     return remotePipedSocketFactory;
   }

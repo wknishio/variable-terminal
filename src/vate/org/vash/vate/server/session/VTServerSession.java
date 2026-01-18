@@ -38,7 +38,7 @@ import org.vash.vate.server.runtime.VTServerRuntimeExecutor;
 import org.vash.vate.server.screenshot.VTServerScreenshotTask;
 import org.vash.vate.shell.adapter.VTShellAdapter;
 import org.vash.vate.shell.adapter.VTShellProcessor;
-import org.vash.vate.socket.remote.VTRemoteSocketFactory;
+import org.vash.vate.socket.remote.VTRemotePipedSocketFactory;
 import org.vash.vate.tunnel.connection.VTTunnelConnection;
 import org.vash.vate.tunnel.connection.VTTunnelConnectionHandler;
 
@@ -418,7 +418,7 @@ public class VTServerSession
     return tunnelsHandler;
   }
   
-  public VTRemoteSocketFactory getRemotePipedSocketFactory()
+  public VTRemotePipedSocketFactory getRemotePipedSocketFactory()
   {
     return tunnelsHandler.getConnection().getRemotePipedSocketFactory();
   }
