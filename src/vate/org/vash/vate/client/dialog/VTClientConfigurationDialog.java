@@ -422,14 +422,11 @@ public class VTClientConfigurationDialog extends Dialog
 //    });
     
     encryptionTypeChoice.add("NONE");
-    //encryptionTypeChoice.add("VMPC");
     encryptionTypeChoice.add("SALSA");
     encryptionTypeChoice.add("HC");
-    //encryptionTypeChoice.add("GRAIN");
-    //encryptionTypeChoice.add("RABBIT");
     encryptionTypeChoice.add("ZUC");
     encryptionTypeChoice.add("THREEFISH");
-    // encryptionTypeChoice.add("BLOWFISH");
+    encryptionTypeChoice.add("LEA");
     encryptionTypeChoice.select("NONE");
     encryptionTypeChoice.addItemListener(new ItemListener()
     {
@@ -456,6 +453,10 @@ public class VTClientConfigurationDialog extends Dialog
           else if (e.getItem().equals("THREEFISH"))
           {
             setEncryptionType("THREEFISH");
+          }
+          else if (e.getItem().equals("LEA"))
+          {
+            setEncryptionType("LEA");
           }
         }
       }
@@ -1317,32 +1318,30 @@ public class VTClientConfigurationDialog extends Dialog
     if (encryption == null)
     {
       encryptionType.setParameter("NONE");
-      // encryptionPassword.setEnabled(false);
     }
     else if (encryption.toUpperCase().startsWith("S"))
     {
       encryptionType.setParameter("SALSA");
-      // encryptionPassword.setEnabled(true);
     }
     else if (encryption.toUpperCase().startsWith("H"))
     {
       encryptionType.setParameter("HC");
-      // encryptionPassword.setEnabled(true);
     }
     else if (encryption.toUpperCase().startsWith("Z"))
     {
       encryptionType.setParameter("ZUC");
-      // encryptionPassword.setEnabled(true);
     }
     else if (encryption.toUpperCase().startsWith("T"))
     {
       encryptionType.setParameter("THREEFISH");
-      // encryptionPassword.setEnabled(true);
+    }
+    else if (encryption.toUpperCase().startsWith("L"))
+    {
+      encryptionType.setParameter("LEA");
     }
     else
     {
       encryptionType.setParameter("NONE");
-      // encryptionPassword.setEnabled(false);
     }
   }
   

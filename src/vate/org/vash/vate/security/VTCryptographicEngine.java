@@ -8,6 +8,7 @@ import org.vash.vate.org.bouncycastle.crypto.StreamCipher;
 import org.vash.vate.org.bouncycastle.crypto.engines.ChaChaEngine;
 //import org.vash.vate.org.bouncycastle.crypto.engines.Grain128Engine;
 import org.vash.vate.org.bouncycastle.crypto.engines.HC256Engine;
+import org.vash.vate.org.bouncycastle.crypto.engines.LEAEngine;
 //import org.vash.vate.org.bouncycastle.crypto.engines.RabbitEngine;
 import org.vash.vate.org.bouncycastle.crypto.engines.ThreefishEngine;
 import org.vash.vate.org.bouncycastle.crypto.engines.Zuc256Engine;
@@ -143,6 +144,17 @@ public class VTCryptographicEngine
       encryptionStreamCipher.init(true, encryptionIvParameterSpec);
       decryptionStreamCipher.init(false, decryptionIvParameterSpec);
     }
+    else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_LEA)
+    {
+      encryptionStreamCipher = new SICBlockCipher(new LEAEngine());
+      decryptionStreamCipher = new SICBlockCipher(new LEAEngine());
+      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 32);
+      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, second, first, encryptionKeys), 0, 32);
+      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(16, first, second, encryptionKeys), 0, 16);
+      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(16, second, first, encryptionKeys), 0, 16);
+      encryptionStreamCipher.init(true, encryptionIvParameterSpec);
+      decryptionStreamCipher.init(false, decryptionIvParameterSpec);
+    }
     else
     {
       
@@ -261,6 +273,17 @@ public class VTCryptographicEngine
       KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, second, first, encryptionKeys), 0, 32);
       ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(new TweakableBlockCipherParameters(encryptionKeySpec, generateIVBLAKE3(16, first, second, encryptionKeys)), generateIVBLAKE3(32, first, second, encryptionKeys), 0, 32);
       ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(new TweakableBlockCipherParameters(decryptionKeySpec, generateIVBLAKE3(16, second, first, encryptionKeys)), generateIVBLAKE3(32, second, first, encryptionKeys), 0, 32);
+      encryptionStreamCipher.init(true, encryptionIvParameterSpec);
+      decryptionStreamCipher.init(false, decryptionIvParameterSpec);
+    }
+    else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_LEA)
+    {
+      encryptionStreamCipher = new SICBlockCipher(new LEAEngine());
+      decryptionStreamCipher = new SICBlockCipher(new LEAEngine());
+      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 32);
+      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, second, first, encryptionKeys), 0, 32);
+      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(16, first, second, encryptionKeys), 0, 16);
+      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(16, second, first, encryptionKeys), 0, 16);
       encryptionStreamCipher.init(true, encryptionIvParameterSpec);
       decryptionStreamCipher.init(false, decryptionIvParameterSpec);
     }

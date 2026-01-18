@@ -113,6 +113,10 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
       {
         message.append("\nVT>Encryption type(ET): [THREEFISH]");
       }
+      else if (encryptionType.toUpperCase().startsWith("L"))
+      {
+        message.append("\nVT>Encryption type(ET): [LEA]");
+      }
       else
       {
         message.append("\nVT>Encryption type(ET): []");
@@ -582,6 +586,10 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           {
             VTMainConsole.print("\rVT>Encryption type(ET): [THREEFISH]\nVT>");
           }
+          else if (encryptionType.toUpperCase().startsWith("L"))
+          {
+            VTMainConsole.print("\rVT>Encryption type(ET): [LEA]\nVT>");
+          }
           else
           {
             VTMainConsole.print("\rVT>Encryption type(ET): []\nVT>");
@@ -612,6 +620,10 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           else if (encryptionType.toUpperCase().startsWith("T"))
           {
             VTMainConsole.print("\rVT>Encryption type(ET) set to: [THREEFISH]\nVT>");
+          }
+          else if (encryptionType.toUpperCase().startsWith("L"))
+          {
+            VTMainConsole.print("\rVT>Encryption type(ET) set to: [L]\nVT>");
           }
           else
           {

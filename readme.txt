@@ -11,7 +11,7 @@ This is the full variant with jna native functions.
 
 Some of the available features are:
 
-* Support for SALSA, HC, ZUC or THREEFISH encryption.
+* Support for SALSA, HC, ZUC, THREEFISH or LEA encryption.
 * Support for UPnP, NAT-PMP and PCP NAT port forwarding.
 * Support for SOCKS and HTTP proxy network connections.
 * Support for LZ4 and ZSTD data compression.
@@ -126,7 +126,7 @@ these are the available program arguments:
 * -PP: proxy port, default 1080 for SOCKS or default 8080 for HTTP
 * -PU: proxy user, default null
 * -PK: proxy password, default null
-* -ET: encryption type, default none/SALSA(S)/HC(H)/ZUC(Z)/THREEFISH(T)
+* -ET: encryption type, default none/SALSA(S)/HC(H)/ZUC(Z)/THREEFISH(T)/LEA(L)
 * -EK: encryption password, default null
 * -PL: ping limit, default 60000 milliseconds
 * -PI: ping interval, default 15000 milliseconds

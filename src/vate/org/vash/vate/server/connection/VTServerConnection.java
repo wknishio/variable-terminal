@@ -41,6 +41,8 @@ public class VTServerConnection
   private static final byte[] VT_CLIENT_CHECK_STRING_ZUC = ("/VARIABLE-TERMINAL/CLIENT/ZUC/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_SERVER_CHECK_STRING_THREEFISH = ("/VARIABLE-TERMINAL/SERVER/THREEFISH/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_CLIENT_CHECK_STRING_THREEFISH = ("/VARIABLE-TERMINAL/CLIENT/THREEFISH/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_SERVER_CHECK_STRING_LEA = ("/VARIABLE-TERMINAL/SERVER/LEA/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_CLIENT_CHECK_STRING_LEA = ("/VARIABLE-TERMINAL/CLIENT/LEA/" + MAJOR_MINOR_VERSION).getBytes();
   
   private volatile boolean connected = false;
   private volatile boolean closed = true;
@@ -650,6 +652,7 @@ public class VTServerConnection
     byte[] digestedClientHC = computeSecurityDigest(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_HC);
     byte[] digestedClientZUC = computeSecurityDigest(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_ZUC);
     byte[] digestedClientTHREEFISH = computeSecurityDigest(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_THREEFISH);
+    byte[] digestedClientLEA = computeSecurityDigest(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_LEA);
     
     byte[] digestedClient = exchangeCheckString(localNonce, remoteNonce, encryptionKey, localCheckString);
    
@@ -676,6 +679,11 @@ public class VTServerConnection
     if (VTArrayComparator.arrayEquals(digestedClient, digestedClientTHREEFISH))
     {
       return VTSystem.VT_CONNECTION_ENCRYPTION_THREEFISH;
+    }
+    
+    if (VTArrayComparator.arrayEquals(digestedClient, digestedClientLEA))
+    {
+      return VTSystem.VT_CONNECTION_ENCRYPTION_LEA;
     }
     
     return -1;
@@ -734,6 +742,15 @@ public class VTServerConnection
         return true;
       }
     }
+    else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_LEA)
+    {
+      remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_SERVER_CHECK_STRING_LEA);
+      if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_NONE)
+      {
+        setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_LEA);
+        return true;
+      }
+    }
     if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_SALSA)
     {
       setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_SALSA);
@@ -752,6 +769,11 @@ public class VTServerConnection
     if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_THREEFISH)
     {
       setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_THREEFISH);
+      return true;
+    }
+    if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_LEA)
+    {
+      setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_LEA);
       return true;
     }
     return false;
