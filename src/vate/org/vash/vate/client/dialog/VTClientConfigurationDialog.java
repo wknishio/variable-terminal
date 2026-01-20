@@ -424,8 +424,8 @@ public class VTClientConfigurationDialog extends Dialog
     encryptionTypeChoice.add("NONE");
     encryptionTypeChoice.add("SALSA");
     encryptionTypeChoice.add("HC");
-    encryptionTypeChoice.add("ZUC");
     encryptionTypeChoice.add("THREEFISH");
+    encryptionTypeChoice.add("ZUC");
     encryptionTypeChoice.add("LEA");
     encryptionTypeChoice.select("NONE");
     encryptionTypeChoice.addItemListener(new ItemListener()

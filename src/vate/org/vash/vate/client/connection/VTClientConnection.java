@@ -34,10 +34,10 @@ public class VTClientConnection
   private static final byte[] VT_CLIENT_CHECK_STRING_SALSA = ("/VARIABLE-TERMINAL/CLIENT/SALSA/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_SERVER_CHECK_STRING_HC = ("/VARIABLE-TERMINAL/SERVER/HC/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_CLIENT_CHECK_STRING_HC = ("/VARIABLE-TERMINAL/CLIENT/HC/" + MAJOR_MINOR_VERSION).getBytes();
-  private static final byte[] VT_SERVER_CHECK_STRING_ZUC = ("/VARIABLE-TERMINAL/SERVER/ZUC/" + MAJOR_MINOR_VERSION).getBytes();
-  private static final byte[] VT_CLIENT_CHECK_STRING_ZUC = ("/VARIABLE-TERMINAL/CLIENT/ZUC/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_SERVER_CHECK_STRING_THREEFISH = ("/VARIABLE-TERMINAL/SERVER/THREEFISH/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_CLIENT_CHECK_STRING_THREEFISH = ("/VARIABLE-TERMINAL/CLIENT/THREEFISH/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_SERVER_CHECK_STRING_ZUC = ("/VARIABLE-TERMINAL/SERVER/ZUC/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_CLIENT_CHECK_STRING_ZUC = ("/VARIABLE-TERMINAL/CLIENT/ZUC/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_SERVER_CHECK_STRING_LEA = ("/VARIABLE-TERMINAL/SERVER/LEA/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_CLIENT_CHECK_STRING_LEA = ("/VARIABLE-TERMINAL/CLIENT/LEA/" + MAJOR_MINOR_VERSION).getBytes();
   
@@ -654,8 +654,8 @@ public class VTClientConnection
     byte[] digestedServerNONE = computeSecurityDigest(localNonce, remoteNonce, encryptionKey, VT_SERVER_CHECK_STRING_NONE);
     byte[] digestedServerSALSA = computeSecurityDigest(localNonce, remoteNonce, encryptionKey, VT_SERVER_CHECK_STRING_SALSA);
     byte[] digestedServerHC = computeSecurityDigest(localNonce, remoteNonce, encryptionKey, VT_SERVER_CHECK_STRING_HC);
-    byte[] digestedServerZUC = computeSecurityDigest(localNonce, remoteNonce, encryptionKey, VT_SERVER_CHECK_STRING_ZUC);
     byte[] digestedServerTHREEFISH = computeSecurityDigest(localNonce, remoteNonce, encryptionKey, VT_SERVER_CHECK_STRING_THREEFISH);
+    byte[] digestedServerZUC = computeSecurityDigest(localNonce, remoteNonce, encryptionKey, VT_SERVER_CHECK_STRING_ZUC);
     byte[] digestedServerLEA = computeSecurityDigest(localNonce, remoteNonce, encryptionKey, VT_SERVER_CHECK_STRING_LEA);
     
     byte[] digestedServer = exchangeCheckString(localNonce, remoteNonce, encryptionKey, localCheckString);
@@ -675,14 +675,14 @@ public class VTClientConnection
       return VTSystem.VT_CONNECTION_ENCRYPTION_HC;
     }
     
-    if (VTArrayComparator.arrayEquals(digestedServer, digestedServerZUC))
-    {
-      return VTSystem.VT_CONNECTION_ENCRYPTION_ZUC;
-    }
-    
     if (VTArrayComparator.arrayEquals(digestedServer, digestedServerTHREEFISH))
     {
       return VTSystem.VT_CONNECTION_ENCRYPTION_THREEFISH;
+    }
+    
+    if (VTArrayComparator.arrayEquals(digestedServer, digestedServerZUC))
+    {
+      return VTSystem.VT_CONNECTION_ENCRYPTION_ZUC;
     }
     
     if (VTArrayComparator.arrayEquals(digestedServer, digestedServerLEA))
@@ -753,21 +753,21 @@ public class VTClientConnection
         return true;
       }
     }
-    else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_ZUC)
-    {
-      remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_ZUC);
-      if (remoteEncryptionType != -1)
-      {
-        setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_ZUC);
-        return true;
-      }
-    }
     else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_THREEFISH)
     {
       remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_THREEFISH);
       if (remoteEncryptionType != -1)
       {
         setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_THREEFISH);
+        return true;
+      }
+    }
+    else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_ZUC)
+    {
+      remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_ZUC);
+      if (remoteEncryptionType != -1)
+      {
+        setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_ZUC);
         return true;
       }
     }

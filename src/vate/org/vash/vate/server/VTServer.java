@@ -91,7 +91,7 @@ public class VTServer implements Runnable
   "Variable-Terminal server settings file, supports UTF-8\r\n" + 
   "#vate.server.connection.mode  values: default passive(P), active(A)\r\n" + 
   "#vate.server.proxy.type       values: DIRECT(D)/SOCKS(S)/HTTP(H)/PLUS(P)\r\n" + 
-  "#vate.server.encryption.type  values: SALSA(S)/HC(H)/ZUC(Z)/THREEFISH(T)/LEA(L)\r\n" + 
+  "#vate.server.encryption.type  values: SALSA(S)/HC(H)/THREEFISH(T)/ZUC(Z)/LEA(L)\r\n" + 
   "#vate.server.session.accounts format: user1/password1;user2/password2;...\r\n";
   
   static
@@ -1884,7 +1884,7 @@ public class VTServer implements Runnable
         }
         if (line.toUpperCase().startsWith("Y"))
         {
-          VTMainConsole.print("VT>Enter encryption type(SALSA(S)/HC(H)/ZUC(Z)/THREEFISH(T)/LEA(L)):");
+          VTMainConsole.print("VT>Enter encryption type(SALSA(S)/HC(H)/THREEFISH(T)/ZUC(Z)/LEA(L)):");
           line = VTMainConsole.readLine(false);
           if (line == null)
           {
