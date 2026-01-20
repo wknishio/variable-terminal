@@ -435,9 +435,8 @@ public class VTManagedServerSocket
 //      System.out.println("server.socket.connected()");
 //      java.io.BufferedWriter writer = new java.io.BufferedWriter(new java.io.OutputStreamWriter(socket.getOutputStream()));
 //      java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(socket.getInputStream()));
-//      VTRemoteSocketFactory remoteSocketFactory = socket.getConnection().getRemotePipedSocketFactory();
+//      VTRemotePipedSocketFactory remoteSocketFactory = socket.getConnection().getRemotePipedSocketFactory();
 //      
-//      int i = 5;
 //      while (socket.isConnected())
 //      {
 //        System.out.println("server.ping():" + socket.getConnection().checkPing(500000000));
@@ -458,16 +457,9 @@ public class VTManagedServerSocket
 //        System.out.println("server.reading()");
 //        System.out.println("server.readRemote():" + pipeClient.getInputStream().read());
 //        System.out.println("server.readLocal():" + pipeServer.getInputStream().read());
-//        System.out.println("server.reading()");
-//        Thread.sleep(1000);
-//        if (i > 0)
-//        {
-//          i--;
-//        }
-//        else
-//        {
-//          socket.close();
-//        }
+//        pipeClient.close();
+//        pipeServer.close();
+//        System.out.println("server.readed()");
 //      }
 //    }
 //    catch (Throwable t)
