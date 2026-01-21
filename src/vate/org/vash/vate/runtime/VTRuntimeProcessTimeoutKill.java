@@ -2,7 +2,7 @@ package org.vash.vate.runtime;
 
 public class VTRuntimeProcessTimeoutKill implements Runnable
 {
-  private boolean running;
+  private volatile boolean running;
   private long timeout;
   // private Thread thread;
   private VTRuntimeProcess process;
@@ -30,7 +30,7 @@ public class VTRuntimeProcessTimeoutKill implements Runnable
   
   public void kill()
   {
-    if (process != null && process.isAlive())
+    if (running && process != null && process.isAlive())
     {
       try
       {
@@ -49,7 +49,7 @@ public class VTRuntimeProcessTimeoutKill implements Runnable
     {
       synchronized (this)
       {
-        try 
+        try
         {
           wait(timeout);
         }
@@ -58,7 +58,6 @@ public class VTRuntimeProcessTimeoutKill implements Runnable
           
         }
       }
-      running = false;
       kill();
     }
   }

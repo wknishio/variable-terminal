@@ -8,8 +8,8 @@ import org.vash.vate.VTSystem;
 public class VTRuntimeProcessDataRedirector implements Runnable
 {
   private static final int inputBufferSize = VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES;
-  private boolean running;
-  private boolean close;
+  private volatile boolean running;
+  private final boolean close;
   private int readBytes;
   private final byte[] inputBuffer = new byte[inputBufferSize];
   private InputStream in;
@@ -66,7 +66,6 @@ public class VTRuntimeProcessDataRedirector implements Runnable
           
         }
       }
-      
       out = null;
     }
   }

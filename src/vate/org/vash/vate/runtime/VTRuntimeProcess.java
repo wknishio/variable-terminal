@@ -15,28 +15,25 @@ import com.sun.jna.platform.win32.WinNT;
 
 public class VTRuntimeProcess
 {
-  private String command;
+  private final String command;
+  private final ProcessBuilder builder;
+  private final ExecutorService executorService;
+  private final InputStream inputRedirect;
+  private final OutputStream outputRedirect;
+  private final boolean closeInputRedirect;
+  private final boolean closeOutputRedirect;
+  private boolean restart;
+  private final long timeout;
   
-  private ProcessBuilder builder;
   private Process process;
   private InputStream in;
   private InputStream err;
   private OutputStream out;
-  
-  // private VTRuntimeProcessKill killer = new VTRuntimeProcessKill();
   private VTRuntimeProcessDataRedirector outputDataRedirector;
   private VTRuntimeProcessDataRedirector inputDataRedirector;
   // private VTRuntimeProcessOutputConsumer errorConsumer;
   private VTRuntimeProcessExitListener exitListener;
   private VTRuntimeProcessTimeoutKill timeoutKill;
-  
-  private ExecutorService executorService;
-  private InputStream inputRedirect;
-  private OutputStream outputRedirect;
-  private boolean closeInputRedirect;
-  private boolean closeOutputRedirect;
-  private boolean restart;
-  private long timeout;
   
   private static Method processDestroyForciblyMethod;
   private static Method processWaitForMethod;
@@ -61,7 +58,6 @@ public class VTRuntimeProcess
     this.executorService = executorService;
     this.inputRedirect = inputRedirect;
     this.outputRedirect = outputRedirect;
-    
     this.closeOutputRedirect = closeOutputRedirect;
     this.closeInputRedirect = closeInputRedirect;
     this.restart = restart;
@@ -220,9 +216,16 @@ public class VTRuntimeProcess
   
   private void kill()
   {
-    if (process != null && isAlive(process))
+    if (timeoutKill != null)
     {
-      killProcess(process, 1);
+      try
+      {
+        timeoutKill.stop();
+      }
+      catch (Throwable e)
+      {
+        
+      }
     }
     
     if (inputDataRedirector != null)
@@ -242,18 +245,6 @@ public class VTRuntimeProcess
       try
       {
         outputDataRedirector.stop();
-      }
-      catch (Throwable e)
-      {
-        
-      }
-    }
-    
-    if (timeoutKill != null)
-    {
-      try
-      {
-        timeoutKill.stop();
       }
       catch (Throwable e)
       {
@@ -283,6 +274,11 @@ public class VTRuntimeProcess
       {
         
       }
+    }
+    
+    if (process != null && isAlive(process))
+    {
+      killProcess(process, 1);
     }
   }
   
@@ -382,7 +378,7 @@ public class VTRuntimeProcess
       if (forced != null && forced instanceof Process)
       {
         Process destroyed = (Process) forced;
-        Object result = processWaitForMethod.invoke(destroyed, new Object[] {Long.valueOf(1000), TimeUnit.MILLISECONDS});
+        Object result = processWaitForMethod.invoke(destroyed, new Object[] {Long.valueOf(10), TimeUnit.MILLISECONDS});
         if (result instanceof Boolean)
         {
           return (Boolean)result;

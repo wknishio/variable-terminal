@@ -2,7 +2,7 @@ package org.vash.vate.runtime;
 
 public class VTRuntimeProcessExitListener implements Runnable
 {
-  private VTRuntimeProcess process;
+  private final VTRuntimeProcess process;
   
   public VTRuntimeProcessExitListener(VTRuntimeProcess process)
   {
