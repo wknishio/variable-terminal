@@ -72,6 +72,7 @@ public class VTGraphicsLinkClientOptionsMenuBarControlMenu extends Menu
     super("Control");
     this.writer = writer;
     this.localKeyIgnoreControlMenu = new Menu("Shortcut Support");
+    this.clipboardControlMenu = new Menu("Clipboard Control ");
     this.remoteControlMenu = new Menu("Remote Control ");
     this.controlStateClauseMenu = new Menu("Control Clause");
     this.localKeySuppressionControlMenu = new Menu("Combination Inhibition ");
@@ -79,7 +80,6 @@ public class VTGraphicsLinkClientOptionsMenuBarControlMenu extends Menu
     this.modifierKeyUpControlMenu = new Menu("Release Modifier Key ");
     this.lockingKeysControlMenu = new Menu("Enter Lock Key ");
     this.systemKeysControlMenu = new Menu("Enter System Key ");
-    this.clipboardControlMenu = new Menu("Clipboard Control ");
     
     this.runningOption = new CheckboxMenuItem("Running", true);
     this.runningOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarControlMenuRemoteControlListener(writer, runningOption));
@@ -185,6 +185,7 @@ public class VTGraphicsLinkClientOptionsMenuBarControlMenu extends Menu
     
     this.add(localKeyIgnoreControlMenu);
     this.add(keyboardShortcutsMenu);
+    this.add(clipboardControlMenu);
     this.add(remoteControlMenu);
     this.add(controlStateClauseMenu);
     this.add(localKeySuppressionControlMenu);
@@ -192,7 +193,7 @@ public class VTGraphicsLinkClientOptionsMenuBarControlMenu extends Menu
     this.add(modifierKeyUpControlMenu);
     this.add(lockingKeysControlMenu);
     this.add(systemKeysControlMenu);
-    this.add(clipboardControlMenu);
+    
   }
   
   public void sendLocalClipboardContents()
@@ -231,7 +232,7 @@ public class VTGraphicsLinkClientOptionsMenuBarControlMenu extends Menu
     systemKeysControlMenu.setEnabled(false);
     modifierKeyDownControlMenu.setEnabled(false);
     modifierKeyUpControlMenu.setEnabled(false);
-    clipboardControlMenu.setEnabled(false);
+    //clipboardControlMenu.setEnabled(false);
     localKeySuppressionControlMenu.setEnabled(false);
     writer.clearAllPressedKeys();
   }
@@ -245,7 +246,7 @@ public class VTGraphicsLinkClientOptionsMenuBarControlMenu extends Menu
     systemKeysControlMenu.setEnabled(true);
     modifierKeyDownControlMenu.setEnabled(true);
     modifierKeyUpControlMenu.setEnabled(true);
-    clipboardControlMenu.setEnabled(true);
+    //clipboardControlMenu.setEnabled(true);
     localKeySuppressionControlMenu.setEnabled(true);
   }
   
