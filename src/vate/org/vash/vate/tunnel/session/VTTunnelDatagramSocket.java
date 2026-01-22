@@ -34,7 +34,7 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
   private final DatagramSocket remoteSocket;
   private final String localAddress;
   private final int localPort;
-  private final boolean client;
+  private final boolean virtual;
   private final byte[] byteAddressIPv4 = new byte[4];
   private final byte[] byteAddressIPv6 = new byte[16];
   
@@ -46,7 +46,7 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
     this.remoteSocket = null;
     this.localAddress = address;
     this.localPort = port;
-    this.client = true;
+    this.virtual = true;
   }
   
   public VTTunnelDatagramSocket(Socket tunnelSocket, ExecutorService executorService) throws IOException
@@ -58,7 +58,7 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
     this.remoteSocket.bind(null);
     this.localAddress = null;
     this.localPort = 0;
-    this.client = false;
+    this.virtual = false;
   }
   
   public VTTunnelDatagramSocket(Socket tunnelSocket, ExecutorService executorService, int port) throws IOException
@@ -70,7 +70,7 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
     this.remoteSocket.bind(new InetSocketAddress(port));
     this.localAddress = null;
     this.localPort = 0;
-    this.client = false;
+    this.virtual = false;
   }
   
   public VTTunnelDatagramSocket(Socket tunnelSocket, ExecutorService executorService, String address, int port) throws IOException
@@ -82,7 +82,7 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
     this.remoteSocket.bind(new InetSocketAddress(address, port));
     this.localAddress = null;
     this.localPort = 0;
-    this.client = false;
+    this.virtual = false;
   }
   
   public VTTunnelDatagramSocket(Socket tunnelSocket, ExecutorService executorService, InetAddress address, int port) throws IOException
@@ -94,7 +94,7 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
     this.remoteSocket.bind(new InetSocketAddress(address, port));
     this.localAddress = null;
     this.localPort = 0;
-    this.client = false;
+    this.virtual = false;
   }
   
   public VTTunnelDatagramSocket(Socket tunnelSocket, ExecutorService executorService, DatagramSocket remoteSocket) throws IOException
@@ -113,7 +113,7 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
     }
     this.localAddress = null;
     this.localPort = 0;
-    this.client = false;
+    this.virtual = false;
   }
   
   public void setTunnelInputStream(InputStream inputStream)
@@ -310,7 +310,7 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
   
   public void setSoTimeout(int timeout) throws SocketException
   {
-    if (client)
+    if (virtual)
     {
       return;
     }
@@ -324,7 +324,7 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
   
   public int getSoTimeout() throws SocketException
   {
-    if (client)
+    if (virtual)
     {
       return 0;
     }
@@ -337,7 +337,7 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
   
   public void setSendBufferSize(int size) throws SocketException
   {
-    if (client)
+    if (virtual)
     {
       return;
     }
@@ -351,7 +351,7 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
   
   public int getSendBufferSize() throws SocketException
   {
-    if (client)
+    if (virtual)
     {
       return 0;
     }
@@ -364,7 +364,7 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
   
   public void setReceiveBufferSize(int size) throws SocketException
   {
-    if (client)
+    if (virtual)
     {
       return;
     }
@@ -378,7 +378,7 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
   
   public int getReceiveBufferSize() throws SocketException
   {
-    if (client)
+    if (virtual)
     {
       return 0;
     }
@@ -391,7 +391,7 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
   
   public void setReuseAddress(boolean on) throws SocketException
   {
-    if (client)
+    if (virtual)
     {
       return;
     }
@@ -405,7 +405,7 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
   
   public boolean getReuseAddress() throws SocketException
   {
-    if (client)
+    if (virtual)
     {
       return false;
     }
@@ -418,7 +418,7 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
   
   public void setBroadcast(boolean on) throws SocketException
   {
-    if (client)
+    if (virtual)
     {
       return;
     }
@@ -432,7 +432,7 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
   
   public boolean getBroadcast() throws SocketException
   {
-    if (client)
+    if (virtual)
     {
       return false;
     }
@@ -445,7 +445,7 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
   
   public void setTrafficClass(int tc) throws SocketException
   {
-    if (client)
+    if (virtual)
     {
       return;
     }
@@ -459,7 +459,7 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
   
   public int getTrafficClass() throws SocketException
   {
-    if (client)
+    if (virtual)
     {
       return 0;
     }

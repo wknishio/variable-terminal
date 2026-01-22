@@ -457,7 +457,7 @@ public class VTTunnelChannelRemoteSocketBuilder
     throw new IOException("Failed to create datagram tunnel using host " + host + " port " + port + "");
   }
   
-  public Socket pipeSocket(String bind, int type, boolean originator) throws IOException
+  public Socket pipeSocket(boolean request, String bind, int type) throws IOException
   {
     if (bind == null)
     {
@@ -487,7 +487,7 @@ public class VTTunnelChannelRemoteSocketBuilder
     VTTunnelSessionHandler handler = null;
     int channelType = type;
     
-    handler = channel.getSessionHandler(bind, !originator);
+    handler = channel.getSessionHandler(bind, !request);
     if (handler != null)
     {
       if (handler.getSession().getTunnelInputStream().closed())
@@ -560,7 +560,7 @@ public class VTTunnelChannelRemoteSocketBuilder
     return null;
   }
   
-  public Socket pipeSocket(String bind, int type, boolean originator, OutputStream out) throws IOException
+  public Socket pipeSocket(boolean request, String bind, int type, OutputStream out) throws IOException
   {
     if (bind == null)
     {
@@ -590,7 +590,7 @@ public class VTTunnelChannelRemoteSocketBuilder
     VTTunnelSessionHandler handler = null;
     int channelType = type;
     
-    handler = channel.getSessionHandler(bind, !originator);
+    handler = channel.getSessionHandler(bind, !request);
     if (handler != null)
     {
       if (handler.getSession().getTunnelInputStream().closed())

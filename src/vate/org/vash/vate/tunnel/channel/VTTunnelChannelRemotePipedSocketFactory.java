@@ -15,13 +15,23 @@ public class VTTunnelChannelRemotePipedSocketFactory extends VTRemotePipedSocket
     this.socketBuilder = socketBuilder;
   }
   
-  public Socket pipeSocket(String bind, int type, boolean originator) throws IOException
+  public Socket requestPipe(String bind, int type) throws IOException
   {
-    return socketBuilder.pipeSocket(bind, type, originator);
+    return socketBuilder.pipeSocket(true, bind, type);
   }
   
-  public Socket pipeSocket(String bind, int type, boolean originator, OutputStream out) throws IOException
+  public Socket requestPipe(String bind, int type, OutputStream out) throws IOException
   {
-    return socketBuilder.pipeSocket(bind, type, originator, out);
+    return socketBuilder.pipeSocket(true, bind, type, out);
+  }
+  
+  public Socket respondPipe(String bind) throws IOException
+  {
+    return socketBuilder.pipeSocket(false, bind, 0);
+  }
+  
+  public Socket respondPipe(String bind, OutputStream out) throws IOException
+  {
+    return socketBuilder.pipeSocket(false, bind, 0, out);
   }
 }

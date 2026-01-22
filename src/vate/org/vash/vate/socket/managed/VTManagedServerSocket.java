@@ -446,8 +446,8 @@ public class VTManagedServerSocket
 //        writer.flush();
 //        String clientUUID = reader.readLine();
 //        System.out.println("server.socketRemote():" + clientUUID);
-//        Socket pipeClient = remoteSocketFactory.pipeSocket(clientUUID, 0, false);
-//        Socket pipeServer = remoteSocketFactory.pipeSocket(serverUUID, 0, true);
+//        Socket pipeClient = remoteSocketFactory.respondPipe(clientUUID);
+//        Socket pipeServer = remoteSocketFactory.requestPipe(serverUUID, 0);
 //        System.out.println("server.writing()");
 //        pipeServer.getOutputStream().write(1);
 //        pipeClient.getOutputStream().write(2);
