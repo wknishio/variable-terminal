@@ -50,7 +50,6 @@ public class VTServerGraphicalStart
         }
         VTRuntimeExit.exit(0);
       }
-      VTMainConsole.setDaemon(daemon);
       VTServer server = new VTServer();
       try
       {
@@ -60,16 +59,12 @@ public class VTServerGraphicalStart
       {
         VTRuntimeExit.exit(-1);
       }
-      // server.initialize();
       server.setDaemon(daemon);
       server.start();
     }
     else
     {
-      VTMainConsole.setDaemon(daemon);
       VTServer server = new VTServer();
-      // server.initialize();
-      // server.configure();
       server.setDaemon(daemon);
       server.start();
     }

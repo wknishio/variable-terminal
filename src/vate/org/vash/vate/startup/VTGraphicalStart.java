@@ -36,9 +36,7 @@ public final class VTGraphicalStart
         {
           try
           {
-            // client.setDaemon(true);
-            // client.initialize();
-            // client.configure();
+            client.setDaemon(false);
             client.start();
             return;
           }
@@ -52,8 +50,6 @@ public final class VTGraphicalStart
           try
           {
             server.setDaemon(false);
-            // server.initialize();
-            // server.configure();
             server.start();
             return;
           }
@@ -69,14 +65,11 @@ public final class VTGraphicalStart
         if (option.toUpperCase().startsWith("S"))
         {
           server.setDaemon(false);
-          // server.initialize();
-          // server.configure();
           server.start();
         }
         else if (option != null)
         {
-          // client.initialize();
-          // client.configure();
+          client.setDaemon(false);
           client.start();
         }
         else
@@ -97,14 +90,17 @@ public final class VTGraphicalStart
         if ("-C".equalsIgnoreCase(args[i]))
         {
           type = 1;
+          client.setDaemon(false);
         }
         else if ("-S".equalsIgnoreCase(args[i]))
         {
           type = 2;
+          server.setDaemon(false);
         }
         else if ("-D".equalsIgnoreCase(args[i]))
         {
           type = 3;
+          server.setDaemon(true);
         }
         else if ("-H".equalsIgnoreCase(args[i]))
         {
@@ -113,6 +109,7 @@ public final class VTGraphicalStart
         else if ("-A".equalsIgnoreCase(args[i]))
         {
           type = 5;
+          client.setDaemon(true);
         }
         else
         {
@@ -138,7 +135,7 @@ public final class VTGraphicalStart
         {
           VTRuntimeExit.exit(-1);
         }
-        // client.initialize();
+        client.setDaemon(false);
         client.start();
       }
       else if (type == 2)
@@ -151,13 +148,11 @@ public final class VTGraphicalStart
         {
           VTRuntimeExit.exit(-1);
         }
-        // server.initialize();
         server.setDaemon(false);
         server.start();
       }
       else if (type == 3)
       {
-        VTMainConsole.setDaemon(true);
         try
         {
           server.parseParameters(args);
@@ -166,7 +161,6 @@ public final class VTGraphicalStart
         {
           VTRuntimeExit.exit(-1);
         }
-        // server.initialize();
         server.setDaemon(true);
         server.start();
       }
@@ -174,7 +168,6 @@ public final class VTGraphicalStart
       {
         VTMainConsole.initialize();
         VTMainConsole.setTitle("Variable-Terminal " + VTSystem.VT_VERSION + " - Console");
-        // VTConsole.print(VTHelpManager.printApplicationParametersHelp());
         VTMainConsole.print(VTHelpManager.printGeneralModeParameterHelp());
         VTMainConsole.print(VTHelpManager.printConnnectionParametersHelp());
         if (VTMainConsole.isGraphical())
@@ -201,7 +194,6 @@ public final class VTGraphicalStart
           VTRuntimeExit.exit(-1);
         }
         client.setDaemon(true);
-        // client.initialize();
         client.start();
       }
       else
@@ -219,8 +211,6 @@ public final class VTGraphicalStart
           {
             try
             {
-              // client.initialize();
-              // client.configure();
               try
               {
                 client.parseParameters(args);
@@ -229,6 +219,7 @@ public final class VTGraphicalStart
               {
                 
               }
+              client.setDaemon(false);
               client.start();
               return;
             }
@@ -241,9 +232,6 @@ public final class VTGraphicalStart
           {
             try
             {
-              server.setDaemon(false);
-              // server.initialize();
-              // server.configure();
               try
               {
                 server.parseParameters(args);
@@ -252,6 +240,7 @@ public final class VTGraphicalStart
               {
                 
               }
+              server.setDaemon(false);
               server.start();
               return;
             }
@@ -266,7 +255,6 @@ public final class VTGraphicalStart
           option = VTMainConsole.readLine(true);
           if (option.toUpperCase().startsWith("S"))
           {
-            server.setDaemon(false);
             try
             {
               server.parseParameters(args);
@@ -275,8 +263,7 @@ public final class VTGraphicalStart
             {
               
             }
-            // server.initialize();
-            // server.configure();
+            server.setDaemon(false);
             server.start();
           }
           else
@@ -289,8 +276,7 @@ public final class VTGraphicalStart
             {
               
             }
-            // client.initialize();
-            // client.configure();
+            client.setDaemon(false);
             client.start();
           }
         }

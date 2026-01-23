@@ -17,7 +17,6 @@ public class VTClientAgentStandardStart
     if (args.length >= 1)
     {
       VTClient client = new VTClient();
-      client.setDaemon(true);
       try
       {
         client.parseParameters(args);
@@ -26,14 +25,12 @@ public class VTClientAgentStandardStart
       {
         VTRuntimeExit.exit(-1);
       }
-      // client.initialize();
+      client.setDaemon(true);
       client.start();
     }
     else
     {
       VTClient client = new VTClient();
-      // client.initialize();
-      // client.configure();
       client.setDaemon(true);
       client.start();
     }

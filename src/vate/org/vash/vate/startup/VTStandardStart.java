@@ -13,7 +13,6 @@ public final class VTStandardStart
   
   public static final void main(String[] args)
   {
-    // System.setProperty("java.awt.headless", "true");
     VTMainConsole.setGraphical(false);
     VTMainConsole.setSeparated(false);
     VTMainConsole.setRemoteIcon(true);
@@ -38,8 +37,7 @@ public final class VTStandardStart
         {
           try
           {
-            // client.initialize();
-            // client.configure();
+            client.setDaemon(false);
             client.start();
             return;
           }
@@ -53,8 +51,6 @@ public final class VTStandardStart
           try
           {
             server.setDaemon(false);
-            // server.initialize();
-            // server.configure();
             server.start();
             return;
           }
@@ -70,14 +66,11 @@ public final class VTStandardStart
         if (option.toUpperCase().startsWith("S"))
         {
           server.setDaemon(false);
-          // server.initialize();
-          // server.configure();
           server.start();
         }
         else if (option != null)
         {
-          // client.initialize();
-          // client.configure();
+          client.setDaemon(false);
           client.start();
         }
         else
@@ -98,14 +91,17 @@ public final class VTStandardStart
         if ("-C".equalsIgnoreCase(args[i]))
         {
           type = 1;
+          client.setDaemon(false);
         }
         else if ("-S".equalsIgnoreCase(args[i]))
         {
           type = 2;
+          server.setDaemon(false);
         }
         else if ("-D".equalsIgnoreCase(args[i]))
         {
           type = 3;
+          server.setDaemon(true);
         }
         else if ("-H".equalsIgnoreCase(args[i]))
         {
@@ -114,6 +110,7 @@ public final class VTStandardStart
         else if ("-A".equalsIgnoreCase(args[i]))
         {
           type = 5;
+          client.setDaemon(true);
         }
         else
         {
@@ -139,7 +136,7 @@ public final class VTStandardStart
         {
           VTRuntimeExit.exit(-1);
         }
-        // client.initialize();
+        client.setDaemon(false);
         client.start();
       }
       else if (type == 2)
@@ -152,13 +149,11 @@ public final class VTStandardStart
         {
           VTRuntimeExit.exit(-1);
         }
-        // server.initialize();
         server.setDaemon(false);
         server.start();
       }
       else if (type == 3)
       {
-        VTMainConsole.setDaemon(true);
         try
         {
           server.parseParameters(args);
@@ -167,7 +162,6 @@ public final class VTStandardStart
         {
           VTRuntimeExit.exit(-1);
         }
-        // server.initialize();
         server.setDaemon(true);
         server.start();
       }
@@ -176,7 +170,6 @@ public final class VTStandardStart
         VTMainConsole.initialize();
         VTMainConsole.clear();
         VTMainConsole.setTitle("Variable-Terminal " + VTSystem.VT_VERSION + " - Console");
-        // VTConsole.print(VTHelpManager.printApplicationParametersHelp());
         VTMainConsole.print(VTHelpManager.printGeneralModeParameterHelp());
         VTMainConsole.print(VTHelpManager.printConnnectionParametersHelp());
         if (VTMainConsole.isGraphical())
@@ -203,7 +196,6 @@ public final class VTStandardStart
           VTRuntimeExit.exit(-1);
         }
         client.setDaemon(true);
-        // client.initialize();
         client.start();
       }
       else
@@ -222,8 +214,6 @@ public final class VTStandardStart
           {
             try
             {
-              // client.initialize();
-              // client.configure();
               try
               {
                 client.parseParameters(args);
@@ -244,9 +234,6 @@ public final class VTStandardStart
           {
             try
             {
-              server.setDaemon(false);
-              // server.initialize();
-              // server.configure();
               try
               {
                 server.parseParameters(args);
@@ -255,6 +242,7 @@ public final class VTStandardStart
               {
                 
               }
+              server.setDaemon(false);
               server.start();
               return;
             }
@@ -269,7 +257,6 @@ public final class VTStandardStart
           option = VTMainConsole.readLine(true);
           if (option.toUpperCase().startsWith("S"))
           {
-            server.setDaemon(false);
             try
             {
               server.parseParameters(args);
@@ -278,8 +265,7 @@ public final class VTStandardStart
             {
               
             }
-            // server.initialize();
-            // server.configure();
+            server.setDaemon(false);
             server.start();
           }
           else
@@ -292,8 +278,7 @@ public final class VTStandardStart
             {
               
             }
-            // client.initialize();
-            // client.configure();
+            client.setDaemon(false);
             client.start();
           }
         }

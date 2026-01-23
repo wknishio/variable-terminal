@@ -51,7 +51,6 @@ public class VTClientStandardStart
         }
         VTRuntimeExit.exit(0);
       }
-      VTMainConsole.setDaemon(daemon);
       VTClient client = new VTClient();
       try
       {
@@ -61,16 +60,12 @@ public class VTClientStandardStart
       {
         VTRuntimeExit.exit(-1);
       }
-      // client.initialize();
       client.setDaemon(daemon);
       client.start();
     }
     else
     {
-      VTMainConsole.setDaemon(daemon);
       VTClient client = new VTClient();
-      // client.initialize();
-      // client.configure();
       client.setDaemon(daemon);
       client.start();
     }

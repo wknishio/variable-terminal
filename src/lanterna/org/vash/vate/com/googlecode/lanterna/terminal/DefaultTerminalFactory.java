@@ -152,9 +152,9 @@ public class DefaultTerminalFactory implements TerminalFactory {
 	                return createTelnetTerminal();
 	            }
 	            if(isOperatingSystemWindows()) {
-	            	return createWindowsTerminal();
-	                //return createWindowsTerminal(outputStream, inputStream, charset);
-	            	//return createUnixTerminal(outputStream, inputStream, charset);
+	            	//return createWindowsTerminal();
+	              //return createWindowsTerminal(outputStream, inputStream, charset);
+	            	return createUnixTerminal(outputStream, inputStream, charset);
 	            }
 	            else {
 	                return createUnixTerminal(outputStream, inputStream, charset);
@@ -277,7 +277,8 @@ public class DefaultTerminalFactory implements TerminalFactory {
             return createTelnetTerminal();
         }
         if(isOperatingSystemWindows()) {
-            return createWindowsTerminal();
+            //return createWindowsTerminal();
+          return createUnixTerminal(outputStream, inputStream, charset);
         }
 
         return createUnixTerminal(outputStream, inputStream, charset);
@@ -518,6 +519,7 @@ public class DefaultTerminalFactory implements TerminalFactory {
         return new TerminalScreen(createTerminal());
     }
     
+    @SuppressWarnings("unused")
     private Terminal createWindowsTerminal() throws IOException {
         try {
             Class<?> nativeImplementation = Class.forName("org.vash.vate.com.googlecode.lanterna.terminal.win32.WindowsTerminal");

@@ -31,7 +31,6 @@ public class VTServerStandardStart
           daemon = true;
         }
       }
-      
       if (help && !daemon)
       {
         VTMainConsole.initialize();
@@ -52,7 +51,6 @@ public class VTServerStandardStart
         }
         VTRuntimeExit.exit(0);
       }
-      VTMainConsole.setDaemon(daemon);
       VTServer server = new VTServer();
       try
       {
@@ -62,17 +60,13 @@ public class VTServerStandardStart
       {
         VTRuntimeExit.exit(-1);
       }
-      // server.initialize();
       server.setDaemon(daemon);
       server.start();
     }
     else
     {
-      VTMainConsole.setDaemon(daemon);
       VTServer server = new VTServer();
       server.setDaemon(daemon);
-      // server.initialize();
-      // server.configure();
       server.start();
     }
   }

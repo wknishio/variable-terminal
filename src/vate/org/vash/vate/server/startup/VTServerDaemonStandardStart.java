@@ -8,16 +8,14 @@ public class VTServerDaemonStandardStart
 {
   public static final void main(String[] args)
   {
-    // System.setProperty("java.awt.headless", "true");
     VTMainConsole.setGraphical(false);
     VTMainConsole.setSeparated(false);
     VTMainConsole.setRemoteIcon(true);
     VTMainConsole.setDaemon(true);
-    VTServer server = new VTServer();
-    server.setDaemon(true);
     
     if (args.length >= 1)
     {
+      VTServer server = new VTServer();
       try
       {
         server.parseParameters(args);
@@ -26,12 +24,13 @@ public class VTServerDaemonStandardStart
       {
         VTRuntimeExit.exit(-1);
       }
-      // server.initialize();
+      server.setDaemon(true);
       server.start();
     }
     else
     {
-      // server.initialize();
+      VTServer server = new VTServer();
+      server.setDaemon(true);
       server.start();
     }
   }

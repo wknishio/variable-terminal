@@ -18,7 +18,6 @@ public class VTClientAgentGraphicalStart
     if (args.length >= 1)
     {
       VTClient client = new VTClient();
-      client.setDaemon(true);
       try
       {
         client.parseParameters(args);
@@ -27,15 +26,13 @@ public class VTClientAgentGraphicalStart
       {
         VTRuntimeExit.exit(-1);
       }
-      // client.initialize();
+      client.setDaemon(true);
       client.start();
     }
     else
     {
       VTClient client = new VTClient();
       client.setDaemon(true);
-      // client.initialize();
-      // client.configure();
       client.start();
     }
   }

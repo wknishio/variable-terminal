@@ -216,6 +216,10 @@ public final class VTMainConsole
   
   public synchronized static void setDaemon(boolean daemon)
   {
+    if (daemon)
+    {
+      setSeparated(false);
+    }
     if (VTMainConsole.daemon == daemon)
     {
       return;
