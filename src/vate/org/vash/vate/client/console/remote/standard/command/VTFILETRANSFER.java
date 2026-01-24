@@ -31,11 +31,10 @@ public class VTFILETRANSFER extends VTClientStandardRemoteConsoleCommandProcesso
         }
         if (session.getFileTransferClient().aliveThread())
         {
-          // VTTerminal.print(command);
           session.getFileTransferClient().getHandler().getSession().getTransaction().setInterrupted();
+          session.getFileTransferClient().getHandler().getSession().getTransaction().setStopped(true);
           connection.getCommandWriter().writeLine(command);
           connection.getCommandWriter().flush();
-          session.getFileTransferClient().getHandler().getSession().getTransaction().setStopped(true);
         }
         else
         {
@@ -48,6 +47,14 @@ public class VTFILETRANSFER extends VTClientStandardRemoteConsoleCommandProcesso
         {
           connection.getCommandWriter().writeLine(command);
           connection.getCommandWriter().flush();
+          try
+          {
+            waitFor();
+          }
+          catch (Throwable t)
+          {
+            //t.printStackTrace();
+          }
         }
         else
         {
@@ -75,8 +82,6 @@ public class VTFILETRANSFER extends VTClientStandardRemoteConsoleCommandProcesso
         {
           //t.printStackTrace();
         }
-        connection.getCommandWriter().writeLine(command);
-        connection.getCommandWriter().flush();
       }
       if (parsed[1].toUpperCase().contains("G") && !parsed[1].toUpperCase().contains("P"))
       {
@@ -92,6 +97,17 @@ public class VTFILETRANSFER extends VTClientStandardRemoteConsoleCommandProcesso
           connection.getCommandWriter().writeLine(command);
           connection.getCommandWriter().flush();
           session.getFileTransferClient().startThread();
+          if (waitFor)
+          {
+            try
+            {
+              waitFor();
+            }
+            catch (Throwable t)
+            {
+              
+            }
+          }
         }
         else
         {
@@ -112,6 +128,17 @@ public class VTFILETRANSFER extends VTClientStandardRemoteConsoleCommandProcesso
           connection.getCommandWriter().writeLine(command);
           connection.getCommandWriter().flush();
           session.getFileTransferClient().startThread();
+          if (waitFor)
+          {
+            try
+            {
+              waitFor();
+            }
+            catch (Throwable t)
+            {
+              
+            }
+          }
         }
         else
         {
