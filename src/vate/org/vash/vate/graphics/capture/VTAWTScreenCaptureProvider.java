@@ -30,19 +30,19 @@ import org.vash.vate.reflection.VTReflectionUtils;
 
 public final class VTAWTScreenCaptureProvider
 {
-  public static final int VT_COLOR_QUALITY_16777216 = 0; // 16777216 rgb-888   24-bit
-  public static final int VT_COLOR_QUALITY_2097152 = 1;  // 2097152  rgb-777   21-bit
-  public static final int VT_COLOR_QUALITY_262144 = 2;   // 262144   rgb-666   18-bit
-  public static final int VT_COLOR_QUALITY_32768 = 3;    // 32768    rgb-555   15-bit
-  public static final int VT_COLOR_QUALITY_4096 = 4;     // 4096     rgb-444   12-bit
-  public static final int VT_COLOR_QUALITY_512 = 5;      // 512      rgb-333   9-bit
-  public static final int VT_COLOR_QUALITY_216 = 6;      // 216      rgb-6x6x6 8-bit
-  public static final int VT_COLOR_QUALITY_125 = 7;      // 125      rgb-5x5x5 7-bit
-  public static final int VT_COLOR_QUALITY_64 = 8;       // 64       rgb-222   6-bit
-  public static final int VT_COLOR_QUALITY_27 = 9;       // 27       rgb-3x3x3 5-bit
-  public static final int VT_COLOR_QUALITY_16 = 10;      // 16       grayscale 4-bit
-  public static final int VT_COLOR_QUALITY_8 = 11;       // 8        grayscale 3-bit
-  public static final int VT_COLOR_QUALITY_4 = 12;       // 4        grayscale 2-bit 
+  public static final int VT_COLOR_QUALITY_16777216 = 0; // rgb-888   24-bit 16777216
+  public static final int VT_COLOR_QUALITY_2097152 = 1;  // rgb-777   21-bit 2097152
+  public static final int VT_COLOR_QUALITY_262144 = 2;   // rgb-666   18-bit 262144
+  public static final int VT_COLOR_QUALITY_32768 = 3;    // rgb-555   15-bit 32768
+  public static final int VT_COLOR_QUALITY_4096 = 4;     // rgb-444   12-bit 4096
+  public static final int VT_COLOR_QUALITY_512 = 5;      // rgb-333    9-bit 512
+  public static final int VT_COLOR_QUALITY_216 = 6;      // rgb-6x6x6  8-bit 216
+  public static final int VT_COLOR_QUALITY_125 = 7;      // rgb-5x5x5  7-bit 125
+  public static final int VT_COLOR_QUALITY_64 = 8;       // rgb-4x4x4  6-bit 64
+  public static final int VT_COLOR_QUALITY_27 = 9;       // rgb-3x3x3  5-bit 27
+  public static final int VT_COLOR_QUALITY_16 = 10;      // grayscale  4-bit 16
+  public static final int VT_COLOR_QUALITY_8 = 11;       // grayscale  3-bit 8
+  public static final int VT_COLOR_QUALITY_4 = 12;       // grayscale  2-bit 4
   
 //  private static final int RGBAAA_RED_MASK = 0x00FF0000;
 //  private static final int RGBAAA_GREEN_MASK = 0x0000FF00;
