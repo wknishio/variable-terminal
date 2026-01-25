@@ -325,8 +325,8 @@ public class VTShellAdapter
       shellProcessor.setRuntimeProcess(runtimeProcess);
       if (shellType != VTShellProcessor.SHELL_TYPE_PROCESS)
       {
-        // try using shell in separate jvm if that fails use current jvm
-        shellProcessor.setShellType(VTShellProcessor.SHELL_TYPE_PROCESS);
+        // try using shell in current jvm if that fails use separate jvm
+        shellProcessor.setShellType(shellType);
         boolean ok = false;
         try
         {
@@ -338,8 +338,8 @@ public class VTShellAdapter
         }
         if (!ok)
         {
-          // try using shell in current jvm
-          shellProcessor.setShellType(shellType);
+          // try using shell in separate jvm
+          shellProcessor.setShellType(VTShellProcessor.SHELL_TYPE_PROCESS);
           try
           {
             ok = shellProcessor.startShell();
