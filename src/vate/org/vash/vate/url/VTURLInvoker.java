@@ -200,8 +200,15 @@ public class VTURLInvoker
           {
             if (resultOutputStream != null)
             {
-              resultOutputStream.write(readBuffer, 0, readed);
-              resultOutputStream.flush();
+              try
+              {
+                resultOutputStream.write(readBuffer, 0, readed);
+                resultOutputStream.flush();
+              }
+              catch (Throwable t)
+              {
+                resultOutputStream = null;
+              }
             }
           }
           connectionInputStream.close();
@@ -224,8 +231,18 @@ public class VTURLInvoker
               connectionInputStream = new BufferedInputStream(connectionErrorStream, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES);
               while ((readed = connectionInputStream.read(readBuffer)) > 0)
               {
-                resultOutputStream.write(readBuffer, 0, readed);
-                resultOutputStream.flush();
+                if (resultOutputStream != null)
+                {
+                  try
+                  {
+                    resultOutputStream.write(readBuffer, 0, readed);
+                    resultOutputStream.flush();
+                  }
+                  catch (Throwable t)
+                  {
+                    resultOutputStream = null;
+                  }
+                }
               }
               connectionInputStream.close();
             }
