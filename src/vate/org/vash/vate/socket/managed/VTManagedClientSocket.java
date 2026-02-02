@@ -8,7 +8,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import org.vash.vate.VTSystem;
 import org.vash.vate.client.VTClient;
 import org.vash.vate.client.connection.VTClientConnection;
 import org.vash.vate.client.session.VTClientSession;
@@ -132,7 +131,7 @@ public class VTManagedClientSocket
   {
     public void sessionStarted(VTClientSession session)
     {
-      VTManagedSocket socket = new VTManagedSocket(new VTManagedClientConnection(session), session.getConnection().getMultiplexedConnectionInputStream().linkInputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, session.getConnection().getAvailableInputChannel()), session.getConnection().getMultiplexedConnectionOutputStream().linkOutputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, session.getConnection().getAvailableOutputChannel()));
+      VTManagedSocket socket = new VTManagedSocket(new VTManagedClientConnection(session), session.getConnection().getAvailableInputChannel(), session.getConnection().getAvailableOutputChannel());
       sessions.put(session, socket);
       if (socketListener != null)
       {

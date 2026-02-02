@@ -26,11 +26,11 @@ public class VTManagedSocket extends Socket implements Closeable
   private final InputStream input;
   private final OutputStream output;
   
-  public VTManagedSocket(VTManagedConnection connection, VTMultiplexedInputStream in, VTMultiplexedOutputStream out)
+  public VTManagedSocket(VTManagedConnection connection, int inputChannel, int outputChannel)
   {
     this.connection = connection;
-    this.in = in;
-    this.out = out;
+    this.in = connection.getMultiplexedConnectionInputStream().linkInputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel);
+    this.out = connection.getMultiplexedConnectionOutputStream().linkOutputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel);
     this.input = new BufferedInputStream(in, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES);
     this.output = new BufferedOutputStream(out, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES);
   }
