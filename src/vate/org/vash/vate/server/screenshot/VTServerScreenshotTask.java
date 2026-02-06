@@ -15,6 +15,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.zip.Deflater;
+
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageTypeSpecifier;
@@ -22,6 +24,7 @@ import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.stream.ImageOutputStream;
+
 import org.vash.vate.VTSystem;
 import org.vash.vate.com.pngencoder.PngEncoder;
 import org.vash.vate.graphics.capture.VTAWTScreenCaptureProvider;
@@ -75,7 +78,7 @@ public class VTServerScreenshotTask extends VTTask
     this.useJPG = false;
     try
     {
-      this.pngEncoder = new PngEncoder();
+      this.pngEncoder = new PngEncoder().withCompressionLevel(Deflater.BEST_SPEED + 3);
       //this.pngEncoder = new PngEncoder(PngEncoder.COLOR_TRUECOLOR, PngEncoder.BEST_SPEED);
       //this.pngEncoder.setIndexedColorMode(PngEncoder.INDEXED_COLORS_ORIGINAL);
       

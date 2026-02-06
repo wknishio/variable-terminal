@@ -11,6 +11,7 @@ import java.awt.image.DataBufferInt;
 import java.awt.image.DataBufferUShort;
 import java.io.IOException;
 import java.util.List;
+import java.util.zip.Deflater;
 
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
@@ -848,7 +849,7 @@ public class VTGraphicsLinkServerWriter implements Runnable
     
     try
     {
-      pngEncoder = new PngEncoder();
+      pngEncoder = new PngEncoder().withCompressionLevel(Deflater.BEST_SPEED + 3);
       //pngEncoder = new PngEncoder(PngEncoder.COLOR_INDEXED, PngEncoder.BEST_SPEED);
       //pngEncoder.setIndexedColorMode(PngEncoder.INDEXED_COLORS_ORIGINAL);
       
