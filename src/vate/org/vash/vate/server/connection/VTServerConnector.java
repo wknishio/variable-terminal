@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.security.SecureRandom;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -14,7 +15,6 @@ import org.vash.vate.nat.mapping.VTNATPortMappingResultNotify;
 import org.vash.vate.nat.mapping.VTNATSinglePortMappingManagerMKII;
 import org.vash.vate.proxy.client.VTProxy;
 import org.vash.vate.proxy.client.VTProxy.VTProxyType;
-import org.vash.vate.security.VTBlake3SecureRandom;
 import org.vash.vate.server.VTServer;
 import org.vash.vate.server.session.VTServerSessionListener;
 
@@ -44,10 +44,10 @@ public class VTServerConnector implements Runnable
   private VTNATSinglePortMappingManagerMKII portMappingManager;
   private VTServerConnectorNATPortMappingResultNotify natNotify = new VTServerConnectorNATPortMappingResultNotify();
   private Collection<VTServerSessionListener> listeners = new ConcurrentLinkedQueue<VTServerSessionListener>();
-  private final VTBlake3SecureRandom secureRandom;
+  private final SecureRandom secureRandom;
   private final VTProxy proxy;
   
-  public VTServerConnector(VTServer server, VTBlake3SecureRandom secureRandom, VTProxy proxy, boolean managed)
+  public VTServerConnector(VTServer server, SecureRandom secureRandom, VTProxy proxy, boolean managed)
   {
     this.managed = managed;
     this.server = server;

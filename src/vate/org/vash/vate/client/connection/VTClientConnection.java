@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.security.SecureRandom;
 import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.VTSystem;
@@ -55,7 +56,7 @@ public class VTClientConnection
   private final byte[] randomData = new byte[VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES];
   private final VTCryptographicEngine cryptoEngine;
   private final VTBlake3MessageDigest blake3Digest;
-  private VTBlake3SecureRandom secureRandom;
+  private SecureRandom secureRandom;
   private Socket connectionSocket;
   private InputStream connectionSocketInputStream;
   private OutputStream connectionSocketOutputStream;
@@ -137,7 +138,7 @@ public class VTClientConnection
     this.authenticationWriter = new VTLittleEndianOutputStream(null);
   }
   
-  public VTBlake3SecureRandom getSecureRandom()
+  public SecureRandom getSecureRandom()
   {
     return secureRandom;
   }
