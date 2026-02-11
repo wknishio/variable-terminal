@@ -31,7 +31,7 @@ public class VTTunnelConnectionControlThread implements Runnable
   private volatile boolean closed = false;
   private static final String SESSION_SEPARATOR = "\f";
   private static final char SESSION_MARK = '\b';
-  private final byte[] packet = new byte[VTSystem.VT_PACKET_DATA_SIZE_BYTES];
+  private final byte[] packet = new byte[VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES];
   private final Map<String, VTTunnelCloseableServerSocket> serverSockets = new ConcurrentHashMap<String, VTTunnelCloseableServerSocket>();
   
   public VTTunnelConnectionControlThread(VTTunnelConnection connection)
@@ -43,9 +43,10 @@ public class VTTunnelConnectionControlThread implements Runnable
   {
     try
     {
+      int length = 0;
       while (!closed)
       {
-        final int packetLength = connection.getControlInputStream().readData(packet);
+        length = connection.getControlInputStream().readData(packet);
         if (packet[0] == 'U')
         {
           if (packet[1] == SESSION_MARK)
@@ -53,7 +54,7 @@ public class VTTunnelConnectionControlThread implements Runnable
             //final char tunnelChar = (char) packet[2];
             final char tunnelType = (char) packet[2];
             
-            String text = new String(packet, 3, packetLength - 3, "UTF-8");
+            String text = new String(packet, 3, length - 3, "UTF-8");
             String[] parts = text.split(SESSION_SEPARATOR);
             if (parts.length >= 8)
             {
