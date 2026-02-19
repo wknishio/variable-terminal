@@ -15,12 +15,13 @@ import org.vash.vate.client.connection.VTClientConnection;
 import org.vash.vate.com.sixlegs.png.iio.*;
 import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.graphics.codec.VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII;
+import static org.vash.vate.graphics.codec.VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII.CUSTOM_CODEC_PADDING_SIZE;
 import org.vash.vate.graphics.image.VTImageIO;
 import org.vash.vate.stream.limit.VTSizedInputStream;
 
 public class VTGraphicsLinkClientReader implements Runnable
 {
-  private static final int CODEC_PADDING_SIZE = VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII.CODEC_PADDING_SIZE;
+  //private static final int CODEC_PADDING_SIZE = VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII.CUSTOM_CODEC_PADDING_SIZE;
   private volatile boolean stopped;
   private boolean failed;
   private int currentDataType;
@@ -444,7 +445,7 @@ public class VTGraphicsLinkClientReader implements Runnable
             height = connection.getGraphicsControlDataInputStream().readInt();
             //System.out.println("type:" + type);
             //System.out.println("colors:" + colors);
-            currentImageDataBuffer = VTImageIO.createImage(CODEC_PADDING_SIZE, CODEC_PADDING_SIZE, width, height, type, colors, recyclableDataBuffer);
+            currentImageDataBuffer = VTImageIO.createImage(CUSTOM_CODEC_PADDING_SIZE, CUSTOM_CODEC_PADDING_SIZE, width, height, type, colors, recyclableDataBuffer);
             recyclableDataBuffer = currentImageDataBuffer.getRaster().getDataBuffer();
             
             switch (type)

@@ -5,7 +5,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
 import org.vash.vate.VTSystem;
-import org.vash.vate.graphics.codec.VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII;
+import static org.vash.vate.graphics.codec.VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII.CUSTOM_CODEC_PADDING_SIZE;
 import org.vash.vate.server.session.VTServerSession;
 
 public class VTGraphicsLinkServerSession
@@ -39,7 +39,7 @@ public class VTGraphicsLinkServerSession
     boolean controlProviderInitialized = false;
     try
     {
-      viewProviderInitialized = session.getViewProvider().isScreenCaptureInitialized(VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII.CODEC_PADDING_SIZE) || session.getViewProvider().initializeScreenCapture(VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII.CODEC_PADDING_SIZE);
+      viewProviderInitialized = session.getViewProvider().isScreenCaptureInitialized(CUSTOM_CODEC_PADDING_SIZE) || session.getViewProvider().initializeScreenCapture(CUSTOM_CODEC_PADDING_SIZE);
       controlProviderInitialized = session.getControlProvider().isInputControlInitialized() || session.getControlProvider().initializeInputControl();
     }
     catch (Throwable e)

@@ -25,6 +25,7 @@ import org.vash.vate.VTSystem;
 import org.vash.vate.com.pngencoder.PngEncoder;
 import org.vash.vate.graphics.capture.VTAWTScreenCaptureProvider;
 import org.vash.vate.graphics.codec.VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII;
+import static org.vash.vate.graphics.codec.VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII.CUSTOM_CODEC_PADDING_SIZE;
 import org.vash.vate.graphics.image.VTImageDataUtils;
 import org.vash.vate.graphics.image.VTImageIO;
 import org.vash.vate.graphics.image.VTRectangle;
@@ -37,7 +38,7 @@ import org.w3c.dom.NodeList;
 
 public class VTGraphicsLinkServerWriter implements Runnable
 {
-  private static final int CODEC_PADDING_SIZE = VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII.CODEC_PADDING_SIZE;
+  //private static final int CODEC_PADDING_SIZE = VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII.CUSTOM_CODEC_PADDING_SIZE;
   private static final int IMAGE_OUTPUT_BUFFER_SIZE = VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES;
   private volatile boolean stopped;
   private boolean needRefresh;
@@ -956,7 +957,7 @@ public class VTGraphicsLinkServerWriter implements Runnable
             {
               try
               {
-                imageDataBuffer = viewProvider.createScreenCapture(imageCoding == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_ZSD || imageCoding == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_GZD ? CODEC_PADDING_SIZE : 0, drawPointer, captureArea);
+                imageDataBuffer = viewProvider.createScreenCapture(imageCoding == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_ZSD || imageCoding == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_GZD ? CUSTOM_CODEC_PADDING_SIZE : 0, drawPointer, captureArea);
               }
               catch (Throwable t)
               {
@@ -968,7 +969,7 @@ public class VTGraphicsLinkServerWriter implements Runnable
             {
               try
               {
-                imageDataBuffer = viewProvider.createScreenCapture(imageCoding == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_ZSD || imageCoding == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_GZD ? CODEC_PADDING_SIZE : 0, drawPointer);
+                imageDataBuffer = viewProvider.createScreenCapture(imageCoding == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_ZSD || imageCoding == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_GZD ? CUSTOM_CODEC_PADDING_SIZE : 0, drawPointer);
               }
               catch (Throwable t)
               {
@@ -1117,8 +1118,8 @@ public class VTGraphicsLinkServerWriter implements Runnable
               }
               else
               {
-                if (imageDataBuffer.getWidth() + CODEC_PADDING_SIZE == lastWidth
-                && imageDataBuffer.getHeight() + CODEC_PADDING_SIZE == lastHeight
+                if (imageDataBuffer.getWidth() + CUSTOM_CODEC_PADDING_SIZE == lastWidth
+                && imageDataBuffer.getHeight() + CUSTOM_CODEC_PADDING_SIZE == lastHeight
                 && imageDataBuffer.getColorModel().getPixelSize() == lastDepth
                 && viewProvider.getColorCount() == lastColors
                 && imageDataBuffer.getRaster().getDataBuffer().getDataType() == lastDataType
@@ -1126,8 +1127,8 @@ public class VTGraphicsLinkServerWriter implements Runnable
                 //&& imageCoding == lastImageCoding)
                 {
                   // startTime = System.currentTimeMillis();
-                  captureArea.width = Math.min(lastWidth, captureArea.width + CODEC_PADDING_SIZE);
-                  captureArea.height = Math.min(lastHeight, captureArea.width + CODEC_PADDING_SIZE);
+                  captureArea.width = Math.min(lastWidth, captureArea.width + CUSTOM_CODEC_PADDING_SIZE);
+                  captureArea.height = Math.min(lastHeight, captureArea.width + CUSTOM_CODEC_PADDING_SIZE);
                   boolean different = false;
                   if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)
                   {
@@ -1152,16 +1153,16 @@ public class VTGraphicsLinkServerWriter implements Runnable
                 }
                 else
                 {
-                  lastWidth = imageDataBuffer.getWidth() + CODEC_PADDING_SIZE;
-                  lastHeight = imageDataBuffer.getHeight() + CODEC_PADDING_SIZE;
+                  lastWidth = imageDataBuffer.getWidth() + CUSTOM_CODEC_PADDING_SIZE;
+                  lastHeight = imageDataBuffer.getHeight() + CUSTOM_CODEC_PADDING_SIZE;
                   interruptedLastWidth = imageDataBuffer.getWidth();
                   interruptedLastHeight = imageDataBuffer.getHeight();
                   lastDepth = imageDataBuffer.getColorModel().getPixelSize();
                   lastColors = viewProvider.getColorCount();
                   lastDataType = imageDataBuffer.getRaster().getDataBuffer().getDataType();
                   lastImageCoding = imageCoding;
-                  captureArea.width = Math.min(lastWidth, captureArea.width + CODEC_PADDING_SIZE);
-                  captureArea.height = Math.min(lastHeight, captureArea.width + CODEC_PADDING_SIZE);
+                  captureArea.width = Math.min(lastWidth, captureArea.width + CUSTOM_CODEC_PADDING_SIZE);
+                  captureArea.height = Math.min(lastHeight, captureArea.width + CUSTOM_CODEC_PADDING_SIZE);
                   if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)
                   {
                     lastImageBufferByte = ((DataBufferByte) imageDataBuffer.getRaster().getDataBuffer()).getData();
