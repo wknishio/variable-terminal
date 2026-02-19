@@ -98,7 +98,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
   private int limitX;
   private int limitY;
   private int offset;
-  public static final int CUSTOM_CODEC_PADDING_SIZE = 8;
+  public static final int CUSTOM_CODEC_PADDING_SIZE = 4;
   
 //  private static final int MAGIC1 = 0x34384431;
 //  private static final int MAGIC2 = 0x34384432;
