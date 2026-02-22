@@ -65,14 +65,10 @@ public final class VTImageDataUtils
   
   public static final List<VTRectangle> mergeNeighbourAreas(final List<VTRectangle> areas)
   {
-    //Collections.sort(rectangles, rectangleComparator);
-    boolean found = false;
     ListIterator<VTRectangle> iterator;
     VTRectangle current = null;
     VTRectangle next = null;
-    do
     {
-      found = false;
       iterator = areas.listIterator();
       current = null;
       next = null;
@@ -84,11 +80,8 @@ public final class VTImageDataUtils
       {
         next = iterator.next();
         // neighbour test
-        if (((current.y == next.y) && (current.height == next.height) && (current.x + current.width == next.x))
-        || ((current.x == next.x) && (current.width == next.width) && (current.y + current.height == next.y)))
+        if (((current.x == next.x) && (current.width == next.width) && (current.y + current.height == next.y)))
         {
-          found = true;
-          // union = true;
           current = current.union(next);
           iterator.remove();
           iterator.previous();
@@ -100,7 +93,31 @@ public final class VTImageDataUtils
         }
       }
     }
-    while (found);
+    {
+      iterator = areas.listIterator();
+      current = null;
+      next = null;
+      if (iterator.hasNext())
+      {
+        current = iterator.next();
+      }
+      while (iterator.hasNext())
+      {
+        next = iterator.next();
+        // neighbour test
+        if (((current.y == next.y) && (current.height == next.height) && (current.x + current.width == next.x)))
+        {
+          current = current.union(next);
+          iterator.remove();
+          iterator.previous();
+          iterator.set(current);
+        }
+        else
+        {
+          current = next;
+        }
+      }
+    }
     return areas;
   }
   
