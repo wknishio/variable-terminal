@@ -415,8 +415,8 @@ public class VTServerSettingsDialog extends Dialog
     encryptionTypeChoice.add("NONE");
     encryptionTypeChoice.add("SALSA");
     encryptionTypeChoice.add("HC");
+    encryptionTypeChoice.add("GRAIN");
     encryptionTypeChoice.add("ZUC");
-    encryptionTypeChoice.add("THREEFISH");
     encryptionTypeChoice.add("LEA");
     encryptionTypeChoice.select("NONE");
     encryptionTypeChoice.addItemListener(new ItemListener()
@@ -441,9 +441,9 @@ public class VTServerSettingsDialog extends Dialog
           {
             setEncryptionType("ZUC");
           }
-          else if (e.getItem().equals("THREEFISH"))
+          else if (e.getItem().equals("GRAIN"))
           {
-            setEncryptionType("THREEFISH");
+            setEncryptionType("GRAIN");
           }
           else if (e.getItem().equals("LEA"))
           {
@@ -1368,9 +1368,9 @@ public class VTServerSettingsDialog extends Dialog
     {
       encryptionType.setParameter("ZUC");
     }
-    else if (encryption.toUpperCase().startsWith("T"))
+    else if (encryption.toUpperCase().startsWith("G"))
     {
-      encryptionType.setParameter("THREEFISH");
+      encryptionType.setParameter("GRAIN");
     }
     else if (encryption.toUpperCase().startsWith("L"))
     {
