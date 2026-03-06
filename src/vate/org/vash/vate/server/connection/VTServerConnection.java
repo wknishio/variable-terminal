@@ -40,6 +40,8 @@ public class VTServerConnection
   private static final byte[] VT_CLIENT_CHECK_STRING_HC = ("/VARIABLE-TERMINAL/CLIENT/HC/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_SERVER_CHECK_STRING_GRAIN = ("/VARIABLE-TERMINAL/SERVER/GRAIN/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_CLIENT_CHECK_STRING_GRAIN = ("/VARIABLE-TERMINAL/CLIENT/GRAIN/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_SERVER_CHECK_STRING_RABBIT = ("/VARIABLE-TERMINAL/SERVER/RABBIT/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_CLIENT_CHECK_STRING_RABBIT = ("/VARIABLE-TERMINAL/CLIENT/RABBIT/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_SERVER_CHECK_STRING_ZUC = ("/VARIABLE-TERMINAL/SERVER/ZUC/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_CLIENT_CHECK_STRING_ZUC = ("/VARIABLE-TERMINAL/CLIENT/ZUC/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_SERVER_CHECK_STRING_LEA = ("/VARIABLE-TERMINAL/SERVER/LEA/" + MAJOR_MINOR_VERSION).getBytes();
@@ -652,6 +654,7 @@ public class VTServerConnection
     byte[] digestedClientSALSA = computeSecurityDigest(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_SALSA);
     byte[] digestedClientHC = computeSecurityDigest(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_HC);
     byte[] digestedClientGRAIN = computeSecurityDigest(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_GRAIN);
+    byte[] digestedClientRABBIT = computeSecurityDigest(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_RABBIT);
     byte[] digestedClientZUC = computeSecurityDigest(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_ZUC);
     byte[] digestedClientLEA = computeSecurityDigest(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_LEA);
     
@@ -675,6 +678,11 @@ public class VTServerConnection
     if (VTArrayComparator.arrayEquals(digestedClient, digestedClientGRAIN))
     {
       return VTSystem.VT_CONNECTION_ENCRYPTION_GRAIN;
+    }
+    
+    if (VTArrayComparator.arrayEquals(digestedClient, digestedClientRABBIT))
+    {
+      return VTSystem.VT_CONNECTION_ENCRYPTION_RABBIT;
     }
     
     if (VTArrayComparator.arrayEquals(digestedClient, digestedClientZUC))
@@ -734,6 +742,15 @@ public class VTServerConnection
         return true;
       }
     }
+    else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_RABBIT)
+    {
+      remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_SERVER_CHECK_STRING_RABBIT);
+      if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_NONE)
+      {
+        setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_RABBIT);
+        return true;
+      }
+    }
     else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_ZUC)
     {
       remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_SERVER_CHECK_STRING_ZUC);
@@ -765,6 +782,11 @@ public class VTServerConnection
     if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_GRAIN)
     {
       setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_GRAIN);
+      return true;
+    }
+    if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_RABBIT)
+    {
+      setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_RABBIT);
       return true;
     }
     if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_ZUC)

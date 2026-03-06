@@ -416,6 +416,7 @@ public class VTServerSettingsDialog extends Dialog
     encryptionTypeChoice.add("SALSA");
     encryptionTypeChoice.add("HC");
     encryptionTypeChoice.add("GRAIN");
+    encryptionTypeChoice.add("RABBIT");
     encryptionTypeChoice.add("ZUC");
     encryptionTypeChoice.add("LEA");
     encryptionTypeChoice.select("NONE");
@@ -437,13 +438,17 @@ public class VTServerSettingsDialog extends Dialog
           {
             setEncryptionType("HC");
           }
-          else if (e.getItem().equals("ZUC"))
-          {
-            setEncryptionType("ZUC");
-          }
           else if (e.getItem().equals("GRAIN"))
           {
             setEncryptionType("GRAIN");
+          }
+          else if (e.getItem().equals("RABBIT"))
+          {
+            setEncryptionType("RABBIT");
+          }
+          else if (e.getItem().equals("ZUC"))
+          {
+            setEncryptionType("ZUC");
           }
           else if (e.getItem().equals("LEA"))
           {
@@ -1364,13 +1369,17 @@ public class VTServerSettingsDialog extends Dialog
     {
       encryptionType.setParameter("HC");
     }
-    else if (encryption.toUpperCase().startsWith("Z"))
-    {
-      encryptionType.setParameter("ZUC");
-    }
     else if (encryption.toUpperCase().startsWith("G"))
     {
       encryptionType.setParameter("GRAIN");
+    }
+    else if (encryption.toUpperCase().startsWith("R"))
+    {
+      encryptionType.setParameter("RABBIT");
+    }
+    else if (encryption.toUpperCase().startsWith("Z"))
+    {
+      encryptionType.setParameter("ZUC");
     }
     else if (encryption.toUpperCase().startsWith("L"))
     {

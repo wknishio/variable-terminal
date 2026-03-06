@@ -105,13 +105,17 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
       {
         message.append("\nVT>Encryption type(ET): [HC]");
       }
-      else if (encryptionType.toUpperCase().startsWith("Z"))
-      {
-        message.append("\nVT>Encryption type(ET): [ZUC]");
-      }
       else if (encryptionType.toUpperCase().startsWith("G"))
       {
         message.append("\nVT>Encryption type(ET): [GRAIN]");
+      }
+      else if (encryptionType.toUpperCase().startsWith("R"))
+      {
+        message.append("\nVT>Encryption type(ET): [RABBIT]");
+      }
+      else if (encryptionType.toUpperCase().startsWith("Z"))
+      {
+        message.append("\nVT>Encryption type(ET): [ZUC]");
       }
       else if (encryptionType.toUpperCase().startsWith("L"))
       {
@@ -578,13 +582,17 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           {
             VTMainConsole.print("\rVT>Encryption type(ET): [HC]\nVT>");
           }
-          else if (encryptionType.toUpperCase().startsWith("Z"))
-          {
-            VTMainConsole.print("\rVT>Encryption type(ET): [ZUC]\nVT>");
-          }
           else if (encryptionType.toUpperCase().startsWith("G"))
           {
             VTMainConsole.print("\rVT>Encryption type(ET): [GRAIN]\nVT>");
+          }
+          else if (encryptionType.toUpperCase().startsWith("R"))
+          {
+            VTMainConsole.print("\rVT>Encryption type(ET): [RABBIT]\nVT>");
+          }
+          else if (encryptionType.toUpperCase().startsWith("Z"))
+          {
+            VTMainConsole.print("\rVT>Encryption type(ET): [ZUC]\nVT>");
           }
           else if (encryptionType.toUpperCase().startsWith("L"))
           {
@@ -613,13 +621,17 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           {
             VTMainConsole.print("\rVT>Encryption type(ET) set to: [HC]\nVT>");
           }
-          else if (encryptionType.toUpperCase().startsWith("Z"))
-          {
-            VTMainConsole.print("\rVT>Encryption type(ET) set to: [ZUC]\nVT>");
-          }
           else if (encryptionType.toUpperCase().startsWith("G"))
           {
             VTMainConsole.print("\rVT>Encryption type(ET) set to: [GRAIN]\nVT>");
+          }
+          else if (encryptionType.toUpperCase().startsWith("R"))
+          {
+            VTMainConsole.print("\rVT>Encryption type(ET) set to: [RABBIT]\nVT>");
+          }
+          else if (encryptionType.toUpperCase().startsWith("Z"))
+          {
+            VTMainConsole.print("\rVT>Encryption type(ET) set to: [ZUC]\nVT>");
           }
           else if (encryptionType.toUpperCase().startsWith("L"))
           {
