@@ -623,7 +623,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           }
           else if (encryptionType.toUpperCase().startsWith("L"))
           {
-            VTMainConsole.print("\rVT>Encryption type(ET) set to: [L]\nVT>");
+            VTMainConsole.print("\rVT>Encryption type(ET) set to: [LEA]\nVT>");
           }
           else
           {
