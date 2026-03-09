@@ -54,13 +54,15 @@ public class VTServerSessionHandler implements Runnable
     try
     {
       connection.setAuthenticationStreams();
-      if (authenticator.tryAuthentication() && connection.setConnectionStreams(authenticator.getDigestedCredential()))
+      if (authenticator.tryAuthentication())
       {
+        connection.setConnectionStreams(authenticator.getDigestedCredential());
         VTMainConsole.print("\rVT>Session with client accepted!\nVT>");
         processSession();
       }
       else
       {
+        connection.setConnectionStreams(authenticator.getDigestedCredential());
         VTMainConsole.print("\rVT>Session with client rejected!\nVT>");
         connection.closeConnection();
       }
@@ -68,7 +70,7 @@ public class VTServerSessionHandler implements Runnable
     catch (Throwable e)
     {
       // e.printStackTrace();
-      VTMainConsole.print("\rVT>Session with client failed!\nVT>");
+      VTMainConsole.print("\rVT>Session with client rejected!\nVT>");
       connection.closeConnection();
     }
 //    System.runFinalization();

@@ -177,7 +177,7 @@ public class VTServerAuthenticator
         digestedCredential = possibleCredential;
         accepted = true;
         stopTimeoutThread();
-        return true;
+        return connection.isVerified();
       }
       i++;
     }

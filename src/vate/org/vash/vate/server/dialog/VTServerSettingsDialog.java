@@ -49,6 +49,7 @@ import org.vash.vate.dialog.VTConfigurationDialogParameter;
 import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.dialog.VTFileDialog;
 import org.vash.vate.graphics.font.VTFontManager;
+import org.vash.vate.security.VTCredential;
 import org.vash.vate.server.VTServer;
 import org.vash.vate.server.connection.VTServerConnector;
 
@@ -1283,6 +1284,12 @@ public class VTServerSettingsDialog extends Dialog
         //setProxySecurity(connector.isUseProxyAuthentication());
         proxyUser.setParameter(connector.getProxyUser());
         proxyPassword.setParameter(connector.getProxyPassword());
+        VTCredential[] credentials = server.getUserCredentials().toArray(new VTCredential[] {});
+        if (credentials != null && credentials.length == 1)
+        {
+          sessionUser.setParameter(credentials[0].getUser());
+          sessionPassword.setParameter(credentials[0].getUser());
+        }
         sessionsMaximum.setParameter(String.valueOf(connector.getSessionsMaximum()));
         sessionShell.setParameter(connector.getSessionShell());
         pingLimit.setParameter(server.getPingLimit() > 0 ? server.getPingLimit() : "");
@@ -1310,6 +1317,12 @@ public class VTServerSettingsDialog extends Dialog
         //setProxySecurity(server.isUseProxyAuthentication());
         proxyUser.setParameter(server.getProxyUser());
         proxyPassword.setParameter(server.getProxyPassword());
+        VTCredential[] credentials = server.getUserCredentials().toArray(new VTCredential[] {});
+        if (credentials != null && credentials.length == 1)
+        {
+          sessionUser.setParameter(credentials[0].getUser());
+          sessionPassword.setParameter(credentials[0].getUser());
+        }
         sessionsMaximum.setParameter(String.valueOf(server.getSessionsMaximum()));
         sessionShell.setParameter(server.getSessionShell());
         pingLimit.setParameter(server.getPingLimit() > 0 ? server.getPingLimit() : "");

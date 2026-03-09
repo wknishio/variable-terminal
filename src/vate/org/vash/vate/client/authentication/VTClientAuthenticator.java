@@ -140,6 +140,6 @@ public class VTClientAuthenticator
     
     accepted = true;
     stopTimeoutThread();
-    return true;
+    return connection.isVerified();
   }
 }

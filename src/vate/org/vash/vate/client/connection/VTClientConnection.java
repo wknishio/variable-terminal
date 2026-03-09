@@ -45,6 +45,7 @@ public class VTClientConnection
   private static final byte[] VT_CLIENT_CHECK_STRING_LEA = ("/VARIABLE-TERMINAL/CLIENT/LEA/" + MAJOR_MINOR_VERSION).getBytes();
   
   private volatile boolean connected = false;
+  private volatile boolean verified = false;
   private volatile boolean closed = true;
   
   private final boolean managed;
@@ -442,6 +443,11 @@ public class VTClientConnection
     return connectionSocket != null && connectionSocket.isConnected() && !connectionSocket.isClosed() && connected && !closed;
   }
   
+  public boolean isVerified()
+  {
+    return verified;
+  }
+  
   private void setNonceStreams() throws IOException
   {
     connectionSocketInputStream = connectionSocket.getInputStream();
@@ -511,14 +517,13 @@ public class VTClientConnection
     nonceWriter.setOutputStream(authenticationWriter.getOutputStream());
   }
   
-  public boolean setConnectionStreams(byte[] digestedCredentials) throws IOException
+  public void setConnectionStreams(byte[] digestedCredentials) throws IOException
   {
     exchangeNonces(true);
     this.digestedCredentials = digestedCredentials;
     cryptoEngine.initializeClientEngine(encryptionType, localNonce, remoteNonce, encryptionKey, digestedCredentials);
     connectionInputStream = new BufferedInputStream(cryptoEngine.getDecryptedInputStream(connectionSocketInputStream, VTSystem.VT_CONNECTION_INPUT_PACKET_BUFFER_SIZE_BYTES), VTSystem.VT_CONNECTION_INPUT_PACKET_BUFFER_SIZE_BYTES);
     connectionOutputStream = new BufferedOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream, VTSystem.VT_CONNECTION_OUTPUT_PACKET_BUFFER_SIZE_BYTES), VTSystem.VT_CONNECTION_OUTPUT_PACKET_BUFFER_SIZE_BYTES);
-    return true;
   }
   
   private void setMultiplexedStreams() throws IOException
@@ -702,9 +707,10 @@ public class VTClientConnection
     return -1;
   }
   
-  public boolean verifyConnection() throws IOException
+  public void verifyConnection() throws IOException
   {
     connected = true;
+    verified = false;
     setNonceStreams();
     exchangeNonces(false);
     setVerificationStreams();
@@ -716,37 +722,44 @@ public class VTClientConnection
       if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_NONE)
       {
         setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_NONE);
-        return true;
+        verified = true;
+        return;
       }
       if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_SALSA)
       {
         setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_SALSA);
-        return true;
+        verified = true;
+        return;
       }
       if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_HC)
       {
         setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_HC);
-        return true;
+        verified = true;
+        return;
       }
       if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_GRAIN)
       {
         setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_GRAIN);
-        return true;
+        verified = true;
+        return;
       }
       if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_RABBIT)
       {
         setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_RABBIT);
-        return true;
+        verified = true;
+        return;
       }
       if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_ZUC)
       {
         setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_ZUC);
-        return true;
+        verified = true;
+        return;
       }
       if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_LEA)
       {
         setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_LEA);
-        return true;
+        verified = true;
+        return;
       }
     }
     else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_SALSA)
@@ -755,7 +768,8 @@ public class VTClientConnection
       if (remoteEncryptionType != -1)
       {
         setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_SALSA);
-        return true;
+        verified = true;
+        return;
       }
     }
     else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_HC)
@@ -764,7 +778,8 @@ public class VTClientConnection
       if (remoteEncryptionType != -1)
       {
         setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_HC);
-        return true;
+        verified = true;
+        return;
       }
     }
     else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_GRAIN)
@@ -773,7 +788,8 @@ public class VTClientConnection
       if (remoteEncryptionType != -1)
       {
         setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_GRAIN);
-        return true;
+        verified = true;
+        return;
       }
     }
     else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_RABBIT)
@@ -782,7 +798,8 @@ public class VTClientConnection
       if (remoteEncryptionType != -1)
       {
         setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_RABBIT);
-        return true;
+        verified = true;
+        return;
       }
     }
     else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_ZUC)
@@ -791,7 +808,8 @@ public class VTClientConnection
       if (remoteEncryptionType != -1)
       {
         setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_ZUC);
-        return true;
+        verified = true;
+        return;
       }
     }
     else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_LEA)
@@ -800,10 +818,12 @@ public class VTClientConnection
       if (remoteEncryptionType != -1)
       {
         setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_LEA);
-        return true;
+        verified = true;
+        return;
       }
     }
-    return false;
+    setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_NONE);
+    return;
   }
   
   public void startConnection() throws IOException
