@@ -11,7 +11,7 @@ This is the full variant with jna native functions.
 
 Some of the available features are:
 
-* Support for SALSA, HC, GRAIN, ZUC or LEA encryption.
+* Support for SALSA, HC, GRAIN, RABBIT, ZUC or LEA encryption.
 * Support for UPnP, NAT-PMP and PCP NAT port forwarding.
 * Support for SOCKS and HTTP proxy network connections.
 * Support for LZ4 and ZSTD data compression.
