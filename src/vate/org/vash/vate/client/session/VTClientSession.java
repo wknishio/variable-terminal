@@ -25,6 +25,7 @@ public class VTClientSession
 {
   private long sessionLocalNanoDelay;
   private long sessionRemoteNanoDelay;
+  private String shellEncoding;
   // private File workingDirectory;
   private VTClient client;
   private VTClientConnection connection;
@@ -52,6 +53,7 @@ public class VTClientSession
   public void initialize()
   {
     // this.runningAudio = false;
+    this.shellEncoding = null;
     this.serverReader = new VTClientRemoteConsoleReader(this);
     this.clientWriter = new VTClientRemoteConsoleWriter(this);
     this.fileTransferClient = new VTFileTransferClient(this);
@@ -148,6 +150,16 @@ public class VTClientSession
   public VTClipboardTransferTask getClipboardTransferTask()
   {
     return clipboardTransferTask;
+  }
+  
+  public void setShellEncoding(String shellEncoding)
+  {
+    this.shellEncoding = shellEncoding;
+  }
+  
+  public String getShellEncoding()
+  {
+    return shellEncoding;
   }
   
   // public void setZipFileOperation(VTClientZipFileOperation zipFileOperation)

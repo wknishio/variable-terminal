@@ -3,9 +3,9 @@ package org.vash.vate.server.session;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
-import java.io.Reader;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.io.Writer;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -258,14 +258,14 @@ public class VTServerSession
     return shellAdapter.setShellDirectory(shellDirectory);
   }
   
-  public Reader getShellOutputReader()
+  public InputStream getShellInputStream()
   {
-    return shellAdapter.getShellOutputReader();
+    return shellAdapter.getShellInputStream();
   }
   
-  public Writer getShellCommandExecutor()
+  public OutputStream getShellOutputStream()
   {
-    return shellAdapter.getShellCommandExecutor();
+    return shellAdapter.getShellOutputStream();
   }
   
   public VTServerConnection getConnection()
@@ -476,41 +476,7 @@ public class VTServerSession
     restartShellThreads();
   }
   
-  public void negotiateShell() throws IOException
-  {
-    String clientShell = connection.getCommandReader().readLine();
-    String serverShell = server.getServerConnector().getSessionShell();
-    if (clientShell != null && clientShell.length() > 0)
-    {
-      if (clientShell.trim().equalsIgnoreCase("B"))
-      {
-        setShellType(VTShellProcessor.SHELL_TYPE_BEANSHELL);
-      }
-      else if (clientShell.trim().equalsIgnoreCase("N"))
-      {
-        setShellBuilder(new String[] {}, null, null);
-      }
-      else
-      {
-        setShellBuilder(CommandLineTokenizerMKII.tokenize(clientShell), null, null);
-      }
-    }
-    else if (serverShell != null && serverShell.length() > 0)
-    {
-      if (serverShell.trim().equalsIgnoreCase("B"))
-      {
-        setShellType(VTShellProcessor.SHELL_TYPE_BEANSHELL);
-      }
-      else if (serverShell.trim().equalsIgnoreCase("N"))
-      {
-        setShellBuilder(new String[] {}, null, null);
-      }
-      else
-      {
-        setShellBuilder(CommandLineTokenizerMKII.tokenize(serverShell), null, null);
-      }
-    }
-  }
+  
   
   public void startShell()
   {
@@ -847,5 +813,41 @@ public class VTServerSession
   public void setShellType(int shellType)
   {
     this.shellAdapter.setShellType(shellType);
+  }
+  
+  public void negotiateShell() throws IOException
+  {
+    String clientShell = connection.getCommandReader().readLine();
+    String serverShell = server.getServerConnector().getSessionShell();
+    if (clientShell != null && clientShell.length() > 0)
+    {
+      if (clientShell.trim().equalsIgnoreCase("B"))
+      {
+        setShellType(VTShellProcessor.SHELL_TYPE_BEANSHELL);
+      }
+      else if (clientShell.trim().equalsIgnoreCase("N"))
+      {
+        setShellBuilder(new String[] {}, null, null);
+      }
+      else
+      {
+        setShellBuilder(CommandLineTokenizerMKII.tokenize(clientShell), null, null);
+      }
+    }
+    else if (serverShell != null && serverShell.length() > 0)
+    {
+      if (serverShell.trim().equalsIgnoreCase("B"))
+      {
+        setShellType(VTShellProcessor.SHELL_TYPE_BEANSHELL);
+      }
+      else if (serverShell.trim().equalsIgnoreCase("N"))
+      {
+        setShellBuilder(new String[] {}, null, null);
+      }
+      else
+      {
+        setShellBuilder(CommandLineTokenizerMKII.tokenize(serverShell), null, null);
+      }
+    }
   }
 }

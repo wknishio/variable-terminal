@@ -24,10 +24,8 @@ public class VTClientRemoteConsoleWriter extends VTTask
   private VTClientSession session;
   private VTClientConnection connection;
   private VTClientRemoteConsoleCommandSelector<VTClientRemoteConsoleCommandProcessor> selector;
-  // private VTInterruptibleInputStream source;
   private BufferedReader sourceReader;
   private boolean reading = false;
-  // private BufferedReader
   
   public VTClientRemoteConsoleWriter(VTClientSession session)
   {

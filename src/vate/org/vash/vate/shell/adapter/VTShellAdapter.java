@@ -1,8 +1,8 @@
 package org.vash.vate.shell.adapter;
 
 import java.io.File;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -80,14 +80,14 @@ public class VTShellAdapter
     return shellProcessor;
   }
   
-  public Reader getShellOutputReader()
+  public InputStream getShellInputStream()
   {
-    return shellProcessor.getShellOutputReader();
+    return shellProcessor.getShellInputStream();
   }
   
-  public Writer getShellCommandExecutor()
+  public OutputStream getShellOutputStream()
   {
-    return shellProcessor.getShellCommandExecutor();
+    return shellProcessor.getShellOutputStream();
   }
   
   public Map<String, String> getShellEnvironment()

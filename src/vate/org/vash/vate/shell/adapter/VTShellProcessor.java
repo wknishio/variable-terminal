@@ -4,13 +4,9 @@ import java.io.Closeable;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.PrintStream;
-import java.io.Reader;
-import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
-import java.nio.charset.CharsetEncoder;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutionException;
@@ -43,9 +39,9 @@ public class VTShellProcessor
   private InputStream shellInputStream;
   //private InputStream shellErrorStream;
   private OutputStream shellOutputStream;
-  private Reader shellOutputReader;
+  //private Reader shellOutputReader;
   //private Reader shellErrorReader;
-  private Writer shellCommandExecutor;
+  //private Writer shellCommandExecutor;
   
   private String shellCharsetName;
   
@@ -88,17 +84,17 @@ public class VTShellProcessor
   
   public boolean startShell() throws Throwable
   {
-    CharsetEncoder encoder = null;
+    //CharsetEncoder encoder = null;
     CharsetDecoder decoder = null;
     
     if (shellCharsetName != null)
     {
-      encoder = VTSystem.getCharsetEncoder(shellCharsetName);
+      //encoder = VTSystem.getCharsetEncoder(shellCharsetName);
       decoder = VTSystem.getCharsetDecoder(shellCharsetName);
     }
     else
     {
-      encoder = VTSystem.getCharsetEncoder(null);
+      //encoder = VTSystem.getCharsetEncoder(null);
       decoder = VTSystem.getCharsetDecoder(null);
     }
     
@@ -184,8 +180,8 @@ public class VTShellProcessor
       shellThread = executorService.submit(beanshell);
     }
     
-    shellCommandExecutor = new OutputStreamWriter(shellOutputStream, encoder);
-    shellOutputReader = new InputStreamReader(shellInputStream, decoder);
+    //shellCommandExecutor = new OutputStreamWriter(shellOutputStream, encoder);
+    //shellOutputReader = new InputStreamReader(shellInputStream, decoder);
     return true;
   }
   
@@ -293,15 +289,15 @@ public class VTShellProcessor
     return shellOutputStream;
   }
   
-  public Reader getShellOutputReader()
-  {
-    return shellOutputReader;
-  }
+//  public Reader getShellOutputReader()
+//  {
+//    return shellOutputReader;
+//  }
   
-  public Writer getShellCommandExecutor()
-  {
-    return shellCommandExecutor;
-  }
+//  public Writer getShellCommandExecutor()
+//  {
+//    return shellCommandExecutor;
+//  }
   
   public boolean setShellEncoding(String shellEncoding)
   {

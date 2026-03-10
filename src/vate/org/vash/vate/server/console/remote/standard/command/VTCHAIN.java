@@ -14,16 +14,28 @@ public class VTCHAIN extends VTServerStandardRemoteConsoleCommandProcessor
   
   public void execute(String command, String[] parsed) throws Exception
   {
+    String shellEncoding = session.getShellEncoding();
+    byte[] commandData;
+    int level;
+    
     if (parsed.length == 1)
     {
-      int level = 1;
+      level = 1;
+      if (shellEncoding != null && shellEncoding.length() > 0)
+      {
+        commandData = (command + " " + (level + 1) + "\n").getBytes(shellEncoding);
+      }
+      else
+      {
+        commandData = (command + " " + (level + 1) + "\n").getBytes();
+      }
       connection.getResultWriter().write("\rVT>Instance detected at level [" + level + "]!\nVT>");
       connection.getResultWriter().flush();
       try
       {
-        session.getOutputWriter().setCommandFilter(command + " " + (level + 1));
-        session.getShellCommandExecutor().write(command + " " + (level + 1) + "\n");
-        session.getShellCommandExecutor().flush();
+        session.getOutputWriter().setCommandFilter(command + " " + (level + 1), shellEncoding);
+        session.getShellOutputStream().write(commandData);
+        session.getShellOutputStream().flush();
       }
       catch (Throwable t)
       {
@@ -32,14 +44,22 @@ public class VTCHAIN extends VTServerStandardRemoteConsoleCommandProcessor
     }
     else if (parsed.length == 2)
     {
-      int level = Integer.parseInt(parsed[1]);
+      level = Integer.parseInt(parsed[1]);
+      if (shellEncoding != null && shellEncoding.length() > 0)
+      {
+        commandData = (command + " " + (level + 1) + "\n").getBytes(shellEncoding);
+      }
+      else
+      {
+        commandData = (command + " " + (level + 1) + "\n").getBytes();
+      }
       connection.getResultWriter().write("\rVT>Instance detected at level [" + level + "]!\nVT>");
       connection.getResultWriter().flush();
       try
       {
-        session.getOutputWriter().setCommandFilter(command + " " + (level + 1));
-        session.getShellCommandExecutor().write(command + " " + (level + 1) + "\n");
-        session.getShellCommandExecutor().flush();
+        session.getOutputWriter().setCommandFilter(command + " " + (level + 1), shellEncoding);
+        session.getShellOutputStream().write(commandData);
+        session.getShellOutputStream().flush();
       }
       catch (Throwable t)
       {

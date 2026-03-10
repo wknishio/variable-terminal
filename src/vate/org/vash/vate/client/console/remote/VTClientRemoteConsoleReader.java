@@ -8,13 +8,9 @@ import org.vash.vate.task.VTTask;
 
 public class VTClientRemoteConsoleReader extends VTTask
 {
-  private static final int resultBufferSize = VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES * 4;
-  // private int available;
-  //private int readChars;
-  private final byte[] resultBuffer = new byte[resultBufferSize];
-  // private VTClient client;
   private VTClientSession session;
   private VTClientConnection connection;
+  private final byte[] buffer = new byte[VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES * 4];
   
   public VTClientRemoteConsoleReader(VTClientSession session)
   {
@@ -30,7 +26,7 @@ public class VTClientRemoteConsoleReader extends VTTask
       try
       {
         //readChars = connection.getResultReader().read(resultBuffer, 0, resultBufferSize);
-        String result = connection.getResultReader().readUTF(resultBuffer);
+        String result = connection.getResultReader().readUTF(buffer);
         if (result.length() > 0)
         {
           VTMainConsole.print(result);

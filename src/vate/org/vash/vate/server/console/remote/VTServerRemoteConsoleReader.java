@@ -17,7 +17,7 @@ public class VTServerRemoteConsoleReader extends VTTask
   private VTServerSession session;
   private VTServerConnection connection;
   private VTServerRemoteConsoleCommandSelector<VTServerRemoteConsoleCommandProcessor> selector;
-  private final byte[] buffer = new byte[VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES];
+  private final byte[] buffer = new byte[VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES * 4];
   
   public VTServerRemoteConsoleReader(VTServerSession session)
   {
@@ -129,6 +129,9 @@ public class VTServerRemoteConsoleReader extends VTTask
   private void executeCommand(String command) throws Throwable
   {
     String parsed[];
+    String shellEncoding;
+    byte[] commandData;
+    
     if (!(command.length() == 0))
     {
       parsed = CommandLineTokenizerMKII.tokenize(command);
@@ -182,12 +185,21 @@ public class VTServerRemoteConsoleReader extends VTTask
         {
           try
           {
+            shellEncoding = session.getShellEncoding();
+            if (shellEncoding != null && shellEncoding.length() > 0)
+            {
+              commandData = (command.substring(1) + "\n").getBytes(shellEncoding);
+            }
+            else
+            {
+              commandData = (command.substring(1) + "\n").getBytes();
+            }
             if (session.getEchoState() != 1)
             {
-              session.getOutputWriter().setCommandFilter(command.substring(1));
+              session.getOutputWriter().setCommandFilter(command.substring(1), shellEncoding);
             }
-            session.getShellCommandExecutor().write(command.substring(1) + "\n");
-            session.getShellCommandExecutor().flush();
+            session.getShellOutputStream().write(commandData);
+            session.getShellOutputStream().flush();
           }
           catch (Throwable e)
           {
@@ -198,12 +210,21 @@ public class VTServerRemoteConsoleReader extends VTTask
         {
           try
           {
+            shellEncoding = session.getShellEncoding();
+            if (shellEncoding != null && shellEncoding.length() > 0)
+            {
+              commandData = (command + "\n").getBytes(shellEncoding);
+            }
+            else
+            {
+              commandData = (command + "\n").getBytes();
+            }
             if (session.getEchoState() != 1)
             {
-              session.getOutputWriter().setCommandFilter(command);
+              session.getOutputWriter().setCommandFilter(command, shellEncoding);
             }
-            session.getShellCommandExecutor().write(command + "\n");
-            session.getShellCommandExecutor().flush();
+            session.getShellOutputStream().write(commandData);
+            session.getShellOutputStream().flush();
           }
           catch (Throwable e)
           {
