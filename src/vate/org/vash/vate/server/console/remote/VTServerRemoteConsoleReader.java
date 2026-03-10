@@ -130,7 +130,7 @@ public class VTServerRemoteConsoleReader extends VTTask
   {
     String parsed[];
     String shellEncoding;
-    byte[] commandData;
+    byte[] shellCommandData;
     
     if (!(command.length() == 0))
     {
@@ -186,20 +186,31 @@ public class VTServerRemoteConsoleReader extends VTTask
           try
           {
             shellEncoding = session.getShellEncoding();
-            if (shellEncoding != null && shellEncoding.length() > 0)
+            shellCommandData = null;
+            try
             {
-              commandData = (command.substring(1) + "\n").getBytes(shellEncoding);
+              if (shellEncoding != null && shellEncoding.length() > 0)
+              {
+                shellCommandData = (command.substring(1) + "\n").getBytes(shellEncoding);
+              }
+              else
+              {
+                shellCommandData = (command.substring(1) + "\n").getBytes();
+              }
             }
-            else
+            catch (Throwable e)
             {
-              commandData = (command.substring(1) + "\n").getBytes();
+              // e.printStackTrace();
             }
             if (session.getEchoState() != 1)
             {
               session.getOutputWriter().setCommandFilter(command.substring(1), shellEncoding);
             }
-            session.getShellOutputStream().write(commandData);
-            session.getShellOutputStream().flush();
+            if (shellCommandData != null)
+            {
+              session.getShellOutputStream().write(shellCommandData);
+              session.getShellOutputStream().flush();
+            }
           }
           catch (Throwable e)
           {
@@ -211,20 +222,31 @@ public class VTServerRemoteConsoleReader extends VTTask
           try
           {
             shellEncoding = session.getShellEncoding();
-            if (shellEncoding != null && shellEncoding.length() > 0)
+            shellCommandData = null;
+            try
             {
-              commandData = (command + "\n").getBytes(shellEncoding);
+              if (shellEncoding != null && shellEncoding.length() > 0)
+              {
+                shellCommandData = (command + "\n").getBytes(shellEncoding);
+              }
+              else
+              {
+                shellCommandData = (command + "\n").getBytes();
+              }
             }
-            else
+            catch (Throwable e)
             {
-              commandData = (command + "\n").getBytes();
+              // e.printStackTrace();
             }
             if (session.getEchoState() != 1)
             {
               session.getOutputWriter().setCommandFilter(command, shellEncoding);
             }
-            session.getShellOutputStream().write(commandData);
-            session.getShellOutputStream().flush();
+            if (shellCommandData != null)
+            {
+              session.getShellOutputStream().write(shellCommandData);
+              session.getShellOutputStream().flush();
+            }
           }
           catch (Throwable e)
           {

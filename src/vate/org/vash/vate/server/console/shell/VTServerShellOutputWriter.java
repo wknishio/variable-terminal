@@ -25,6 +25,8 @@ public class VTServerShellOutputWriter extends VTTask
   
   public void setCommandFilter(String commandFilter, String encoding)
   {
+    firstCommandFilter = nullCommandFilter;
+    secondCommandFilter = nullCommandFilter;
     if (encoding != null && encoding.length() > 0)
     {
       try
@@ -39,14 +41,21 @@ public class VTServerShellOutputWriter extends VTTask
     }
     else
     {
-      firstCommandFilter = (commandFilter + "\r\n").getBytes();
-      secondCommandFilter = (commandFilter + "\n").getBytes();
+      try
+      {
+        firstCommandFilter = (commandFilter + "\r\n").getBytes();
+        secondCommandFilter = (commandFilter + "\n").getBytes();
+      }
+      catch (Throwable t)
+      {
+        
+      }
     }
   }
   
   public void task()
   {
-    String data = null;
+    String shellOutputData = null;
     int offset = 0;
     while (!isStopped())
     {
@@ -66,25 +75,25 @@ public class VTServerShellOutputWriter extends VTTask
           }
           if (readed - offset > 0)
           {
-            data = null;
+            shellOutputData = null;
             try
             {
               if (session.getShellEncoding() != null)
               {
-                data = new String(buffer, offset, readed - offset, session.getShellEncoding());
+                shellOutputData = new String(buffer, offset, readed - offset, session.getShellEncoding());
               }
               else
               {
-                data = new String(buffer, offset, readed - offset);
+                shellOutputData = new String(buffer, offset, readed - offset);
               }
             }
             catch (Throwable t)
             {
               
             }
-            if (data != null && data.length() > 0)
+            if (shellOutputData != null && shellOutputData.length() > 0)
             {
-              connection.getResultWriter().writeUTF(data);
+              connection.getResultWriter().writeUTF(shellOutputData);
               connection.getResultWriter().flush();
             }
           }
