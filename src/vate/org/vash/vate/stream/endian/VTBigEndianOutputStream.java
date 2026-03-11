@@ -57,14 +57,6 @@ public final class VTBigEndianOutputStream extends OutputStream implements DataO
   
   public final void close() throws IOException
   {
-//		try
-//		{
-//			flush();
-//		}
-//		catch (Throwable t)
-//		{
-//			
-//		}
     out.close();
   }
   
