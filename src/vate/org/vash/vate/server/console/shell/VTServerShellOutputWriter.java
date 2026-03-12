@@ -39,7 +39,7 @@ public class VTServerShellOutputWriter extends VTTask
         
       }
     }
-    else
+    if (firstCommandFilter == nullCommandFilter || secondCommandFilter == nullCommandFilter)
     {
       try
       {
@@ -57,6 +57,7 @@ public class VTServerShellOutputWriter extends VTTask
   {
     String shellOutputData = null;
     int offset = 0;
+    String shellEncoding = null;
     while (!isStopped())
     {
       try
@@ -78,9 +79,10 @@ public class VTServerShellOutputWriter extends VTTask
             shellOutputData = null;
             try
             {
-              if (session.getShellEncoding() != null)
+              shellEncoding = session.getShellEncoding();
+              if (shellEncoding != null)
               {
-                shellOutputData = new String(buffer, offset, readed - offset, session.getShellEncoding());
+                shellOutputData = new String(buffer, offset, readed - offset, shellEncoding);
               }
               else
               {
