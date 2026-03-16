@@ -2560,15 +2560,13 @@ public class VTLanternaConsole extends VTConsole
   
   public void setSystemOut()
   {
-    // System.setOut(printStream);
-    doubledOutput = new PrintStream(new VTDoubledOutputStream(printStream, new PrintStream(new FileOutputStream(FileDescriptor.out)), false), true);
+    doubledOutput = new PrintStream(new VTDoubledOutputStream(printStream, new FileOutputStream(FileDescriptor.out), false), true);
     System.setOut(doubledOutput);
   }
   
   public void setSystemErr()
   {
-    // System.setErr(printStream);
-    doubledError = new PrintStream(new VTDoubledOutputStream(printStream, new PrintStream(new FileOutputStream(FileDescriptor.err)), false), true);
+    doubledError = new PrintStream(new VTDoubledOutputStream(printStream, new FileOutputStream(FileDescriptor.err), false), true);
     System.setErr(doubledError);
   }
   
