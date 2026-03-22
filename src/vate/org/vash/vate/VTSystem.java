@@ -374,4 +374,58 @@ public class VTSystem
     
     return decoder;
   }
+  
+  public static CharsetEncoder getStrictCharsetEncoder(String charsetName)
+  {
+    CharsetEncoder encoder = null;
+    
+    if (charsetName != null)
+    {
+      try
+      {
+        encoder = Charset.forName(charsetName).newEncoder();
+      }
+      catch (Throwable t)
+      {
+        encoder = Charset.defaultCharset().newEncoder();
+      }
+    }
+    else
+    {
+      encoder = Charset.defaultCharset().newEncoder();
+    }
+    
+    //encoder.replaceWith("_".getBytes());
+    encoder.onMalformedInput(CodingErrorAction.REPORT);
+    encoder.onUnmappableCharacter(CodingErrorAction.REPORT);
+    
+    return encoder;
+  }
+  
+  public static CharsetDecoder getStrictCharsetDecoder(String charsetName)
+  {
+    CharsetDecoder decoder = null;
+    
+    if (charsetName != null)
+    {
+      try
+      {
+        decoder = Charset.forName(charsetName).newDecoder();
+      }
+      catch (Throwable t)
+      {
+        decoder = Charset.defaultCharset().newDecoder();
+      }
+    }
+    else
+    {
+      decoder = Charset.defaultCharset().newDecoder();
+    }
+    
+    //decoder.replaceWith("_");
+    decoder.onMalformedInput(CodingErrorAction.REPORT);
+    decoder.onUnmappableCharacter(CodingErrorAction.REPORT);
+    
+    return decoder;
+  }
 }

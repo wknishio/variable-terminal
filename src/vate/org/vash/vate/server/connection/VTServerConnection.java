@@ -23,6 +23,7 @@ import org.vash.vate.stream.array.VTFlushBufferedOutputStream;
 import org.vash.vate.stream.compress.VTCompressorSelector;
 import org.vash.vate.stream.endian.VTLittleEndianInputStream;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
+import org.vash.vate.stream.limit.VTNullOutputStream;
 import org.vash.vate.stream.multiplex.VTMultiplexingInputStream;
 import org.vash.vate.stream.multiplex.VTMultiplexingOutputStream;
 import org.vash.vate.stream.multiplex.VTMultiplexingInputStream.VTMultiplexedInputStream;
@@ -50,6 +51,7 @@ public class VTServerConnection
   private volatile boolean connected = false;
   private volatile boolean verified = false;
   private volatile boolean closed = true;
+  private volatile boolean silent = false;
   
   private final boolean managed;
   private int encryptionType;
@@ -103,6 +105,7 @@ public class VTServerConnection
   private VTLittleEndianOutputStream authenticationWriter;
   private VTLittleEndianInputStream commandReader;
   private VTLittleEndianOutputStream resultWriter;
+  private VTLittleEndianOutputStream nullWriter = new VTLittleEndianOutputStream(new VTNullOutputStream());
   
   private InputStream shellDataInputStream;
   private OutputStream shellDataOutputStream;
@@ -142,6 +145,16 @@ public class VTServerConnection
     this.blake3Digest = new VTBlake3MessageDigest();
     this.authenticationReader = new VTLittleEndianInputStream(null);
     this.authenticationWriter = new VTLittleEndianOutputStream(null);
+  }
+  
+  public void setSilent(boolean silent)
+  {
+    this.silent = silent;
+  }
+  
+  public boolean getSilent()
+  {
+    return silent;
   }
   
   public SecureRandom getSecureRandom()
@@ -241,6 +254,15 @@ public class VTServerConnection
   }
   
   public VTLittleEndianOutputStream getResultWriter()
+  {
+    if (silent)
+    {
+      return nullWriter;
+    }
+    return resultWriter;
+  }
+  
+  public VTLittleEndianOutputStream getShellWriter()
   {
     return resultWriter;
   }
@@ -707,6 +729,7 @@ public class VTServerConnection
   {
     connected = true;
     verified = false;
+    silent = false;
     setNonceStreams();
     exchangeNonces(false);
     setVerificationStreams();

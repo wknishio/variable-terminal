@@ -8,6 +8,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.StringReader;
+import java.nio.ByteBuffer;
+import java.nio.charset.CharsetDecoder;
 
 import org.vash.vate.VTSystem;
 import org.vash.vate.client.connection.VTClientConnection;
@@ -25,7 +27,10 @@ public class VTClientRemoteConsoleWriter extends VTTask
   private VTClientConnection connection;
   private VTClientRemoteConsoleCommandSelector<VTClientRemoteConsoleCommandProcessor> selector;
   private BufferedReader sourceReader;
-  private boolean reading = false;
+  private final byte[] buffer = new byte[VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES * 4];
+  private final CharsetDecoder decoder = VTSystem.getStrictCharsetDecoder("UTF-8");
+  private InputStream dataInputStream;
+  //private boolean reading = false;
   
   public VTClientRemoteConsoleWriter(VTClientSession session)
   {
@@ -35,10 +40,15 @@ public class VTClientRemoteConsoleWriter extends VTTask
     this.selector = new VTClientRemoteConsoleCommandSelector<VTClientRemoteConsoleCommandProcessor>(session);
   }
   
-  public boolean isReading()
+  public void setDataInputStream(InputStream dataInputStream)
   {
-    return reading;
+    this.dataInputStream = dataInputStream;
   }
+  
+//  public boolean isReading()
+//  {
+//    return reading;
+//  }
   
   public void setStopped(boolean stopped)
   {
@@ -93,7 +103,10 @@ public class VTClientRemoteConsoleWriter extends VTTask
       }
     }
     
-    reading = true;
+    int length = 0;
+    String line = null;
+    
+    //reading = true;
     while (!isStopped())
     {
       // String[] lines;
@@ -103,7 +116,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
         {
           if (sourceReader != null)
           {
-            String line = null;
+            line = null;
             try
             {
               line = sourceReader.readLine();
@@ -121,19 +134,51 @@ public class VTClientRemoteConsoleWriter extends VTTask
           }
           else
           {
-            setStopped(true);
-            // Thread.sleep(1);
-            //synchronized (session)
-            //{
-              //session.wait();
-            //}
+            if (dataInputStream == null)
+            {
+              setStopped(true);
+            }
+            else
+            {
+              //pipe bytes from local data inputstream to remote data outputstream
+              line = null;
+              length = dataInputStream.read(buffer, 0, buffer.length);
+              if (length > 0)
+              {
+                if (buffer[length - 1] == '\n')
+                {
+                  try
+                  {
+                    line = decoder.decode(ByteBuffer.wrap(buffer, 0, length - 1)).toString();
+                  }
+                  catch (Throwable t)
+                  {
+                    
+                  }
+                  if (line != null)
+                  {
+                    executeCommand(line, false);
+                  }
+                  else
+                  {
+                    connection.getCommandWriter().writeData(buffer, 0, length);
+                    connection.getCommandWriter().flush();
+                  }
+                }
+                else
+                {
+                  connection.getCommandWriter().writeData(buffer, 0, length);
+                  connection.getCommandWriter().flush();
+                }
+              }
+            }
           }
         }
         else
         {
           if (sourceReader != null)
           {
-            String line = null;
+            line = null;
             try
             {
               line = sourceReader.readLine();
@@ -151,7 +196,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
           }
           else
           {
-            String line = VTMainConsole.readLine(true);
+            line = VTMainConsole.readLine(true);
             executeCommand(line, false);
           }
         }

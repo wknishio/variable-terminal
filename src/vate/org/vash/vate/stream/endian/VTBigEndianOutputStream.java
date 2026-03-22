@@ -173,7 +173,14 @@ public final class VTBigEndianOutputStream extends OutputStream implements DataO
   
   public final void writeLine(final String s) throws IOException
   {
-    writeUTF(s);
+    if (s != null && s.endsWith("\n"))
+    {
+      writeUTF(s);
+    }
+    else
+    {
+      writeUTF(s + "\n");
+    }
   }
   
   public final void write(final String s) throws IOException

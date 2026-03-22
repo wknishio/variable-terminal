@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
+import java.nio.ByteBuffer;
+import java.nio.charset.CharsetDecoder;
 
 import org.vash.vate.VTSystem;
 import org.vash.vate.com.martiansoftware.jsap.CommandLineTokenizerMKII;
@@ -18,6 +20,7 @@ public class VTServerRemoteConsoleReader extends VTTask
   private VTServerConnection connection;
   private VTServerRemoteConsoleCommandSelector<VTServerRemoteConsoleCommandProcessor> selector;
   private final byte[] buffer = new byte[VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES * 4];
+  private final CharsetDecoder decoder = VTSystem.getStrictCharsetDecoder("UTF-8");
   
   public VTServerRemoteConsoleReader(VTServerSession session)
   {
@@ -30,14 +33,33 @@ public class VTServerRemoteConsoleReader extends VTTask
   public void task()
   {
     // int p = 0;
+    String utf = "";
+    int length = 0;
     while (!isStopped())
     {
       try
       {
-        String line = connection.getCommandReader().readLine(buffer);
-        executeCommand(line);
+        utf = null;
+        length = connection.getCommandReader().readData(buffer);
+        try
+        {
+          utf = decoder.decode(ByteBuffer.wrap(buffer, 0, length)).toString();
+        }
+        catch (Throwable t)
+        {
+          
+        }
+        if (utf != null && utf.length() > 0 && utf.endsWith("\n"))
+        {
+          executeCommand(utf.substring(0, utf.length() - 1));
+        }
+        else
+        {
+          session.getShellOutputStream().write(buffer, 0, length);
+          session.getShellOutputStream().flush();
+        }
       }
-      catch (Throwable e)
+      catch (Throwable t)
       {
         // e.printStackTrace();
         setStopped(true);

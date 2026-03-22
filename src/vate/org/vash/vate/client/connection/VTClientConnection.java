@@ -47,6 +47,7 @@ public class VTClientConnection
   private volatile boolean connected = false;
   private volatile boolean verified = false;
   private volatile boolean closed = true;
+  private volatile boolean silent = false;
   
   private final boolean managed;
   private int encryptionType;
@@ -139,6 +140,16 @@ public class VTClientConnection
     this.blake3Digest = new VTBlake3MessageDigest();
     this.authenticationReader = new VTLittleEndianInputStream(null);
     this.authenticationWriter = new VTLittleEndianOutputStream(null);
+  }
+  
+  public void setSilent(boolean silent)
+  {
+    this.silent = silent;
+  }
+  
+  public boolean getSilent()
+  {
+    return silent;
   }
   
   public SecureRandom getSecureRandom()
@@ -711,6 +722,7 @@ public class VTClientConnection
   {
     connected = true;
     verified = false;
+    silent = false;
     setNonceStreams();
     exchangeNonces(false);
     setVerificationStreams();

@@ -1,5 +1,9 @@
 package org.vash.vate.client.console.remote;
 
+import java.io.OutputStream;
+import java.nio.ByteBuffer;
+import java.nio.charset.CharsetDecoder;
+
 import org.vash.vate.VTSystem;
 import org.vash.vate.client.connection.VTClientConnection;
 import org.vash.vate.client.session.VTClientSession;
@@ -11,6 +15,8 @@ public class VTClientRemoteConsoleReader extends VTTask
   private VTClientSession session;
   private VTClientConnection connection;
   private final byte[] buffer = new byte[VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES * 4];
+  private final CharsetDecoder decoder = VTSystem.getStrictCharsetDecoder("UTF-8");
+  private OutputStream dataOutputStream;
   
   public VTClientRemoteConsoleReader(VTClientSession session)
   {
@@ -19,17 +25,48 @@ public class VTClientRemoteConsoleReader extends VTTask
     this.connection = session.getConnection();
   }
   
+  public void setDataOutputStream(OutputStream dataOutputStream)
+  {
+    this.dataOutputStream = dataOutputStream;
+  }
+  
   public void task()
   {
+    String utf = "";
+    int length = 0;
     while (!isStopped())
     {
       try
       {
         //readChars = connection.getResultReader().read(resultBuffer, 0, resultBufferSize);
-        String result = connection.getResultReader().readUTF(buffer);
-        if (result.length() > 0)
+        utf = null;
+        length = connection.getResultReader().readData(buffer);
+        if (dataOutputStream != null)
         {
-          VTMainConsole.print(result);
+          try
+          {
+            dataOutputStream.write(buffer, 0, length);
+            dataOutputStream.flush();
+          }
+          catch (Throwable t)
+          {
+            
+          }
+        }
+        else
+        {
+          try
+          {
+            utf = decoder.decode(ByteBuffer.wrap(buffer, 0, length)).toString();
+          }
+          catch (Throwable t)
+          {
+            
+          }
+          if (utf != null && utf.length() > 0)
+          {
+            VTMainConsole.print(utf);
+          }
         }
       }
       catch (Throwable e)

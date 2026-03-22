@@ -364,9 +364,11 @@ public class VTClientSession
   
   public void negotiateShell() throws IOException
   {
+    connection.setSilent(client.isDaemon());
     String clientShell = client.getClientConnector().getSessionShell();
     clientShell = clientShell.replace("\r\n", "").replace("\n", "");
-    connection.getCommandWriter().writeLine(clientShell);
+    connection.getCommandWriter().writeUTF(clientShell);
+    connection.getCommandWriter().writeBoolean(connection.getSilent());
     connection.getCommandWriter().flush();
   }
 }
