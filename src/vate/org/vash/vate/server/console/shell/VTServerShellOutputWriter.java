@@ -11,9 +11,8 @@ import org.vash.vate.task.VTTask;
 
 public class VTServerShellOutputWriter extends VTTask
 {
-  //private int readed;
-  private VTServerConnection connection;
   private VTServerSession session;
+  private VTServerConnection connection;
   private final byte[] buffer = new byte[VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES * 4];
   private CharsetDecoder decoder = VTSystem.getStrictCharsetDecoder(null);
   private final byte[] nullCommandFilter = new byte[] {};

@@ -30,7 +30,6 @@ public class VTClientRemoteConsoleWriter extends VTTask
   private final byte[] buffer = new byte[VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES * 4];
   private final CharsetDecoder decoder = VTSystem.getStrictCharsetDecoder("UTF-8");
   private InputStream dataInputStream;
-  //private boolean reading = false;
   
   public VTClientRemoteConsoleWriter(VTClientSession session)
   {
@@ -44,11 +43,6 @@ public class VTClientRemoteConsoleWriter extends VTTask
   {
     this.dataInputStream = dataInputStream;
   }
-  
-//  public boolean isReading()
-//  {
-//    return reading;
-//  }
   
   public void setStopped(boolean stopped)
   {
