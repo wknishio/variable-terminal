@@ -145,6 +145,12 @@ public class VTStandardConsole extends VTConsole
     }
   }
   
+  public void write(byte[] buf, int off, int len)
+  {
+    printStream.write(buf, off, len);
+    printStream.flush();
+  }
+  
   public void flush()
   {
     try

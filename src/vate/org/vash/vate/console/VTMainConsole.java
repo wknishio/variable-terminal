@@ -415,10 +415,13 @@ public final class VTMainConsole
     }
   }
   
-  /*
-   * public static void write(byte[] buf, int off, int len) {
-   * terminal.trueWrite(buf, off, len); }
-   */
+  public static void write(byte[] bbuf, int off, int len)
+  {
+    if (checkConsole())
+    {
+      console.write(bbuf, off, len);
+    }
+  }
   
   public static void flush()
   {

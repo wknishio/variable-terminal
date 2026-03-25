@@ -180,6 +180,8 @@ public abstract class VTConsole
   
   public abstract void write(char[] buf, int off, int len);
   
+  public abstract void write(byte[] buf, int off, int len);
+  
   public abstract void flush();
   
   public abstract void clear();

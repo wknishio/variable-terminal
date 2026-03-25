@@ -67,6 +67,17 @@ public class VTClientRemoteConsoleReader extends VTTask
           {
             VTMainConsole.print(utf);
           }
+          else
+          {
+            try
+            {
+              VTMainConsole.write(buffer, 0, length);
+            }
+            catch (Throwable t)
+            {
+              
+            }
+          }
         }
       }
       catch (Throwable e)

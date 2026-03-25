@@ -2112,6 +2112,12 @@ public class VTLanternaConsole extends VTConsole
     }
   }
   
+  public void write(byte[] buf, int off, int len)
+  {
+    printStream.write(buf, off, len);
+    printStream.flush();
+  }
+  
   public void flush()
   {
     // if (!flushInterrupted && !frameIconified && !outputBox.selectingText())
