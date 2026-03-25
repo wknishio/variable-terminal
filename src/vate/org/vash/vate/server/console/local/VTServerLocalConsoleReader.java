@@ -95,7 +95,7 @@ public class VTServerLocalConsoleReader extends VTTask
     BufferedReader reader = null;
     try
     {
-      reader = new BufferedReader(new InputStreamReader(new FileInputStream(script), VTSystem.getCharsetDecoder(charsetName)));
+      reader = new BufferedReader(new InputStreamReader(new FileInputStream(script), VTSystem.getFlexibleCharsetDecoder(charsetName)));
       String line = "";
       while (!isStopped() && (line = reader.readLine()) != null)
       {

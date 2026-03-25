@@ -61,7 +61,7 @@ public class VTFileRuntimeRelauncher
     BufferedReader input = null;
     try
     {
-      input = new BufferedReader(new InputStreamReader(System.in, VTSystem.getCharsetDecoder(null)));
+      input = new BufferedReader(new InputStreamReader(System.in, VTSystem.getFlexibleCharsetDecoder(null)));
       String command = "";
       while (command != null)
       {

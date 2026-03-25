@@ -2319,7 +2319,7 @@ public class VTGraphicalConsole extends VTConsole
     {
       try
       {
-        readLineLog = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path, true), VTSystem.getCharsetEncoder("UTF-8")));
+        readLineLog = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path, true), VTSystem.getFlexibleCharsetEncoder("UTF-8")));
         return true;
       }
       catch (Throwable t)

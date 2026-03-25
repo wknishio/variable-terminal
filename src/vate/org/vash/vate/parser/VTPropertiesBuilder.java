@@ -25,7 +25,7 @@ public class VTPropertiesBuilder
       return properties;
     }
     StringBuilder sb = new StringBuilder();
-    InputStreamReader isr = new InputStreamReader(in, VTSystem.getCharsetDecoder(encoding));
+    InputStreamReader isr = new InputStreamReader(in, VTSystem.getFlexibleCharsetDecoder(encoding));
     char[] buf = new char[1024];
     while (true)
     {

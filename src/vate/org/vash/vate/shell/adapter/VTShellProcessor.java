@@ -90,12 +90,12 @@ public class VTShellProcessor
     if (shellCharsetName != null)
     {
       //encoder = VTSystem.getCharsetEncoder(shellCharsetName);
-      decoder = VTSystem.getCharsetDecoder(shellCharsetName);
+      decoder = VTSystem.getFlexibleCharsetDecoder(shellCharsetName);
     }
     else
     {
       //encoder = VTSystem.getCharsetEncoder(null);
-      decoder = VTSystem.getCharsetDecoder(null);
+      decoder = VTSystem.getFlexibleCharsetDecoder(null);
     }
     
     if (shellType == SHELL_TYPE_PROCESS)

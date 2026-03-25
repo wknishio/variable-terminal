@@ -305,7 +305,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     final int bufsize = VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES;
     final byte[] buf = new byte[bufsize];
     final VTByteArrayInputStream bis = new VTByteArrayInputStream(buf, 0, bufsize);
-    final BufferedReader hin = new BufferedReader( new InputStreamReader( bis, VTSystem.getCharsetDecoder("ISO-8859-1") ));
+    final BufferedReader hin = new BufferedReader( new InputStreamReader( bis, VTSystem.getFlexibleCharsetDecoder("ISO-8859-1") ));
     final Properties preambles = new VTConfigurationProperties();
     final Properties parameters = new VTConfigurationProperties();
     final Properties headers = new VTConfigurationProperties();
@@ -1166,7 +1166,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       }
       //System.out.println("response.status="+status);
       OutputStream out = socket.getOutputStream();
-      PrintWriter pw = new PrintWriter( new OutputStreamWriter(out, VTSystem.getCharsetEncoder("ISO-8859-1")) );
+      PrintWriter pw = new PrintWriter( new OutputStreamWriter(out, VTSystem.getFlexibleCharsetEncoder("ISO-8859-1")) );
       pw.print("HTTP/1.1 " + status + " \r\n");
       
       if (keepAlive)

@@ -72,7 +72,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
     VTPipedInputStream in = new VTPipedInputStream(VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES);
     VTPipedOutputStream out = new VTPipedOutputStream(in);
     // source = new VTInterruptibleInputStream(in, session.getSessionThreads());
-    sourceReader = new BufferedReader(new InputStreamReader(in, VTSystem.getCharsetDecoder("UTF-8")));
+    sourceReader = new BufferedReader(new InputStreamReader(in, VTSystem.getFlexibleCharsetDecoder("UTF-8")));
     return out;
   }
   
@@ -82,7 +82,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
     {
       return;
     }
-    sourceReader = new BufferedReader(new InputStreamReader(in, VTSystem.getCharsetDecoder(charsetName)));
+    sourceReader = new BufferedReader(new InputStreamReader(in, VTSystem.getFlexibleCharsetDecoder(charsetName)));
   }
   
   public void task()
@@ -288,7 +288,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
     BufferedReader reader = null;
     try
     {
-      reader = new BufferedReader(new InputStreamReader(new FileInputStream(script), VTSystem.getCharsetDecoder(charsetName)));
+      reader = new BufferedReader(new InputStreamReader(new FileInputStream(script), VTSystem.getFlexibleCharsetDecoder(charsetName)));
       String line = "";
       while (!isStopped() && (line = reader.readLine()) != null)
       {

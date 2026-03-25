@@ -40,7 +40,7 @@ public class VTStandardConsoleInterruptibleReader implements Runnable
         return created;
       }
     });
-    standardTerminalReader = new BufferedReader(new InputStreamReader(new FileInputStream(FileDescriptor.in), VTSystem.getCharsetDecoder(null)));
+    standardTerminalReader = new BufferedReader(new InputStreamReader(new FileInputStream(FileDescriptor.in), VTSystem.getFlexibleCharsetDecoder(null)));
     try
     {
       systemConsoleObject = VTMainConsole.getIOConsole();

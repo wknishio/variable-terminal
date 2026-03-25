@@ -447,11 +447,11 @@ public class VTServerPrintDataTask extends VTTask
           {
             if (encoding == FILE_ENCODING_TEXT_UTF8)
             {
-              fileReader = new BufferedReader(new InputStreamReader(stream, VTSystem.getCharsetDecoder("UTF-8")));
+              fileReader = new BufferedReader(new InputStreamReader(stream, VTSystem.getFlexibleCharsetDecoder("UTF-8")));
             }
             else
             {
-              fileReader = new BufferedReader(new InputStreamReader(stream, VTSystem.getCharsetDecoder(null)));
+              fileReader = new BufferedReader(new InputStreamReader(stream, VTSystem.getFlexibleCharsetDecoder(null)));
             }
             String fileLine = null;
             

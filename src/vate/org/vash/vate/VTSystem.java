@@ -321,7 +321,7 @@ public class VTSystem
 //    }
 //  }
   
-  public static CharsetEncoder getCharsetEncoder(String charsetName)
+  public static CharsetEncoder getFlexibleCharsetEncoder(String charsetName)
   {
     CharsetEncoder encoder = null;
     
@@ -341,14 +341,14 @@ public class VTSystem
       encoder = Charset.defaultCharset().newEncoder();
     }
     
-    //encoder.replaceWith("_".getBytes());
-    encoder.onMalformedInput(CodingErrorAction.IGNORE);
-    encoder.onUnmappableCharacter(CodingErrorAction.IGNORE);
+    encoder.replaceWith("_".getBytes());
+    encoder.onMalformedInput(CodingErrorAction.REPLACE);
+    encoder.onUnmappableCharacter(CodingErrorAction.REPLACE);
     
     return encoder;
   }
   
-  public static CharsetDecoder getCharsetDecoder(String charsetName)
+  public static CharsetDecoder getFlexibleCharsetDecoder(String charsetName)
   {
     CharsetDecoder decoder = null;
     
@@ -368,9 +368,9 @@ public class VTSystem
       decoder = Charset.defaultCharset().newDecoder();
     }
     
-    //decoder.replaceWith("_");
-    decoder.onMalformedInput(CodingErrorAction.IGNORE);
-    decoder.onUnmappableCharacter(CodingErrorAction.IGNORE);
+    decoder.replaceWith("_");
+    decoder.onMalformedInput(CodingErrorAction.REPLACE);
+    decoder.onUnmappableCharacter(CodingErrorAction.REPLACE);
     
     return decoder;
   }
@@ -395,7 +395,7 @@ public class VTSystem
       encoder = Charset.defaultCharset().newEncoder();
     }
     
-    //encoder.replaceWith("_".getBytes());
+    encoder.replaceWith("_".getBytes());
     encoder.onMalformedInput(CodingErrorAction.REPORT);
     encoder.onUnmappableCharacter(CodingErrorAction.REPORT);
     
@@ -422,7 +422,7 @@ public class VTSystem
       decoder = Charset.defaultCharset().newDecoder();
     }
     
-    //decoder.replaceWith("_");
+    decoder.replaceWith("_");
     decoder.onMalformedInput(CodingErrorAction.REPORT);
     decoder.onUnmappableCharacter(CodingErrorAction.REPORT);
     
