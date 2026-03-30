@@ -482,14 +482,14 @@ public class VTServerConnector implements Runnable
       {
         connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_HC);
       }
-      else if (encryptionType.toUpperCase().startsWith("G"))
-      {
-        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_GRAIN);
-      }
-      else if (encryptionType.toUpperCase().startsWith("R"))
-      {
-        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_RABBIT);
-      }
+//      else if (encryptionType.toUpperCase().startsWith("G"))
+//      {
+//        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_GRAIN);
+//      }
+//      else if (encryptionType.toUpperCase().startsWith("R"))
+//      {
+//        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_RABBIT);
+//      }
       else if (encryptionType.toUpperCase().startsWith("Z"))
       {
         connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_ZUC);
@@ -556,14 +556,14 @@ public class VTServerConnector implements Runnable
       {
         connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_HC);
       }
-      else if (encryptionType.toUpperCase().startsWith("G"))
-      {
-        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_GRAIN);
-      }
-      else if (encryptionType.toUpperCase().startsWith("R"))
-      {
-        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_RABBIT);
-      }
+//      else if (encryptionType.toUpperCase().startsWith("G"))
+//      {
+//        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_GRAIN);
+//      }
+//      else if (encryptionType.toUpperCase().startsWith("R"))
+//      {
+//        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_RABBIT);
+//      }
       else if (encryptionType.toUpperCase().startsWith("Z"))
       {
         connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_ZUC);
