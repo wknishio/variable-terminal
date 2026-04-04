@@ -8,7 +8,6 @@ public class VTClientAgentStandardStart
 {
   public static void main(String[] args)
   {
-    // System.setProperty("java.awt.headless", "true");
     VTMainConsole.setGraphical(false);
     VTMainConsole.setSeparated(false);
     VTMainConsole.setRemoteIcon(true);
@@ -26,12 +25,16 @@ public class VTClientAgentStandardStart
         VTRuntimeExit.exit(-1);
       }
       client.setDaemon(true);
+      client.setDataInputStream(System.in);
+      client.setDataOutputStream(System.out);
       client.start();
     }
     else
     {
       VTClient client = new VTClient();
       client.setDaemon(true);
+      client.setDataInputStream(System.in);
+      client.setDataOutputStream(System.out);
       client.start();
     }
   }

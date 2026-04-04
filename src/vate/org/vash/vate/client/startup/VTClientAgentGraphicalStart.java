@@ -1,6 +1,5 @@
 package org.vash.vate.client.startup;
 
-// import org.vash.vate.VT;
 import org.vash.vate.client.VTClient;
 import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.runtime.VTRuntimeExit;
@@ -9,7 +8,6 @@ public class VTClientAgentGraphicalStart
 {
   public static void main(String[] args)
   {
-    // System.setProperty("java.awt.headless", "true");
     VTMainConsole.setGraphical(false);
     VTMainConsole.setSeparated(false);
     VTMainConsole.setRemoteIcon(true);
@@ -27,12 +25,16 @@ public class VTClientAgentGraphicalStart
         VTRuntimeExit.exit(-1);
       }
       client.setDaemon(true);
+      client.setDataInputStream(System.in);
+      client.setDataOutputStream(System.out);
       client.start();
     }
     else
     {
       VTClient client = new VTClient();
       client.setDaemon(true);
+      client.setDataInputStream(System.in);
+      client.setDataOutputStream(System.out);
       client.start();
     }
   }

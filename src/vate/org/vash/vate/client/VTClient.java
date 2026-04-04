@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.security.SecureRandom;
 import java.util.Collection;
 import java.util.Properties;
@@ -72,6 +73,8 @@ public class VTClient implements Runnable
   private Future<?> runThread;
   private VTDataMonitorService monitorService;
   private VTProxy proxy;
+  private InputStream dataInputStream;
+  private OutputStream dataOutputStream;
   
   private static final String VT_CLIENT_SETTINGS_COMMENTS = 
   "Variable-Terminal client settings file, supports UTF-8\r\n" + 
@@ -120,6 +123,26 @@ public class VTClient implements Runnable
     this.audioSystem = new VTAudioSystem(executorService);
     
     // loadClientSettingsFile();
+  }
+  
+  public InputStream getDataInputStream()
+  {
+    return dataInputStream;
+  }
+  
+  public OutputStream getDataOutputStream()
+  {
+    return dataOutputStream;
+  }
+  
+  public void setDataInputStream(InputStream stream)
+  {
+    dataInputStream = stream;
+  }
+  
+  public void setDataOutputStream(OutputStream stream)
+  {
+    dataOutputStream = stream;
   }
   
   public VTDataMonitorService getMonitorService()

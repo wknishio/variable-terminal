@@ -60,12 +60,22 @@ public class VTClientGraphicalStart
         VTRuntimeExit.exit(-1);
       }
       client.setDaemon(daemon);
+      if (daemon)
+      {
+        client.setDataInputStream(System.in);
+        client.setDataOutputStream(System.out);
+      }
       client.start();
     }
     else
     {
       VTClient client = new VTClient();
       client.setDaemon(daemon);
+      if (daemon)
+      {
+        client.setDataInputStream(System.in);
+        client.setDataOutputStream(System.out);
+      }
       client.start();
     }
   }
