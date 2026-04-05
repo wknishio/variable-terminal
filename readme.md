@@ -28,9 +28,10 @@ Some of the available features are:
 * Remote clipboard control.
 * Multiple display support.
 * Audio chat communication between client and server.
-* Network tunneling with SOCKS/HTTP/FTP/TCP tunnels and compression.
-* Network usage rate limiter.
 * Network latency verification.
+* Network usage rate limiter.
+* Network tunneling with bidirectional SOCKS/HTTP/FTP/TCP tunnels.
+* Network tunneling with transparent data compression.
 * Remote popup alerts.
 * Remote browser opening.
 * Remote mail client opening.
