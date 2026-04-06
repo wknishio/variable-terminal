@@ -638,8 +638,8 @@ public class VTServerConnection
     blake3Digest.reset();
     if (managed)
     {
-      blake3Digest.update(remoteNonce);
       blake3Digest.update(localNonce);
+      blake3Digest.update(remoteNonce);
     }
     blake3Digest.update(remoteNonce);
     blake3Digest.update(localNonce);
@@ -661,8 +661,8 @@ public class VTServerConnection
     {
       if (values.length > 1)
       {
-        blake3Digest.update(values[0]);
         blake3Digest.update(values[1]);
+        blake3Digest.update(values[0]);
       }
     }
     for (byte[] value : values)
