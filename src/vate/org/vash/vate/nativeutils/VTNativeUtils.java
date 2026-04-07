@@ -28,4 +28,12 @@ public interface VTNativeUtils
   public boolean attachConsole();
   
   public boolean checkANSI();
+  
+  public void echo(boolean enabled);
+  
+  public void icanon(boolean enabled);
+  
+  public void raw();
+  
+  public void sane();
 }

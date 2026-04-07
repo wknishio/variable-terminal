@@ -199,45 +199,6 @@ public class VTSunOSNativeUtils implements VTNativeUtils
     return getchar();
   }
   
-  public void unbuffered()
-  {
-    try
-    {
-      Runtime.getRuntime().exec(new String[]
-      { "/bin/sh", "-c", "stty -icanon min 1 < /dev/tty" });
-    }
-    catch (Throwable t)
-    {
-      
-    }
-  }
-  
-  public void noecho()
-  {
-    try
-    {
-      Runtime.getRuntime().exec(new String[]
-      { "/bin/sh", "-c", "stty -echo < /dev/tty" });
-    }
-    catch (Throwable t)
-    {
-      
-    }
-  }
-  
-  public void normal()
-  {
-    try
-    {
-      Runtime.getRuntime().exec(new String[]
-      { "/bin/sh", "-c", "stty icanon echo < /dev/tty" });
-    }
-    catch (Throwable t)
-    {
-      
-    }
-  }
-  
   public boolean checkANSI()
   {
     if (isatty(0) != 0 && isatty(1) != 0)
@@ -245,5 +206,67 @@ public class VTSunOSNativeUtils implements VTNativeUtils
       return true;
     }
     return false;
+  }
+  
+  public void echo(boolean enabled)
+  {
+    try
+    {
+      if (!enabled)
+      {
+        Runtime.getRuntime().exec(new String[] {"stty -echo < /dev/tty"});
+      }
+      else
+      {
+        Runtime.getRuntime().exec(new String[] {"stty echo < /dev/tty"});
+      }
+    }
+    catch (Throwable t)
+    {
+      
+    }
+  }
+  
+  public void icanon(boolean enabled)
+  {
+    try
+    {
+      if (!enabled)
+      {
+        Runtime.getRuntime().exec(new String[] {"stty -icanon < /dev/tty"});
+      }
+      else
+      {
+        Runtime.getRuntime().exec(new String[] {"stty icanon < /dev/tty"});
+      }
+    }
+    catch (Throwable t)
+    {
+      
+    }
+  }
+  
+  public void raw()
+  {
+    try
+    {
+      Runtime.getRuntime().exec(new String[] {"stty raw < /dev/tty"});
+    }
+    catch (Throwable t)
+    {
+      
+    }
+  }
+  
+  public void sane()
+  {
+    try
+    {
+      Runtime.getRuntime().exec(new String[] {"stty sane < /dev/tty"});
+    }
+    catch (Throwable t)
+    {
+      
+    }
   }
 }

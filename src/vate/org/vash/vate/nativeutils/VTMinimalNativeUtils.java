@@ -93,21 +93,6 @@ public class VTMinimalNativeUtils implements VTNativeUtils
     return getchar();
   }
   
-  public void unbuffered()
-  {
-    
-  }
-  
-  public void noecho()
-  {
-    
-  }
-  
-  public void normal()
-  {
-    
-  }
-  
   public boolean checkANSI()
   {
     if (isatty(0) != 0 && isatty(1) != 0)
@@ -117,5 +102,65 @@ public class VTMinimalNativeUtils implements VTNativeUtils
     return false;
   }
   
-  /* public int true_putenv(String env) { return cLibray.putenv(env); } */
+  public void echo(boolean enabled)
+  {
+    try
+    {
+      if (!enabled)
+      {
+        Runtime.getRuntime().exec(new String[] {"stty -echo < /dev/tty"});
+      }
+      else
+      {
+        Runtime.getRuntime().exec(new String[] {"stty echo < /dev/tty"});
+      }
+    }
+    catch (Throwable t)
+    {
+      
+    }
+  }
+  
+  public void icanon(boolean enabled)
+  {
+    try
+    {
+      if (!enabled)
+      {
+        Runtime.getRuntime().exec(new String[] {"stty -icanon < /dev/tty"});
+      }
+      else
+      {
+        Runtime.getRuntime().exec(new String[] {"stty icanon < /dev/tty"});
+      }
+    }
+    catch (Throwable t)
+    {
+      
+    }
+  }
+  
+  public void raw()
+  {
+    try
+    {
+      Runtime.getRuntime().exec(new String[] {"stty raw < /dev/tty"});
+    }
+    catch (Throwable t)
+    {
+      
+    }
+  }
+  
+  public void sane()
+  {
+    try
+    {
+      Runtime.getRuntime().exec(new String[] {"stty sane < /dev/tty"});
+    }
+    catch (Throwable t)
+    {
+      
+    }
+  }
 }

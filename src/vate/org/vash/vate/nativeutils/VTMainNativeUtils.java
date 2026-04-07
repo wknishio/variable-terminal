@@ -569,4 +569,36 @@ public class VTMainNativeUtils
     }
     return false;
   }
+  
+  public static void echo(boolean enabled)
+  {
+    if (checkNativeUtils())
+    {
+      nativeUtils.echo(enabled);
+    }
+  }
+  
+  public static void icanon(boolean enabled)
+  {
+    if (checkNativeUtils())
+    {
+      nativeUtils.icanon(enabled);
+    }
+  }
+  
+  public static void raw()
+  {
+    if (checkNativeUtils())
+    {
+      nativeUtils.raw();
+    }
+  }
+  
+  public static void sane()
+  {
+    if (checkNativeUtils())
+    {
+      nativeUtils.sane();
+    }
+  }
 }

@@ -452,26 +452,23 @@ public class VTWin32NativeUtils implements VTNativeUtils
     return ansi;
   }
   
-  /*
-   * public void changeFocusToWindow(String windowTitle) { int hWnd =
-   * user32Lib.FindWindowA(null, windowTitle); if (hWnd != 0) {
-   * user32Lib.SendMessageA(hWnd, WM_SYSCOMMAND, SC_RESTORE, 0);
-   * user32Lib.SetForegroundWindow(hWnd); } }
-   */
+  public void echo(boolean enabled)
+  {
+    // TODO Auto-generated method stub
+  }
   
-  /*
-   * public List<Integer> listProcessIds() { List<Integer> processIds = new
-   * LinkedList<Integer>(); int[] pProcessIds = new int[1024]; int[]
-   * pBytesReturned = new int[1]; psapiLib.EnumProcesses(pProcessIds, 2048,
-   * pBytesReturned); int processCount = pBytesReturned[0] /
-   * Native.POINTER_SIZE; //System.out.println("ProcessCount: " + processCount);
-   * for (int i = 0;i < processCount;i++) { //System.out.println("PID: " +
-   * pProcessIds[i]); processIds.add(pProcessIds[i]); } return processIds; }
-   */
+  public void icanon(boolean enabled)
+  {
+    // TODO Auto-generated method stub
+  }
   
-  /*
-   * public static void main(String[] args) throws InterruptedException { //new
-   * VTWin32NativeUtils().changeFocusToWindow("homebrews"); //new
-   * VTWin32NativeUtils().listProcessIds(); }
-   */
+  public void raw()
+  {
+    // TODO Auto-generated method stub
+  }
+  
+  public void sane()
+  {
+    // TODO Auto-generated method stub
+  }
 }

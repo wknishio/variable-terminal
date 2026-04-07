@@ -1,1 +1,1 @@
-nohup java -cp vate-client-agent.jar org.vash.vate.client.startup.VTClientAgentStandardStart $* &
+java -cp vate-client-agent.jar org.vash.vate.client.startup.VTClientAgentStandardStart $*
