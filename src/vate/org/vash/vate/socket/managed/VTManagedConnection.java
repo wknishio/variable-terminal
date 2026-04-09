@@ -5,14 +5,18 @@ import java.io.IOException;
 import java.net.Socket;
 
 import org.vash.vate.socket.remote.VTRemotePipedSocketFactory;
+import org.vash.vate.socket.remote.VTRemoteSocketFactory;
 import org.vash.vate.stream.multiplex.VTMultiplexingInputStream;
 import org.vash.vate.stream.multiplex.VTMultiplexingOutputStream;
+import org.vash.vate.tunnel.connection.VTTunnelConnection;
 
 public interface VTManagedConnection extends Closeable
 {
   public VTMultiplexingInputStream getMultiplexedConnectionInputStream();
   public VTMultiplexingOutputStream getMultiplexedConnectionOutputStream();
   public VTRemotePipedSocketFactory getRemotePipedSocketFactory();
+  public VTRemoteSocketFactory getRemoteSocketFactory(int type);
+  public VTTunnelConnection getTunnelConnection();
   public Socket getSocket();
   public void close() throws IOException;
   public Class<?> getSessionClass();

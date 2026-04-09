@@ -6,6 +6,7 @@ import java.net.DatagramSocket;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import org.vash.vate.VTSystem;
 import org.vash.vate.proxy.client.VTProxy;
 import org.vash.vate.proxy.client.VTProxy.VTProxyType;
 import org.vash.vate.stream.multiplex.VTMultiplexingInputStream.VTMultiplexedInputStream;
@@ -459,6 +460,7 @@ public class VTTunnelChannelRemoteSocketBuilder
   
   public Socket pipeSocket(boolean request, String bind, int type) throws IOException
   {
+    type &= ~(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT);
     if (bind == null)
     {
       bind = "";
@@ -562,6 +564,7 @@ public class VTTunnelChannelRemoteSocketBuilder
   
   public Socket pipeSocket(boolean request, String bind, int type, OutputStream out) throws IOException
   {
+    type &= ~(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT);
     if (bind == null)
     {
       bind = "";

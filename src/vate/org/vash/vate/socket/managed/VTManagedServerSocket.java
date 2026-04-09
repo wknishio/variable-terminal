@@ -8,14 +8,17 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import org.vash.vate.VTSystem;
 import org.vash.vate.proxy.client.VTProxy;
 import org.vash.vate.server.VTServer;
 import org.vash.vate.server.connection.VTServerConnection;
 import org.vash.vate.server.session.VTServerSession;
 import org.vash.vate.server.session.VTServerSessionListener;
 import org.vash.vate.socket.remote.VTRemotePipedSocketFactory;
+import org.vash.vate.socket.remote.VTRemoteSocketFactory;
 import org.vash.vate.stream.multiplex.VTMultiplexingInputStream;
 import org.vash.vate.stream.multiplex.VTMultiplexingOutputStream;
+import org.vash.vate.tunnel.connection.VTTunnelConnection;
 
 public class VTManagedServerSocket
 {
@@ -124,6 +127,18 @@ public class VTManagedServerSocket
     public VTRemotePipedSocketFactory getRemotePipedSocketFactory()
     {
       return session.getRemotePipedSocketFactory();
+    }
+    
+    public VTRemoteSocketFactory getRemoteSocketFactory(int type)
+    {
+      type |= VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT;
+      VTTunnelConnection connection = session.getTunnelsHandler().getConnection();
+      return connection.createRemoteSocketFactory(connection.getResponseChannel(type));
+    }
+    
+    public VTTunnelConnection getTunnelConnection()
+    {
+      return session.getTunnelsHandler().getConnection();
     }
   }
   

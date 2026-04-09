@@ -13,10 +13,12 @@ import java.net.SocketException;
 
 import org.vash.vate.VTSystem;
 import org.vash.vate.socket.remote.VTRemotePipedSocketFactory;
+import org.vash.vate.socket.remote.VTRemoteSocketFactory;
 import org.vash.vate.stream.multiplex.VTMultiplexingInputStream;
 import org.vash.vate.stream.multiplex.VTMultiplexingOutputStream;
 import org.vash.vate.stream.multiplex.VTMultiplexingInputStream.VTMultiplexedInputStream;
 import org.vash.vate.stream.multiplex.VTMultiplexingOutputStream.VTMultiplexedOutputStream;
+import org.vash.vate.tunnel.connection.VTTunnelConnection;
 
 public class VTManagedSocket extends Socket implements Closeable
 {
@@ -48,6 +50,16 @@ public class VTManagedSocket extends Socket implements Closeable
   public VTRemotePipedSocketFactory getRemotePipedSocketFactory()
   {
     return connection.getRemotePipedSocketFactory();
+  }
+  
+  public VTRemoteSocketFactory getRemoteSocketFactory(int type)
+  {
+    return connection.getRemoteSocketFactory(type);
+  }
+  
+  public VTTunnelConnection getTunnelConnection()
+  {
+    return connection.getTunnelConnection();
   }
   
   public VTManagedConnection getConnection()
