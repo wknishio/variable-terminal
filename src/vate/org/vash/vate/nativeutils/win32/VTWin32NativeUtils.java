@@ -3,6 +3,8 @@ package org.vash.vate.nativeutils.win32;
 import org.vash.vate.nativeutils.VTNativeUtils;
 
 import com.sun.jna.Native;
+import com.sun.jna.platform.win32.WinNT.HANDLE;
+import com.sun.jna.ptr.IntByReference;
 
 public class VTWin32NativeUtils implements VTNativeUtils
 {
@@ -391,29 +393,6 @@ public class VTWin32NativeUtils implements VTNativeUtils
   
   private ShowWindowThread showHook = new ShowWindowThread();
   
-  public void normal()
-  {
-    // HANDLE hConsoleHandle = kernel32Lib.GetStdHandle(-10);
-    // IntByReference lpMode = new IntByReference();
-    // kernel32Lib.GetConsoleMode(hConsoleHandle, lpMode);
-    // kernel32Lib.SetConsoleMode(hConsoleHandle, lpMode.getValue() |
-    // (ENABLE_ECHO_INPUT));
-  }
-  
-  public void unbuffered()
-  {
-    return;
-  }
-  
-  public void noecho()
-  {
-    // HANDLE hConsoleHandle = kernel32Lib.GetStdHandle(-10);
-    // IntByReference lpMode = new IntByReference();
-    // kernel32Lib.GetConsoleMode(hConsoleHandle, lpMode);
-    // kernel32Lib.SetConsoleMode(hConsoleHandle, lpMode.getValue() &
-    // (~ENABLE_ECHO_INPUT));
-  }
-  
   public boolean checkANSI()
   {
     boolean ansi = false;
@@ -454,21 +433,81 @@ public class VTWin32NativeUtils implements VTNativeUtils
   
   public void echo(boolean enabled)
   {
-    // TODO Auto-generated method stub
+    try
+    {
+      if (!enabled)
+      {
+        HANDLE hConsoleHandle = kernel32Lib.GetStdHandle(STD_INPUT_HANDLE);
+        IntByReference lpMode = new IntByReference();
+        kernel32Lib.GetConsoleMode(hConsoleHandle, lpMode);
+        kernel32Lib.SetConsoleMode(hConsoleHandle, lpMode.getValue() & (~ENABLE_ECHO_INPUT));
+      }
+      else
+      {
+        HANDLE hConsoleHandle = kernel32Lib.GetStdHandle(STD_INPUT_HANDLE);
+        IntByReference lpMode = new IntByReference();
+        kernel32Lib.GetConsoleMode(hConsoleHandle, lpMode);
+        kernel32Lib.SetConsoleMode(hConsoleHandle, lpMode.getValue() | ENABLE_ECHO_INPUT);
+      }
+    }
+    catch (Throwable t)
+    {
+      
+    }
   }
   
   public void icanon(boolean enabled)
   {
-    // TODO Auto-generated method stub
+    try
+    {
+      if (!enabled)
+      {
+        HANDLE hConsoleHandle = kernel32Lib.GetStdHandle(STD_INPUT_HANDLE);
+        IntByReference lpMode = new IntByReference();
+        kernel32Lib.GetConsoleMode(hConsoleHandle, lpMode);
+        kernel32Lib.SetConsoleMode(hConsoleHandle, lpMode.getValue() & (~ENABLE_LINE_INPUT));
+      }
+      else
+      {
+        HANDLE hConsoleHandle = kernel32Lib.GetStdHandle(STD_INPUT_HANDLE);
+        IntByReference lpMode = new IntByReference();
+        kernel32Lib.GetConsoleMode(hConsoleHandle, lpMode);
+        kernel32Lib.SetConsoleMode(hConsoleHandle, lpMode.getValue() | ENABLE_LINE_INPUT);
+      }
+    }
+    catch (Throwable t)
+    {
+      
+    }
   }
   
   public void raw()
   {
-    // TODO Auto-generated method stub
+    try
+    {
+      HANDLE hConsoleHandle = kernel32Lib.GetStdHandle(STD_INPUT_HANDLE);
+      IntByReference lpMode = new IntByReference();
+      kernel32Lib.GetConsoleMode(hConsoleHandle, lpMode);
+      kernel32Lib.SetConsoleMode(hConsoleHandle, lpMode.getValue() & (~ENABLE_LINE_INPUT & ~ENABLE_ECHO_INPUT & ~ENABLE_PROCESSED_INPUT));
+    }
+    catch (Throwable t)
+    {
+      
+    }
   }
   
   public void sane()
   {
-    // TODO Auto-generated method stub
+    try
+    {
+      HANDLE hConsoleHandle = kernel32Lib.GetStdHandle(STD_INPUT_HANDLE);
+      IntByReference lpMode = new IntByReference();
+      kernel32Lib.GetConsoleMode(hConsoleHandle, lpMode);
+      kernel32Lib.SetConsoleMode(hConsoleHandle, lpMode.getValue() | (ENABLE_LINE_INPUT | ENABLE_ECHO_INPUT | ENABLE_PROCESSED_INPUT));
+    }
+    catch (Throwable t)
+    {
+      
+    }
   }
 }

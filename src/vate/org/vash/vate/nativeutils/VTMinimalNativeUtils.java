@@ -108,11 +108,11 @@ public class VTMinimalNativeUtils implements VTNativeUtils
     {
       if (!enabled)
       {
-        Runtime.getRuntime().exec(new String[] {"stty -echo < /dev/tty"});
+        Runtime.getRuntime().exec("stty -echo < /dev/tty").waitFor();
       }
       else
       {
-        Runtime.getRuntime().exec(new String[] {"stty echo < /dev/tty"});
+        Runtime.getRuntime().exec("stty echo < /dev/tty").waitFor();
       }
     }
     catch (Throwable t)
@@ -127,11 +127,11 @@ public class VTMinimalNativeUtils implements VTNativeUtils
     {
       if (!enabled)
       {
-        Runtime.getRuntime().exec(new String[] {"stty -icanon < /dev/tty"});
+        Runtime.getRuntime().exec("stty -icanon < /dev/tty").waitFor();
       }
       else
       {
-        Runtime.getRuntime().exec(new String[] {"stty icanon < /dev/tty"});
+        Runtime.getRuntime().exec("stty icanon < /dev/tty").waitFor();
       }
     }
     catch (Throwable t)
@@ -144,7 +144,7 @@ public class VTMinimalNativeUtils implements VTNativeUtils
   {
     try
     {
-      Runtime.getRuntime().exec(new String[] {"stty raw < /dev/tty"});
+      Runtime.getRuntime().exec("stty raw < /dev/tty").waitFor();
     }
     catch (Throwable t)
     {
@@ -156,7 +156,7 @@ public class VTMinimalNativeUtils implements VTNativeUtils
   {
     try
     {
-      Runtime.getRuntime().exec(new String[] {"stty sane < /dev/tty"});
+      Runtime.getRuntime().exec("stty sane < /dev/tty").waitFor();
     }
     catch (Throwable t)
     {

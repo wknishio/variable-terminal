@@ -169,9 +169,16 @@ public class VTStandardConsole extends VTConsole
     {
       return;
     }
-    if (VTReflectionUtils.detectWindows() && VTMainNativeUtils.isAvailable())
+    if (VTReflectionUtils.detectWindows())
     {
-      VTMainNativeUtils.system("cls");
+      if (VTMainNativeUtils.isAvailable())
+      {
+        VTMainNativeUtils.system("cls");
+      }
+      else
+      {
+        VTMainNativeUtils.executeProcess(true, "cmd", "/c", "cls");
+      }
     }
     else if (!VTReflectionUtils.detectWindows())
     {
@@ -192,9 +199,16 @@ public class VTStandardConsole extends VTConsole
     {
       return;
     }
-    if (VTReflectionUtils.detectWindows() && VTMainNativeUtils.isAvailable())
+    if (VTReflectionUtils.detectWindows())
     {
-      VTMainNativeUtils.system("title " + title);
+      if (VTMainNativeUtils.isAvailable())
+      {
+        VTMainNativeUtils.system("title " + title);
+      }
+      else
+      {
+        VTMainNativeUtils.executeProcess(true, "cmd", "/c", "title " + title);
+      }
     }
     else if (!VTReflectionUtils.detectWindows())
     {
@@ -208,7 +222,7 @@ public class VTStandardConsole extends VTConsole
     {
       return;
     }
-    if (VTReflectionUtils.detectWindows() && VTMainNativeUtils.isAvailable())
+    if (VTReflectionUtils.detectWindows())
     {
       // Windows 2000 and beyond only
       colorCode.setLength(0);
@@ -378,7 +392,14 @@ public class VTStandardConsole extends VTConsole
           break;
         }
       }
-      VTMainNativeUtils.system("color " + colorCode.toString());
+      if (VTMainNativeUtils.isAvailable())
+      {
+        VTMainNativeUtils.system("color " + colorCode.toString());
+      }
+      else
+      {
+        VTMainNativeUtils.executeProcess(true, "cmd", "/c", "color " + colorCode.toString());
+      }
     }
     else if (!VTReflectionUtils.detectWindows())
     {
@@ -599,9 +620,16 @@ public class VTStandardConsole extends VTConsole
     {
       return;
     }
-    if (VTReflectionUtils.detectWindows() && VTMainNativeUtils.isAvailable())
+    if (VTReflectionUtils.detectWindows())
     {
-      VTMainNativeUtils.system("color");
+      if (VTMainNativeUtils.isAvailable())
+      {
+        VTMainNativeUtils.system("color");
+      }
+      else
+      {
+        VTMainNativeUtils.executeProcess(true, "cmd", "/c", "color");
+      }
     }
     else if (!VTReflectionUtils.detectWindows())
     {
