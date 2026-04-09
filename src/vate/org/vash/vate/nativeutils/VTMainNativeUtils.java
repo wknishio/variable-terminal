@@ -2,6 +2,8 @@ package org.vash.vate.nativeutils;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -17,6 +19,8 @@ import org.vash.vate.nativeutils.mac.VTMacNativeUtils;
 import org.vash.vate.nativeutils.sunos.VTSunOSNativeUtils;
 import org.vash.vate.nativeutils.win32.VTWin32NativeUtils;
 import org.vash.vate.reflection.VTReflectionUtils;
+import org.vash.vate.runtime.VTRuntimeProcessDataRedirector;
+import org.vash.vate.stream.limit.VTNullOutputStream;
 
 import com.sun.jna.Platform;
 
@@ -615,25 +619,43 @@ public class VTMainNativeUtils
     }
   }
   
-  public static int executeProcess(boolean inheritIO, String... commands)
+  public static int executeProcess(boolean inheritIO, InputStream input, OutputStream output, String... commands)
   {
     int status = -1;
     try
     {
-      ProcessBuilder process = null;
+      ProcessBuilder command = null;
       if (commands.length == 1)
       {
-        process = new ProcessBuilder(CommandLineTokenizerMKII.tokenize(commands[0]));
+        command = new ProcessBuilder(CommandLineTokenizerMKII.tokenize(commands[0]));
       }
       else
       {
-        process = new ProcessBuilder(commands);
+        command = new ProcessBuilder(commands);
       }
       if (inheritIOMethod != null && inheritIO)
       {
-        process = (ProcessBuilder) inheritIOMethod.invoke(process);
+        command = (ProcessBuilder) inheritIOMethod.invoke(command);
+        status = command.start().waitFor();
       }
-      status = process.start().waitFor();
+      else
+      {
+        command.redirectErrorStream(true);
+        Process process = command.start();
+        if (input != null)
+        {
+          new Thread(new VTRuntimeProcessDataRedirector(input, process.getOutputStream(), false)).start();
+        }
+        if (output != null)
+        {
+          new Thread(new VTRuntimeProcessDataRedirector(process.getInputStream(), output, false)).start();
+        }
+        else
+        {
+          new Thread(new VTRuntimeProcessDataRedirector(process.getInputStream(), new VTNullOutputStream(), false)).start();
+        }
+        status = process.waitFor();
+      }
     }
     catch (Throwable t)
     {

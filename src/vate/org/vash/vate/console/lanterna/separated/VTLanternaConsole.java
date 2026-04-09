@@ -2181,7 +2181,7 @@ public class VTLanternaConsole extends VTConsole
         }
         else
         {
-          VTMainNativeUtils.executeProcess(true, "cmd", "/c" , "title " + title);
+          VTMainNativeUtils.executeProcess(true, null, null, "cmd", "/c" , "title " + title);
         }
       }
       else
