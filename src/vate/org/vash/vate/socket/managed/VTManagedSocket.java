@@ -47,14 +47,14 @@ public class VTManagedSocket extends Socket implements Closeable
     return connection.getMultiplexedConnectionOutputStream();
   }
   
-  public VTRemotePipedSocketFactory getRemotePipedSocketFactory()
+  public VTRemotePipedSocketFactory createRemotePipedSocketFactory(int type)
   {
-    return connection.getRemotePipedSocketFactory();
+    return connection.createRemotePipedSocketFactory(type);
   }
   
-  public VTRemoteSocketFactory getRemoteSocketFactory(int type)
+  public VTRemoteSocketFactory createRemoteSocketFactory(int type)
   {
-    return connection.getRemoteSocketFactory(type);
+    return connection.createRemoteSocketFactory(type);
   }
   
   public VTTunnelConnection getTunnelConnection()

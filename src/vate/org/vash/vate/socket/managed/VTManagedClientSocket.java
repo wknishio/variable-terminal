@@ -124,12 +124,12 @@ public class VTManagedClientSocket
       return connection.getMultiplexedConnectionOutputStream();
     }
     
-    public VTRemotePipedSocketFactory getRemotePipedSocketFactory()
+    public VTRemotePipedSocketFactory createRemotePipedSocketFactory(int type)
     {
-      return session.getRemotePipedSocketFactory();
+      return session.createRemotePipedSocketFactory(type);
     }
     
-    public VTRemoteSocketFactory getRemoteSocketFactory(int type)
+    public VTRemoteSocketFactory createRemoteSocketFactory(int type)
     {
       type |= VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT;
       VTTunnelConnection connection = session.getTunnelsHandler().getConnection();

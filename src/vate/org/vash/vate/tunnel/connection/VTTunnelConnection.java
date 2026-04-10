@@ -45,7 +45,7 @@ public class VTTunnelConnection
   private Collection<Closeable> closeables;
   private final Collection<String> nonces = new LinkedHashSet<String>();
   //private final Random random = new VTSplitMix64Random(new VTBlake3SecureRandom().nextLong())
-  private final VTRemotePipedSocketFactory remotePipedSocketFactory;
+  //private final VTRemotePipedSocketFactory remotePipedSocketFactory;
   private final Random random;
   private volatile boolean closed = false;
   
@@ -60,7 +60,7 @@ public class VTTunnelConnection
     // this.tunnelType = tunnelType;
     this.executorService = executorService;
     this.closeables = closeables;
-    this.remotePipedSocketFactory = new VTTunnelChannelRemotePipedSocketFactory(createRemoteSocketBuilder(pipedChannelBuffered));
+    //this.remotePipedSocketFactory = new VTTunnelChannelRemotePipedSocketFactory(createRemoteSocketBuilder(pipedChannelBuffered));
     //this.remoteSocketBuilder = createRemoteSocketBuilder();
   }
   
@@ -313,9 +313,9 @@ public class VTTunnelConnection
     return new VTTunnelChannelRemoteSocketFactory(createRemoteSocketBuilder(channel));
   }
   
-  public VTRemotePipedSocketFactory getRemotePipedSocketFactory()
+  public VTRemotePipedSocketFactory createRemotePipedSocketFactory(int type)
   {
-    return remotePipedSocketFactory;
+    return new VTTunnelChannelRemotePipedSocketFactory(createRemoteSocketBuilder(pipedChannelBuffered), type);
   }
   
 //  public VTTunnelChannelRemoteSocketFactory createRemoteSocketFactory()

@@ -14,8 +14,8 @@ public interface VTManagedConnection extends Closeable
 {
   public VTMultiplexingInputStream getMultiplexedConnectionInputStream();
   public VTMultiplexingOutputStream getMultiplexedConnectionOutputStream();
-  public VTRemotePipedSocketFactory getRemotePipedSocketFactory();
-  public VTRemoteSocketFactory getRemoteSocketFactory(int type);
+  public VTRemotePipedSocketFactory createRemotePipedSocketFactory(int type);
+  public VTRemoteSocketFactory createRemoteSocketFactory(int type);
   public VTTunnelConnection getTunnelConnection();
   public Socket getSocket();
   public void close() throws IOException;
