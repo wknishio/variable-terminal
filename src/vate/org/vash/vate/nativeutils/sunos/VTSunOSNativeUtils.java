@@ -214,11 +214,11 @@ public class VTSunOSNativeUtils implements VTNativeUtils
     {
       if (!enabled)
       {
-        Runtime.getRuntime().exec("stty -echo < /dev/tty").waitFor();
+        Runtime.getRuntime().exec(new String[] {"/bin/sh", "-c", "stty -echo < /dev/tty"}).waitFor();
       }
       else
       {
-        Runtime.getRuntime().exec("stty echo < /dev/tty").waitFor();
+        Runtime.getRuntime().exec(new String[] {"/bin/sh", "-c", "stty echo < /dev/tty"}).waitFor();
       }
     }
     catch (Throwable t)
@@ -233,11 +233,11 @@ public class VTSunOSNativeUtils implements VTNativeUtils
     {
       if (!enabled)
       {
-        Runtime.getRuntime().exec("stty -icanon < /dev/tty").waitFor();
+        Runtime.getRuntime().exec(new String[] {"/bin/sh", "-c", "stty -icanon < /dev/tty"}).waitFor();
       }
       else
       {
-        Runtime.getRuntime().exec("stty icanon < /dev/tty").waitFor();
+        Runtime.getRuntime().exec(new String[] {"/bin/sh", "-c", "stty icanon < /dev/tty"}).waitFor();
       }
     }
     catch (Throwable t)
@@ -250,7 +250,7 @@ public class VTSunOSNativeUtils implements VTNativeUtils
   {
     try
     {
-      Runtime.getRuntime().exec("stty raw < /dev/tty").waitFor();
+      Runtime.getRuntime().exec(new String[] {"/bin/sh", "-c", "stty raw < /dev/tty"}).waitFor();
     }
     catch (Throwable t)
     {
@@ -262,7 +262,7 @@ public class VTSunOSNativeUtils implements VTNativeUtils
   {
     try
     {
-      Runtime.getRuntime().exec("stty sane < /dev/tty").waitFor();
+      Runtime.getRuntime().exec(new String[] {"/bin/sh", "-c", "stty sane < /dev/tty"}).waitFor();
     }
     catch (Throwable t)
     {
