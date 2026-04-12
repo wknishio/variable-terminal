@@ -63,8 +63,8 @@ public class VTClientStandardStart
       client.setDaemon(daemon);
       if (daemon)
       {
-        client.setDataInputStream(System.in);
-        client.setDataOutputStream(System.out);
+        client.setCommandInputStream(System.in);
+        client.setCommandOutputStream(System.out);
       }
       client.start();
     }
@@ -74,8 +74,8 @@ public class VTClientStandardStart
       client.setDaemon(daemon);
       if (daemon)
       {
-        client.setDataInputStream(System.in);
-        client.setDataOutputStream(System.out);
+        client.setCommandInputStream(System.in);
+        client.setCommandOutputStream(System.out);
       }
       client.start();
     }

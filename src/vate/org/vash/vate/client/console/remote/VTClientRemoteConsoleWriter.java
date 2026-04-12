@@ -29,7 +29,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
   private BufferedReader sourceReader;
   private final byte[] buffer = new byte[VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES * 4];
   private final CharsetDecoder decoder = VTSystem.getStrictCharsetDecoder("UTF-8");
-  private InputStream dataInputStream;
+  private InputStream commandInputStream;
   
   public VTClientRemoteConsoleWriter(VTClientSession session)
   {
@@ -39,9 +39,9 @@ public class VTClientRemoteConsoleWriter extends VTTask
     this.selector = new VTClientRemoteConsoleCommandSelector<VTClientRemoteConsoleCommandProcessor>(session);
   }
   
-  public void setDataInputStream(InputStream dataInputStream)
+  public void setCommandInputStream(InputStream stream)
   {
-    this.dataInputStream = dataInputStream;
+    this.commandInputStream = stream;
   }
   
   public void setStopped(boolean stopped)
@@ -128,7 +128,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
           }
           else
           {
-            if (dataInputStream == null)
+            if (commandInputStream == null)
             {
               setStopped(true);
             }
@@ -136,7 +136,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
             {
               //pipe bytes from local data inputstream to remote data outputstream
               line = null;
-              length = dataInputStream.read(buffer, 0, buffer.length);
+              length = commandInputStream.read(buffer, 0, buffer.length);
               if (length > 0)
               {
                 if (buffer[length - 1] == '\n' || buffer[length - 1] == '\r')

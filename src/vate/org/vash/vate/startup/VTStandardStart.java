@@ -196,8 +196,8 @@ public final class VTStandardStart
           VTRuntimeExit.exit(-1);
         }
         client.setDaemon(true);
-        client.setDataInputStream(System.in);
-        client.setDataOutputStream(System.out);
+        client.setCommandInputStream(System.in);
+        client.setCommandOutputStream(System.out);
         client.start();
       }
       else

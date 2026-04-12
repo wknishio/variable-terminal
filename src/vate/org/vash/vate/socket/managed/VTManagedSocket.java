@@ -301,4 +301,15 @@ public class VTManagedSocket extends Socket implements Closeable
   {
     connection.setOutputRateBytesPerSecond(bytesPerSecond);
   }
+  
+  public void setCommandInputStream(InputStream stream)
+  {
+    connection.setCommandInputStream(stream);
+  }
+  
+  public void setCommandOutputStream(OutputStream stream)
+  {
+    connection.setCommandOutputStream(stream);
+  }
+
 }

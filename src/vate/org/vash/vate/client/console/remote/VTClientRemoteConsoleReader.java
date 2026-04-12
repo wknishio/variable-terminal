@@ -16,7 +16,7 @@ public class VTClientRemoteConsoleReader extends VTTask
   private VTClientConnection connection;
   private final byte[] buffer = new byte[VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES * 4];
   private final CharsetDecoder decoder = VTSystem.getStrictCharsetDecoder("UTF-8");
-  private OutputStream dataOutputStream;
+  private OutputStream commandOutputStream;
   
   public VTClientRemoteConsoleReader(VTClientSession session)
   {
@@ -25,9 +25,9 @@ public class VTClientRemoteConsoleReader extends VTTask
     this.connection = session.getConnection();
   }
   
-  public void setDataOutputStream(OutputStream dataOutputStream)
+  public void setCommandOutputStream(OutputStream stream)
   {
-    this.dataOutputStream = dataOutputStream;
+    this.commandOutputStream = stream;
   }
   
   public void task()
@@ -41,12 +41,12 @@ public class VTClientRemoteConsoleReader extends VTTask
         //readChars = connection.getResultReader().read(resultBuffer, 0, resultBufferSize);
         utf = null;
         length = connection.getResultReader().readData(buffer);
-        if (dataOutputStream != null)
+        if (commandOutputStream != null)
         {
           try
           {
-            dataOutputStream.write(buffer, 0, length);
-            dataOutputStream.flush();
+            commandOutputStream.write(buffer, 0, length);
+            commandOutputStream.flush();
           }
           catch (Throwable t)
           {

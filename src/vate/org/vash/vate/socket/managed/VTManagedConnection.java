@@ -2,6 +2,8 @@ package org.vash.vate.socket.managed;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 
 import org.vash.vate.socket.remote.VTRemotePipedSocketFactory;
@@ -26,4 +28,6 @@ public interface VTManagedConnection extends Closeable
   public long checkPing(long timeoutNanoSeconds);
   public long getOutputRateBytesPerSecond();
   public void setOutputRateBytesPerSecond(long bytesPerSecond);
+  public void setCommandInputStream(InputStream stream);
+  public void setCommandOutputStream(OutputStream stream);
 }

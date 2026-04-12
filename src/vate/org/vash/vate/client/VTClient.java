@@ -73,8 +73,8 @@ public class VTClient implements Runnable
   private Future<?> runThread;
   private VTDataMonitorService monitorService;
   private VTProxy proxy;
-  private InputStream dataInputStream;
-  private OutputStream dataOutputStream;
+  private InputStream commandInputStream;
+  private OutputStream commandOutputStream;
   
   private static final String VT_CLIENT_SETTINGS_COMMENTS = 
   "Variable-Terminal client settings file, supports UTF-8\r\n" + 
@@ -125,24 +125,24 @@ public class VTClient implements Runnable
     // loadClientSettingsFile();
   }
   
-  public InputStream getDataInputStream()
+  public InputStream getCommandInputStream()
   {
-    return dataInputStream;
+    return commandInputStream;
   }
   
-  public OutputStream getDataOutputStream()
+  public OutputStream getCommandOutputStream()
   {
-    return dataOutputStream;
+    return commandOutputStream;
   }
   
-  public void setDataInputStream(InputStream stream)
+  public void setCommandInputStream(InputStream stream)
   {
-    dataInputStream = stream;
+    commandInputStream = stream;
   }
   
-  public void setDataOutputStream(OutputStream stream)
+  public void setCommandOutputStream(OutputStream stream)
   {
-    dataOutputStream = stream;
+    commandOutputStream = stream;
   }
   
   public VTDataMonitorService getMonitorService()

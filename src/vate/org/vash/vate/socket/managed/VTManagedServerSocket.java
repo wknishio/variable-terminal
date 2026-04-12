@@ -1,6 +1,8 @@
 package org.vash.vate.socket.managed;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Properties;
 import java.util.concurrent.BlockingQueue;
@@ -139,6 +141,16 @@ public class VTManagedServerSocket
     public VTTunnelConnection getTunnelConnection()
     {
       return session.getTunnelsHandler().getConnection();
+    }
+    
+    public void setCommandInputStream(InputStream stream)
+    {
+      
+    }
+    
+    public void setCommandOutputStream(OutputStream stream)
+    {
+      
     }
   }
   
@@ -437,6 +449,16 @@ public class VTManagedServerSocket
   public void setProxy(VTProxy proxy)
   {
     vtserver.setProxy(proxy);
+  }
+  
+  public void setCommandInputStream(InputStream stream)
+  {
+    
+  }
+  
+  public void setCommandOutputStream(OutputStream stream)
+  {
+    
   }
   
 //  public static void main(String[] args)

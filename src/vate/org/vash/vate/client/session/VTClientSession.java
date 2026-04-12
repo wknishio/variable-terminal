@@ -79,8 +79,8 @@ public class VTClientSession
         sessionRemoteNanoDelay = nanoDelay;
       }
     });
-    clientWriter.setDataInputStream(client.getDataInputStream());
-    serverReader.setDataOutputStream(client.getDataOutputStream());
+    clientWriter.setCommandInputStream(client.getCommandInputStream());
+    serverReader.setCommandOutputStream(client.getCommandOutputStream());
   }
   
   public ExecutorService getExecutorService()

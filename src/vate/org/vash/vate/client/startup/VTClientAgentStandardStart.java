@@ -25,16 +25,16 @@ public class VTClientAgentStandardStart
         VTRuntimeExit.exit(-1);
       }
       client.setDaemon(true);
-      client.setDataInputStream(System.in);
-      client.setDataOutputStream(System.out);
+      client.setCommandInputStream(System.in);
+      client.setCommandOutputStream(System.out);
       client.start();
     }
     else
     {
       VTClient client = new VTClient();
       client.setDaemon(true);
-      client.setDataInputStream(System.in);
-      client.setDataOutputStream(System.out);
+      client.setCommandInputStream(System.in);
+      client.setCommandOutputStream(System.out);
       client.start();
     }
   }
