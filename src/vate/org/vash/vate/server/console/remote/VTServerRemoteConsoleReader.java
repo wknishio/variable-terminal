@@ -49,9 +49,17 @@ public class VTServerRemoteConsoleReader extends VTTask
         {
           
         }
-        if (utf != null && utf.length() > 0 && utf.endsWith("\n"))
+        if (utf != null && utf.length() > 0)
         {
-          executeCommand(utf.substring(0, utf.length() - 1));
+          if (utf.endsWith("\n") || utf.endsWith("\r"))
+          {
+            executeCommand(utf.substring(0, utf.length() - 1));
+          }
+          else
+          {
+            session.getShellOutputStream().write(buffer, 0, length);
+            session.getShellOutputStream().flush();
+          }
         }
         else
         {

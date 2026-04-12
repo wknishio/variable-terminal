@@ -12,6 +12,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.Map.Entry;
 import org.vash.vate.audio.VTAudioBeeper;
 import org.vash.vate.com.martiansoftware.jsap.CommandLineTokenizerMKII;
+import org.vash.vate.console.VTConsole;
 import org.vash.vate.filesystem.VTFileUtils;
 import org.vash.vate.nativeutils.bsd.VTBSDNativeUtils;
 import org.vash.vate.nativeutils.linux.VTLinuxNativeUtils;
@@ -662,5 +663,40 @@ public class VTMainNativeUtils
       
     }
     return status;
+  }
+  
+  private static final Thread restoreTerminalHook = new Thread()
+  {
+    public void run()
+    {
+      try
+      {
+        VTMainNativeUtils.sane();
+      }
+      catch (Throwable t)
+      {
+        
+      }
+    }
+  };
+  
+  public static void disableTerminalEchoLineBuffer()
+  {
+    if (VTConsole.hasTerminal())
+    {
+      Runtime.getRuntime().addShutdownHook(restoreTerminalHook);
+      VTMainNativeUtils.echo(false);
+      VTMainNativeUtils.icanon(false);
+    }
+  }
+  
+  public static void restoreTerminalEchoLineBuffer()
+  {
+    if (VTConsole.hasTerminal())
+    {
+      Runtime.getRuntime().removeShutdownHook(restoreTerminalHook);
+      VTMainNativeUtils.echo(true);
+      VTMainNativeUtils.icanon(true);
+    }
   }
 }

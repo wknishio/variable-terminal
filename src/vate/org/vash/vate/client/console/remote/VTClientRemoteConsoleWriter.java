@@ -139,11 +139,18 @@ public class VTClientRemoteConsoleWriter extends VTTask
               length = dataInputStream.read(buffer, 0, buffer.length);
               if (length > 0)
               {
-                if (buffer[length - 1] == '\n')
+                if (buffer[length - 1] == '\n' || buffer[length - 1] == '\r')
                 {
                   try
                   {
-                    line = decoder.decode(ByteBuffer.wrap(buffer, 0, length - 1)).toString();
+                    if (length > 1 && buffer[length - 2] == '\r' && buffer[length - 1] == '\n')
+                    {
+                      line = decoder.decode(ByteBuffer.wrap(buffer, 0, length - 2)).toString();
+                    }
+                    else
+                    {
+                      line = decoder.decode(ByteBuffer.wrap(buffer, 0, length - 1)).toString();
+                    }
                   }
                   catch (Throwable t)
                   {
