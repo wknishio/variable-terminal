@@ -4,6 +4,7 @@ import org.vash.vate.VTSystem;
 import org.vash.vate.client.VTClient;
 import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.help.VTHelpManager;
+import org.vash.vate.nativeutils.VTMainNativeUtils;
 import org.vash.vate.runtime.VTRuntimeExit;
 
 public class VTClientGraphicalStart
@@ -62,6 +63,7 @@ public class VTClientGraphicalStart
       client.setDaemon(daemon);
       if (daemon)
       {
+        VTMainNativeUtils.disableTerminalEchoLineBuffer();
         client.setCommandInputStream(System.in);
         client.setCommandOutputStream(System.out);
       }
@@ -73,6 +75,7 @@ public class VTClientGraphicalStart
       client.setDaemon(daemon);
       if (daemon)
       {
+        VTMainNativeUtils.disableTerminalEchoLineBuffer();
         client.setCommandInputStream(System.in);
         client.setCommandOutputStream(System.out);
       }

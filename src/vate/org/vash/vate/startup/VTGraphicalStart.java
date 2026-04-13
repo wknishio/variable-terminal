@@ -4,6 +4,7 @@ import org.vash.vate.VTSystem;
 import org.vash.vate.client.VTClient;
 import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.help.VTHelpManager;
+import org.vash.vate.nativeutils.VTMainNativeUtils;
 import org.vash.vate.runtime.VTRuntimeExit;
 import org.vash.vate.server.VTServer;
 
@@ -194,6 +195,7 @@ public final class VTGraphicalStart
           VTRuntimeExit.exit(-1);
         }
         client.setDaemon(true);
+        VTMainNativeUtils.disableTerminalEchoLineBuffer();
         client.setCommandInputStream(System.in);
         client.setCommandOutputStream(System.out);
         client.start();
