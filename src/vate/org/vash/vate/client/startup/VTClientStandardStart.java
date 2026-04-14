@@ -64,6 +64,7 @@ public class VTClientStandardStart
       client.setDaemon(daemon);
       if (daemon)
       {
+        VTMainConsole.setGraphical(false);
         VTMainNativeUtils.disableTerminalProcessing();
         client.setCommandInputStream(System.in);
         client.setCommandOutputStream(System.out);
@@ -76,6 +77,7 @@ public class VTClientStandardStart
       client.setDaemon(daemon);
       if (daemon)
       {
+        VTMainConsole.setGraphical(false);
         VTMainNativeUtils.disableTerminalProcessing();
         client.setCommandInputStream(System.in);
         client.setCommandOutputStream(System.out);

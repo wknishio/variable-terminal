@@ -99,6 +99,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
     
     int length = 0;
     String line = null;
+    boolean addCarriageReturn = false;
     StringBuilder quit = new StringBuilder();
     
     //reading = true;
@@ -125,7 +126,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
               sourceReader = null;
               continue;
             }
-            executeCommand(line, true);
+            executeCommand(line, true, false);
           }
           else
           {
@@ -137,6 +138,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
             {
               //pipe bytes from local data inputstream to remote data outputstream
               line = null;
+              addCarriageReturn = false;
               length = commandInputStream.read(buffer, 0, buffer.length);
               if (length > 0)
               {
@@ -146,6 +148,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
                   {
                     if (length > 1 && buffer[length - 2] == '\r' && buffer[length - 1] == '\n')
                     {
+                      addCarriageReturn = true;
                       line = decoder.decode(ByteBuffer.wrap(buffer, 0, length - 2)).toString();
                     }
                     else
@@ -163,11 +166,10 @@ public class VTClientRemoteConsoleWriter extends VTTask
                     if (quit.toString().equalsIgnoreCase("*VTQUIT") || quit.toString().equalsIgnoreCase("*VTQT"))
                     {
                       setStopped(true);
-                      VTMainConsole.closeConsole();
                       session.getClient().stop();
                     }
                     quit.setLength(0);
-                    executeCommand(line, false);
+                    executeCommand(line, false, addCarriageReturn);
                   }
                   else
                   {
@@ -192,6 +194,11 @@ public class VTClientRemoteConsoleWriter extends VTTask
                   connection.getCommandWriter().flush();
                 }
               }
+              else if (length < 0)
+              {
+                setStopped(true);
+                break;
+              }
             }
           }
         }
@@ -213,12 +220,12 @@ public class VTClientRemoteConsoleWriter extends VTTask
               sourceReader = null;
               continue;
             }
-            executeCommand(line, true);
+            executeCommand(line, true, false);
           }
           else
           {
             line = VTMainConsole.readLine(true);
-            executeCommand(line, false);
+            executeCommand(line, false, false);
           }
         }
       }
@@ -262,7 +269,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
       String line = "";
       while (!isStopped() && (line = reader.readLine()) != null)
       {
-        executeCommand(line, echo);
+        executeCommand(line, echo, false);
       }
     }
     catch (Throwable t)
@@ -319,7 +326,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
       String line = "";
       while (!isStopped() && (line = reader.readLine()) != null)
       {
-        executeCommand(line, echo);
+        executeCommand(line, echo, false);
       }
     }
     catch (Throwable t)
@@ -342,7 +349,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
     }
   }
   
-  private void executeCommand(String command, boolean echo) throws Throwable
+  private void executeCommand(String command, boolean echo, boolean addCarriageReturn) throws Throwable
   {
     String parsed[];
     if (session.getClient().getClientConnector().isSkipConfiguration())
@@ -382,7 +389,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
       
       if (!selector.selectCommand(command, parsed))
       {
-        connection.getCommandWriter().writeLine(command);
+        connection.getCommandWriter().writeLine(addCarriageReturn ? command + "\r" : command);
         connection.getCommandWriter().flush();
       }
     }

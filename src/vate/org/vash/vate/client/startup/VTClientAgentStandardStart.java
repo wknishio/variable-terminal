@@ -26,6 +26,7 @@ public class VTClientAgentStandardStart
         VTRuntimeExit.exit(-1);
       }
       client.setDaemon(true);
+      VTMainConsole.setGraphical(false);
       VTMainNativeUtils.disableTerminalProcessing();
       client.setCommandInputStream(System.in);
       client.setCommandOutputStream(System.out);
@@ -35,6 +36,7 @@ public class VTClientAgentStandardStart
     {
       VTClient client = new VTClient();
       client.setDaemon(true);
+      VTMainConsole.setGraphical(false);
       VTMainNativeUtils.disableTerminalProcessing();
       client.setCommandInputStream(System.in);
       client.setCommandOutputStream(System.out);
