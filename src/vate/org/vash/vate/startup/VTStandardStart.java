@@ -197,7 +197,7 @@ public final class VTStandardStart
           VTRuntimeExit.exit(-1);
         }
         client.setDaemon(true);
-        VTMainNativeUtils.disableTerminalEchoLineBuffer();
+        VTMainNativeUtils.disableTerminalProcessing();
         client.setCommandInputStream(System.in);
         client.setCommandOutputStream(System.out);
         client.start();

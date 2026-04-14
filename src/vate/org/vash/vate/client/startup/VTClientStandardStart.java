@@ -64,7 +64,7 @@ public class VTClientStandardStart
       client.setDaemon(daemon);
       if (daemon)
       {
-        VTMainNativeUtils.disableTerminalEchoLineBuffer();
+        VTMainNativeUtils.disableTerminalProcessing();
         client.setCommandInputStream(System.in);
         client.setCommandOutputStream(System.out);
       }
@@ -76,7 +76,7 @@ public class VTClientStandardStart
       client.setDaemon(daemon);
       if (daemon)
       {
-        VTMainNativeUtils.disableTerminalEchoLineBuffer();
+        VTMainNativeUtils.disableTerminalProcessing();
         client.setCommandInputStream(System.in);
         client.setCommandOutputStream(System.out);
       }

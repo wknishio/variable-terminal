@@ -99,6 +99,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
     
     int length = 0;
     String line = null;
+    StringBuilder quit = new StringBuilder();
     
     //reading = true;
     while (!isStopped())
@@ -158,6 +159,14 @@ public class VTClientRemoteConsoleWriter extends VTTask
                   }
                   if (line != null)
                   {
+                    quit.append(line);
+                    if (quit.toString().equalsIgnoreCase("*VTQUIT") || quit.toString().equalsIgnoreCase("*VTQT"))
+                    {
+                      setStopped(true);
+                      VTMainConsole.closeConsole();
+                      session.getClient().stop();
+                    }
+                    quit.setLength(0);
                     executeCommand(line, false);
                   }
                   else
@@ -168,6 +177,17 @@ public class VTClientRemoteConsoleWriter extends VTTask
                 }
                 else
                 {
+                  if (quit.length() < "*VTQUIT".length())
+                  {
+                    try
+                    {
+                      quit.append(decoder.decode(ByteBuffer.wrap(buffer, 0, length)).toString());
+                    }
+                    catch (Throwable t)
+                    {
+                      
+                    }
+                  }
                   connection.getCommandWriter().writeData(buffer, 0, length);
                   connection.getCommandWriter().flush();
                 }

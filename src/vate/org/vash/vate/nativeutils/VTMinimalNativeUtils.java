@@ -144,7 +144,7 @@ public class VTMinimalNativeUtils implements VTNativeUtils
   {
     try
     {
-      Runtime.getRuntime().exec(new String[] {"/bin/sh", "-c", "stty raw < /dev/tty"}).waitFor();
+      Runtime.getRuntime().exec(new String[] {"/bin/sh", "-c", "stty raw -echo < /dev/tty"}).waitFor();
     }
     catch (Throwable t)
     {

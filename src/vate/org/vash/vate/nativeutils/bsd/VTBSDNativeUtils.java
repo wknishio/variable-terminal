@@ -247,7 +247,7 @@ public class VTBSDNativeUtils implements VTNativeUtils
   {
     try
     {
-      Runtime.getRuntime().exec("stty raw < /dev/tty").waitFor();
+      Runtime.getRuntime().exec("stty raw -echo < /dev/tty").waitFor();
     }
     catch (Throwable t)
     {

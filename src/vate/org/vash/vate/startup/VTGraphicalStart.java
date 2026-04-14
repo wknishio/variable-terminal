@@ -195,7 +195,7 @@ public final class VTGraphicalStart
           VTRuntimeExit.exit(-1);
         }
         client.setDaemon(true);
-        VTMainNativeUtils.disableTerminalEchoLineBuffer();
+        VTMainNativeUtils.disableTerminalProcessing();
         client.setCommandInputStream(System.in);
         client.setCommandOutputStream(System.out);
         client.start();

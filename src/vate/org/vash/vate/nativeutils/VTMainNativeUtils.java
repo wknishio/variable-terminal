@@ -680,23 +680,21 @@ public class VTMainNativeUtils
     }
   };
   
-  public static void disableTerminalEchoLineBuffer()
+  public static void disableTerminalProcessing()
   {
     if (VTConsole.hasTerminal())
     {
       Runtime.getRuntime().addShutdownHook(restoreTerminalHook);
-      VTMainNativeUtils.echo(false);
-      VTMainNativeUtils.icanon(false);
+      VTMainNativeUtils.raw();
     }
   }
   
-  public static void restoreTerminalEchoLineBuffer()
+  public static void restoreTerminalProcessing()
   {
     if (VTConsole.hasTerminal())
     {
       Runtime.getRuntime().removeShutdownHook(restoreTerminalHook);
-      VTMainNativeUtils.echo(true);
-      VTMainNativeUtils.icanon(true);
+      VTMainNativeUtils.sane();
     }
   }
 }
