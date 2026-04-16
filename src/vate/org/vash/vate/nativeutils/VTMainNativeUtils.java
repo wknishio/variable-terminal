@@ -574,7 +574,7 @@ public class VTMainNativeUtils
     return false;
   }
   
-  public static void echo(boolean enabled)
+  private static void echo(boolean enabled)
   {
     if (checkNativeUtils())
     {
@@ -582,15 +582,7 @@ public class VTMainNativeUtils
     }
   }
   
-  public static void icanon(boolean enabled)
-  {
-    if (checkNativeUtils())
-    {
-      nativeUtils.icanon(enabled);
-    }
-  }
-  
-  public static void raw()
+  private static void raw()
   {
     if (checkNativeUtils())
     {
@@ -598,7 +590,7 @@ public class VTMainNativeUtils
     }
   }
   
-  public static void sane()
+  private static void sane()
   {
     if (checkNativeUtils())
     {
@@ -702,7 +694,7 @@ public class VTMainNativeUtils
     return status;
   }
   
-  private static final Thread restoreTerminalNativeHook = new Thread()
+  private static final Thread restoreTerminalProcessingNativeHook = new Thread()
   {
     public void run()
     {
@@ -717,7 +709,7 @@ public class VTMainNativeUtils
     }
   };
   
-  private static final Thread restoreTerminalSystemHook = new Thread()
+  private static final Thread restoreTerminalProcessingSystemHook = new Thread()
   {
     public void run()
     {
@@ -736,14 +728,14 @@ public class VTMainNativeUtils
   {
     if ((executeRuntime("tty -s") != -1) && (executeSystem("tty -s") == 0))
     {
-      Runtime.getRuntime().addShutdownHook(restoreTerminalSystemHook);
+      Runtime.getRuntime().addShutdownHook(restoreTerminalProcessingSystemHook);
       executeSystem("stty raw -echo");
     }
     else
     {
       if (VTConsole.hasTerminal())
       {
-        Runtime.getRuntime().addShutdownHook(restoreTerminalNativeHook);
+        Runtime.getRuntime().addShutdownHook(restoreTerminalProcessingNativeHook);
         raw();
       }
     }
@@ -753,15 +745,79 @@ public class VTMainNativeUtils
   {
     if ((executeRuntime("tty -s") != -1) && (executeSystem("tty -s") == 0))
     {
-      Runtime.getRuntime().removeShutdownHook(restoreTerminalSystemHook);
+      Runtime.getRuntime().removeShutdownHook(restoreTerminalProcessingSystemHook);
       executeSystem("stty sane");
     }
     else
     {
       if (VTConsole.hasTerminal())
       {
-        Runtime.getRuntime().removeShutdownHook(restoreTerminalNativeHook);
+        Runtime.getRuntime().removeShutdownHook(restoreTerminalProcessingNativeHook);
         sane();
+      }
+    }
+  }
+  
+  private static final Thread restoreTerminalEchoNativeHook = new Thread()
+  {
+    public void run()
+    {
+      try
+      {
+        echo(false);
+      }
+      catch (Throwable t)
+      {
+        
+      }
+    }
+  };
+  
+  private static final Thread restoreTerminalEchoSystemHook = new Thread()
+  {
+    public void run()
+    {
+      try
+      {
+        executeSystem("stty echo");
+      }
+      catch (Throwable t)
+      {
+        
+      }
+    }
+  };
+  
+  public static void disableTerminalEcho()
+  {
+    if ((executeRuntime("tty -s") != -1) && (executeSystem("tty -s") == 0))
+    {
+      Runtime.getRuntime().addShutdownHook(restoreTerminalEchoSystemHook);
+      executeSystem("stty -echo");
+    }
+    else
+    {
+      if (VTConsole.hasTerminal())
+      {
+        Runtime.getRuntime().addShutdownHook(restoreTerminalEchoNativeHook);
+        echo(false);
+      }
+    }
+  }
+  
+  public static void restoreTerminalEcho()
+  {
+    if ((executeRuntime("tty -s") != -1) && (executeSystem("tty -s") == 0))
+    {
+      Runtime.getRuntime().removeShutdownHook(restoreTerminalEchoSystemHook);
+      executeSystem("stty echo");
+    }
+    else
+    {
+      if (VTConsole.hasTerminal())
+      {
+        Runtime.getRuntime().removeShutdownHook(restoreTerminalEchoNativeHook);
+        echo(true);
       }
     }
   }

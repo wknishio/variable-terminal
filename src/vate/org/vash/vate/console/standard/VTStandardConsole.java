@@ -42,6 +42,7 @@ public class VTStandardConsole extends VTConsole
   private static BufferedWriter readLineLog = null;
   private static PrintStream logOutput = null;
   private volatile boolean lastOutputLineEmpty = false;
+  private volatile boolean commandEcho = true;
   
   private VTStandardConsole()
   {
@@ -721,12 +722,20 @@ public class VTStandardConsole extends VTConsole
   
   public boolean isCommandEcho()
   {
-    return true;
+    return commandEcho;
   }
   
   public void setCommandEcho(boolean commandEcho)
   {
-    
+    this.commandEcho = commandEcho;
+    if (commandEcho)
+    {
+      VTMainNativeUtils.restoreTerminalEcho();
+    }
+    else
+    {
+      VTMainNativeUtils.disableTerminalEcho();
+    }
   }
   
   public String getAllText()
