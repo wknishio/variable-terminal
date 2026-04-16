@@ -41,6 +41,7 @@ public class VTServerRemoteConsoleReader extends VTTask
       {
         utf = null;
         length = connection.getCommandReader().readData(buffer);
+        //System.out.println("readed:[" + Arrays.toString(Arrays.copyOfRange(buffer, 0, length)) + "]");
         try
         {
           utf = decoder.decode(ByteBuffer.wrap(buffer, 0, length)).toString();
@@ -53,7 +54,14 @@ public class VTServerRemoteConsoleReader extends VTTask
         {
           if (utf.endsWith("\n") || utf.endsWith("\r"))
           {
-            executeCommand(utf.substring(0, utf.length() - 1));
+            if (utf.endsWith("\r\n"))
+            {
+              executeCommand(utf.substring(0, utf.length() - 2), true);
+            }
+            else
+            {
+              executeCommand(utf.substring(0, utf.length() - 1), false);
+            }
           }
           else
           {
@@ -95,7 +103,7 @@ public class VTServerRemoteConsoleReader extends VTTask
       String line = "";
       while (!isStopped() && (line = reader.readLine()) != null)
       {
-        executeCommand(line);
+        executeCommand(line, false);
       }
     }
     catch (Throwable t)
@@ -133,7 +141,7 @@ public class VTServerRemoteConsoleReader extends VTTask
       String line = "";
       while (!isStopped() && (line = reader.readLine()) != null)
       {
-        executeCommand(line);
+        executeCommand(line, false);
       }
     }
     catch (Throwable t)
@@ -156,7 +164,7 @@ public class VTServerRemoteConsoleReader extends VTTask
     }
   }
   
-  private void executeCommand(String command) throws Throwable
+  private void executeCommand(String command, boolean addCarriageReturn) throws Throwable
   {
     String parsed[];
     String shellEncoding;
@@ -221,11 +229,11 @@ public class VTServerRemoteConsoleReader extends VTTask
             {
               if (shellEncoding != null && shellEncoding.length() > 0)
               {
-                shellCommandData = (command.substring(1) + "\n").getBytes(shellEncoding);
+                shellCommandData = (command.substring(1) + (addCarriageReturn ? "\r" : "") + "\n").getBytes(shellEncoding);
               }
               else
               {
-                shellCommandData = (command.substring(1) + "\n").getBytes();
+                shellCommandData = (command.substring(1) + (addCarriageReturn ? "\r" : "") + "\n").getBytes();
               }
             }
             catch (Throwable e)
@@ -257,11 +265,11 @@ public class VTServerRemoteConsoleReader extends VTTask
             {
               if (shellEncoding != null && shellEncoding.length() > 0)
               {
-                shellCommandData = (command + "\n").getBytes(shellEncoding);
+                shellCommandData = (command + (addCarriageReturn ? "\r" : "") + "\n").getBytes(shellEncoding);
               }
               else
               {
-                shellCommandData = (command + "\n").getBytes();
+                shellCommandData = (command + (addCarriageReturn ? "\r" : "") + "\n").getBytes();
               }
             }
             catch (Throwable e)

@@ -2,7 +2,6 @@ package org.vash.vate.client.startup;
 
 import org.vash.vate.client.VTClient;
 import org.vash.vate.console.VTMainConsole;
-import org.vash.vate.nativeutils.VTMainNativeUtils;
 import org.vash.vate.runtime.VTRuntimeExit;
 
 public class VTClientAgentStandardStart
@@ -27,7 +26,6 @@ public class VTClientAgentStandardStart
       }
       client.setDaemon(true);
       VTMainConsole.setGraphical(false);
-      VTMainNativeUtils.disableTerminalProcessing();
       client.setCommandInputStream(System.in);
       client.setCommandOutputStream(System.out);
       client.start();
@@ -37,7 +35,6 @@ public class VTClientAgentStandardStart
       VTClient client = new VTClient();
       client.setDaemon(true);
       VTMainConsole.setGraphical(false);
-      VTMainNativeUtils.disableTerminalProcessing();
       client.setCommandInputStream(System.in);
       client.setCommandOutputStream(System.out);
       client.start();
