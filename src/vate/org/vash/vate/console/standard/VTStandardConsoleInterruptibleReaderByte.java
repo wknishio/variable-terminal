@@ -38,7 +38,7 @@ public class VTStandardConsoleInterruptibleReaderByte implements Runnable
     // this.echo = echo;
   }
   
-  public synchronized byte[] read() throws InterruptedException
+  public synchronized byte[] readInterruptible() throws InterruptedException
   {
     if (buffer.size() == 0)
     {

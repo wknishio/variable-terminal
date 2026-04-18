@@ -69,7 +69,7 @@ public class VTStandardConsoleInterruptibleReader implements Runnable
     return echo;
   }
   
-  public synchronized String read() throws InterruptedException
+  public synchronized String readInterruptible() throws InterruptedException
   {
     if (buffer.size() == 0)
     {

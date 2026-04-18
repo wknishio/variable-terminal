@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 
 import org.vash.vate.VTSystem;
 import org.vash.vate.com.martiansoftware.jsap.CommandLineTokenizerMKII;
+import org.vash.vate.nativeutils.VTMainNativeUtils;
 
 public class VTFileRuntimeLauncher
 {
@@ -103,18 +104,7 @@ public class VTFileRuntimeLauncher
     try
     {
       Thread.sleep(1000);
-      Process process = Runtime.getRuntime().exec(command);
-      VTRuntimeLauncherOutputConsumer cin = new VTRuntimeLauncherOutputConsumer(process.getInputStream());
-      VTRuntimeLauncherOutputConsumer cerr = new VTRuntimeLauncherOutputConsumer(process.getErrorStream());
-      Thread tin = new Thread(cin);
-      Thread terr = new Thread(cerr);
-      tin.start();
-      terr.start();
-      process.waitFor();
-      cin.close();
-      cerr.close();
-      tin.join();
-      terr.join();
+      VTMainNativeUtils.executeRuntime(command);
     }
     catch (Throwable e)
     {

@@ -46,7 +46,7 @@ public class VTStandardConsoleInterruptibleInputStreamByte extends VTStandardCon
     int available = -1;
     try
     {
-      inputBuffer = reader.read();
+      inputBuffer = reader.readInterruptible();
       readed = 0;
       available = inputBuffer.length;
     }

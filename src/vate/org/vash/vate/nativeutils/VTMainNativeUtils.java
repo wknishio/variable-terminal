@@ -35,14 +35,54 @@ public class VTMainNativeUtils
   private static final int SAMPLE_RATE_HERTZ = 16000;
   private static final int SAMPLE_SIZE_BITS = 8;
   
-  private static final String WIN32_EJECT_DISC_TRAY_VBS = "On Error Resume Next\r\n" + 
-  "For Each d in CreateObject(\"Scripting.FileSystemObject\").Drives\r\n" + 
-  "    If d.DriveType = 4 Then\r\n" + 
-  "        CreateObject(\"Shell.Application\").Namespace(17).ParseName(d.DriveLetter & \":\\\").InvokeVerb(\"Eject\")\r\n" + 
-  "        Exit For\r\n" + 
-  "    End If\r\n" + 
-  "Next\r\n" + 
-  "WScript.Quit";
+  private static final String WIN32_EJECT_DISC_TRAY_JSCRIPT = 
+  "var shell = new ActiveXObject(\"Shell.Application\");\r\n" +
+  "var fso = new ActiveXObject(\"Scripting.FileSystemObject\");\r\n" +
+  "var drives = new Enumerator(fso.Drives);\r\n" +
+  "\r\n" +
+  "for (; !drives.atEnd(); drives.moveNext()) {\r\n" +
+  "    var d = drives.item();\r\n" +
+  "    try {\r\n" +
+  "        // DriveType 4 is CD-ROM\r\n" +
+  "        if (d.DriveType === 4) {\r\n" +
+  "            shell.Namespace(17).ParseName(d.DriveLetter + \":\\\").InvokeVerb(\"Eject\");\r\n" +
+  "            break;\r\n" +
+  "        }\r\n" +
+  "    } catch (e) {\r\n" +
+  "       // Equivalent to 'On Error Resume Next' for the loop body\r\n" +
+  "    }\r\n" +
+  "}\r\n" +
+  "\r\n" +
+  "WScript.Quit();\r\n";
+  
+  private static final String WIN32_EJECT_DISC_TRAY_POWERSHELL = 
+  "try" +
+  "{" +
+  "  $drives = Get-WmiObject Win32_LogicalDisk -Filter \"DriveType=4\";" +
+  "  foreach ($d in $drives)" +
+  "  {" +
+  "    $driveLetter = $d.DeviceID;" +
+  "    try" +
+  "    {" +
+  "      (New-Object -ComObject Shell.Application).Namespace(17).ParseName(\"$driveLetter\\\").InvokeVerb('Eject');" +
+  "    }" +
+  "    catch" +
+  "    {" +
+  "    }" +
+  "  }" +
+  "}" + 
+  "catch" +
+  "{" +
+  "}";
+  
+//  private static final String WIN32_EJECT_DISC_TRAY_VBS = "On Error Resume Next\r\n" + 
+//  "For Each d in CreateObject(\"Scripting.FileSystemObject\").Drives\r\n" + 
+//  "    If d.DriveType = 4 Then\r\n" + 
+//  "        CreateObject(\"Shell.Application\").Namespace(17).ParseName(d.DriveLetter & \":\\\").InvokeVerb(\"Eject\")\r\n" + 
+//  "        Exit For\r\n" + 
+//  "    End If\r\n" + 
+//  "Next\r\n" + 
+//  "WScript.Quit";
   
   public synchronized static void initialize()
   {
@@ -152,7 +192,7 @@ public class VTMainNativeUtils
           // try to call eject on non-windows
           try
           {
-            int status = Runtime.getRuntime().exec(new String[]{"eject", "-r"}).waitFor();
+            int status = executeRuntime("eject", "-r");
             return status == 0;
           }
           catch (Throwable e)
@@ -162,26 +202,29 @@ public class VTMainNativeUtils
         }
         else
         {
-          // try to use cscript windows script host vbs file
-          File tmpedtvbsFile = null;
           int status = -1;
-          try
+          status = executeRuntime("powershell", "-Command", WIN32_EJECT_DISC_TRAY_POWERSHELL);
+          // try to use cscript windows script host jscript file
+          if (status == -1)
           {
-            tmpedtvbsFile = File.createTempFile("vate_w32_tedt", ".vbs");
-            FileOutputStream output = new FileOutputStream(tmpedtvbsFile);
-            output.write(WIN32_EJECT_DISC_TRAY_VBS.getBytes());
-            output.flush();
-            output.close();
-            status = Runtime.getRuntime().exec(new String[]{"cscript", tmpedtvbsFile.getAbsolutePath()}).waitFor();
-          }
-          catch (Throwable e)
-          {
-            
-          }
-          if (tmpedtvbsFile != null)
-          {
-            VTFileUtils.truncateDeleteQuietly(tmpedtvbsFile);
-            //tmpedtvbsFile.delete();
+            File tmpJscriptFile = null;
+            try
+            {
+              tmpJscriptFile = File.createTempFile("vate_w32_tedt", "js");
+              FileOutputStream output = new FileOutputStream(tmpJscriptFile);
+              output.write(WIN32_EJECT_DISC_TRAY_JSCRIPT.getBytes());
+              output.flush();
+              output.close();
+              status = executeRuntime("cscript", "//e:jscript", tmpJscriptFile.getAbsolutePath());
+            }
+            catch (Throwable e)
+            {
+              
+            }
+            if (tmpJscriptFile != null)
+            {
+              VTFileUtils.truncateDeleteQuietly(tmpJscriptFile);
+            }
           }
           return status == 0;
         }
@@ -198,7 +241,7 @@ public class VTMainNativeUtils
         // try to call eject on non-windows
         try
         {
-          int status = Runtime.getRuntime().exec(new String[]{"eject", "-r"}).waitFor();
+          int status = executeRuntime("eject", "-r");
           return status == 0;
         }
         catch (Throwable e)
@@ -208,26 +251,29 @@ public class VTMainNativeUtils
       }
       else
       {
-        // try to use cscript windows script host vbs file
-        File tmpedtvbsFile = null;
         int status = -1;
-        try
+        status = executeRuntime("powershell", "-Command", WIN32_EJECT_DISC_TRAY_POWERSHELL);
+        // try to use cscript windows script host jscript file
+        if (status == -1)
         {
-          tmpedtvbsFile = File.createTempFile("vate_w32_tedt", ".vbs");
-          FileOutputStream output = new FileOutputStream(tmpedtvbsFile);
-          output.write(WIN32_EJECT_DISC_TRAY_VBS.getBytes());
-          output.flush();
-          output.close();
-          status = Runtime.getRuntime().exec(new String[]{"cscript", tmpedtvbsFile.getAbsolutePath()}).waitFor();
-        }
-        catch (Throwable e)
-        {
-          
-        }
-        if (tmpedtvbsFile != null)
-        {
-          VTFileUtils.truncateDeleteQuietly(tmpedtvbsFile);
-          //tmpedtvbsFile.delete();
+          File tmpJscriptFile = null;
+          try
+          {
+            tmpJscriptFile = File.createTempFile("vate_w32_tedt", "js");
+            FileOutputStream output = new FileOutputStream(tmpJscriptFile);
+            output.write(WIN32_EJECT_DISC_TRAY_JSCRIPT.getBytes());
+            output.flush();
+            output.close();
+            status = executeRuntime("cscript", "//e:jscript", tmpJscriptFile.getAbsolutePath());
+          }
+          catch (Throwable e)
+          {
+            
+          }
+          if (tmpJscriptFile != null)
+          {
+            VTFileUtils.truncateDeleteQuietly(tmpJscriptFile);
+          }
         }
         return status == 0;
       }
@@ -248,7 +294,7 @@ public class VTMainNativeUtils
           // try to call eject on non-windows
           try
           {
-            int status = Runtime.getRuntime().exec(new String[]{"eject", "-t"}).waitFor();
+            int status = executeRuntime("eject", "-r");
             return status == 0;
           }
           catch (Throwable e)
@@ -258,26 +304,29 @@ public class VTMainNativeUtils
         }
         else
         {
-          // try to use cscript windows script host vbs file
-          File tmpedtvbsFile = null;
           int status = -1;
-          try
+          status = executeRuntime("powershell", "-Command", WIN32_EJECT_DISC_TRAY_POWERSHELL);
+          // try to use cscript windows script host jscript file
+          if (status == -1)
           {
-            tmpedtvbsFile = File.createTempFile("vate_w32_tedt", ".vbs");
-            FileOutputStream output = new FileOutputStream(tmpedtvbsFile);
-            output.write(WIN32_EJECT_DISC_TRAY_VBS.getBytes());
-            output.flush();
-            output.close();
-            status = Runtime.getRuntime().exec(new String[]{"cscript", tmpedtvbsFile.getAbsolutePath()}).waitFor();
-          }
-          catch (Throwable e)
-          {
-            
-          }
-          if (tmpedtvbsFile != null)
-          {
-            VTFileUtils.truncateDeleteQuietly(tmpedtvbsFile);
-            //tmpedtvbsFile.delete();
+            File tmpJscriptFile = null;
+            try
+            {
+              tmpJscriptFile = File.createTempFile("vate_w32_tedt", "js");
+              FileOutputStream output = new FileOutputStream(tmpJscriptFile);
+              output.write(WIN32_EJECT_DISC_TRAY_JSCRIPT.getBytes());
+              output.flush();
+              output.close();
+              status = executeRuntime("cscript", "//e:jscript", tmpJscriptFile.getAbsolutePath());
+            }
+            catch (Throwable e)
+            {
+              
+            }
+            if (tmpJscriptFile != null)
+            {
+              VTFileUtils.truncateDeleteQuietly(tmpJscriptFile);
+            }
           }
           return status == 0;
         }
@@ -294,7 +343,7 @@ public class VTMainNativeUtils
         // try to call eject on non-windows
         try
         {
-          int status = Runtime.getRuntime().exec(new String[]{"eject", "-t"}).waitFor();
+          int status = executeRuntime("eject", "-r");
           return status == 0;
         }
         catch (Throwable e)
@@ -304,26 +353,29 @@ public class VTMainNativeUtils
       }
       else
       {
-        // try to use cscript windows script host vbs file
-        File tmpedtvbsFile = null;
         int status = -1;
-        try
+        status = executeRuntime("powershell", "-Command", WIN32_EJECT_DISC_TRAY_POWERSHELL);
+        // try to use cscript windows script host jscript file
+        if (status == -1)
         {
-          tmpedtvbsFile = File.createTempFile("vate_w32_tedt", ".vbs");
-          FileOutputStream output = new FileOutputStream(tmpedtvbsFile);
-          output.write(WIN32_EJECT_DISC_TRAY_VBS.getBytes());
-          output.flush();
-          output.close();
-          status = Runtime.getRuntime().exec(new String[]{"cscript", tmpedtvbsFile.getAbsolutePath()}).waitFor();
-        }
-        catch (Throwable e)
-        {
-          
-        }
-        if (tmpedtvbsFile != null)
-        {
-          VTFileUtils.truncateDeleteQuietly(tmpedtvbsFile);
-          //tmpedtvbsFile.delete();
+          File tmpJscriptFile = null;
+          try
+          {
+            tmpJscriptFile = File.createTempFile("vate_w32_tedt", "js");
+            FileOutputStream output = new FileOutputStream(tmpJscriptFile);
+            output.write(WIN32_EJECT_DISC_TRAY_JSCRIPT.getBytes());
+            output.flush();
+            output.close();
+            status = executeRuntime("cscript", "//e:jscript", tmpJscriptFile.getAbsolutePath());
+          }
+          catch (Throwable e)
+          {
+            
+          }
+          if (tmpJscriptFile != null)
+          {
+            VTFileUtils.truncateDeleteQuietly(tmpJscriptFile);
+          }
         }
         return status == 0;
       }
@@ -633,21 +685,118 @@ public class VTMainNativeUtils
       }
       else
       {
+        Thread outputConsumer = null;
+        Thread inputConsumer = null;
         command.redirectErrorStream(true);
         Process process = command.start();
         if (input != null)
         {
-          new Thread(new VTRuntimeProcessDataRedirector(input, process.getOutputStream(), false)).start();
+          inputConsumer = new Thread(new VTRuntimeProcessDataRedirector(input, process.getOutputStream(), false));
         }
         if (output != null)
         {
-          new Thread(new VTRuntimeProcessDataRedirector(process.getInputStream(), output, false)).start();
+          outputConsumer = new Thread(new VTRuntimeProcessDataRedirector(process.getInputStream(), output, false));
         }
         else
         {
-          new Thread(new VTRuntimeProcessDataRedirector(process.getInputStream(), new VTNullOutputStream(), false)).start();
+          outputConsumer = new Thread(new VTRuntimeProcessDataRedirector(process.getInputStream(), new VTNullOutputStream(), false));
+        }
+        outputConsumer.start();
+        if (inputConsumer != null)
+        {
+          inputConsumer.start();
         }
         status = process.waitFor();
+        outputConsumer.join();
+        if (inputConsumer != null)
+        {
+          try
+          {
+            inputConsumer.interrupt();
+          }
+          catch (Throwable t)
+          {
+            
+          }
+        }
+      }
+    }
+    catch (Throwable t)
+    {
+      
+    }
+    return status;
+  }
+  
+  public static int executeRuntime(String... commands)
+  {
+    int status = -1;
+    try
+    {
+      if (commands.length == 1)
+      {
+        commands = CommandLineTokenizerMKII.tokenize(commands[0]);
+      }
+      Process process = Runtime.getRuntime().exec(commands);
+      Thread outputConsumer = new Thread(new VTRuntimeProcessDataRedirector(process.getInputStream(), new VTNullOutputStream(), false));
+      Thread errorConsumer = new Thread(new VTRuntimeProcessDataRedirector(process.getErrorStream(), new VTNullOutputStream(), false));
+      outputConsumer.start();
+      errorConsumer.start();
+      status = process.waitFor();
+      outputConsumer.join();
+      errorConsumer.join();
+    }
+    catch (Throwable t)
+    {
+      
+    }
+    return status;
+  }
+  
+  public static int executeRuntime(InputStream input, OutputStream output, OutputStream error, String... commands)
+  {
+    int status = -1;
+    try
+    {
+      if (commands.length == 1)
+      {
+        commands = CommandLineTokenizerMKII.tokenize(commands[0]);
+      }
+      if (output == null)
+      {
+        output = new VTNullOutputStream();
+      }
+      if (error == null)
+      {
+        error = new VTNullOutputStream();
+      }
+      Thread inputConsumer = null;
+      Process process = Runtime.getRuntime().exec(commands);
+      if (input != null)
+      {
+        inputConsumer = new Thread(new VTRuntimeProcessDataRedirector(input, process.getOutputStream(), false));
+      }
+      Thread outputConsumer = new Thread(new VTRuntimeProcessDataRedirector(process.getInputStream(), output, false));
+      Thread errorConsumer = new Thread(new VTRuntimeProcessDataRedirector(process.getErrorStream(), error, false));
+      outputConsumer.start();
+      errorConsumer.start();
+      if (inputConsumer != null)
+      {
+        inputConsumer.start();
+      }
+      status = process.waitFor();
+      outputConsumer.join();
+      errorConsumer.join();
+      if (inputConsumer != null)
+      {
+        try
+        {
+          inputConsumer.interrupt();
+        }
+        catch (Throwable t)
+        {
+          
+        }
       }
     }
     catch (Throwable t)
@@ -678,22 +827,6 @@ public class VTMainNativeUtils
     return status;
   }
   
-  public static int executeRuntime(String command)
-  {
-    int status = -1;
-    try
-    {
-      Process process = Runtime.getRuntime().exec(command);
-      new Thread(new VTRuntimeProcessDataRedirector(process.getInputStream(), new VTNullOutputStream(), false)).start();
-      status = process.waitFor();
-    }
-    catch (Throwable t)
-    {
-      
-    }
-    return status;
-  }
-  
   private static final Thread restoreTerminalSanityNativeHook = new Thread()
   {
     public void run()
@@ -716,6 +849,36 @@ public class VTMainNativeUtils
       try
       {
         executeSystem("stty sane");
+      }
+      catch (Throwable t)
+      {
+        
+      }
+    }
+  };
+  
+  private static final Thread restoreTerminalEchoNativeHook = new Thread()
+  {
+    public void run()
+    {
+      try
+      {
+        echo(false);
+      }
+      catch (Throwable t)
+      {
+        
+      }
+    }
+  };
+  
+  private static final Thread restoreTerminalEchoSystemHook = new Thread()
+  {
+    public void run()
+    {
+      try
+      {
+        executeSystem("stty echo");
       }
       catch (Throwable t)
       {
@@ -758,35 +921,6 @@ public class VTMainNativeUtils
     }
   }
   
-  private static final Thread restoreTerminalEchoNativeHook = new Thread()
-  {
-    public void run()
-    {
-      try
-      {
-        echo(false);
-      }
-      catch (Throwable t)
-      {
-        
-      }
-    }
-  };
-  
-  private static final Thread restoreTerminalEchoSystemHook = new Thread()
-  {
-    public void run()
-    {
-      try
-      {
-        executeSystem("stty echo");
-      }
-      catch (Throwable t)
-      {
-        
-      }
-    }
-  };
   
   public static void disableTerminalEcho()
   {

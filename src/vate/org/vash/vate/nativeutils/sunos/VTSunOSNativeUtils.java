@@ -1,5 +1,6 @@
 package org.vash.vate.nativeutils.sunos;
 
+import org.vash.vate.nativeutils.VTMainNativeUtils;
 import org.vash.vate.nativeutils.VTNativeUtils;
 
 import com.sun.jna.Native;
@@ -214,11 +215,11 @@ public class VTSunOSNativeUtils implements VTNativeUtils
     {
       if (!enabled)
       {
-        Runtime.getRuntime().exec(new String[] {"/bin/sh", "-c", "stty -echo < /dev/tty"}).waitFor();
+        VTMainNativeUtils.executeRuntime("/bin/sh", "-c", "stty -echo < /dev/tty");
       }
       else
       {
-        Runtime.getRuntime().exec(new String[] {"/bin/sh", "-c", "stty echo < /dev/tty"}).waitFor();
+        VTMainNativeUtils.executeRuntime("/bin/sh", "-c", "stty echo < /dev/tty");
       }
     }
     catch (Throwable t)
@@ -233,11 +234,11 @@ public class VTSunOSNativeUtils implements VTNativeUtils
     {
       if (!enabled)
       {
-        Runtime.getRuntime().exec(new String[] {"/bin/sh", "-c", "stty -icanon < /dev/tty"}).waitFor();
+        VTMainNativeUtils.executeRuntime("/bin/sh", "-c", "stty -icanon < /dev/tty");
       }
       else
       {
-        Runtime.getRuntime().exec(new String[] {"/bin/sh", "-c", "stty icanon < /dev/tty"}).waitFor();
+        VTMainNativeUtils.executeRuntime("/bin/sh", "-c", "stty icanon < /dev/tty");
       }
     }
     catch (Throwable t)
@@ -250,7 +251,7 @@ public class VTSunOSNativeUtils implements VTNativeUtils
   {
     try
     {
-      Runtime.getRuntime().exec(new String[] {"/bin/sh", "-c", "stty raw -echo < /dev/tty"}).waitFor();
+      VTMainNativeUtils.executeRuntime("/bin/sh", "-c", "stty raw -echo < /dev/tty");
     }
     catch (Throwable t)
     {
@@ -262,7 +263,7 @@ public class VTSunOSNativeUtils implements VTNativeUtils
   {
     try
     {
-      Runtime.getRuntime().exec(new String[] {"/bin/sh", "-c", "stty sane < /dev/tty"}).waitFor();
+      VTMainNativeUtils.executeRuntime("/bin/sh", "-c", "stty sane < /dev/tty");
     }
     catch (Throwable t)
     {
