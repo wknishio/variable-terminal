@@ -32,8 +32,8 @@ public class VTMainNativeUtils
   private static Properties systemPropertiesBackup;
   private static VTNativeUtils nativeUtils;
   
-  private static final int SAMPLE_RATE_HERTZ = 16000;
-  private static final int SAMPLE_SIZE_BITS = 8;
+  private static boolean disabledTerminalSanity = false;
+  private static boolean disabledTerminalEcho = false;
   
   private static final String WIN32_EJECT_DISC_TRAY_JSCRIPT = 
   "var shell = new ActiveXObject(\"Shell.Application\");\r\n" +
@@ -166,7 +166,7 @@ public class VTMainNativeUtils
       boolean nativeBeep = nativeUtils.beep(freq, dur, block);
       if (!nativeBeep)
       {
-        return VTAudioBeeper.beep(SAMPLE_RATE_HERTZ, SAMPLE_SIZE_BITS, freq, dur, block, executorService);
+        return VTAudioBeeper.beep(16000, 8, freq, dur, block, executorService);
       }
       else
       {
@@ -175,7 +175,7 @@ public class VTMainNativeUtils
     }
     else
     {
-      return VTAudioBeeper.beep(SAMPLE_RATE_HERTZ, SAMPLE_SIZE_BITS, freq, dur, block, executorService);
+      return VTAudioBeeper.beep(16000, 8, freq, dur, block, executorService);
     }
   }
   
@@ -664,6 +664,78 @@ public class VTMainNativeUtils
     }
   }
   
+  public static ProcessBuilder createProcessBuilder(boolean inheritIO, boolean redirectError, File directory, Map<String, String> environment, String... commands)
+  {
+    ProcessBuilder command = null;
+    try
+    {
+      if (commands.length == 1)
+      {
+        command = new ProcessBuilder(CommandLineTokenizerMKII.tokenize(commands[0]));
+      }
+      else
+      {
+        command = new ProcessBuilder(commands);
+      }
+      if (directory != null)
+      {
+        command.directory(directory);
+      }
+      if (environment != null)
+      {
+        command.environment().clear();
+        command.environment().putAll(environment);
+      }
+      if (inheritIO && inheritIOMethod != null)
+      {
+        command = (ProcessBuilder) inheritIOMethod.invoke(command);
+      }
+      command.redirectErrorStream(redirectError);
+    }
+    catch (Throwable t)
+    {
+      
+    }
+    return command;
+  }
+  
+  public static Process createProcess(boolean inheritIO, boolean redirectError, File directory, Map<String, String> environment, String... commands)
+  {
+    Process process = null;
+    try
+    {
+      ProcessBuilder command = null;
+      if (commands.length == 1)
+      {
+        command = new ProcessBuilder(CommandLineTokenizerMKII.tokenize(commands[0]));
+      }
+      else
+      {
+        command = new ProcessBuilder(commands);
+      }
+      if (directory != null)
+      {
+        command.directory(directory);
+      }
+      if (environment != null)
+      {
+        command.environment().clear();
+        command.environment().putAll(environment);
+      }
+      if (inheritIO && inheritIOMethod != null)
+      {
+        command = (ProcessBuilder) inheritIOMethod.invoke(command);
+      }
+      command.redirectErrorStream(redirectError);
+      process = command.start();
+    }
+    catch (Throwable t)
+    {
+      
+    }
+    return process;
+  }
+  
   public static int executeProcess(boolean inheritIO, InputStream input, OutputStream output, String... commands)
   {
     int status = -1;
@@ -701,9 +773,11 @@ public class VTMainNativeUtils
         {
           outputConsumer = new Thread(new VTRuntimeProcessDataRedirector(process.getInputStream(), new VTNullOutputStream(), false));
         }
+        outputConsumer.setDaemon(true);
         outputConsumer.start();
         if (inputConsumer != null)
         {
+          inputConsumer.setDaemon(true);
           inputConsumer.start();
         }
         status = process.waitFor();
@@ -740,6 +814,8 @@ public class VTMainNativeUtils
       Process process = Runtime.getRuntime().exec(commands);
       Thread outputConsumer = new Thread(new VTRuntimeProcessDataRedirector(process.getInputStream(), new VTNullOutputStream(), false));
       Thread errorConsumer = new Thread(new VTRuntimeProcessDataRedirector(process.getErrorStream(), new VTNullOutputStream(), false));
+      outputConsumer.setDaemon(true);
+      errorConsumer.setDaemon(true);
       outputConsumer.start();
       errorConsumer.start();
       status = process.waitFor();
@@ -778,10 +854,13 @@ public class VTMainNativeUtils
       }
       Thread outputConsumer = new Thread(new VTRuntimeProcessDataRedirector(process.getInputStream(), output, false));
       Thread errorConsumer = new Thread(new VTRuntimeProcessDataRedirector(process.getErrorStream(), error, false));
+      outputConsumer.setDaemon(true);
+      errorConsumer.setDaemon(true);
       outputConsumer.start();
       errorConsumer.start();
       if (inputConsumer != null)
       {
+        inputConsumer.setDaemon(true);
         inputConsumer.start();
       }
       status = process.waitFor();
@@ -891,15 +970,27 @@ public class VTMainNativeUtils
   {
     if ((executeRuntime("tty -s") != -1) && (executeSystem("tty -s") == 0))
     {
-      Runtime.getRuntime().addShutdownHook(restoreTerminalSanitySystemHook);
+      if (!disabledTerminalSanity)
+      {
+        Runtime.getRuntime().addShutdownHook(restoreTerminalSanitySystemHook);
+      }
       executeSystem("stty raw -echo");
+      disabledTerminalSanity = true;
     }
     else
     {
       if (VTConsole.hasTerminal())
       {
-        Runtime.getRuntime().addShutdownHook(restoreTerminalSanityNativeHook);
+        if (VTReflectionUtils.detectWindows() && !isAvailable())
+        {
+          return;
+        }
+        if (!disabledTerminalSanity)
+        {
+          Runtime.getRuntime().addShutdownHook(restoreTerminalSanityNativeHook);
+        }
         raw();
+        disabledTerminalSanity = true;
       }
     }
   }
@@ -908,33 +999,56 @@ public class VTMainNativeUtils
   {
     if ((executeRuntime("tty -s") != -1) && (executeSystem("tty -s") == 0))
     {
-      Runtime.getRuntime().removeShutdownHook(restoreTerminalSanitySystemHook);
+      if (disabledTerminalSanity)
+      {
+        Runtime.getRuntime().removeShutdownHook(restoreTerminalSanitySystemHook);
+      }
       executeSystem("stty sane");
+      disabledTerminalSanity = false;
     }
     else
     {
       if (VTConsole.hasTerminal())
       {
-        Runtime.getRuntime().removeShutdownHook(restoreTerminalSanityNativeHook);
+        if (VTReflectionUtils.detectWindows() && !isAvailable())
+        {
+          return;
+        }
+        if (disabledTerminalSanity)
+        {
+          Runtime.getRuntime().removeShutdownHook(restoreTerminalSanityNativeHook);
+        }
         sane();
+        disabledTerminalSanity = false;
       }
     }
   }
-  
   
   public static void disableTerminalEcho()
   {
     if ((executeRuntime("tty -s") != -1) && (executeSystem("tty -s") == 0))
     {
-      Runtime.getRuntime().addShutdownHook(restoreTerminalEchoSystemHook);
+      if (!disabledTerminalEcho)
+      {
+        Runtime.getRuntime().addShutdownHook(restoreTerminalEchoSystemHook);
+      }
       executeSystem("stty -echo");
+      disabledTerminalEcho = true;
     }
     else
     {
       if (VTConsole.hasTerminal())
       {
-        Runtime.getRuntime().addShutdownHook(restoreTerminalEchoNativeHook);
+        if (VTReflectionUtils.detectWindows() && !isAvailable())
+        {
+          return;
+        }
+        if (!disabledTerminalEcho)
+        {
+          Runtime.getRuntime().addShutdownHook(restoreTerminalEchoNativeHook);
+        }
         echo(false);
+        disabledTerminalEcho = true;
       }
     }
   }
@@ -943,16 +1057,83 @@ public class VTMainNativeUtils
   {
     if ((executeRuntime("tty -s") != -1) && (executeSystem("tty -s") == 0))
     {
-      Runtime.getRuntime().removeShutdownHook(restoreTerminalEchoSystemHook);
+      if (disabledTerminalEcho)
+      {
+        Runtime.getRuntime().removeShutdownHook(restoreTerminalEchoSystemHook);
+      }
       executeSystem("stty echo");
+      disabledTerminalEcho = false;
     }
     else
     {
       if (VTConsole.hasTerminal())
       {
-        Runtime.getRuntime().removeShutdownHook(restoreTerminalEchoNativeHook);
+        if (VTReflectionUtils.detectWindows() && !isAvailable())
+        {
+          return;
+        }
+        if (disabledTerminalEcho)
+        {
+          Runtime.getRuntime().removeShutdownHook(restoreTerminalEchoNativeHook);
+        }
         echo(true);
+        disabledTerminalEcho = false;
       }
     }
+  }
+  
+  public static boolean checkTerminalAvailable()
+  {
+    if ((executeRuntime("tty -s") != -1) && (executeSystem("tty -s") == 0))
+    {
+      return true;
+    }
+    else if (VTConsole.hasTerminal())
+    {
+      if (VTReflectionUtils.detectWindows() && !isAvailable())
+      {
+        return false;
+      }
+      else
+      {
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  public static boolean checkShAvailable()
+  {
+    return executeRuntime("sh", "-c", "exit") != -1;
+  }
+  
+  public static boolean checkScriptAvailable()
+  {
+    return executeRuntime("script", "/dev/null", "-q", "-c", "sh", "-c", "exit") != -1;
+  }
+  
+  public static boolean checkWinptyAvailable()
+  {
+    return executeRuntime("winpty", "--help") != -1;
+  }
+  
+  public static boolean checkPowershellAvailable()
+  {
+    return executeRuntime("powershell", "-Command", "exit") != -1;
+  }
+  
+  public static boolean checkWindowsTerminalAvailable()
+  {
+    return executeRuntime("cmd", "/c", "start", "/b", "/min", "wt", "cmd", "/c", "exit") != -1;
+  }
+  
+  public static boolean checkWSLShAvailable()
+  {
+    return executeRuntime("wsl", "sh", "-c", "exit") == 0;
+  }
+  
+  public static boolean checkWSLScriptAvailable()
+  {
+    return executeRuntime("wsl", "script", "/dev/null", "-q", "-c", "sh", "-c", "exit") == 0;
   }
 }

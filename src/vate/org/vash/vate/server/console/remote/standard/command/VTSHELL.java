@@ -2,6 +2,7 @@ package org.vash.vate.server.console.remote.standard.command;
 
 import java.io.File;
 
+import org.vash.vate.com.martiansoftware.jsap.CommandLineTokenizerMKII;
 import org.vash.vate.help.VTHelpManager;
 import org.vash.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
 import org.vash.vate.shell.adapter.VTShellProcessor;
@@ -32,7 +33,7 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
         connection.getResultWriter().write("\rVT>Setting null remote shell...\nVT>");
         connection.getResultWriter().flush();
         session.stopShell();
-        session.setShellBuilder(new String[] {}, null, null);
+        session.setShellBuilder("", null, null);
         session.setShellType(VTShellProcessor.SHELL_TYPE_PROCESS);
         
         // session.restartShell();
@@ -74,18 +75,12 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
       {
         if (parsed.length >= 3 && (parsed[2].length() > 0))
         {
-          String[] nextShell = new String[parsed.length - 2];
-          String nextShellCommand = "";
-          for (int i = 0; i < nextShell.length; i++)
-          {
-            nextShell[i] = parsed[i + 2];
-            nextShellCommand += (" " + nextShell[i]);
-          }
-          connection.getResultWriter().write("\rVT>Setting remote shell command to: [" + nextShellCommand.substring(1) + "]\nVT>");
+          String shellCommand = command.substring(CommandLineTokenizerMKII.findParameterStart(command, 2));
+          connection.getResultWriter().write("\rVT>Setting remote shell command to: [" + shellCommand + "]\nVT>");
           connection.getResultWriter().flush();
           session.stopShell();
           session.setShellType(VTShellProcessor.SHELL_TYPE_PROCESS);
-          session.setShellBuilder(nextShell, null, null);
+          session.setShellBuilder(shellCommand, null, null);
           session.restartShell();
         }
         else

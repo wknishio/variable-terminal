@@ -51,7 +51,7 @@ public class VTServerConnection
   private volatile boolean connected = false;
   private volatile boolean verified = false;
   private volatile boolean closed = true;
-  private volatile boolean silent = false;
+  private volatile boolean quiet = false;
   
   private final boolean managed;
   private int encryptionType;
@@ -147,14 +147,14 @@ public class VTServerConnection
     this.authenticationWriter = new VTLittleEndianOutputStream(null);
   }
   
-  public void setSilent(boolean silent)
+  public void setQuiet(boolean quiet)
   {
-    this.silent = silent;
+    this.quiet = quiet;
   }
   
-  public boolean getSilent()
+  public boolean getQuiet()
   {
-    return silent;
+    return quiet;
   }
   
   public SecureRandom getSecureRandom()
@@ -255,7 +255,7 @@ public class VTServerConnection
   
   public VTLittleEndianOutputStream getResultWriter()
   {
-    if (silent)
+    if (quiet)
     {
       return nullWriter;
     }
@@ -729,7 +729,7 @@ public class VTServerConnection
   {
     connected = true;
     verified = false;
-    silent = false;
+    quiet = false;
     setNonceStreams();
     exchangeNonces(false);
     setVerificationStreams();

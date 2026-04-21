@@ -3,9 +3,13 @@ package org.vash.vate.shell.adapter;
 import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
+
+import org.vash.vate.com.martiansoftware.jsap.CommandLineTokenizerMKII;
 import org.vash.vate.nativeutils.VTMainNativeUtils;
 import org.vash.vate.reflection.VTReflectionUtils;
 import org.vash.vate.runtime.VTRuntimeProcess;
@@ -18,7 +22,7 @@ public class VTShellAdapter
   //private static final String DISABLE_UTIL_LOGGING_CLASS = "-Djava.util.logging.config.class=org.vash.vate.shell.adapter.VTSilenceJavaUtilLogging";
   
   private int shellType = VTShellProcessor.SHELL_TYPE_PROCESS;
-  // private boolean supressEchoShell = true;
+  private volatile boolean attachPTY = false;
   
   private VTShellProcessor shellProcessor;
   
@@ -32,7 +36,7 @@ public class VTShellAdapter
   public VTShellAdapter(ExecutorService executorService)
   {
     this.executorService = executorService;
-    shellProcessor = new VTShellProcessor(executorService);
+    this.shellProcessor = new VTShellProcessor(executorService);
   }
   
   public void setShellType(int shellType)
@@ -40,29 +44,16 @@ public class VTShellAdapter
     this.shellType = shellType;
     String cp = System.getProperty("java.class.path");
     
-    //String command = "";
     String[] command;
     if (shellType == VTShellProcessor.SHELL_TYPE_GROOVYSH)
     {
-      //command = "java -cp " + '"' + cp + '"' + " " + DISABLE_COMMONS_LOGGING + " " + DISABLE_UTIL_LOGGING_CLASS + " " + GROOVYSHELL_MAIN_CLASS;
-      //command = new String[] {"java", "-cp", cp, DISABLE_COMMONS_LOGGING, DISABLE_UTIL_LOGGING_CLASS, GROOVYSHELL_MAIN_CLASS};
       command = new String[] {"java", "-cp", cp, GROOVYSHELL_MAIN_CLASS};
       javaBuilder = new ProcessBuilder(command);
-      //javaBuilder = new ProcessBuilder(new String[]
-      //{
-        //"java", "-cp", cp, DISABLE_COMMONS_LOGGING, DISABLE_UTIL_LOGGING_CLASS, GROOVYSHELL_MAIN_CLASS
-      //});
     }
     else if (shellType == VTShellProcessor.SHELL_TYPE_BEANSHELL)
     {
-      //command = "java -cp " + '"' + cp + '"' + " " + DISABLE_COMMONS_LOGGING + " " + DISABLE_UTIL_LOGGING_CLASS + " " + BEANSHELL_MAIN_CLASS;
-      //command = new String[] {"java", "-cp", cp, DISABLE_COMMONS_LOGGING, DISABLE_UTIL_LOGGING_CLASS, BEANSHELL_MAIN_CLASS};
       command = new String[] {"java", "-cp", cp, BEANSHELL_MAIN_CLASS};
       javaBuilder = new ProcessBuilder(command);
-      //javaBuilder = new ProcessBuilder(new String[]
-      //{
-        //"java", "-cp", cp, DISABLE_COMMONS_LOGGING, DISABLE_UTIL_LOGGING_CLASS, BEANSHELL_MAIN_CLASS
-      //});
     }
     else
     {
@@ -70,10 +61,10 @@ public class VTShellAdapter
     }
   }
   
-//  public void setSuppressEchoShell(boolean supressEchoShell)
-//  {
-//    this.supressEchoShell = supressEchoShell;
-//  }
+  public void setAttachPTY(boolean attach)
+  {
+    attachPTY = attach;
+  }
   
   public VTShellProcessor getShellProcessor()
   {
@@ -115,8 +106,10 @@ public class VTShellAdapter
     return false;
   }
   
-  public void setShellBuilder(String[] command, String[] names, String[] values)
+  public void setShellBuilder(String command, String[] names, String[] values)
   {
+    String[] parsed = CommandLineTokenizerMKII.tokenize(command);
+    List<String> commandList = null;
     if (command == null)
     {
       if (VTReflectionUtils.detectWindows())
@@ -124,68 +117,134 @@ public class VTShellAdapter
         if (System.getProperty("os.name").toUpperCase().contains("WINDOWS 95") || System.getProperty("os.name").toUpperCase().contains("WINDOWS 98") || System.getProperty("os.name").toUpperCase().contains("WINDOWS ME"))
         {
           // almost impossible to enter here now
-          this.shellBuilder = new ProcessBuilder("command.com", "/A", "/E:1900");
-          this.shellBuilder.environment().putAll(VTMainNativeUtils.getvirtualenv());
-          this.shellEnvironment = this.shellBuilder.environment();
-          if (this.shellEnvironment != null)
-          {
-            // this.shellEnvironment.remove("PROMPT");
-            // this.shellEnvironment.put("PROMPT", "# ");
-          }
-          if (shellProcessor.getShellEncoding() == null)
-          {
-            //shellProcessor.setShellEncoding("CP850");
-          }
+          commandList = Arrays.asList(new String[] {"command.com", "/A", "/E:1900"});
         }
         else
         {
-//          if (supressEchoShell)
-//          {
-//            this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON", "/Q", "/A");
-//          }
-//          else
-//          {
-//            this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON", "/A");
-//          }
-          // this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON",
-          // "/A");
-          this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON", "/A");
-          this.shellBuilder.environment().putAll(VTMainNativeUtils.getvirtualenv());
-          this.shellEnvironment = this.shellBuilder.environment();
-          if (this.shellEnvironment != null)
+          if (attachPTY)
           {
-            // this.shellEnvironment.remove("PROMPT");
-            // this.shellEnvironment.put("PROMPT", "# ");
+            if (VTMainNativeUtils.checkShAvailable())
+            {
+              if (VTMainNativeUtils.checkWinptyAvailable())
+              {
+                commandList = Arrays.asList(new String[] {"winpty", "-Xallow-non-tty", "sh", "-i"});
+              }
+              else if (VTMainNativeUtils.checkScriptAvailable())
+              {
+                commandList = Arrays.asList(new String[] {"script", "/dev/null", "-q", "-c", "sh", "-i"});
+              }
+              else
+              {
+                commandList = Arrays.asList(new String[] {"sh", "-i", "-s"});
+              }
+            }
+            else if (VTMainNativeUtils.checkWSLShAvailable() && VTMainNativeUtils.checkWSLScriptAvailable())
+            {
+              commandList = Arrays.asList(new String[] {"wsl", "script", "/dev/null", "-q", "-c", "sh", "-i"});
+            }
+            else
+            {
+              commandList = Arrays.asList(new String[] {"cmd", "/k"});
+            }
           }
-          if (shellProcessor.getShellEncoding() == null)
+          else
           {
-            //shellProcessor.setShellEncoding("CP850");
+            commandList = Arrays.asList(new String[] {"cmd", "/k"});
           }
         }
       }
       else
       {
-        this.shellBuilder = new ProcessBuilder("sh", "-i", "-s");
-        this.shellBuilder.environment().putAll(VTMainNativeUtils.getvirtualenv());
-        this.shellEnvironment = this.shellBuilder.environment();
-        if (this.shellEnvironment != null)
+        if (attachPTY)
         {
-          // this.shellEnvironment.remove("PS1");
-          // this.shellEnvironment.put("PS1", "'# '");
-          // this.shellEnvironment.remove("PROMPT");
-          // this.shellEnvironment.put("PROMPT", "'pwd'>");
+          commandList = Arrays.asList(new String[] {"script", "/dev/null", "-q", "-c", "sh", "-i"});
         }
+        else
+        {
+          commandList = Arrays.asList(new String[] {"sh", "-i", "-s"});
+        }
+      }
+      this.shellBuilder = new ProcessBuilder(commandList);
+      this.shellBuilder.environment().putAll(VTMainNativeUtils.getvirtualenv());
+      this.shellEnvironment = this.shellBuilder.environment();
+      if (shellEnvironment != null)
+      {
+        
+      }
+      if (shellProcessor.getShellEncoding() == null)
+      {
+        
       }
     }
     else
     {
-      if (command.length == 0 || command[0].trim().length() == 0)
+      if (parsed.length == 0 || parsed[0].trim().length() == 0)
       {
-        // System.out.println("null shell");
         this.shellBuilder = null;
         return;
       }
-      this.shellBuilder = new ProcessBuilder(command);
+      
+      if (VTReflectionUtils.detectWindows())
+      {
+        if (attachPTY)
+        {
+          if (VTMainNativeUtils.checkShAvailable())
+          {
+            if (VTMainNativeUtils.checkWinptyAvailable())
+            {
+              commandList = new ArrayList<String>();
+              commandList.addAll(Arrays.asList(new String[] {"winpty", "-Xallow-non-tty", "sh", "-i", "-c"}));
+              commandList.addAll(Arrays.asList(parsed));
+            }
+            else if (VTMainNativeUtils.checkScriptAvailable())
+            {
+              commandList = new ArrayList<String>();
+              commandList.addAll(Arrays.asList(new String[] {"script", "/dev/null", "-q", "-c", "sh", "-i", "-c"}));
+              commandList.addAll(Arrays.asList(parsed));
+            }
+            else
+            {
+              commandList = new ArrayList<String>();
+              commandList.addAll(Arrays.asList(new String[] {"sh", "-i", "-c"}));
+              commandList.addAll(Arrays.asList(parsed));
+            }
+          }
+          else if (VTMainNativeUtils.checkWSLShAvailable() && VTMainNativeUtils.checkWSLScriptAvailable())
+          {
+            commandList = new ArrayList<String>();
+            commandList.addAll(Arrays.asList(new String[] {"wsl", "script", "/dev/null", "-q", "-c", "sh", "-i", "-c"}));
+            commandList.addAll(Arrays.asList(parsed));
+          }
+          else
+          {
+            commandList = new ArrayList<String>();
+            commandList.addAll(Arrays.asList(new String[] {"cmd", "/c"}));
+            commandList.addAll(Arrays.asList(parsed));
+          }
+        }
+        else
+        {
+          commandList = new ArrayList<String>();
+          commandList.addAll(Arrays.asList(new String[] {"cmd", "/c"}));
+          commandList.addAll(Arrays.asList(parsed));
+        }
+      }
+      else
+      {
+        if (attachPTY)
+        {
+          commandList = new ArrayList<String>();
+          commandList.addAll(Arrays.asList(new String[] {"script", "/dev/null", "-q", "-c", "sh", "-i", "-c"}));
+          commandList.addAll(Arrays.asList(parsed));
+        }
+        else
+        {
+          commandList = new ArrayList<String>();
+          commandList.addAll(Arrays.asList(new String[] {"sh", "-i", "-c"}));
+          commandList.addAll(Arrays.asList(parsed));
+        }
+      }
+      this.shellBuilder = new ProcessBuilder(commandList);
       this.shellBuilder.environment().putAll(VTMainNativeUtils.getvirtualenv());
       this.shellEnvironment = this.shellBuilder.environment();
       if (names != null && values != null && (names.length <= values.length))
@@ -197,57 +256,26 @@ public class VTShellAdapter
         }
       }
     }
-    
     if (shellBuilder != null)
     {
       this.shellBuilder.redirectErrorStream(true);
     }
-    
   }
   
   private void revertShellBuilder()
   {
     if (VTReflectionUtils.detectWindows())
     {
-      if (System.getProperty("os.name").toUpperCase().contains("WINDOWS 95") || System.getProperty("os.name").toUpperCase().contains("WINDOWS 98") || System.getProperty("os.name").toUpperCase().contains("WINDOWS ME"))
+      this.shellBuilder = new ProcessBuilder("cmd", "/k");
+      this.shellBuilder.environment().putAll(VTMainNativeUtils.getvirtualenv());
+      this.shellEnvironment = this.shellBuilder.environment();
+      if (this.shellEnvironment != null)
       {
-        // almost impossible to enter here now
-        this.shellBuilder = new ProcessBuilder("command.com", "/A", "/E:1900");
-        this.shellBuilder.environment().putAll(VTMainNativeUtils.getvirtualenv());
-        this.shellEnvironment = this.shellBuilder.environment();
-        if (this.shellEnvironment != null)
-        {
-          // this.shellEnvironment.remove("PROMPT");
-          // this.shellEnvironment.put("PROMPT", "# ");
-        }
-        if (shellProcessor.getShellEncoding() == null)
-        {
-          //shellProcessor.setShellEncoding("CP850");
-        }
+        
       }
-      else
+      if (shellProcessor.getShellEncoding() == null)
       {
-//      if (supressEchoShell)
-//      {
-//        this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON", "/Q", "/A");
-//      }
-//      else
-//      {
-//        this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON", "/A");
-//      }
-        // this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON", "/A");
-        this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON", "/Q", "/A");
-        this.shellBuilder.environment().putAll(VTMainNativeUtils.getvirtualenv());
-        this.shellEnvironment = this.shellBuilder.environment();
-        if (this.shellEnvironment != null)
-        {
-          // this.shellEnvironment.remove("PROMPT");
-          // this.shellEnvironment.put("PROMPT", "# ");
-        }
-        if (shellProcessor.getShellEncoding() == null)
-        {
-          //shellProcessor.setShellEncoding("CP850");
-        }
+        //shellProcessor.setShellEncoding("CP850");
       }
     }
     else
@@ -257,10 +285,7 @@ public class VTShellAdapter
       this.shellEnvironment = this.shellBuilder.environment();
       if (this.shellEnvironment != null)
       {
-        // this.shellEnvironment.remove("PS1");
-        // this.shellEnvironment.put("PS1", "'# '");
-        // this.shellEnvironment.remove("PROMPT");
-        // this.shellEnvironment.put("PROMPT", "'pwd'>");
+        
       }
     }
   }

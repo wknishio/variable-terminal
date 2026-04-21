@@ -42,7 +42,7 @@ public class VTServerShellOutputWriter extends VTTask
   {
     firstCommandFilter = nullCommandFilter;
     secondCommandFilter = nullCommandFilter;
-    if (connection.getSilent())
+    if (connection.getQuiet())
     {
       return;
     }
@@ -86,7 +86,7 @@ public class VTServerShellOutputWriter extends VTTask
         length = session.getShellInputStream().read(buffer, 0, buffer.length);
         if (length > 0 && !isStopped())
         {
-          if (!connection.getSilent())
+          if (!connection.getQuiet())
           {
             if (firstCommandFilter.length > 0 && length >= firstCommandFilter.length && VTArrayComparator.arrayEquals(firstCommandFilter, buffer, 0, firstCommandFilter.length))
             {

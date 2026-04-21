@@ -39,9 +39,6 @@ public class VTShellProcessor
   private InputStream shellInputStream;
   //private InputStream shellErrorStream;
   private OutputStream shellOutputStream;
-  //private Reader shellOutputReader;
-  //private Reader shellErrorReader;
-  //private Writer shellCommandExecutor;
   
   private String shellCharsetName;
   
