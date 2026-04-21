@@ -14,10 +14,8 @@ import java.util.concurrent.ExecutorService;
 import org.vash.vate.graphics.capture.VTAWTScreenCaptureProvider;
 import org.vash.vate.graphics.clipboard.VTClipboardTransferTask;
 import org.vash.vate.graphics.control.VTAWTControlProvider;
-import org.vash.vate.nativeutils.VTMainNativeUtils;
 import org.vash.vate.ping.VTNanoPingListener;
 import org.vash.vate.ping.VTNanoPingService;
-import org.vash.vate.reflection.VTReflectionUtils;
 import org.vash.vate.server.VTServer;
 import org.vash.vate.server.connection.VTServerConnection;
 import org.vash.vate.server.console.remote.VTServerRemoteConsoleReader;
@@ -819,12 +817,12 @@ public class VTServerSession
   {
     String clientShell = connection.getCommandReader().readUTF();
     connection.setQuiet(connection.getCommandReader().readBoolean());
-    boolean requestPTY = connection.getCommandReader().readBoolean();
-    boolean hasPTY = requestPTY && (!VTReflectionUtils.detectWindows()
-    || (VTMainNativeUtils.checkShAvailable() && (VTMainNativeUtils.checkWinptyAvailable() || VTMainNativeUtils.checkScriptAvailable()))
-    || (VTMainNativeUtils.checkWSLShAvailable() && VTMainNativeUtils.checkWSLScriptAvailable()));
-    connection.getShellWriter().writeBoolean(hasPTY);
-    shellAdapter.setAttachPTY(requestPTY && hasPTY);
+//    boolean requestPTY = connection.getCommandReader().readBoolean();
+//    boolean hasPTY = requestPTY && (!VTReflectionUtils.detectWindows()
+//    || (VTMainNativeUtils.checkShAvailable() && (VTMainNativeUtils.checkWinptyAvailable() || VTMainNativeUtils.checkScriptAvailable()))
+//    || (VTMainNativeUtils.checkWSLShAvailable() && VTMainNativeUtils.checkWSLScriptAvailable()));
+//    connection.getShellWriter().writeBoolean(hasPTY);
+//    shellAdapter.setAttachPTY(requestPTY && hasPTY);
     String serverShell = server.getServerConnector().getSessionShell();
     if (clientShell != null && clientShell.length() > 0)
     {

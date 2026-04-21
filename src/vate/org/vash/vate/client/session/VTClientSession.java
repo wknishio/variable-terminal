@@ -15,7 +15,6 @@ import org.vash.vate.client.console.remote.VTClientRemoteConsoleWriter;
 import org.vash.vate.client.filetransfer.VTFileTransferClient;
 import org.vash.vate.client.graphicslink.VTGraphicsLinkClient;
 import org.vash.vate.graphics.clipboard.VTClipboardTransferTask;
-import org.vash.vate.nativeutils.VTMainNativeUtils;
 import org.vash.vate.ping.VTNanoPingListener;
 import org.vash.vate.ping.VTNanoPingService;
 import org.vash.vate.socket.remote.VTRemotePipedSocketFactory;
@@ -370,15 +369,15 @@ public class VTClientSession
     connection.setQuiet(client.isDaemon());
     String clientShell = client.getClientConnector().getSessionShell();
     clientShell = clientShell.replace("\r\n", "").replace("\n", "");
-    boolean requestPTY = connection.getQuiet() && VTMainNativeUtils.checkTerminalAvailable();
+//    boolean requestPTY = connection.getQuiet() && VTMainNativeUtils.checkTerminalAvailable();
     connection.getCommandWriter().writeUTF(clientShell);
     connection.getCommandWriter().writeBoolean(connection.getQuiet());
-    connection.getCommandWriter().writeBoolean(requestPTY);
+//    connection.getCommandWriter().writeBoolean(requestPTY);
     connection.getCommandWriter().flush();
-    boolean hasPTY = connection.getResultReader().readBoolean();
-    if (requestPTY && hasPTY)
-    {
-      VTMainNativeUtils.disableTerminalSanity();
-    }
+//    boolean hasPTY = connection.getResultReader().readBoolean();
+//    if (requestPTY && hasPTY)
+//    {
+//      VTMainNativeUtils.disableTerminalSanity();
+//    }
   }
 }
