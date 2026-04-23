@@ -818,7 +818,7 @@ public class VTServerSession
     String clientShell = connection.getCommandReader().readUTF();
     connection.setQuiet(connection.getCommandReader().readBoolean());
 //    boolean requestPTY = connection.getCommandReader().readBoolean();
-//    boolean hasPTY = requestPTY && (!VTReflectionUtils.detectWindows()
+//    boolean hasPTY = requestPTY && !connection.isManaged() && (!VTReflectionUtils.detectWindows()
 //    || (VTMainNativeUtils.checkShAvailable() && (VTMainNativeUtils.checkWinptyAvailable() || VTMainNativeUtils.checkScriptAvailable()))
 //    || (VTMainNativeUtils.checkWSLShAvailable() && VTMainNativeUtils.checkWSLScriptAvailable()));
 //    connection.getShellWriter().writeBoolean(hasPTY);
