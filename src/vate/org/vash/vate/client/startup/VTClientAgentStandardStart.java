@@ -2,7 +2,6 @@ package org.vash.vate.client.startup;
 
 import org.vash.vate.client.VTClient;
 import org.vash.vate.console.VTMainConsole;
-import org.vash.vate.console.standard.VTStandardConsoleInterruptibleInputStreamByte;
 import org.vash.vate.runtime.VTRuntimeExit;
 
 public class VTClientAgentStandardStart
@@ -28,7 +27,7 @@ public class VTClientAgentStandardStart
       client.setDaemon(true);
       VTMainConsole.setGraphical(false);
       client.setAgent(true);
-      client.setCommandInputStream(new VTStandardConsoleInterruptibleInputStreamByte(null));
+      client.setCommandInputStream(VTMainConsole.getInterruptibleStandardInputStream());
       client.setCommandOutputStream(System.out);
       client.start();
     }
@@ -38,7 +37,7 @@ public class VTClientAgentStandardStart
       client.setDaemon(true);
       VTMainConsole.setGraphical(false);
       client.setAgent(true);
-      client.setCommandInputStream(new VTStandardConsoleInterruptibleInputStreamByte(null));
+      client.setCommandInputStream(VTMainConsole.getInterruptibleStandardInputStream());
       client.setCommandOutputStream(System.out);
       client.start();
     }

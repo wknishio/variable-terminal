@@ -15,6 +15,7 @@ import org.vash.vate.console.graphical.VTGraphicalConsole;
 import org.vash.vate.console.graphical.menu.VTGraphicalConsoleMenuBar;
 import org.vash.vate.console.lanterna.separated.VTLanternaConsole;
 import org.vash.vate.console.standard.VTStandardConsole;
+import org.vash.vate.console.standard.VTStandardConsoleInterruptibleInputStreamByte;
 import org.vash.vate.nativeutils.VTMainNativeUtils;
 import org.vash.vate.reflection.VTReflectionUtils;
 
@@ -32,6 +33,11 @@ public final class VTMainConsole
   {
     VTSystem.initialize();
     VTMainNativeUtils.initialize();
+  }
+  
+  public static InputStream getInterruptibleStandardInputStream()
+  {
+    return new VTStandardConsoleInterruptibleInputStreamByte(null);
   }
   
   private static boolean checkIOConsole()
