@@ -22,7 +22,8 @@ public class VTShellAdapter
   //private static final String DISABLE_UTIL_LOGGING_CLASS = "-Djava.util.logging.config.class=org.vash.vate.shell.adapter.VTSilenceJavaUtilLogging";
   
   private int shellType = VTShellProcessor.SHELL_TYPE_PROCESS;
-  private volatile boolean attachPTY = false;
+  private boolean attachPTY = false;
+  private boolean agent = false;
   
   private VTShellProcessor shellProcessor;
   
@@ -64,6 +65,16 @@ public class VTShellAdapter
   public void setAttachPTY(boolean attach)
   {
     attachPTY = attach;
+  }
+  
+  public boolean isAgent()
+  {
+    return agent;
+  }
+  
+  public void setAgent(boolean agent)
+  {
+    this.agent = agent;
   }
   
   public VTShellProcessor getShellProcessor()
@@ -196,10 +207,10 @@ public class VTShellAdapter
             }
             else
             {
-              commandList = Arrays.asList(parsed);
-//              commandList = new ArrayList<String>();
-//              commandList.addAll(Arrays.asList(new String[] {"cmd", "/c"}));
-//              commandList.addAll(Arrays.asList(parsed));
+//              commandList = Arrays.asList(parsed);
+              commandList = new ArrayList<String>();
+              commandList.addAll(Arrays.asList(new String[] {"cmd", "/c"}));
+              commandList.addAll(Arrays.asList(parsed));
             }
           }
           else if (VTMainNativeUtils.checkWSLShAvailable() && VTMainNativeUtils.checkWSLScriptAvailable())
@@ -210,18 +221,18 @@ public class VTShellAdapter
           }
           else
           {
-            commandList = Arrays.asList(parsed);
-//            commandList = new ArrayList<String>();
-//            commandList.addAll(Arrays.asList(new String[] {"cmd", "/c"}));
-//            commandList.addAll(Arrays.asList(parsed));
+//            commandList = Arrays.asList(parsed);
+            commandList = new ArrayList<String>();
+            commandList.addAll(Arrays.asList(new String[] {"cmd", "/c"}));
+            commandList.addAll(Arrays.asList(parsed));
           }
         }
         else
         {
-          commandList = Arrays.asList(parsed);
-//          commandList = new ArrayList<String>();
-//          commandList.addAll(Arrays.asList(new String[] {"cmd", "/c"}));
-//          commandList.addAll(Arrays.asList(parsed));
+//          commandList = Arrays.asList(parsed);
+          commandList = new ArrayList<String>();
+          commandList.addAll(Arrays.asList(new String[] {"cmd", "/c"}));
+          commandList.addAll(Arrays.asList(parsed));
         }
       }
       else
@@ -234,10 +245,10 @@ public class VTShellAdapter
         }
         else
         {
-          commandList = Arrays.asList(parsed);
-//          commandList = new ArrayList<String>();
-//          commandList.addAll(Arrays.asList(new String[] {"sh", "-i", "-c"}));
-//          commandList.addAll(Arrays.asList(parsed));
+//          commandList = Arrays.asList(parsed);
+          commandList = new ArrayList<String>();
+          commandList.addAll(Arrays.asList(new String[] {"sh", "-i", "-c"}));
+          commandList.addAll(Arrays.asList(parsed));
         }
       }
       this.shellBuilder = new ProcessBuilder(commandList);

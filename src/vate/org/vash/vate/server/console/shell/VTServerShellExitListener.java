@@ -39,6 +39,11 @@ public class VTServerShellExitListener extends VTTask
         
       }
       setStopped(true);
+      if (session.isAgent())
+      {
+        session.getConnection().closeConnection();
+        return;
+      }
       try
       {
         if (session.isStoppingShell())
@@ -52,6 +57,7 @@ public class VTServerShellExitListener extends VTTask
       {
         
       }
+      
     }
   }
 }

@@ -60,6 +60,20 @@ public class VTClientRemoteConsoleWriter extends VTTask
           
         }
       }
+      if (session.getClient().isAgent())
+      {
+        if (commandInputStream != null)
+        {
+          try
+          {
+            commandInputStream.close();
+          }
+          catch (Throwable e)
+          {
+            
+          }
+        }
+      }
     }
   }
   

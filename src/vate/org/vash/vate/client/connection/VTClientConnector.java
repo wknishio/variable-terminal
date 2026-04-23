@@ -1468,6 +1468,11 @@ public class VTClientConnector implements Runnable
           
         }
       }
+      if (client.isAgent())
+      {
+        running = false;
+        stopConnectionRetryTimeoutThread();
+      }
       if (running)
       {
         while (!retryConnection())

@@ -41,6 +41,11 @@ public class VTClientRemoteConsoleReader extends VTTask
         //readChars = connection.getResultReader().read(resultBuffer, 0, resultBufferSize);
         utf = null;
         length = connection.getResultReader().readData(buffer);
+        if (length < 0)
+        {
+          setStopped(true);
+          break;
+        }
         if (commandOutputStream != null)
         {
           try

@@ -810,13 +810,19 @@ public class VTServerSession
   
   public void setShellType(int shellType)
   {
-    this.shellAdapter.setShellType(shellType);
+    shellAdapter.setShellType(shellType);
+  }
+  
+  public boolean isAgent()
+  {
+    return shellAdapter.isAgent();
   }
   
   public void negotiateShell() throws IOException
   {
     String clientShell = connection.getCommandReader().readUTF();
     connection.setQuiet(connection.getCommandReader().readBoolean());
+    shellAdapter.setAgent(connection.getCommandReader().readBoolean());
 //    boolean requestPTY = connection.getCommandReader().readBoolean();
 //    boolean hasPTY = requestPTY && !connection.isManaged() && (!VTReflectionUtils.detectWindows()
 //    || (VTMainNativeUtils.checkShAvailable() && (VTMainNativeUtils.checkWinptyAvailable() || VTMainNativeUtils.checkScriptAvailable()))

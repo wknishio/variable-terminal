@@ -372,6 +372,7 @@ public class VTClientSession
 //    boolean requestPTY = connection.getQuiet() && !connection.isManaged() && VTMainNativeUtils.checkTerminalAvailable();
     connection.getCommandWriter().writeUTF(clientShell);
     connection.getCommandWriter().writeBoolean(connection.getQuiet());
+    connection.getCommandWriter().writeBoolean(client.isAgent());
 //    connection.getCommandWriter().writeBoolean(requestPTY);
     connection.getCommandWriter().flush();
 //    boolean hasPTY = connection.getResultReader().readBoolean();
