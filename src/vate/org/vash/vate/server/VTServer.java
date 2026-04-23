@@ -143,6 +143,11 @@ public class VTServer implements Runnable
     loadServerSettingsFile();
   }
   
+  public boolean isManaged()
+  {
+    return managed;
+  }
+  
   public VTDataMonitorService getMonitorService()
   {
     return monitorService;
@@ -1909,7 +1914,7 @@ public class VTServer implements Runnable
           pingInterval = 0;
         }
         VTMainConsole.print("VT>Enter session shell(null for default):");
-        line = VTMainConsole.readLine(false);
+        line = VTMainConsole.readLine(true);
         if (line == null)
         {
           VTRuntimeExit.exit(0);

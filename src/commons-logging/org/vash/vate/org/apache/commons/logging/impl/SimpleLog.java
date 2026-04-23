@@ -659,7 +659,7 @@ public class SimpleLog implements Log, Serializable {
                 // Get the thread context class loader (if there is one)
                 try {
                     classLoader = (ClassLoader)method.invoke(Thread.currentThread(), 
-                            (Class[]) null);
+                            (Object[]) null);
                 } catch (IllegalAccessException e) {
                     ;  // ignore
                 } catch (InvocationTargetException e) {

@@ -2175,7 +2175,7 @@ public class VTLanternaConsole extends VTConsole
       if (VTReflectionUtils.detectWindows())
       {
         // System.out.print("\u001B]0;" + title + "\u0007");
-        if (VTMainNativeUtils.isAvailable())
+        if (VTMainNativeUtils.isNativeAvailable())
         {
           VTMainNativeUtils.system("title " + title);
         }

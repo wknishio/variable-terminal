@@ -142,6 +142,11 @@ public class VTClientConnection
     this.authenticationWriter = new VTLittleEndianOutputStream(null);
   }
   
+  public boolean isManaged()
+  {
+    return managed;
+  }
+  
   public void setQuiet(boolean quiet)
   {
     this.quiet = quiet;

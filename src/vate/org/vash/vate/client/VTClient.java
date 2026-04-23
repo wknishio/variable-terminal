@@ -121,6 +121,11 @@ public class VTClient implements Runnable
     loadClientSettingsFile();
   }
   
+  public boolean isManaged()
+  {
+    return managed;
+  }
+  
   public InputStream getCommandInputStream()
   {
     return commandInputStream;

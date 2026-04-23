@@ -172,7 +172,7 @@ public class VTStandardConsole extends VTConsole
     }
     if (VTReflectionUtils.detectWindows())
     {
-      if (VTMainNativeUtils.isAvailable())
+      if (VTMainNativeUtils.isNativeAvailable())
       {
         VTMainNativeUtils.system("cls");
       }
@@ -202,7 +202,7 @@ public class VTStandardConsole extends VTConsole
     }
     if (VTReflectionUtils.detectWindows())
     {
-      if (VTMainNativeUtils.isAvailable())
+      if (VTMainNativeUtils.isNativeAvailable())
       {
         VTMainNativeUtils.system("title " + title);
       }
@@ -393,7 +393,7 @@ public class VTStandardConsole extends VTConsole
           break;
         }
       }
-      if (VTMainNativeUtils.isAvailable())
+      if (VTMainNativeUtils.isNativeAvailable())
       {
         VTMainNativeUtils.system("color " + colorCode.toString());
       }
@@ -593,7 +593,7 @@ public class VTStandardConsole extends VTConsole
     }
     if (bold)
     {
-      if (VTReflectionUtils.detectWindows() && VTMainNativeUtils.isAvailable())
+      if (VTReflectionUtils.detectWindows() && VTMainNativeUtils.isNativeAvailable())
       {
         // printStream.print("\u001B[1m");
       }
@@ -604,7 +604,7 @@ public class VTStandardConsole extends VTConsole
     }
     else
     {
-      if (VTReflectionUtils.detectWindows() && VTMainNativeUtils.isAvailable())
+      if (VTReflectionUtils.detectWindows() && VTMainNativeUtils.isNativeAvailable())
       {
         // printStream.print("\u001B[21m");
       }
@@ -623,7 +623,7 @@ public class VTStandardConsole extends VTConsole
     }
     if (VTReflectionUtils.detectWindows())
     {
-      if (VTMainNativeUtils.isAvailable())
+      if (VTMainNativeUtils.isNativeAvailable())
       {
         VTMainNativeUtils.system("color");
       }

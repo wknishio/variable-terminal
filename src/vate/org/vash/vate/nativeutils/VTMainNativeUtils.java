@@ -35,55 +35,6 @@ public class VTMainNativeUtils
   private static boolean disabledTerminalSanity = false;
   private static boolean disabledTerminalEcho = false;
   
-  private static final String WIN32_EJECT_DISC_TRAY_JSCRIPT = 
-  "var shell = new ActiveXObject(\"Shell.Application\");\r\n" +
-  "var fso = new ActiveXObject(\"Scripting.FileSystemObject\");\r\n" +
-  "var drives = new Enumerator(fso.Drives);\r\n" +
-  "\r\n" +
-  "for (; !drives.atEnd(); drives.moveNext()) {\r\n" +
-  "    var d = drives.item();\r\n" +
-  "    try {\r\n" +
-  "        // DriveType 4 is CD-ROM\r\n" +
-  "        if (d.DriveType === 4) {\r\n" +
-  "            shell.Namespace(17).ParseName(d.DriveLetter + \":\\\").InvokeVerb(\"Eject\");\r\n" +
-  "            break;\r\n" +
-  "        }\r\n" +
-  "    } catch (e) {\r\n" +
-  "       // Equivalent to 'On Error Resume Next' for the loop body\r\n" +
-  "    }\r\n" +
-  "}\r\n" +
-  "\r\n" +
-  "WScript.Quit();\r\n";
-  
-  private static final String WIN32_EJECT_DISC_TRAY_POWERSHELL = 
-  "try" +
-  "{" +
-  "  $drives = Get-WmiObject Win32_LogicalDisk -Filter \"DriveType=4\";" +
-  "  foreach ($d in $drives)" +
-  "  {" +
-  "    $driveLetter = $d.DeviceID;" +
-  "    try" +
-  "    {" +
-  "      (New-Object -ComObject Shell.Application).Namespace(17).ParseName(\"$driveLetter\\\").InvokeVerb('Eject');" +
-  "    }" +
-  "    catch" +
-  "    {" +
-  "    }" +
-  "  }" +
-  "}" + 
-  "catch" +
-  "{" +
-  "}";
-  
-//  private static final String WIN32_EJECT_DISC_TRAY_VBS = "On Error Resume Next\r\n" + 
-//  "For Each d in CreateObject(\"Scripting.FileSystemObject\").Drives\r\n" + 
-//  "    If d.DriveType = 4 Then\r\n" + 
-//  "        CreateObject(\"Shell.Application\").Namespace(17).ParseName(d.DriveLetter & \":\\\").InvokeVerb(\"Eject\")\r\n" + 
-//  "        Exit For\r\n" + 
-//  "    End If\r\n" + 
-//  "Next\r\n" + 
-//  "WScript.Quit";
-  
   public synchronized static void initialize()
   {
     if (nativeUtils != null)
@@ -124,6 +75,154 @@ public class VTMainNativeUtils
     }
   }
   
+  public static boolean beep(int freq, int dur, boolean block, ExecutorService executorService)
+  {
+    if (checkNativeUtils())
+    {
+      boolean nativeBeep = nativeUtils.beep(freq, dur, block);
+      if (!nativeBeep)
+      {
+        return VTAudioBeeper.beep(16000, 8, freq, dur, block, executorService);
+      }
+      else
+      {
+        return true;
+      }
+    }
+    else
+    {
+      return VTAudioBeeper.beep(16000, 8, freq, dur, block, executorService);
+    }
+  }
+  
+  private static final String WIN32_EJECT_DISC_TRAY_JSCRIPT = 
+  "var shell = new ActiveXObject(\"Shell.Application\");\r\n" +
+  "var fso = new ActiveXObject(\"Scripting.FileSystemObject\");\r\n" +
+  "var drives = new Enumerator(fso.Drives);\r\n" +
+  "\r\n" +
+  "for (; !drives.atEnd(); drives.moveNext()) {\r\n" +
+  "    var d = drives.item();\r\n" +
+  "    try {\r\n" +
+  "        // DriveType 4 is CD-ROM\r\n" +
+  "        if (d.DriveType === 4) {\r\n" +
+  "            shell.Namespace(17).ParseName(d.DriveLetter + \":\\\").InvokeVerb(\"Eject\");\r\n" +
+  "            break;\r\n" +
+  "        }\r\n" +
+  "    } catch (e) {\r\n" +
+  "       // Equivalent to 'On Error Resume Next' for the loop body\r\n" +
+  "    }\r\n" +
+  "}\r\n" +
+  "\r\n" +
+  "WScript.Quit();\r\n";
+  
+  private static final String WIN32_EJECT_DISC_TRAY_POWERSHELL = 
+  "try" +
+  "{" +
+  "  $drives = Get-WmiObject Win32_LogicalDisk -Filter 'DriveType=4';" +
+  "  foreach ($d in $drives)" +
+  "  {" +
+  "    $driveLetter = $d.DeviceID;" +
+  "    try" +
+  "    {" +
+  "      (New-Object -ComObject Shell.Application).Namespace(17).ParseName($driveLetter + ':\\').InvokeVerb('Eject');" +
+  "    }" +
+  "    catch" +
+  "    {" +
+  "    }" +
+  "  }" +
+  "}" + 
+  "catch" +
+  "{" +
+  "}";
+  
+  private static final String WIN32_DISABLE_CANONICAL_INPUT_POWERSHELL = 
+  "$Signature = @'\n" +
+  "[DllImport(\\\"kernel32.dll\\\", SetLastError = true)]\n" +
+  "public static extern bool GetConsoleMode(IntPtr hConsoleHandle, out uint lpMode);\n" +
+  "[DllImport(\\\"kernel32.dll\\\", SetLastError = true)]\n" +
+  "public static extern bool SetConsoleMode(IntPtr hConsoleHandle, uint dwMode);\n" +
+  "[DllImport(\\\"kernel32.dll\\\", SetLastError = true)]\n" +
+  "public static extern IntPtr GetStdHandle(int nStdHandle);\n" +
+  "'@\n" +
+  "$K32 = Add-Type -MemberDefinition $Signature -Name 'Win32_Kernel32' -Namespace Win32 -PassThru;" +
+  "$h = $K32::GetStdHandle(-10);" +
+  "if ($h -and $h -ne -1) {" +
+  "  $m = 0;" +
+  "  if ($K32::GetConsoleMode($h, [ref]$m)) {" +
+  "    $nm = $m -band -bnot 0x0007;" + 
+  "    if ($K32::SetConsoleMode($h, $nm)) {" +
+  "      exit 0;" +
+  "    }" +
+  "  }" +
+  "}" +
+  "exit -1";
+  
+  private static final String WIN32_RESTORE_CANONICAL_INPUT_POWERSHELL = 
+  "$Signature = @'\n" +
+  "[DllImport(\\\"kernel32.dll\\\", SetLastError = true)]\n" +
+  "public static extern bool GetConsoleMode(IntPtr hConsoleHandle, out uint lpMode);\n" +
+  "[DllImport(\\\"kernel32.dll\\\", SetLastError = true)]\n" +
+  "public static extern bool SetConsoleMode(IntPtr hConsoleHandle, uint dwMode);\n" +
+  "[DllImport(\\\"kernel32.dll\\\", SetLastError = true)]\n" +
+  "public static extern IntPtr GetStdHandle(int nStdHandle);\n" +
+  "'@\n" +
+  "$K32 = Add-Type -MemberDefinition $Signature -Name 'Win32_Kernel32' -Namespace Win32 -PassThru;" +
+  "$h = $K32::GetStdHandle(-10);" +
+  "if ($h -and $h -ne -1) {" +
+  "  $m = 0;" +
+  "  if ($K32::GetConsoleMode($h, [ref]$m)) {" +
+  "    $nm = $m -bor 0x0007;" + 
+  "    if ($K32::SetConsoleMode($h, $nm)) {" +
+  "      exit 0;" +
+  "    }" +
+  "  }" +
+  "}" +
+  "exit -1";
+  
+  private static final String WIN32_DISABLE_ECHO_INPUT_POWERSHELL = 
+  "$Signature = @'\n" +
+  "[DllImport(\\\"kernel32.dll\\\", SetLastError = true)]\n" +
+  "public static extern bool GetConsoleMode(IntPtr hConsoleHandle, out uint lpMode);\n" +
+  "[DllImport(\\\"kernel32.dll\\\", SetLastError = true)]\n" +
+  "public static extern bool SetConsoleMode(IntPtr hConsoleHandle, uint dwMode);\n" +
+  "[DllImport(\\\"kernel32.dll\\\", SetLastError = true)]\n" +
+  "public static extern IntPtr GetStdHandle(int nStdHandle);\n" +
+  "'@\n" +
+  "$K32 = Add-Type -MemberDefinition $Signature -Name 'Win32_Kernel32' -Namespace Win32 -PassThru;" +
+  "$h = $K32::GetStdHandle(-10);" +
+  "if ($h -and $h -ne -1) {" +
+  "  $m = 0;" +
+  "  if ($K32::GetConsoleMode($h, [ref]$m)) {" +
+  "    $nm = $m -band -bnot 0x0004;" + 
+  "    if ($K32::SetConsoleMode($h, $nm)) {" +
+  "      exit 0;" +
+  "    }" +
+  "  }" +
+  "}" +
+  "exit -1";
+  
+  private static final String WIN32_RESTORE_ECHO_INPUT_POWERSHELL = 
+  "$Signature = @'\n" +
+  "[DllImport(\\\"kernel32.dll\\\", SetLastError = true)]\n" +
+  "public static extern bool GetConsoleMode(IntPtr hConsoleHandle, out uint lpMode);\n" +
+  "[DllImport(\\\"kernel32.dll\\\", SetLastError = true)]\n" +
+  "public static extern bool SetConsoleMode(IntPtr hConsoleHandle, uint dwMode);\n" +
+  "[DllImport(\\\"kernel32.dll\\\", SetLastError = true)]\n" +
+  "public static extern IntPtr GetStdHandle(int nStdHandle);\n" +
+  "'@\n" +
+  "$K32 = Add-Type -MemberDefinition $Signature -Name 'Win32_Kernel32' -Namespace Win32 -PassThru;" +
+  "$h = $K32::GetStdHandle(-10);" +
+  "if ($h -and $h -ne -1) {" +
+  "  $m = 0;" +
+  "  if ($K32::GetConsoleMode($h, [ref]$m)) {" +
+  "    $nm = $m -bor 0x0004;" + 
+  "    if ($K32::SetConsoleMode($h, $nm)) {" +
+  "      exit 0;" +
+  "    }" +
+  "  }" +
+  "}" +
+  "exit -1";
+  
   public static int system(String command)
   {
     if (checkNativeUtils())
@@ -156,26 +255,6 @@ public class VTMainNativeUtils
     if (checkNativeUtils())
     {
       nativeUtils.printf(format, args);
-    }
-  }
-  
-  public static boolean beep(int freq, int dur, boolean block, ExecutorService executorService)
-  {
-    if (checkNativeUtils())
-    {
-      boolean nativeBeep = nativeUtils.beep(freq, dur, block);
-      if (!nativeBeep)
-      {
-        return VTAudioBeeper.beep(16000, 8, freq, dur, block, executorService);
-      }
-      else
-      {
-        return true;
-      }
-    }
-    else
-    {
-      return VTAudioBeeper.beep(16000, 8, freq, dur, block, executorService);
     }
   }
   
@@ -617,7 +696,7 @@ public class VTMainNativeUtils
     return false;
   }
   
-  public static boolean isAvailable()
+  public static boolean isNativeAvailable()
   {
     if (checkNativeUtils())
     {
@@ -885,18 +964,26 @@ public class VTMainNativeUtils
     return status;
   }
   
-  public static int executeSystem(String command)
+  public static int executeSystem(boolean inherit, String command, String... commands)
   {
     int status = -1;
+    if (commands == null || commands.length == 0)
+    {
+      commands = CommandLineTokenizerMKII.tokenize(command);
+    }
     try
     {
-      if (isAvailable())
+      if (inherit && inheritIOMethod != null)
+      {
+        return executeProcess(true, null, null, commands);
+      }
+      else if (isNativeAvailable())
       {
         return system(command);
       }
       else
       {
-        return executeProcess(true, null, null, command);
+        return executeProcess(true, null, null, commands);
       }
     }
     catch (Throwable t)
@@ -904,6 +991,11 @@ public class VTMainNativeUtils
       
     }
     return status;
+  }
+  
+  public static int executeSystem(String command, String... commands)
+  {
+    return executeSystem(false, command, commands);
   }
   
   private static final Thread restoreTerminalSanityNativeHook = new Thread()
@@ -928,6 +1020,21 @@ public class VTMainNativeUtils
       try
       {
         executeSystem("stty sane");
+      }
+      catch (Throwable t)
+      {
+        
+      }
+    }
+  };
+  
+  private static final Thread restoreTerminalSanityPowershellHook = new Thread()
+  {
+    public void run()
+    {
+      try
+      {
+        executeSystem(true, "", "powershell", "-Command", WIN32_RESTORE_CANONICAL_INPUT_POWERSHELL);
       }
       catch (Throwable t)
       {
@@ -966,6 +1073,21 @@ public class VTMainNativeUtils
     }
   };
   
+  private static final Thread restoreTerminalEchoPowershellHook = new Thread()
+  {
+    public void run()
+    {
+      try
+      {
+        executeSystem(true, "", "powershell", "-Command", WIN32_RESTORE_ECHO_INPUT_POWERSHELL);
+      }
+      catch (Throwable t)
+      {
+        
+      }
+    }
+  };
+  
   public static void disableTerminalSanity()
   {
     if ((executeRuntime("tty -s") != -1) && (executeSystem("tty -s") == 0))
@@ -973,24 +1095,33 @@ public class VTMainNativeUtils
       if (!disabledTerminalSanity)
       {
         Runtime.getRuntime().addShutdownHook(restoreTerminalSanitySystemHook);
+        executeSystem("stty raw -echo");
+        disabledTerminalSanity = true;
       }
-      executeSystem("stty raw -echo");
-      disabledTerminalSanity = true;
     }
     else
     {
       if (VTConsole.hasTerminal())
       {
-        if (VTReflectionUtils.detectWindows() && !isAvailable())
+        if (VTReflectionUtils.detectWindows())
         {
-          return;
+          if (!isNativeAvailable() && checkPowershell2Available() && checkSystemAvailable())
+          {
+            if (!disabledTerminalSanity)
+            {
+              Runtime.getRuntime().addShutdownHook(restoreTerminalSanityPowershellHook);
+              executeSystem(true, "", "powershell", "-Command", WIN32_DISABLE_CANONICAL_INPUT_POWERSHELL);
+              disabledTerminalSanity = true;
+            }
+            return;
+          }
         }
         if (!disabledTerminalSanity)
         {
           Runtime.getRuntime().addShutdownHook(restoreTerminalSanityNativeHook);
+          raw();
+          disabledTerminalSanity = true;
         }
-        raw();
-        disabledTerminalSanity = true;
       }
     }
   }
@@ -1002,24 +1133,33 @@ public class VTMainNativeUtils
       if (disabledTerminalSanity)
       {
         Runtime.getRuntime().removeShutdownHook(restoreTerminalSanitySystemHook);
+        executeSystem("stty sane");
+        disabledTerminalSanity = false;
       }
-      executeSystem("stty sane");
-      disabledTerminalSanity = false;
     }
     else
     {
       if (VTConsole.hasTerminal())
       {
-        if (VTReflectionUtils.detectWindows() && !isAvailable())
+        if (VTReflectionUtils.detectWindows())
         {
-          return;
+          if (!isNativeAvailable() && checkPowershell2Available() && checkSystemAvailable())
+          {
+            if (!disabledTerminalSanity)
+            {
+              Runtime.getRuntime().removeShutdownHook(restoreTerminalSanityPowershellHook);
+              executeSystem(true, "", "powershell", "-Command", WIN32_RESTORE_CANONICAL_INPUT_POWERSHELL);
+              disabledTerminalSanity = false;
+            }
+            return;
+          }
         }
         if (disabledTerminalSanity)
         {
           Runtime.getRuntime().removeShutdownHook(restoreTerminalSanityNativeHook);
+          sane();
+          disabledTerminalSanity = false;
         }
-        sane();
-        disabledTerminalSanity = false;
       }
     }
   }
@@ -1031,24 +1171,33 @@ public class VTMainNativeUtils
       if (!disabledTerminalEcho)
       {
         Runtime.getRuntime().addShutdownHook(restoreTerminalEchoSystemHook);
+        executeSystem("stty -echo");
+        disabledTerminalEcho = true;
       }
-      executeSystem("stty -echo");
-      disabledTerminalEcho = true;
     }
     else
     {
       if (VTConsole.hasTerminal())
       {
-        if (VTReflectionUtils.detectWindows() && !isAvailable())
+        if (VTReflectionUtils.detectWindows())
         {
-          return;
+          if (!isNativeAvailable() && checkPowershell2Available() && checkSystemAvailable())
+          {
+            if (!disabledTerminalEcho)
+            {
+              Runtime.getRuntime().removeShutdownHook(restoreTerminalEchoPowershellHook);
+              executeSystem(true, "", "powershell", "-Command", WIN32_DISABLE_ECHO_INPUT_POWERSHELL);
+              disabledTerminalEcho = true;
+            }
+            return;
+          }
         }
         if (!disabledTerminalEcho)
         {
           Runtime.getRuntime().addShutdownHook(restoreTerminalEchoNativeHook);
+          echo(false);
+          disabledTerminalEcho = true;
         }
-        echo(false);
-        disabledTerminalEcho = true;
       }
     }
   }
@@ -1060,24 +1209,30 @@ public class VTMainNativeUtils
       if (disabledTerminalEcho)
       {
         Runtime.getRuntime().removeShutdownHook(restoreTerminalEchoSystemHook);
+        executeSystem("stty echo");
+        disabledTerminalEcho = false;
       }
-      executeSystem("stty echo");
-      disabledTerminalEcho = false;
     }
     else
     {
       if (VTConsole.hasTerminal())
       {
-        if (VTReflectionUtils.detectWindows() && !isAvailable())
+        if (!isNativeAvailable() && checkPowershell2Available() && checkSystemAvailable())
         {
+          if (!disabledTerminalEcho)
+          {
+            Runtime.getRuntime().removeShutdownHook(restoreTerminalEchoPowershellHook);
+            executeSystem(true, "", "powershell", "-Command", WIN32_RESTORE_ECHO_INPUT_POWERSHELL);
+            disabledTerminalEcho = false;
+          }
           return;
         }
         if (disabledTerminalEcho)
         {
           Runtime.getRuntime().removeShutdownHook(restoreTerminalEchoNativeHook);
+          echo(true);
+          disabledTerminalEcho = false;
         }
-        echo(true);
-        disabledTerminalEcho = false;
       }
     }
   }
@@ -1090,14 +1245,42 @@ public class VTMainNativeUtils
     }
     else if (VTConsole.hasTerminal())
     {
-      if (VTReflectionUtils.detectWindows() && !isAvailable())
+      if (VTReflectionUtils.detectWindows())
       {
+        if (isNativeAvailable())
+        {
+          return true;
+        }
+        if (checkPowershell2Available() && checkSystemAvailable())
+        {
+          return true;
+        }
         return false;
       }
       else
       {
         return true;
       }
+    }
+    return false;
+  }
+  
+  public static boolean checkSystemAvailable()
+  {
+    try
+    {
+      if (inheritIOMethod != null)
+      {
+        return true;
+      }
+      if (isNativeAvailable())
+      {
+        return true;
+      }
+    }
+    catch (Throwable t)
+    {
+      
     }
     return false;
   }
@@ -1117,9 +1300,9 @@ public class VTMainNativeUtils
     return executeRuntime("winpty", "--help") != -1;
   }
   
-  public static boolean checkPowershellAvailable()
+  public static boolean checkPowershell2Available()
   {
-    return executeRuntime("powershell", "-Command", "exit") != -1;
+    return executeRuntime("powershell", "-Command", "\"$PSVersionTable.PSVersion\"") == 0;
   }
   
   public static boolean checkWindowsTerminalAvailable()
