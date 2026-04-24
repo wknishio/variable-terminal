@@ -131,6 +131,7 @@ public class VTNanoPingService extends VTTask
       remoteNanoDelay = in.readLong();
       out.writeLong(localNanoDelay);
       out.flush();
+      localNanoDelay = remoteNanoDelay;
       for (VTNanoPingListener listener : listeners)
       {
         listener.pingObtained(remoteNanoDelay);
