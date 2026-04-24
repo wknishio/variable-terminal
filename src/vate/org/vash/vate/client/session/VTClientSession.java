@@ -369,7 +369,7 @@ public class VTClientSession
     connection.setQuiet(client.isDaemon());
     String clientShell = client.getClientConnector().getSessionShell();
     clientShell = clientShell.replace("\r\n", "").replace("\n", "");
-//    boolean requestPTY = connection.getQuiet() && !connection.isManaged() && VTMainNativeUtils.checkTerminalAvailable();
+//    boolean requestPTY = connection.getQuiet() && client.isAgent() && !connection.isManaged() && VTMainNativeUtils.checkTerminalAvailable();
     connection.getCommandWriter().writeUTF(clientShell);
     connection.getCommandWriter().writeBoolean(connection.getQuiet());
     connection.getCommandWriter().writeBoolean(client.isAgent());

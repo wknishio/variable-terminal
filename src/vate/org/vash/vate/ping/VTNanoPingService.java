@@ -126,12 +126,13 @@ public class VTNanoPingService extends VTTask
   
   private void server() throws IOException, InterruptedException
   {
+    localNanoDelay = 1;
     while (!isStopped())
     {
       remoteNanoDelay = in.readLong();
       out.writeLong(localNanoDelay);
       out.flush();
-      localNanoDelay = remoteNanoDelay;
+      localNanoDelay *= remoteNanoDelay;
       for (VTNanoPingListener listener : listeners)
       {
         listener.pingObtained(remoteNanoDelay);
