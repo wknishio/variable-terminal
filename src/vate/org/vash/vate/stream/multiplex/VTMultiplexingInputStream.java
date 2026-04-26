@@ -260,7 +260,7 @@ public final class VTMultiplexingInputStream
       length = input.readInt();
       input.readFully(packetDataBuffer, 0, length);
       stream = getInputStream(type, number);
-      if (stream.getPacketSequencer().nextLong() != sequence || stream == null)
+      if ((stream.getPacketSequencer().nextLong() ^ length) != sequence || stream == null)
       {
         close();
         return;

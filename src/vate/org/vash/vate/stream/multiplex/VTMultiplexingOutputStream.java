@@ -448,20 +448,20 @@ public final class VTMultiplexingOutputStream
       intermediateDataPacketBuffer.reset();
       intermediatePacketStream.write(data, offset, length);
       intermediatePacketStream.flush();
-      dataPacketStream.writeLong(packetSequencer.nextLong());
+      dataPacketStream.writeLong(packetSequencer.nextLong() ^ intermediateDataPacketBuffer.count());
       dataPacketStream.writeByte(type);
       dataPacketStream.writeSubInt(number);
       dataPacketStream.writeInt(intermediateDataPacketBuffer.count());
       dataPacketStream.write(intermediateDataPacketBuffer.buf(), 0, intermediateDataPacketBuffer.count());
       output.write(dataPacketBuffer.buf(), 0, dataPacketBuffer.count());
       output.flush();
-      transferredBytes.addAndGet(length);
+      transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES + intermediateDataPacketBuffer.count());
     }
     
     private synchronized final void writeClosePacket(final int type, final int number) throws IOException
     {
       controlPacketBuffer.reset();
-      controlPacketStream.writeLong(packetSequencer.nextLong());
+      controlPacketStream.writeLong(packetSequencer.nextLong() ^ -2);
       controlPacketStream.writeByte(type);
       controlPacketStream.writeSubInt(number);
       controlPacketStream.writeInt(-2);
@@ -473,7 +473,7 @@ public final class VTMultiplexingOutputStream
     private synchronized final void writeOpenPacket(final int type, final int number) throws IOException
     {
       controlPacketBuffer.reset();
-      controlPacketStream.writeLong(packetSequencer.nextLong());
+      controlPacketStream.writeLong(packetSequencer.nextLong() ^ -3);
       controlPacketStream.writeByte(type);
       controlPacketStream.writeSubInt(number);
       controlPacketStream.writeInt(-3);
