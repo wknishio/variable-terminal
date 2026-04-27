@@ -1,6 +1,8 @@
 package org.vash.vate.client.authentication;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+
 import org.vash.vate.VTSystem;
 import org.vash.vate.client.VTClient;
 import org.vash.vate.client.connection.VTClientConnection;
@@ -91,9 +93,9 @@ public class VTClientAuthenticator
     timeoutTask.stop();
   }
   
-  public byte[] getDigestedCredential()
+  public byte[] getSecureDigestedCredential() throws UnsupportedEncodingException
   {
-    return digestedCredential;
+    return computeSecurityDigest(remoteNonce, localNonce, encryptionKey, user.getBytes("UTF-8"), password.getBytes("UTF-8"), digestedCredential);
   }
   
   public String getUser()
@@ -132,7 +134,10 @@ public class VTClientAuthenticator
     blake3Digest.setSeed(seed);
     blake3Digest.reset();
     
-    digestedCredential = computeSecurityDigest(remoteNonce, localNonce, encryptionKey, client.getUser().getBytes("UTF-8"), client.getPassword().getBytes("UTF-8"));
+    user = client.getUser();
+    password = client.getPassword();
+    
+    digestedCredential = computeSecurityDigest(remoteNonce, localNonce, encryptionKey, user.getBytes("UTF-8"), password.getBytes("UTF-8"));
     
     connection.getAuthenticationWriter().write(digestedCredential);
     connection.getAuthenticationWriter().flush();

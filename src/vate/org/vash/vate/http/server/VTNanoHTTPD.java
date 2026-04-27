@@ -26,13 +26,12 @@ import java.util.concurrent.ThreadFactory;
 
 import org.vash.vate.VTSystem;
 import org.vash.vate.console.VTMainConsole;
-import org.vash.vate.net.jpountz.xxhash.XXHashFactory;
 import org.vash.vate.org.apache.commons.codec.binary.Base64;
 import org.vash.vate.org.apache.commons.codec.digest.DigestUtils;
 import org.vash.vate.org.bouncycastle.util.encoders.Hex;
 import org.vash.vate.parser.VTConfigurationProperties;
 import org.vash.vate.security.VTSplitMix64Random;
-import org.vash.vate.security.VTXXHash64MessageDigest;
+import org.vash.vate.security.VTXXH3;
 import org.vash.vate.stream.array.VTByteArrayInputStream;
 
 import java.util.Hashtable;
@@ -215,7 +214,8 @@ public class VTNanoHTTPD implements Runnable, Closeable
     MIME_XML = "text/xml";
   
   private final Collection<String> nonces;
-  private final VTXXHash64MessageDigest xxhash64;
+  //private final VTXXHash64MessageDigest xxhash64;
+  private final long digestSeed;
   private final Random random;
   private final boolean digest;
   private final String[] usernames;
@@ -250,11 +250,13 @@ public class VTNanoHTTPD implements Runnable, Closeable
     
     if (usernames == null || passwords == null || usernames.length == 0 || passwords.length == 0)
     {
-      xxhash64 = null;
+      //xxhash64 = null;
+      digestSeed = 0;
     }
     else
     {
-      xxhash64  = new VTXXHash64MessageDigest(XXHashFactory.safeInstance().newStreamingHash64(random.nextLong()));
+      //xxhash64  = new VTXXHash64MessageDigest(XXHashFactory.safeInstance().newStreamingHash64(random.nextLong()));
+      digestSeed = random.nextLong();
     }
     
     //myTcpPort = server.getLocalPort();
@@ -1168,7 +1170,7 @@ public class VTNanoHTTPD implements Runnable, Closeable
       byte[] randomBytes = new byte[VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES];
       random.nextBytes(randomBytes);
       String nonceValue = realm + ":" + Hex.toHexString(randomBytes);
-      nonceValue = Hex.toHexString(xxhash64.digest(nonceValue.getBytes("ISO-8859-1")));
+      nonceValue = VTXXH3.toHexString(VTXXH3.hash64(nonceValue.getBytes("ISO-8859-1"), nonceValue.length(), digestSeed));
       //nonceValue = DigestUtils.sha256Hex(nonceValue.getBytes("ISO-8859-1"));
       
       //VALID_DIGEST_NONCES.put(nOnceValue, currentTime + (1000 * 300));
@@ -1339,7 +1341,7 @@ public class VTNanoHTTPD implements Runnable, Closeable
       Response resp = new Response();
       resp.headers.put(requireHeader, "Digest realm=\"" + realm + "\", "
           +  "qop=\"auth\", nonce=\"" + nonce + "\", opaque=\""
-          + Hex.toHexString(xxhash64.digest(nonce.getBytes("ISO-8859-1"))) + "\"" + (stale ? ", stale=\"true\"" : ""));
+          + VTXXH3.toHexString(VTXXH3.hash64(nonce.getBytes("ISO-8859-1"), nonce.length(), digestSeed)) + "\"" + (stale ? ", stale=\"true\"" : ""));
       resp.status = HTTP_UNAUTHORIZED;
       sendError(resp.status, MIME_PLAINTEXT, resp.headers, "");
     }

@@ -1,6 +1,7 @@
 package org.vash.vate.server.authentication;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -106,9 +107,9 @@ public class VTServerAuthenticator
     return password;
   }
   
-  public byte[] getDigestedCredential()
+  public byte[] getSecureDigestedCredential() throws UnsupportedEncodingException
   {
-    return digestedCredential;
+    return computeSecurityDigest(localNonce, remoteNonce, encryptionKey, user.getBytes("UTF-8"), password.getBytes("UTF-8"), digestedCredential);
   }
   
   private byte[] computeSecurityDigest(byte[]... values)

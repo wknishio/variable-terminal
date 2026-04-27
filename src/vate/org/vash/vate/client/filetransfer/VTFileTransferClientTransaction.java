@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
-import java.security.DigestInputStream;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,9 +15,8 @@ import org.vash.vate.com.martiansoftware.jsap.CommandLineTokenizerMKII;
 import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.filesystem.VTFileUtils;
 import org.vash.vate.help.VTHelpManager;
-import org.vash.vate.net.jpountz.xxhash.XXHashFactory;
 import org.vash.vate.security.VTBlake3MessageDigest;
-import org.vash.vate.security.VTXXHash64MessageDigest;
+import org.vash.vate.security.VTXXH3;
 import org.vash.vate.stream.compress.VTCompressorSelector;
 
 public class VTFileTransferClientTransaction implements Runnable
@@ -53,7 +51,8 @@ public class VTFileTransferClientTransaction implements Runnable
   private long maxOffset;
   private long currentOffset;
   private final byte[] fileTransferBuffer = new byte[fileTransferBufferSize];
-  private final VTXXHash64MessageDigest messageDigest;
+//  private final VTXXHash64MessageDigest messageDigest;
+  private final long digestSeed;
   private String command;
   private String source;
   private String destination;
@@ -63,7 +62,7 @@ public class VTFileTransferClientTransaction implements Runnable
   private File fileTransferFile;
   private File fileTransferCompletedFile;
   private RandomAccessFile fileTransferRandomAccessFile;
-  private DigestInputStream fileTransferChecksumInputStream;
+  private FileInputStream fileTransferChecksumInputStream;
   private InputStream fileTransferRemoteInputStream;
   private OutputStream fileTransferRemoteOutputStream;
   private InputStream fileTransferFileInputStream;
@@ -87,9 +86,9 @@ public class VTFileTransferClientTransaction implements Runnable
     blake3Digest.update(session.getClient().getConnection().getLocalNonce());
     blake3Digest.update(session.getClient().getConnection().getEncryptionKey());
     blake3Digest.update(session.getClient().getConnection().getDigestedCredentials());
-    long digestSeed = blake3Digest.digestLong();
+    digestSeed = blake3Digest.digestLong();
     
-    this.messageDigest = new VTXXHash64MessageDigest(XXHashFactory.safeInstance().newStreamingHash64(digestSeed));
+//    this.messageDigest = new VTXXHash64MessageDigest(XXHashFactory.safeInstance().newStreamingHash64(digestSeed));
   }
   
   public boolean isFinished()
@@ -226,11 +225,12 @@ public class VTFileTransferClientTransaction implements Runnable
     return (writeNextFileChunkChecksum(checksum) && readNextFileChunkChecksum());
   }
   
-  private boolean checkNextFileChunkChecksum(byte[] data, int offset, int len)
+  private boolean checkNextFileChunkChecksum(byte[] data, int len)
   {
-    messageDigest.reset();
-    messageDigest.update(data, offset, len);
-    localDigest = messageDigest.digestLong();
+//    messageDigest.reset();
+//    messageDigest.update(data, offset, len);
+//    localDigest = messageDigest.digestLong();
+    localDigest = VTXXH3.hash64(data, len, digestSeed);
     return (writeNextFileChunkChecksum(localDigest) && readNextFileChunkChecksum());
   }
   
@@ -789,7 +789,7 @@ public class VTFileTransferClientTransaction implements Runnable
         {
           if (resumable && currentOffset < remoteFileSize)
           {
-            ok = checkNextFileChunkChecksum(fileTransferBuffer, 0, bufferedBytes);
+            ok = checkNextFileChunkChecksum(fileTransferBuffer, bufferedBytes);
             if (ok)
             {
               if (localDigest != remoteDigest)
@@ -1294,7 +1294,7 @@ public class VTFileTransferClientTransaction implements Runnable
     {
       if (fileTransferChecksumInputStream == null)
       {
-        fileTransferChecksumInputStream = new DigestInputStream(new FileInputStream(fileTransferRandomAccessFile.getFD()), messageDigest);
+        fileTransferChecksumInputStream = new FileInputStream(fileTransferRandomAccessFile.getFD());
       }
       if (remoteFileSize < localFileSize)
       {
@@ -1306,7 +1306,7 @@ public class VTFileTransferClientTransaction implements Runnable
       }
       while (!stopped && maxOffset > currentOffset)
       {
-        messageDigest.reset();
+//        messageDigest.reset();
         neededBytes = (int) Math.min(fileTransferBufferSize, maxOffset - currentOffset);
         bufferedBytes = 0;
         while (!stopped && neededBytes > 0)
@@ -1323,7 +1323,8 @@ public class VTFileTransferClientTransaction implements Runnable
             break;
           }
         }
-        checksums.add(messageDigest.digestLong());
+//        checksums.add(messageDigest.digestLong());
+        checksums.add(VTXXH3.hash64(fileTransferBuffer, bufferedBytes, digestSeed));
       }
     }
     catch (Throwable e)

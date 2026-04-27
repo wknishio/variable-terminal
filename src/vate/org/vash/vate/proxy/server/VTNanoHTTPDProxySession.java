@@ -31,13 +31,12 @@ import java.util.Map.Entry;
 
 import org.vash.vate.VTSystem;
 import org.vash.vate.filesystem.VTRootList;
-import org.vash.vate.net.jpountz.xxhash.XXHashFactory;
 import org.vash.vate.org.apache.commons.codec.binary.Base64;
 import org.vash.vate.org.apache.commons.codec.digest.DigestUtils;
 import org.vash.vate.org.bouncycastle.util.encoders.Hex;
 import org.vash.vate.parser.VTConfigurationProperties;
 import org.vash.vate.proxy.client.VTProxy;
-import org.vash.vate.security.VTXXHash64MessageDigest;
+import org.vash.vate.security.VTXXH3;
 import org.vash.vate.stream.array.VTByteArrayInputStream;
 
 /**
@@ -289,11 +288,13 @@ public class VTNanoHTTPDProxySession implements Runnable
     this.proxy = proxy;
     if (usernames == null || passwords == null || usernames.length == 0 || passwords.length == 0)
     {
-      xxhash64 = null;
+//      xxhash64 = null;
+      digestSeed = 0;
     }
     else
     {
-      xxhash64  = new VTXXHash64MessageDigest(XXHashFactory.safeInstance().newStreamingHash64(random.nextLong()));
+//      xxhash64  = new VTXXHash64MessageDigest(XXHashFactory.safeInstance().newStreamingHash64(random.nextLong()));
+      digestSeed = random.nextLong();
     }
     //Thread t = new Thread( this );
     //t.setDaemon( true );
@@ -655,7 +656,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     Response resp = new Response();
     resp.headers.put(requireHeader, "Digest realm=\"" + realm + "\", "
         +  "qop=\"auth\", nonce=\"" + nonce + "\", opaque=\""
-        + Hex.toHexString(xxhash64.digest(nonce.getBytes("ISO-8859-1"))) + "\"" + (stale ? ", stale=\"true\"" : ""));
+        + VTXXH3.toHexString(VTXXH3.hash64(nonce.getBytes("ISO-8859-1"), nonce.length(), digestSeed)) + "\"" + (stale ? ", stale=\"true\"" : ""));
     resp.status = HTTP_PROXY_AUTHENTICATION_REQUIRED;
     sendError(resp.status, MIME_PLAINTEXT, resp.headers, "");
   }
@@ -849,7 +850,8 @@ public class VTNanoHTTPDProxySession implements Runnable
     byte[] randomBytes = new byte[VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES];
     random.nextBytes(randomBytes);
     String nonceValue = realm + ":" + Hex.toHexString(randomBytes);
-    nonceValue = Hex.toHexString(xxhash64.digest(nonceValue.getBytes("ISO-8859-1")));
+    nonceValue = VTXXH3.toHexString(VTXXH3.hash64(nonceValue.getBytes("ISO-8859-1"), nonceValue.length(), digestSeed));
+//    nonceValue = Hex.toHexString(xxhash64.digest(nonceValue.getBytes("ISO-8859-1")));
     //nonceValue = DigestUtils.sha256Hex(nonceValue.getBytes("ISO-8859-1"));
     
     //VALID_DIGEST_NONCES.put(nOnceValue, currentTime + (1000 * 300));
@@ -1259,7 +1261,8 @@ public class VTNanoHTTPDProxySession implements Runnable
   private String bind;
   private ExecutorService executorService;
   private final Collection<String> nonces;
-  private final VTXXHash64MessageDigest xxhash64;
+  //private final VTXXHash64MessageDigest xxhash64;
+  private final long digestSeed;
   private final Random random;
   //private static final Map<String, Long> VALID_DIGEST_NONCES = new LinkedHashMap<String, Long>();
   

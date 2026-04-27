@@ -97,8 +97,8 @@ public final class AuthChallengeProcessor {
             String id = (String) item.next();
             challenge = (String) challenges.get(id.toLowerCase()); 
             if (challenge != null) {
-                if (LOG.isInfoEnabled()) {
-                    LOG.info(id + " authentication scheme selected");
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug(id + " authentication scheme selected");
                 }
                 try {
                     authscheme = AuthPolicy.getAuthScheme(id);

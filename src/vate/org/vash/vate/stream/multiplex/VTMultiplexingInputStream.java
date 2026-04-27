@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.vash.vate.VTSystem;
 import org.vash.vate.security.VTSplitMix64Random;
-import org.vash.vate.security.VTXXHash64MessageDigest;
+import org.vash.vate.security.VTXXH3;
 import org.vash.vate.stream.array.VTByteArrayInputStream;
 import org.vash.vate.stream.compress.VTCompressorSelector;
 import org.vash.vate.stream.compress.VTPacketDecompressor;
@@ -34,15 +34,17 @@ public final class VTMultiplexingInputStream
   private final VTMultiplexingInputStreamPacketReader packetReader;
   private final Map<Integer, VTMultiplexedInputStream> bufferedChannels;
   private final Map<Integer, VTMultiplexedInputStream> directChannels;
-  private final VTXXHash64MessageDigest packetSeed;
+  private final long startSeeder;
+  private final long endSeeder;
   private final ExecutorService executorService;
   private final boolean server;
   private AtomicLong transferredBytes = new AtomicLong(0);
   
-  public VTMultiplexingInputStream(final InputStream input, final boolean server, final int packetSize, final int bufferSize, final VTXXHash64MessageDigest packetSeed, final ExecutorService executorService, final boolean startPacketReader)
+  public VTMultiplexingInputStream(final InputStream input, final boolean server, final int packetSize, final int bufferSize, final long startSeeder, final long endSeeder, final ExecutorService executorService, final boolean startPacketReader)
   {
     this.server = server;
-    this.packetSeed = packetSeed;
+    this.startSeeder = startSeeder;
+    this.endSeeder = endSeeder;
     this.executorService = executorService;
     this.bufferSize = bufferSize;
     this.packetDataBuffer = new byte[packetSize * 2];
@@ -132,7 +134,7 @@ public final class VTMultiplexingInputStream
       stream.type(type);
       return stream;
     }
-    stream = new VTMultiplexedInputStream(type, number, bufferSize, packetSeed);
+    stream = new VTMultiplexedInputStream(type, number, bufferSize, startSeeder, endSeeder);
     channelMap.put(number, stream);
     return stream;
   }
@@ -168,7 +170,7 @@ public final class VTMultiplexingInputStream
       }
       else if (stream == null)
       {
-        stream = new VTMultiplexedInputStream(type, number, bufferSize, packetSeed);
+        stream = new VTMultiplexedInputStream(type, number, bufferSize, startSeeder, endSeeder);
         channelMap.put(number, stream); 
         return stream;
       }
@@ -260,7 +262,7 @@ public final class VTMultiplexingInputStream
       length = input.readInt();
       input.readFully(packetDataBuffer, 0, length);
       stream = getInputStream(type, number);
-      if ((stream.getPacketSequencer().nextLong() ^ length) != sequence || stream == null)
+      if ((VTXXH3.hash64(packetDataBuffer, length) ^ stream.getStartSequencer().nextLong() ^ stream.getEndSequencer().nextLong()) != sequence || stream == null)
       {
         close();
         return;
@@ -302,7 +304,8 @@ public final class VTMultiplexingInputStream
     private volatile boolean closed;
     private volatile Object link = null;
     private final int number;
-    private final long seed;
+    private final long startSeed;
+    private final long endSeed;
     private volatile int type;
     private final VTPipedInputStream bufferedInputStream;
     private final VTPipedOutputStream bufferedOutputStream;
@@ -313,17 +316,15 @@ public final class VTMultiplexingInputStream
     private VTByteArrayInputStream compressedInputPipe;
     private InputStream compressedInputStream;
     private final Collection<Closeable> propagated;
-    private final Random packetSequencer;
+    private final Random startSequencer;
+    private final Random endSequencer;
     
-    private VTMultiplexedInputStream(final int type, final int number, final int bufferSize, final VTXXHash64MessageDigest packetSeed)
+    private VTMultiplexedInputStream(final int type, final int number, final int bufferSize, final long startSeeder, final long endSeeder)
     {
-      packetSeed.reset();
-      packetSeed.update((byte)(number));
-      packetSeed.update((byte)(number >> 8));
-      packetSeed.update((byte)(number >> 16));
-      packetSeed.update((byte)(number >> 24));
-      this.seed = packetSeed.digestLong();
-      this.packetSequencer = new VTSplitMix64Random(seed);
+      this.startSeed = VTXXH3.hash64(new byte[] {(byte)(number), (byte)(number >> 8), (byte)(number >> 16), (byte)(number >> 24)}, 4, startSeeder);
+      this.endSeed = VTXXH3.hash64(new byte[] {(byte)(number >> 24), (byte)(number >> 16), (byte)(number >> 8), (byte)(number)}, 4, endSeeder);
+      this.startSequencer = new VTSplitMix64Random(startSeed);
+      this.endSequencer = new VTSplitMix64Random(endSeed);
       this.type = type;
       this.number = number;
       this.propagated = new ConcurrentLinkedQueue<Closeable>();
@@ -462,7 +463,8 @@ public final class VTMultiplexingInputStream
     
     private final void open() throws IOException
     {
-      packetSequencer.setSeed(seed);
+      startSequencer.setSeed(startSeed);
+      endSequencer.setSeed(endSeed);
       if (bufferedInputStream != null)
       {
         bufferedInputStream.open();
@@ -572,9 +574,14 @@ public final class VTMultiplexingInputStream
       return input.skip(count);
     }
     
-    private final Random getPacketSequencer()
+    private final Random getStartSequencer()
     {
-      return packetSequencer;
+      return startSequencer;
+    }
+    
+    private final Random getEndSequencer()
+    {
+      return endSequencer;
     }
   }
   

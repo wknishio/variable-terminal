@@ -1739,7 +1739,7 @@ public abstract class HttpMethodBase implements HttpMethod {
             
             int status = this.statusLine.getStatusCode();
             if ((status >= 100) && (status < 200)) {
-                if (LOG.isInfoEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.info("Discarding unexpected response: " + this.statusLine.toString()); 
                 }
                 this.statusLine = null;

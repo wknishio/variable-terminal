@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.vash.vate.VTSystem;
 import org.vash.vate.engineering.clientside.throttle.NanoThrottle;
 import org.vash.vate.security.VTSplitMix64Random;
-import org.vash.vate.security.VTXXHash64MessageDigest;
+import org.vash.vate.security.VTXXH3;
 import org.vash.vate.stream.array.VTByteArrayOutputStream;
 import org.vash.vate.stream.compress.VTCompressorSelector;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
@@ -28,16 +28,18 @@ public final class VTMultiplexingOutputStream
   private final NanoThrottle throttler;
   private final Map<Integer, VTMultiplexedOutputStream> bufferedChannels;
   private final Map<Integer, VTMultiplexedOutputStream> directChannels;
-  private final VTXXHash64MessageDigest packetSeed;
+  private final long startSeeder;
+  private final long endSeeder;
   @SuppressWarnings("unused")
   private final ExecutorService executorService;
   private final boolean server;
   private AtomicLong transferredBytes = new AtomicLong(0);
   
-  public VTMultiplexingOutputStream(final OutputStream output, final boolean server, final int packetSize, final int bufferSize, final VTXXHash64MessageDigest packetSeed, final ExecutorService executorService)
+  public VTMultiplexingOutputStream(final OutputStream output, final boolean server, final int packetSize, final int bufferSize, final long startSeeder, final long endSeeder, final ExecutorService executorService)
   {
     this.server = server;
-    this.packetSeed = packetSeed;
+    this.startSeeder = startSeeder;
+    this.endSeeder = endSeeder;
     this.executorService = executorService;
     this.throttler = new NanoThrottle(Long.MAX_VALUE, (1d / 8d), true);
     this.original = output;
@@ -135,7 +137,7 @@ public final class VTMultiplexingOutputStream
       stream.control(original);
       return stream;
     }
-    stream = new VTMultiplexedOutputStream(output, original, type, number, packetSize, packetSeed);
+    stream = new VTMultiplexedOutputStream(output, original, type, number, packetSize, startSeeder, endSeeder);
     channelMap.put(number, stream);
     return stream;
   }
@@ -183,7 +185,7 @@ public final class VTMultiplexingOutputStream
       }
       else if (stream == null)
       {
-        stream = new VTMultiplexedOutputStream(output, original, type, number, packetSize, packetSeed);
+        stream = new VTMultiplexedOutputStream(output, original, type, number, packetSize, startSeeder, endSeeder);
         channelMap.put(number, stream);
         return stream;
       }
@@ -262,7 +264,8 @@ public final class VTMultiplexingOutputStream
     private volatile boolean closed;
     private volatile Object link = null;
     private final int number;
-    private final long seed;
+    private final long startSeed;
+    private final long endSeed;
     private volatile int type;
     private final int packetSize;
     private final byte[] single = new byte[1];
@@ -275,17 +278,15 @@ public final class VTMultiplexingOutputStream
     private OutputStream control;
     private OutputStream intermediatePacketStream;
     private final Collection<Closeable> propagated;
-    private final Random packetSequencer;
+    private final Random startSequencer;
+    private final Random endSequencer;
     
-    private VTMultiplexedOutputStream(final OutputStream output, final OutputStream control, final int type, final int number, final int packetSize, final VTXXHash64MessageDigest packetSeed)
+    private VTMultiplexedOutputStream(final OutputStream output, final OutputStream control, final int type, final int number, final int packetSize, final long startSeeder, final long endSeeder)
     {
-      packetSeed.reset();
-      packetSeed.update((byte)(number));
-      packetSeed.update((byte)(number >> 8));
-      packetSeed.update((byte)(number >> 16));
-      packetSeed.update((byte)(number >> 24));
-      this.seed = packetSeed.digestLong();
-      this.packetSequencer = new VTSplitMix64Random(seed);
+      this.startSeed = VTXXH3.hash64(new byte[] {(byte)(number), (byte)(number >> 8), (byte)(number >> 16), (byte)(number >> 24)}, 4, startSeeder);
+      this.endSeed = VTXXH3.hash64(new byte[] {(byte)(number >> 24), (byte)(number >> 16), (byte)(number >> 8), (byte)(number)}, 4, endSeeder);
+      this.startSequencer = new VTSplitMix64Random(startSeed);
+      this.endSequencer = new VTSplitMix64Random(endSeed);
       this.output = output;
       this.control = control;
       this.type = type;
@@ -414,7 +415,8 @@ public final class VTMultiplexingOutputStream
     {
       closed = false;
       writeOpenPacket(type, number);
-      packetSequencer.setSeed(seed);
+      startSequencer.setSeed(startSeed);
+      endSequencer.setSeed(endSeed);
       if ((type & VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) != 0)
       {
         if ((type & VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_HEAVY) != 0)
@@ -448,7 +450,7 @@ public final class VTMultiplexingOutputStream
       intermediateDataPacketBuffer.reset();
       intermediatePacketStream.write(data, offset, length);
       intermediatePacketStream.flush();
-      dataPacketStream.writeLong(packetSequencer.nextLong() ^ intermediateDataPacketBuffer.count());
+      dataPacketStream.writeLong(VTXXH3.hash64(intermediateDataPacketBuffer.buf(), intermediateDataPacketBuffer.count()) ^ startSequencer.nextLong() ^ endSequencer.nextLong());
       dataPacketStream.writeByte(type);
       dataPacketStream.writeSubInt(number);
       dataPacketStream.writeInt(intermediateDataPacketBuffer.count());
@@ -461,7 +463,7 @@ public final class VTMultiplexingOutputStream
     private synchronized final void writeClosePacket(final int type, final int number) throws IOException
     {
       controlPacketBuffer.reset();
-      controlPacketStream.writeLong(packetSequencer.nextLong() ^ -2);
+      controlPacketStream.writeLong(startSequencer.nextLong() ^ -2 ^ endSequencer.nextLong());
       controlPacketStream.writeByte(type);
       controlPacketStream.writeSubInt(number);
       controlPacketStream.writeInt(-2);
@@ -473,7 +475,7 @@ public final class VTMultiplexingOutputStream
     private synchronized final void writeOpenPacket(final int type, final int number) throws IOException
     {
       controlPacketBuffer.reset();
-      controlPacketStream.writeLong(packetSequencer.nextLong() ^ -3);
+      controlPacketStream.writeLong(startSequencer.nextLong() ^ -3 ^ endSequencer.nextLong());
       controlPacketStream.writeByte(type);
       controlPacketStream.writeSubInt(number);
       controlPacketStream.writeInt(-3);

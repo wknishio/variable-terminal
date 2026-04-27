@@ -36,6 +36,7 @@ public class VTHttpProxySocket extends VTProxySocket
         if (proxyUser != null && proxyPassword != null && proxyUser.length() > 0 && proxyPassword.length() > 0)
         {
           httpProxyClient.getState().setProxyCredentials(AuthScope.ANY, new UsernamePasswordCredentials(proxyUser, proxyPassword));
+          httpProxyClient.getState().setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(proxyUser, proxyPassword));
           httpProxyClient.getParams().setAuthenticationPreemptive(true);
         }
         InetSocketAddress host = (InetSocketAddress) endpoint;
@@ -75,6 +76,7 @@ public class VTHttpProxySocket extends VTProxySocket
         if (proxyUser != null && proxyPassword != null && proxyUser.length() > 0 && proxyPassword.length() > 0)
         {
           httpProxyClient.getState().setProxyCredentials(AuthScope.ANY, new UsernamePasswordCredentials(proxyUser, proxyPassword));
+          httpProxyClient.getState().setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(proxyUser, proxyPassword));
           httpProxyClient.getParams().setAuthenticationPreemptive(true);
         }
         InetSocketAddress host = (InetSocketAddress) endpoint;

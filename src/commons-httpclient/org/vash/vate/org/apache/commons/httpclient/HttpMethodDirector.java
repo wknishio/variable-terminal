@@ -435,7 +435,7 @@ class HttpMethodDirector {
                                 + "Automatic recovery will not be attempted");
                         throw e;
                     }
-                    if (LOG.isInfoEnabled()) {
+                    if (LOG.isDebugEnabled()) {
                         LOG.info("I/O exception ("+ e.getClass().getName() +") caught when processing request: "
                                 + e.getMessage());
                     }
@@ -672,7 +672,7 @@ class HttpMethodDirector {
                     return false;
             }
         } catch (Exception e) {
-            if (LOG.isErrorEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.error(e.getMessage(), e);
             }
             return false;
@@ -718,7 +718,7 @@ class HttpMethodDirector {
             Credentials credentials = promptForCredentials(
                 authscheme, method.getParams(), authscope);
             if (credentials == null) {
-                if (LOG.isInfoEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.info("Failure authenticating with " + authscope);
                 }
                 return false;
@@ -733,7 +733,7 @@ class HttpMethodDirector {
                     authscheme, method.getParams(), authscope);
             }
             if (credentials == null) {
-                if (LOG.isInfoEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.info("No credentials available for " + authscope); 
                 }
                 return false;
@@ -777,7 +777,7 @@ class HttpMethodDirector {
             Credentials credentials = promptForProxyCredentials(
                 authscheme, method.getParams(), authscope);
             if (credentials == null) {
-                if (LOG.isInfoEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.info("Failure authenticating with " + authscope);
                 }
                 return false;
@@ -792,7 +792,7 @@ class HttpMethodDirector {
                     authscheme, method.getParams(), authscope);
             }
             if (credentials == null) {
-                if (LOG.isInfoEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.info("No credentials available for " + authscope); 
                 }
                 return false;
