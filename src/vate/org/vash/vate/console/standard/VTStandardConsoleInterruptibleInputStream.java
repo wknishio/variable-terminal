@@ -5,8 +5,9 @@ import java.io.InputStream;
 
 public class VTStandardConsoleInterruptibleInputStream extends InputStream
 {
-  private byte[] inputBuffer;
-  private int readed;
+  private final byte[] emptyBuffer = new byte[0];
+  private volatile byte[] inputBuffer = emptyBuffer;
+  private volatile int readed;
   private VTStandardConsoleInterruptibleReader reader;
   private Thread currentThread;
   
@@ -51,12 +52,24 @@ public class VTStandardConsoleInterruptibleInputStream extends InputStream
     int available = -1;
     try
     {
-      inputBuffer = reader.readInterruptible().getBytes();
-      readed = 0;
-      available = inputBuffer.length;
+      String interruptible = reader.readInterruptible();
+      if (interruptible != null)
+      {
+        inputBuffer = interruptible.getBytes();
+        readed = 0;
+        available = inputBuffer.length;
+      }
+      else
+      {
+        inputBuffer = emptyBuffer;
+        readed = 0;
+        available = 0;
+      }
     }
-    catch (InterruptedException e)
+    catch (Throwable t)
     {
+      inputBuffer = emptyBuffer;
+      readed = 0;
       available = 0;
     }
     finally

@@ -4,8 +4,9 @@ import java.io.IOException;
 
 public class VTStandardConsoleInterruptibleInputStreamByte extends VTStandardConsoleInterruptibleInputStream
 {
-  private byte[] inputBuffer;
-  private int readed;
+  private final byte[] emptyBuffer = new byte[0];
+  private volatile byte[] inputBuffer = emptyBuffer;
+  private volatile int readed;
   private VTStandardConsoleInterruptibleReaderByte reader;
   private Thread currentThread;
   
@@ -46,13 +47,25 @@ public class VTStandardConsoleInterruptibleInputStreamByte extends VTStandardCon
     int available = -1;
     try
     {
-      inputBuffer = reader.readInterruptible();
-      readed = 0;
-      available = inputBuffer.length;
+      byte[] interruptible = reader.readInterruptible();
+      if (interruptible != null)
+      {
+        inputBuffer = interruptible;
+        readed = 0;
+        available = inputBuffer.length;
+      }
+      else
+      {
+        inputBuffer = emptyBuffer;
+        readed = 0;
+        available = 0;
+      }
     }
-    catch (InterruptedException e)
+    catch (Throwable e)
     {
-      
+      inputBuffer = emptyBuffer;
+      readed = 0;
+      available = 0;
     }
     finally
     {
