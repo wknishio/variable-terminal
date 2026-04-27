@@ -463,7 +463,7 @@ public final class VTMultiplexingOutputStream
     private synchronized final void writeClosePacket(final int type, final int number) throws IOException
     {
       controlPacketBuffer.reset();
-      controlPacketStream.writeLong(startSequencer.nextLong() ^ -2 ^ endSequencer.nextLong());
+      controlPacketStream.writeLong(-2 ^ startSequencer.nextLong() ^ endSequencer.nextLong());
       controlPacketStream.writeByte(type);
       controlPacketStream.writeSubInt(number);
       controlPacketStream.writeInt(-2);
@@ -475,7 +475,7 @@ public final class VTMultiplexingOutputStream
     private synchronized final void writeOpenPacket(final int type, final int number) throws IOException
     {
       controlPacketBuffer.reset();
-      controlPacketStream.writeLong(startSequencer.nextLong() ^ -3 ^ endSequencer.nextLong());
+      controlPacketStream.writeLong(-3 ^ startSequencer.nextLong() ^ endSequencer.nextLong());
       controlPacketStream.writeByte(type);
       controlPacketStream.writeSubInt(number);
       controlPacketStream.writeInt(-3);
