@@ -13,8 +13,8 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.vash.vate.VTSystem;
 import org.vash.vate.engineering.clientside.throttle.NanoThrottle;
+import org.vash.vate.org.infinispan.server.resp.commands.string.XXH3;
 import org.vash.vate.security.VTSplitMix64Random;
-import org.vash.vate.security.VTXXH3;
 import org.vash.vate.stream.array.VTByteArrayOutputStream;
 import org.vash.vate.stream.compress.VTCompressorSelector;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
@@ -283,8 +283,8 @@ public final class VTMultiplexingOutputStream
     
     private VTMultiplexedOutputStream(final OutputStream output, final OutputStream control, final int type, final int number, final int packetSize, final long startSeeder, final long endSeeder)
     {
-      this.startSeed = VTXXH3.hash64(new byte[] {(byte)(number), (byte)(number >> 8), (byte)(number >> 16), (byte)(number >> 24)}, 4, startSeeder);
-      this.endSeed = VTXXH3.hash64(new byte[] {(byte)(number >> 24), (byte)(number >> 16), (byte)(number >> 8), (byte)(number)}, 4, endSeeder);
+      this.startSeed = XXH3.hash64(new byte[] {(byte)(number), (byte)(number >> 8), (byte)(number >> 16), (byte)(number >> 24)}, 4, startSeeder);
+      this.endSeed = XXH3.hash64(new byte[] {(byte)(number >> 24), (byte)(number >> 16), (byte)(number >> 8), (byte)(number)}, 4, endSeeder);
       this.startSequencer = new VTSplitMix64Random(startSeed);
       this.endSequencer = new VTSplitMix64Random(endSeed);
       this.output = output;
@@ -450,7 +450,7 @@ public final class VTMultiplexingOutputStream
       intermediateDataPacketBuffer.reset();
       intermediatePacketStream.write(data, offset, length);
       intermediatePacketStream.flush();
-      dataPacketStream.writeLong(VTXXH3.hash64(intermediateDataPacketBuffer.buf(), intermediateDataPacketBuffer.count()) ^ startSequencer.nextLong() ^ endSequencer.nextLong());
+      dataPacketStream.writeLong(XXH3.hash64(intermediateDataPacketBuffer.buf(), intermediateDataPacketBuffer.count()) ^ startSequencer.nextLong() ^ endSequencer.nextLong());
       dataPacketStream.writeByte(type);
       dataPacketStream.writeSubInt(number);
       dataPacketStream.writeInt(intermediateDataPacketBuffer.count());

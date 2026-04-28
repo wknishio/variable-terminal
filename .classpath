@@ -12,6 +12,7 @@
 	<classpathentry kind="src" path="src/commons-logging"/>
 	<classpathentry kind="src" path="src/commons-rng"/>
 	<classpathentry kind="src" path="src/compat"/>
+	<classpathentry kind="src" path="src/infinispan"/>
 	<classpathentry kind="src" path="src/javapng"/>
 	<classpathentry kind="src" path="src/jna"/>
 	<classpathentry kind="src" path="src/jsap"/>

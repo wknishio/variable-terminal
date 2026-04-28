@@ -34,9 +34,9 @@ import org.vash.vate.filesystem.VTRootList;
 import org.vash.vate.org.apache.commons.codec.binary.Base64;
 import org.vash.vate.org.apache.commons.codec.digest.DigestUtils;
 import org.vash.vate.org.bouncycastle.util.encoders.Hex;
+import org.vash.vate.org.infinispan.server.resp.commands.string.XXH3;
 import org.vash.vate.parser.VTConfigurationProperties;
 import org.vash.vate.proxy.client.VTProxy;
-import org.vash.vate.security.VTXXH3;
 import org.vash.vate.stream.array.VTByteArrayInputStream;
 
 /**
@@ -656,7 +656,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     Response resp = new Response();
     resp.headers.put(requireHeader, "Digest realm=\"" + realm + "\", "
         +  "qop=\"auth\", nonce=\"" + nonce + "\", opaque=\""
-        + VTXXH3.toHexString(VTXXH3.hash64(nonce.getBytes("ISO-8859-1"), nonce.length(), digestSeed)) + "\"" + (stale ? ", stale=\"true\"" : ""));
+        + XXH3.toHexString(XXH3.hash64(nonce.getBytes("ISO-8859-1"), nonce.length(), digestSeed)) + "\"" + (stale ? ", stale=\"true\"" : ""));
     resp.status = HTTP_PROXY_AUTHENTICATION_REQUIRED;
     sendError(resp.status, MIME_PLAINTEXT, resp.headers, "");
   }
@@ -850,7 +850,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     byte[] randomBytes = new byte[VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES];
     random.nextBytes(randomBytes);
     String nonceValue = realm + ":" + Hex.toHexString(randomBytes);
-    nonceValue = VTXXH3.toHexString(VTXXH3.hash64(nonceValue.getBytes("ISO-8859-1"), nonceValue.length(), digestSeed));
+    nonceValue = XXH3.toHexString(XXH3.hash64(nonceValue.getBytes("ISO-8859-1"), nonceValue.length(), digestSeed));
 //    nonceValue = Hex.toHexString(xxhash64.digest(nonceValue.getBytes("ISO-8859-1")));
     //nonceValue = DigestUtils.sha256Hex(nonceValue.getBytes("ISO-8859-1"));
     

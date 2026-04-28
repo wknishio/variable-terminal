@@ -15,8 +15,8 @@ import org.vash.vate.com.martiansoftware.jsap.CommandLineTokenizerMKII;
 import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.filesystem.VTFileUtils;
 import org.vash.vate.help.VTHelpManager;
+import org.vash.vate.org.infinispan.server.resp.commands.string.XXH3;
 import org.vash.vate.security.VTBlake3MessageDigest;
-import org.vash.vate.security.VTXXH3;
 import org.vash.vate.stream.compress.VTCompressorSelector;
 
 public class VTFileTransferClientTransaction implements Runnable
@@ -230,7 +230,7 @@ public class VTFileTransferClientTransaction implements Runnable
 //    messageDigest.reset();
 //    messageDigest.update(data, offset, len);
 //    localDigest = messageDigest.digestLong();
-    localDigest = VTXXH3.hash64(data, len, digestSeed);
+    localDigest = XXH3.hash64(data, len, digestSeed);
     return (writeNextFileChunkChecksum(localDigest) && readNextFileChunkChecksum());
   }
   
@@ -1324,7 +1324,7 @@ public class VTFileTransferClientTransaction implements Runnable
           }
         }
 //        checksums.add(messageDigest.digestLong());
-        checksums.add(VTXXH3.hash64(fileTransferBuffer, bufferedBytes, digestSeed));
+        checksums.add(XXH3.hash64(fileTransferBuffer, bufferedBytes, digestSeed));
       }
     }
     catch (Throwable e)

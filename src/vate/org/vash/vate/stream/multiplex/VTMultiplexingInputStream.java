@@ -15,8 +15,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.vash.vate.VTSystem;
+import org.vash.vate.org.infinispan.server.resp.commands.string.XXH3;
 import org.vash.vate.security.VTSplitMix64Random;
-import org.vash.vate.security.VTXXH3;
 import org.vash.vate.stream.array.VTByteArrayInputStream;
 import org.vash.vate.stream.compress.VTCompressorSelector;
 import org.vash.vate.stream.compress.VTPacketDecompressor;
@@ -262,7 +262,7 @@ public final class VTMultiplexingInputStream
       length = input.readInt();
       input.readFully(packetDataBuffer, 0, length);
       stream = getInputStream(type, number);
-      if ((VTXXH3.hash64(packetDataBuffer, length) ^ stream.getStartSequencer().nextLong() ^ stream.getEndSequencer().nextLong()) != sequence || stream == null)
+      if ((XXH3.hash64(packetDataBuffer, length) ^ stream.getStartSequencer().nextLong() ^ stream.getEndSequencer().nextLong()) != sequence || stream == null)
       {
         close();
         return;
@@ -321,8 +321,8 @@ public final class VTMultiplexingInputStream
     
     private VTMultiplexedInputStream(final int type, final int number, final int bufferSize, final long startSeeder, final long endSeeder)
     {
-      this.startSeed = VTXXH3.hash64(new byte[] {(byte)(number), (byte)(number >> 8), (byte)(number >> 16), (byte)(number >> 24)}, 4, startSeeder);
-      this.endSeed = VTXXH3.hash64(new byte[] {(byte)(number >> 24), (byte)(number >> 16), (byte)(number >> 8), (byte)(number)}, 4, endSeeder);
+      this.startSeed = XXH3.hash64(new byte[] {(byte)(number), (byte)(number >> 8), (byte)(number >> 16), (byte)(number >> 24)}, 4, startSeeder);
+      this.endSeed = XXH3.hash64(new byte[] {(byte)(number >> 24), (byte)(number >> 16), (byte)(number >> 8), (byte)(number)}, 4, endSeeder);
       this.startSequencer = new VTSplitMix64Random(startSeed);
       this.endSequencer = new VTSplitMix64Random(endSeed);
       this.type = type;

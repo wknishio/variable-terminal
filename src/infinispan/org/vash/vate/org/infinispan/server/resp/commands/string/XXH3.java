@@ -1,6 +1,6 @@
-package org.vash.vate.security;
+package org.vash.vate.org.infinispan.server.resp.commands.string;
 
-public final class VTXXH3
+public final class XXH3
 {
 
   private static final char[] HEX_CHARS = "0123456789abcdef".toCharArray();
@@ -26,7 +26,7 @@ public final class VTXXH3
    * @param input the byte array to hash
    * @return the 64-bit hash value
    */
-  public static long hash64(byte[] input) {
+  public static final long hash64(byte[] input) {
     int len = input.length;
     if (len <= 16) {
        return xxh3_len_0to16(input, len);
@@ -45,7 +45,7 @@ public final class VTXXH3
    * @param input the byte array to hash
    * @return the 64-bit hash value
    */
-  public static long hash64(byte[] input, int len) {
+  public static final long hash64(byte[] input, int len) {
     if (len < 0)
     {
       return len;
@@ -67,7 +67,7 @@ public final class VTXXH3
    * @param input the byte array to hash
    * @return the 64-bit hash value
    */
-  public static long hash64(byte[] input, int len, long seed) {
+  public static final long hash64(byte[] input, int len, long seed) {
     if (len < 0)
     {
       return len;
@@ -300,7 +300,7 @@ public final class VTXXH3
            | ((buf[offset + 3] & 0xFF) << 24);
   }
   
-  public static final long integerToUnsignedLong(int x) {
+  private static final long integerToUnsignedLong(int x) {
     return ((long) x) & 0xffffffffL;
   }
 
