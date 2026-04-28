@@ -883,9 +883,6 @@ public class VTLanternaConsole extends VTConsole
     //terminal.setBackgroundColor(TextColor.ANSI.BLACK);
     //terminal.setForegroundColor(TextColor.ANSI.GREEN_BRIGHT);
     
-    org.vash.vate.com.googlecode.lanterna.gui2.Panel mainPanel = new org.vash.vate.com.googlecode.lanterna.gui2.Panel();
-    mainPanel.setLayoutManager(new org.vash.vate.com.googlecode.lanterna.gui2.BorderLayout());
-    
     // outputBox.setReadOnly(true);
     outputBox.setTerminal(terminal);
     outputBox.setEditable(false);
@@ -1518,6 +1515,9 @@ public class VTLanternaConsole extends VTConsole
         return true;
       }
     });
+    
+    org.vash.vate.com.googlecode.lanterna.gui2.Panel mainPanel = new org.vash.vate.com.googlecode.lanterna.gui2.Panel();
+    mainPanel.setLayoutManager(new org.vash.vate.com.googlecode.lanterna.gui2.BorderLayout());
     
     org.vash.vate.com.googlecode.lanterna.gui2.Panel bottonPanel = new org.vash.vate.com.googlecode.lanterna.gui2.Panel();
     bottonPanel.setLayoutManager(new org.vash.vate.com.googlecode.lanterna.gui2.BorderLayout());
