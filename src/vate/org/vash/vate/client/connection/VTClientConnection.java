@@ -547,34 +547,34 @@ public class VTClientConnection
     blake3Digest.update(localNonce);
     blake3Digest.update(encryptionKey);
     blake3Digest.update(digestedCredentials);
-    long inputStartSeed = blake3Digest.digestLong();
+    long inputFirstSeed = blake3Digest.digestLong();
     
     blake3Digest.reset();
     blake3Digest.update(remoteNonce);
     blake3Digest.update(localNonce);
     blake3Digest.update(digestedCredentials);
     blake3Digest.update(encryptionKey);
-    long inputEndSeed = blake3Digest.digestLong();
+    long inputSecondSeed = blake3Digest.digestLong();
     
     blake3Digest.reset();
     blake3Digest.update(localNonce);
     blake3Digest.update(remoteNonce);
     blake3Digest.update(encryptionKey);
     blake3Digest.update(digestedCredentials);
-    long outputStartSeed = blake3Digest.digestLong();
+    long outputFirstSeed = blake3Digest.digestLong();
     
     blake3Digest.reset();
     blake3Digest.update(localNonce);
     blake3Digest.update(remoteNonce);
     blake3Digest.update(digestedCredentials);
     blake3Digest.update(encryptionKey);
-    long outputEndSeed = blake3Digest.digestLong();
+    long outputSecondSeed = blake3Digest.digestLong();
     
     int inputChannel = 0;
     int outputChannel = 0;
     
-    multiplexedConnectionInputStream = new VTMultiplexingInputStream(connectionInputStream, false, VTSystem.VT_PACKET_DATA_SIZE_BYTES, VTSystem.VT_CHANNEL_PACKET_BUFFER_SIZE_BYTES, inputStartSeed, inputEndSeed, executorService, false);
-    multiplexedConnectionOutputStream = new VTMultiplexingOutputStream(connectionOutputStream, false, VTSystem.VT_PACKET_DATA_SIZE_BYTES, VTSystem.VT_CONNECTION_OUTPUT_PACKET_BUFFER_SIZE_BYTES, outputStartSeed, outputEndSeed, executorService);
+    multiplexedConnectionInputStream = new VTMultiplexingInputStream(connectionInputStream, false, VTSystem.VT_PACKET_DATA_SIZE_BYTES, VTSystem.VT_CHANNEL_PACKET_BUFFER_SIZE_BYTES, inputFirstSeed, inputSecondSeed, executorService, false);
+    multiplexedConnectionOutputStream = new VTMultiplexingOutputStream(connectionOutputStream, false, VTSystem.VT_PACKET_DATA_SIZE_BYTES, VTSystem.VT_CONNECTION_OUTPUT_PACKET_BUFFER_SIZE_BYTES, outputFirstSeed, outputSecondSeed, executorService);
     
     pingClientInputStream = multiplexedConnectionInputStream.linkInputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED | VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED, inputChannel++);
     pingClientOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED | VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED, outputChannel++);
