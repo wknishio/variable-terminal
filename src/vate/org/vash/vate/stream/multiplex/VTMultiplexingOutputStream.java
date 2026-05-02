@@ -37,16 +37,16 @@ public final class VTMultiplexingOutputStream
   
   public VTMultiplexingOutputStream(final OutputStream output, final boolean server, final int packetSize, final int bufferSize, final long firstSeed, final long secondSeed, final ExecutorService executorService)
   {
+    this.original = output;
     this.server = server;
+    this.packetSize = packetSize;
     this.firstSeed = firstSeed;
     this.secondSeed = secondSeed;
     this.executorService = executorService;
     this.throttler = new NanoThrottle(Long.MAX_VALUE, (1d / 8d), true);
-    this.original = output;
     this.throttled = new VTThrottledOutputStream(original, throttler);
     this.bufferedChannels = new ConcurrentHashMap<Integer, VTMultiplexedOutputStream>();
     this.directChannels = new ConcurrentHashMap<Integer, VTMultiplexedOutputStream>();
-    this.packetSize = packetSize;
   }
   
   public long getTransferredBytes()
@@ -283,15 +283,15 @@ public final class VTMultiplexingOutputStream
     
     private VTMultiplexedOutputStream(final OutputStream output, final OutputStream control, final int type, final int number, final int packetSize, final long firstSeed, final long secondSeed)
     {
-      this.firstSequencerSeed = XXH3.hash64(new byte[] {(byte)(number), (byte)(number >> 8), (byte)(number >> 16), (byte)(number >> 24)}, 4, firstSeed);
-      this.secondSequencerSeed = XXH3.hash64(new byte[] {(byte)(number >> 24), (byte)(number >> 16), (byte)(number >> 8), (byte)(number)}, 4, secondSeed);
-      this.firstSequencer = new VTSplitMix64Random(firstSequencerSeed);
-      this.secondSequencer = new VTSplitMix64Random(secondSequencerSeed);
       this.output = output;
       this.control = control;
       this.type = type;
       this.number = number;
       this.packetSize = packetSize;
+      this.firstSequencerSeed = XXH3.hash64(new byte[] {(byte)(number), (byte)(number >> 8), (byte)(number >> 16), (byte)(number >> 24)}, 4, firstSeed);
+      this.secondSequencerSeed = XXH3.hash64(new byte[] {(byte)(number >> 24), (byte)(number >> 16), (byte)(number >> 8), (byte)(number)}, 4, secondSeed);
+      this.firstSequencer = new VTSplitMix64Random(firstSequencerSeed);
+      this.secondSequencer = new VTSplitMix64Random(secondSequencerSeed);
       this.intermediateDataPacketBuffer = new VTByteArrayOutputStream(VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES);
       this.dataPacketBuffer = new VTByteArrayOutputStream(VTSystem.VT_PACKET_HEADER_SIZE_BYTES + packetSize);
       this.dataPacketStream = new VTLittleEndianOutputStream(dataPacketBuffer);
@@ -450,7 +450,7 @@ public final class VTMultiplexingOutputStream
       intermediateDataPacketBuffer.reset();
       intermediatePacketStream.write(data, offset, length);
       intermediatePacketStream.flush();
-      dataPacketStream.writeLong(XXH3.hash64(intermediateDataPacketBuffer.buf(), intermediateDataPacketBuffer.count()) ^ firstSequencer.nextLong() ^ secondSequencer.nextLong());
+      dataPacketStream.writeLong(firstSequencer.nextLong() ^ secondSequencer.nextLong() ^ XXH3.hash64(intermediateDataPacketBuffer.buf(), intermediateDataPacketBuffer.count()));
       dataPacketStream.writeByte(type);
       dataPacketStream.writeSubInt(number);
       dataPacketStream.writeInt(intermediateDataPacketBuffer.count());
@@ -463,7 +463,7 @@ public final class VTMultiplexingOutputStream
     private synchronized final void writeClosePacket(final int type, final int number) throws IOException
     {
       controlPacketBuffer.reset();
-      controlPacketStream.writeLong(-2 ^ firstSequencer.nextLong() ^ secondSequencer.nextLong());
+      controlPacketStream.writeLong(firstSequencer.nextLong() ^ secondSequencer.nextLong() ^ - 2);
       controlPacketStream.writeByte(type);
       controlPacketStream.writeSubInt(number);
       controlPacketStream.writeInt(-2);
@@ -475,7 +475,7 @@ public final class VTMultiplexingOutputStream
     private synchronized final void writeOpenPacket(final int type, final int number) throws IOException
     {
       controlPacketBuffer.reset();
-      controlPacketStream.writeLong(-3 ^ firstSequencer.nextLong() ^ secondSequencer.nextLong());
+      controlPacketStream.writeLong(firstSequencer.nextLong() ^ secondSequencer.nextLong() ^ -3);
       controlPacketStream.writeByte(type);
       controlPacketStream.writeSubInt(number);
       controlPacketStream.writeInt(-3);
