@@ -91,15 +91,15 @@ class PngEncoderPredictor {
                 //long estCompressSumAvg = 3;     // Marker 3 for average predictor
                 //long estCompressSumPaeth = 4;   // Marker 4 for paeth predictor
 
-                int a = 0;
+                //int a = 0;
                 //int c = 0;
                 
                 for (int i = 1; i < bLen; i++) {
                     int x = currRow[i] & 0xFF;
                     int b = prevRow[i] & 0xFF;
                     if (i > bpp) {
-                        int prevPixelByte = i - bpp;
-                        a = currRow[prevPixelByte] & 0xFF;
+                        //int prevPixelByte = i - bpp;
+                        //a = currRow[prevPixelByte] & 0xFF;
                         //c = prevRow[prevPixelByte] & 0xFF;
                     }
 
@@ -107,8 +107,8 @@ class PngEncoderPredictor {
                      * PNG Filters, see https://www.w3.org/TR/PNG-Filters.html
                      */
                     //byte bSub = (byte) (x - a);
-                    //byte bUp = (byte) (x - b);
-                    byte bAverage = (byte) (x - ((b + a) / 2));
+                    byte bUp = (byte) (x - b);
+                    //byte bAverage = (byte) (x - ((b + a) / 2));
 //                    byte bPaeth;
 //                    {
 //                        int p = a + b - c;
@@ -130,8 +130,10 @@ class PngEncoderPredictor {
 
                     //dataRawRowSub[i] = bSub;
                     //dataRawRowUp[i] = bUp;
-                    currRow[i] = bAverage;
+                    //dataRawRowAverage[i] = bAverage;
+                    //dataRawRowUp[i] = bUp;
                     //dataRawRowPaeth[i] = bPaeth;
+                    currRow[i] = bUp;
 
                     //estCompressSum += Math.abs(x);
                     //estCompressSumSub += Math.abs(bSub);
@@ -160,7 +162,7 @@ class PngEncoderPredictor {
 //                if (estCompressSum > estCompressSumPaeth) {
 //                    rowToWrite = dataRawRowPaeth;
 //                }
-                currRow[0] = 3;
+                currRow[0] = 2;
                 outputStream.write(rowToWrite);
                 currRow[0] = 0;
             }

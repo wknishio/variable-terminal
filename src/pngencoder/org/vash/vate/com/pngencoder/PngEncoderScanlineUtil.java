@@ -149,6 +149,18 @@ class PngEncoderScanlineUtil {
                 info.bitsPerChannel = 16;
                 break;
             default:
+                if (bufferedImage.getRaster().getDataBuffer() instanceof DataBufferUShort && bufferedImage.getRaster().getSampleModel() instanceof SinglePixelPackedSampleModel)
+                {
+                  info.channels = 3;
+                  info.bytesPerPixel = 3;
+                  break;
+                }
+                if (bufferedImage.getRaster().getDataBuffer() instanceof DataBufferInt && bufferedImage.getRaster().getSampleModel() instanceof SinglePixelPackedSampleModel)
+                {
+                  info.channels = 3;
+                  info.bytesPerPixel = 3;
+                  break;
+                }
                 info.hasAlpha = bufferedImage.getTransparency() != Transparency.OPAQUE; // TODO: This doesn't look right. What if the value is Transparency.BITMASK?
 
                 /*
@@ -240,7 +252,9 @@ class PngEncoderScanlineUtil {
                 get4ByteAbgr(raster, yStart, width, heightToStream, true, consumer);
                 break;
             // TODO: TYPE_USHORT_565_RGB
-            // TODO: TYPE_USHORT_555_RGB
+            case TYPE_USHORT_555_RGB:
+                getUshort555Rgb(raster, yStart, width, heightToStream, consumer);
+                break;
             case TYPE_BYTE_GRAY:
                 getByteGray(bufferedImage, yStart, width, heightToStream, consumer);
                 break;
@@ -251,8 +265,20 @@ class PngEncoderScanlineUtil {
                 getFallback(bufferedImage, yStart, width, heightToStream, consumer);
                 break;
             default:
-                if (raster.getDataBuffer() instanceof DataBufferUShort) {
+                if (raster.getDataBuffer() instanceof DataBufferUShort)
+                {
+                    if (getUshort444or333Rgb(raster, yStart, width, heightToStream, consumer))
+                    {
+                        break;
+                    }
                     if (getUshortGenericDataBufferUShort(bufferedImage, yStart, width, heightToStream, consumer)) {
+                        break;
+                    }
+                }
+                if (raster.getDataBuffer() instanceof DataBufferInt && raster.getSampleModel() instanceof SinglePixelPackedSampleModel)
+                {
+                    if (getInt666or777Rgb(raster, yStart, width, heightToStream, consumer))
+                    {
                         break;
                     }
                 }
@@ -839,6 +865,209 @@ class PngEncoderScanlineUtil {
                 }
             }
             return true;
+        }
+        return false;
+    }
+    
+    static void getUshort555Rgb(WritableRaster imageRaster, int yStart, int width, int heightToStream, AbstractPNGLineConsumer consumer) throws IOException
+    {
+        final int channels = 3;
+        final int rowByteSize = 1 + channels * width;
+        byte[] currLine = new byte[rowByteSize];
+        byte[] prevLine = new byte[rowByteSize];
+        
+        if (imageRaster.getSampleModel() instanceof SinglePixelPackedSampleModel)
+        {
+            SinglePixelPackedSampleModel sampleModel = (SinglePixelPackedSampleModel) imageRaster.getSampleModel();
+            int scanlineStride = sampleModel.getScanlineStride();
+            assert sampleModel.getNumBands() == 3;
+            assert sampleModel.getBitOffsets()[0] == 10;
+            assert sampleModel.getBitOffsets()[1] == 5;
+            assert sampleModel.getBitOffsets()[2] == 0;
+            short[] rawShorts = ((DataBufferUShort) imageRaster.getDataBuffer()).getData();
+            int linePtr = scanlineStride * (yStart - imageRaster.getSampleModelTranslateY()) - imageRaster.getSampleModelTranslateX();
+            for (int y = 0; y < heightToStream; y++)
+            {
+                int pixelPtr = linePtr;
+                int pixelEndPtr = linePtr + width;
+                int rowByteOffset = 1;
+                while (pixelPtr < pixelEndPtr)
+                {
+                    final short element = rawShorts[pixelPtr++];
+                    final int r5 = ((element >> 10) & 0x1F);
+                    final int g5 = ((element >> 5)  & 0x1F);
+                    final int b5 = ((element) & 0x1F);
+                    currLine[rowByteOffset++] = (byte) ((r5 << 3) | (r5 >> 2)); // R
+                    currLine[rowByteOffset++] = (byte) ((g5 << 3) | (g5 >> 2)); // G
+                    currLine[rowByteOffset++] = (byte) ((b5 << 3) | (b5 >> 2)); // B
+                }
+                linePtr += scanlineStride;
+                consumer.consume(currLine, prevLine);
+                {
+                    byte[] b = currLine;
+                    currLine = prevLine;
+                    prevLine = b;
+                }
+            }
+        }
+        else
+        {
+            throw new IllegalStateException("TYPE_USHORT_555_RGB must have a SinglePixelPackedSampleModel");
+        }
+    }
+    
+    static boolean getUshort444or333Rgb(WritableRaster imageRaster, int yStart, int width, int heightToStream, AbstractPNGLineConsumer consumer) throws IOException
+    {
+        final int channels = 3;
+        final int rowByteSize = 1 + channels * width;
+        byte[] currLine = new byte[rowByteSize];
+        byte[] prevLine = new byte[rowByteSize];
+        
+        if (imageRaster.getSampleModel() instanceof SinglePixelPackedSampleModel)
+        {
+            SinglePixelPackedSampleModel sampleModel = (SinglePixelPackedSampleModel) imageRaster.getSampleModel();
+            int scanlineStride = sampleModel.getScanlineStride();
+            assert sampleModel.getNumBands() == 3;
+            int greenBitOffset = sampleModel.getBitOffsets()[1];
+            short[] rawShorts = ((DataBufferUShort) imageRaster.getDataBuffer()).getData();
+            int linePtr = scanlineStride * (yStart - imageRaster.getSampleModelTranslateY()) - imageRaster.getSampleModelTranslateX();
+            if (greenBitOffset == 4)
+            {
+                for (int y = 0; y < heightToStream; y++)
+                {
+                    int pixelPtr = linePtr;
+                    int pixelEndPtr = linePtr + width;
+                    int rowByteOffset = 1;
+                    while (pixelPtr < pixelEndPtr)
+                    {
+                        final short element = rawShorts[pixelPtr++];
+                        final int r4 = ((element >> 8) & 0x0F);
+                        final int g4 = ((element >> 4) & 0x0F);
+                        final int b4 = ((element) & 0x0F);
+                        currLine[rowByteOffset++] = (byte) ((r4 << 4) | r4); // R
+                        currLine[rowByteOffset++] = (byte) ((g4 << 4) | g4); // G
+                        currLine[rowByteOffset++] = (byte) ((b4 << 4) | b4); // B
+                    }
+                    linePtr += scanlineStride;
+                    consumer.consume(currLine, prevLine);
+                    {
+                        byte[] b = currLine;
+                        currLine = prevLine;
+                        prevLine = b;
+                    }
+                }
+                return true;
+            }
+            else if (greenBitOffset == 3)
+            {
+                for (int y = 0; y < heightToStream; y++)
+                {
+                    int pixelPtr = linePtr;
+                    int pixelEndPtr = linePtr + width;
+                    int rowByteOffset = 1;
+                    while (pixelPtr < pixelEndPtr)
+                    {
+                        final short element = rawShorts[pixelPtr++];
+                        final int r3 = ((element >> 6) & 0x07);
+                        final int g3 = ((element >> 3) & 0x07);
+                        final int b3 = ((element) & 0x07);
+                        currLine[rowByteOffset++] = (byte) ((r3 << 5) | (r3 << 2) | (r3 >> 1)); // R
+                        currLine[rowByteOffset++] = (byte) ((g3 << 5) | (g3 << 2) | (g3 >> 1)); // G
+                        currLine[rowByteOffset++] = (byte) ((b3 << 5) | (b3 << 2) | (b3 >> 1)); // B
+                    }
+                    linePtr += scanlineStride;
+                    consumer.consume(currLine, prevLine);
+                    {
+                        byte[] b = currLine;
+                        currLine = prevLine;
+                        prevLine = b;
+                    }
+                }
+                return true;
+            }
+        }
+        else
+        {
+          
+        }
+        return false;
+    }
+    
+    static boolean getInt666or777Rgb(WritableRaster imageRaster, int yStart, int width, int heightToStream, AbstractPNGLineConsumer consumer) throws IOException
+    {
+        final int channels = 3;
+        final int rowByteSize = 1 + channels * width;
+        byte[] currLine = new byte[rowByteSize];
+        byte[] prevLine = new byte[rowByteSize];
+        
+        if (imageRaster.getSampleModel() instanceof SinglePixelPackedSampleModel)
+        {
+            SinglePixelPackedSampleModel sampleModel = (SinglePixelPackedSampleModel) imageRaster.getSampleModel();
+            int scanlineStride = sampleModel.getScanlineStride();
+            assert sampleModel.getNumBands() == 3;
+            //int redBitOffset = sampleModel.getBitOffsets()[0];
+            int greenBitOffset = sampleModel.getBitOffsets()[1];
+            //int blueBitOffset = sampleModel.getBitOffsets()[2];
+            int[] rawInts = ((DataBufferInt) imageRaster.getDataBuffer()).getData();
+            int linePtr = scanlineStride * (yStart - imageRaster.getSampleModelTranslateY()) - imageRaster.getSampleModelTranslateX();
+            if (greenBitOffset == 6)
+            {
+                for (int y = 0; y < heightToStream; y++)
+                {
+                    int pixelPtr = linePtr;
+                    int pixelEndPtr = linePtr + width;
+                    int rowByteOffset = 1;
+                    while (pixelPtr < pixelEndPtr)
+                    {
+                        final int element = rawInts[pixelPtr++];
+                        int r6 = (element >> 12) & 0x3F;
+                        int g6 = (element >> 6) & 0x3F;
+                        int b6 = element & 0x3F;
+                        currLine[rowByteOffset++] = (byte) ((r6 << 2) | (r6 >> 4)); // R
+                        currLine[rowByteOffset++] = (byte) ((g6 << 2) | (g6 >> 4)); // G
+                        currLine[rowByteOffset++] = (byte) ((b6 << 2) | (b6 >> 4)); // B
+                    }
+                    linePtr += scanlineStride;
+                    consumer.consume(currLine, prevLine);
+                    {
+                        byte[] b = currLine;
+                        currLine = prevLine;
+                        prevLine = b;
+                    }
+                }
+                return true;
+            }
+            else if (greenBitOffset == 7)
+            {
+                for (int y = 0; y < heightToStream; y++)
+                {
+                    int pixelPtr = linePtr;
+                    int pixelEndPtr = linePtr + width;
+                    int rowByteOffset = 1;
+                    while (pixelPtr < pixelEndPtr)
+                    {
+                        final int element = rawInts[pixelPtr++] ;
+                        int r7 = (element >> 14) & 0x7F;
+                        int g7 = (element >> 7) & 0x7F;
+                        int b7 = element & 0x7F;
+                        currLine[rowByteOffset++] = (byte) ((r7 << 1) | (r7 >> 6)); // R
+                        currLine[rowByteOffset++] = (byte) ((g7 << 1) | (g7 >> 6)); // G
+                        currLine[rowByteOffset++] = (byte) ((b7 << 1) | (b7 >> 6)); // B
+                    }
+                    linePtr += scanlineStride;
+                    consumer.consume(currLine, prevLine);
+                    {
+                        byte[] b = currLine;
+                        currLine = prevLine;
+                        prevLine = b;
+                    }
+                }
+                return true;
+            }
+        }
+        else
+        {
+          
         }
         return false;
     }

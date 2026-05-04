@@ -356,7 +356,6 @@ public class VTGraphicsLinkServerWriter implements Runnable
       connection.getGraphicsControlDataOutputStream().flush();
       for (VTRectangle blockArea : blockAreas)
       {
-        //pixels += blockArea.width * blockArea.height;
         imageOutputBuffer.reset();
         jpgWriter.setOutput(jpgImageOutputStream);
         jpgWriter.write(jpgWriterMetadata, new IIOImage(imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), null, jpgWriterMetadata), jpgWriterParam);
@@ -382,7 +381,6 @@ public class VTGraphicsLinkServerWriter implements Runnable
         pngEncoder.setIndexedColorMode(PngEncoder.INDEXED_COLORS_ORIGINAL);
         for (VTRectangle blockArea : blockAreas)
         {
-          //pixels += blockArea.width * blockArea.height;
           imageOutputBuffer.reset();
           pngEncoder.encode(imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
           connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
@@ -394,17 +392,11 @@ public class VTGraphicsLinkServerWriter implements Runnable
       }
       else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_USHORT)
       {
-        convertedDataBuffer = VTImageIO.createImage(0, 0, lastWidth, lastHeight, BufferedImage.TYPE_INT_RGB, 0, recyclableDataBuffer);
-        recyclableDataBuffer = convertedDataBuffer.getRaster().getDataBuffer();
-        convertedGraphics = convertedDataBuffer.createGraphics();
-        convertedGraphics.setRenderingHints(VTSystem.VT_GRAPHICS_RENDERING_HINTS);
-        convertedGraphics.drawImage(imageDataBuffer, 0, 0, null);
-        //pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
+        pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
         for (VTRectangle blockArea : blockAreas)
         {
-          //pixels += blockArea.width * blockArea.height;
           imageOutputBuffer.reset();
-          pngEncoder.encode(convertedDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
+          pngEncoder.encode(imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
           connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
           connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.x);
           connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.y);
@@ -414,38 +406,15 @@ public class VTGraphicsLinkServerWriter implements Runnable
       }
       else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT)
       {
-        if (lastColors == 262144 || lastColors == 2097152)
+        pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
+        for (VTRectangle blockArea : blockAreas)
         {
-          convertedDataBuffer = VTImageIO.createImage(0, 0, lastWidth, lastHeight, BufferedImage.TYPE_INT_RGB, 0, recyclableDataBuffer);
-          recyclableDataBuffer = convertedDataBuffer.getRaster().getDataBuffer();
-          convertedGraphics = convertedDataBuffer.createGraphics();
-          convertedGraphics.setRenderingHints(VTSystem.VT_GRAPHICS_RENDERING_HINTS);
-          convertedGraphics.drawImage(imageDataBuffer, 0, 0, null);
-          //pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
-          for (VTRectangle blockArea : blockAreas)
-          {
-            //pixels += blockArea.width * blockArea.height;
-            imageOutputBuffer.reset();
-            pngEncoder.encode(convertedDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
-            connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
-            connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.x);
-            connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.y);
-            imageOutputBuffer.writeTo(connection.getGraphicsDirectImageDataOutputStream());
-          }
-        }
-        else
-        {
-          //pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
-          for (VTRectangle blockArea : blockAreas)
-          {
-            //pixels += blockArea.width * blockArea.height;
-            imageOutputBuffer.reset();
-            pngEncoder.encode(imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
-            connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
-            connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.x);
-            connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.y);
-            imageOutputBuffer.writeTo(connection.getGraphicsDirectImageDataOutputStream());
-          }
+          imageOutputBuffer.reset();
+          pngEncoder.encode(imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
+          connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
+          connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.x);
+          connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.y);
+          imageOutputBuffer.writeTo(connection.getGraphicsDirectImageDataOutputStream());
         }
         connection.getGraphicsDirectImageDataOutputStream().flush();
       }
@@ -512,7 +481,6 @@ public class VTGraphicsLinkServerWriter implements Runnable
       connection.getGraphicsControlDataOutputStream().flush();
       for (VTRectangle blockArea : blockAreas)
       {
-        //pixels += blockArea.width * blockArea.height;
         imageOutputBuffer.reset();
         jpgWriter.setOutput(jpgImageOutputStream);
         jpgWriter.write(jpgWriterMetadata, new IIOImage(imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), null, jpgWriterMetadata), jpgWriterParam);
@@ -536,7 +504,6 @@ public class VTGraphicsLinkServerWriter implements Runnable
         pngEncoder.setIndexedColorMode(PngEncoder.INDEXED_COLORS_ORIGINAL);
         for (VTRectangle blockArea : blockAreas)
         {
-          //pixels += blockArea.width * blockArea.height;
           imageOutputBuffer.reset();
           pngEncoder.encode(imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
           connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
@@ -548,20 +515,11 @@ public class VTGraphicsLinkServerWriter implements Runnable
       }
       else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_USHORT)
       {
-        if (convertedDataBuffer == null || convertedDataBuffer.getType() != BufferedImage.TYPE_INT_RGB)
-        {
-          convertedDataBuffer = VTImageIO.createImage(0, 0, lastWidth, lastHeight, BufferedImage.TYPE_INT_RGB, 0, recyclableDataBuffer);
-          recyclableDataBuffer = convertedDataBuffer.getRaster().getDataBuffer();
-          convertedGraphics = convertedDataBuffer.createGraphics();
-          convertedGraphics.setRenderingHints(VTSystem.VT_GRAPHICS_RENDERING_HINTS);
-        }
-        convertedGraphics.drawImage(imageDataBuffer, 0, 0, null);
         pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
         for (VTRectangle blockArea : blockAreas)
         {
-          //pixels += blockArea.width * blockArea.height;
           imageOutputBuffer.reset();
-          pngEncoder.encode(convertedDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
+          pngEncoder.encode(imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
           connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
           connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.x);
           connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.y);
@@ -571,41 +529,15 @@ public class VTGraphicsLinkServerWriter implements Runnable
       }
       else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT)
       {
-        if (lastColors == 262144 || lastColors == 2097152)
+        pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
+        for (VTRectangle blockArea : blockAreas)
         {
-          if (convertedDataBuffer == null || convertedDataBuffer.getType() != BufferedImage.TYPE_INT_RGB)
-          {
-            convertedDataBuffer = VTImageIO.createImage(0, 0, lastWidth, lastHeight, BufferedImage.TYPE_INT_RGB, 0, recyclableDataBuffer);
-            recyclableDataBuffer = convertedDataBuffer.getRaster().getDataBuffer();
-            convertedGraphics = convertedDataBuffer.createGraphics();
-            convertedGraphics.setRenderingHints(VTSystem.VT_GRAPHICS_RENDERING_HINTS);
-          }
-          convertedGraphics.drawImage(imageDataBuffer, 0, 0, null);
-          pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
-          for (VTRectangle blockArea : blockAreas)
-          {
-            //pixels += blockArea.width * blockArea.height;
-            imageOutputBuffer.reset();
-            pngEncoder.encode(convertedDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
-            connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
-            connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.x);
-            connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.y);
-            imageOutputBuffer.writeTo(connection.getGraphicsDirectImageDataOutputStream());
-          }
-        }
-        else
-        {
-          pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
-          for (VTRectangle blockArea : blockAreas)
-          {
-            //pixels += blockArea.width * blockArea.height;
-            imageOutputBuffer.reset();
-            pngEncoder.encode(imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
-            connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
-            connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.x);
-            connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.y);
-            imageOutputBuffer.writeTo(connection.getGraphicsDirectImageDataOutputStream());
-          }
+          imageOutputBuffer.reset();
+          pngEncoder.encode(imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
+          connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
+          connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.x);
+          connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.y);
+          imageOutputBuffer.writeTo(connection.getGraphicsDirectImageDataOutputStream());
         }
         connection.getGraphicsDirectImageDataOutputStream().flush();
       }
