@@ -267,7 +267,7 @@ class PngEncoderScanlineUtil {
             default:
                 if (raster.getDataBuffer() instanceof DataBufferUShort)
                 {
-                    if (getUshort444or333Rgb(raster, yStart, width, heightToStream, consumer))
+                    if (getUshort333Or444Rgb(raster, yStart, width, heightToStream, consumer))
                     {
                         break;
                     }
@@ -277,7 +277,7 @@ class PngEncoderScanlineUtil {
                 }
                 if (raster.getDataBuffer() instanceof DataBufferInt && raster.getSampleModel() instanceof SinglePixelPackedSampleModel)
                 {
-                    if (getInt666or777Rgb(raster, yStart, width, heightToStream, consumer))
+                    if (getInt666Or777Rgb(raster, yStart, width, heightToStream, consumer))
                     {
                         break;
                     }
@@ -916,7 +916,7 @@ class PngEncoderScanlineUtil {
         }
     }
     
-    static boolean getUshort444or333Rgb(WritableRaster imageRaster, int yStart, int width, int heightToStream, AbstractPNGLineConsumer consumer) throws IOException
+    static boolean getUshort333Or444Rgb(WritableRaster imageRaster, int yStart, int width, int heightToStream, AbstractPNGLineConsumer consumer) throws IOException
     {
         final int channels = 3;
         final int rowByteSize = 1 + channels * width;
@@ -928,10 +928,12 @@ class PngEncoderScanlineUtil {
             SinglePixelPackedSampleModel sampleModel = (SinglePixelPackedSampleModel) imageRaster.getSampleModel();
             int scanlineStride = sampleModel.getScanlineStride();
             assert sampleModel.getNumBands() == 3;
+            int redBitOffset = sampleModel.getBitOffsets()[0];
             int greenBitOffset = sampleModel.getBitOffsets()[1];
+            int blueBitOffset = sampleModel.getBitOffsets()[2];
             short[] rawShorts = ((DataBufferUShort) imageRaster.getDataBuffer()).getData();
             int linePtr = scanlineStride * (yStart - imageRaster.getSampleModelTranslateY()) - imageRaster.getSampleModelTranslateX();
-            if (greenBitOffset == 4)
+            if (redBitOffset == 8 && greenBitOffset == 4 && blueBitOffset == 0)
             {
                 for (int y = 0; y < heightToStream; y++)
                 {
@@ -958,7 +960,7 @@ class PngEncoderScanlineUtil {
                 }
                 return true;
             }
-            else if (greenBitOffset == 3)
+            else if (redBitOffset == 6 && greenBitOffset == 3 && blueBitOffset == 0)
             {
                 for (int y = 0; y < heightToStream; y++)
                 {
@@ -993,7 +995,7 @@ class PngEncoderScanlineUtil {
         return false;
     }
     
-    static boolean getInt666or777Rgb(WritableRaster imageRaster, int yStart, int width, int heightToStream, AbstractPNGLineConsumer consumer) throws IOException
+    static boolean getInt666Or777Rgb(WritableRaster imageRaster, int yStart, int width, int heightToStream, AbstractPNGLineConsumer consumer) throws IOException
     {
         final int channels = 3;
         final int rowByteSize = 1 + channels * width;
@@ -1005,12 +1007,12 @@ class PngEncoderScanlineUtil {
             SinglePixelPackedSampleModel sampleModel = (SinglePixelPackedSampleModel) imageRaster.getSampleModel();
             int scanlineStride = sampleModel.getScanlineStride();
             assert sampleModel.getNumBands() == 3;
-            //int redBitOffset = sampleModel.getBitOffsets()[0];
+            int redBitOffset = sampleModel.getBitOffsets()[0];
             int greenBitOffset = sampleModel.getBitOffsets()[1];
-            //int blueBitOffset = sampleModel.getBitOffsets()[2];
+            int blueBitOffset = sampleModel.getBitOffsets()[2];
             int[] rawInts = ((DataBufferInt) imageRaster.getDataBuffer()).getData();
             int linePtr = scanlineStride * (yStart - imageRaster.getSampleModelTranslateY()) - imageRaster.getSampleModelTranslateX();
-            if (greenBitOffset == 6)
+            if (redBitOffset == 12 && greenBitOffset == 6 && blueBitOffset == 0)
             {
                 for (int y = 0; y < heightToStream; y++)
                 {
@@ -1037,7 +1039,7 @@ class PngEncoderScanlineUtil {
                 }
                 return true;
             }
-            else if (greenBitOffset == 7)
+            else if (redBitOffset == 14 && greenBitOffset == 7 && blueBitOffset == 0)
             {
                 for (int y = 0; y < heightToStream; y++)
                 {
