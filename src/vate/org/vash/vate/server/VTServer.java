@@ -2411,9 +2411,9 @@ public class VTServer implements Runnable
     {
       pingLimit = 0;
     }
-    if (pingLimit > 0 && pingLimit < 5000)
+    if (pingLimit > 0 && pingLimit < VTSystem.VT_PING_INTERVAL_MILLISECONDS / 2)
     {
-      pingLimit = 5000;
+      pingLimit = VTSystem.VT_PING_INTERVAL_MILLISECONDS / 2;
     }
     if (getPingIntervalMilliseconds() > (getPingLimitMilliseconds() / 4))
     {
@@ -2433,9 +2433,9 @@ public class VTServer implements Runnable
     {
       pingInterval = 0;
     }
-    if (pingInterval > 0 && pingInterval < 1250)
+    if (pingInterval > 0 && pingInterval < VTSystem.VT_PING_INTERVAL_MILLISECONDS / 8)
     {
-      pingInterval = 1250;
+      pingInterval = VTSystem.VT_PING_INTERVAL_MILLISECONDS / 8;
     }
     if (getPingIntervalMilliseconds() > (getPingLimitMilliseconds() / 4))
     {
