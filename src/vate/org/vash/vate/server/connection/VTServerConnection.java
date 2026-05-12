@@ -867,14 +867,14 @@ public class VTServerConnection
   
   public void closeGraphicsStreams() throws IOException
   {
+    graphicsControlInputStream.close();
+    graphicsControlOutputStream.close();
     graphicsDirectImageInputStream.close();
     graphicsHeavyImageDataInputStream.close();
     graphicsFastImageDataInputStream.close();
     graphicsDirectImageOutputStream.close();
     graphicsHeavyImageDataOutputStream.close();
     graphicsFastImageDataOutputStream.close();
-    graphicsControlInputStream.close();
-    graphicsControlOutputStream.close();
     closeClipboardStreams();
   }
   

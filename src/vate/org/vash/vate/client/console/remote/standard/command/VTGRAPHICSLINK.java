@@ -26,23 +26,12 @@ public class VTGRAPHICSLINK extends VTClientStandardRemoteConsoleCommandProcesso
     {
       if (parsed[1].toUpperCase().startsWith("V"))
       {
-        synchronized (session.getGraphicsClient())
-        {
-          if (session.getGraphicsClient().isFinished())
-          {
-            // System.out.println("session.getGraphicsClient().isFinished()");
-            session.getGraphicsClient().joinThread();
-            // System.out.println("session.getGraphicsClient().joinThread()");
-          }
-        }
         if (!session.getGraphicsClient().aliveThread())
         {
-          session.getGraphicsClient().setFinished(false);
           session.getGraphicsClient().setReadOnly(true);
           connection.getCommandWriter().writeLine(command);
           connection.getCommandWriter().flush();
           session.getGraphicsClient().startThread();
-          // System.out.println("session.getGraphicsClient().startThread()");
         }
         else
         {
@@ -52,23 +41,12 @@ public class VTGRAPHICSLINK extends VTClientStandardRemoteConsoleCommandProcesso
       }
       else if (parsed[1].toUpperCase().startsWith("C"))
       {
-        synchronized (session.getGraphicsClient())
-        {
-          if (session.getGraphicsClient().isFinished())
-          {
-            // System.out.println("session.getGraphicsClient().isFinished()");
-            session.getGraphicsClient().joinThread();
-            // System.out.println("session.getGraphicsClient().joinThread()");
-          }
-        }
         if (!session.getGraphicsClient().aliveThread())
         {
-          session.getGraphicsClient().setFinished(false);
           session.getGraphicsClient().setReadOnly(false);
           connection.getCommandWriter().writeLine(command);
           connection.getCommandWriter().flush();
           session.getGraphicsClient().startThread();
-          // System.out.println("session.getGraphicsClient().startThread()");
         }
         else
         {
@@ -83,29 +61,17 @@ public class VTGRAPHICSLINK extends VTClientStandardRemoteConsoleCommandProcesso
     }
     else if (parsed.length == 1)
     {
-      synchronized (session.getGraphicsClient())
-      {
-        if (session.getGraphicsClient().isFinished())
-        {
-          // System.out.println("session.getGraphicsClient().isFinished()");
-          session.getGraphicsClient().joinThread();
-          // System.out.println("session.getGraphicsClient().joinThread()");
-        }
-      }
       if (session.getGraphicsClient().aliveThread())
       {
         session.getGraphicsClient().setStopped(true);
         session.getGraphicsClient().joinThread();
-        // System.out.println("session.getGraphicsClient().joinThread()");
       }
       else
       {
-        session.getGraphicsClient().setFinished(false);
         session.getGraphicsClient().setReadOnly(false);
         connection.getCommandWriter().writeLine(command);
         connection.getCommandWriter().flush();
         session.getGraphicsClient().startThread();
-        // System.out.println("session.getGraphicsClient().startThread()");
       }
     }
     else

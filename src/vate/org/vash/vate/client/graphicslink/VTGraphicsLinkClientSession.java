@@ -10,7 +10,7 @@ import org.vash.vate.reflection.VTReflectionUtils;
 
 public class VTGraphicsLinkClientSession
 {
-  private boolean finished;
+  //private boolean finished;
   private Future<?> readerThread;
   private Future<?>  writerThread;
   // private VTGraphicsLinkRemoteGraphics remote;
@@ -27,18 +27,18 @@ public class VTGraphicsLinkClientSession
     this.writer = new VTGraphicsLinkClientWriter(this);
     this.reader.setWriter(writer);
     this.writer.setReader(reader);
-    this.finished = true;
+    //this.finished = true;
   }
   
-  public boolean isFinished()
-  {
-    return finished;
-  }
+//  public boolean isFinished()
+//  {
+//    return isStopped();
+//  }
   
-  public void setFinished(boolean finished)
-  {
-    this.finished = finished;
-  }
+//  public void setFinished(boolean finished)
+//  {
+//    this.finished = finished;
+//  }
   
   public VTClientSession getSession()
   {
@@ -47,10 +47,10 @@ public class VTGraphicsLinkClientSession
   
   public boolean verifySession()
   {
-    
     boolean headless = true;
     try
     {
+      session.getConnection().resetGraphicsStreams();
       headless = VTReflectionUtils.isAWTHeadless();
     }
     catch (Throwable e)
@@ -59,7 +59,6 @@ public class VTGraphicsLinkClientSession
     }
     try
     {
-      session.getConnection().resetGraphicsStreams();
       if (headless)
       {
         session.getConnection().getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_SESSION_UNSTARTED);
@@ -148,17 +147,8 @@ public class VTGraphicsLinkClientSession
     writer.setReadOnly(readOnly);
   }
   
-  /*
-   * public void setHighQuality(boolean highQuality) {
-   * writer.setHighQuality(highQuality); }
-   */
-  
   public void waitSession()
   {
-    /*
-     * while(!isStopped()) { try { Thread.sleep(1); } catch
-     * (InterruptedException e) { } }
-     */
     synchronized (this)
     {
       while (!isStopped())
@@ -220,11 +210,7 @@ public class VTGraphicsLinkClientSession
   {
     try
     {
-      //session.getConnection().closeGraphicsStreams();
-      //session.getConnection().resetGraphicsStreams();
-      //session.getConnection().getGraphicsDirectImageDataInputStream().close();
-      //session.getConnection().getGraphicsSnappedImageDataInputStream().close();
-      //session.getConnection().getGraphicsDeflatedImageDataInputStream().close();
+      
     }
     catch (Throwable e)
     {
@@ -234,6 +220,6 @@ public class VTGraphicsLinkClientSession
     {
       VTMainConsole.print("\nVT>Remote graphics link stopped!\nVT>");
     }
-    finished = true;
+    //finished = true;
   }
 }

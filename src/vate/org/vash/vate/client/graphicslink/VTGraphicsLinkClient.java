@@ -14,15 +14,15 @@ public class VTGraphicsLinkClient extends VTTask
     // this.setStopped(true);
   }
   
-  public boolean isFinished()
-  {
-    return sessionHandler.isFinished();
-  }
+//  public boolean isFinished()
+//  {
+//    return sessionHandler.isFinished();
+//  }
   
-  public void setFinished(boolean finished)
-  {
-    sessionHandler.setFinished(finished);
-  }
+//  public void setFinished(boolean finished)
+//  {
+//    sessionHandler.setFinished(finished);
+//  }
   
   public boolean isStopped()
   {
@@ -44,11 +44,6 @@ public class VTGraphicsLinkClient extends VTTask
   {
     sessionHandler.setReadOnly(readOnly);
   }
-  
-  /*
-   * public void setHighQuality(boolean highQuality) {
-   * sessionHandler.setHighQuality(highQuality); }
-   */
   
   public void task()
   {

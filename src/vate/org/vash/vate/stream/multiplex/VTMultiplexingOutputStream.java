@@ -266,6 +266,8 @@ public final class VTMultiplexingOutputStream
     private final int number;
     private final long firstSequencerSeed;
     private final long secondSequencerSeed;
+    private final long thirdSequencerSeed;
+    private final long fourthSequencerSeed;
     private volatile int type;
     private final int packetSize;
     private final byte[] single = new byte[1];
@@ -280,6 +282,8 @@ public final class VTMultiplexingOutputStream
     private final Collection<Closeable> propagated;
     private final Random firstSequencer;
     private final Random secondSequencer;
+    private final Random thirdSequencer;
+    private final Random fourthSequencer;
     
     private VTMultiplexedOutputStream(final OutputStream output, final OutputStream control, final int type, final int number, final int packetSize, final long firstSeed, final long secondSeed)
     {
@@ -290,8 +294,12 @@ public final class VTMultiplexingOutputStream
       this.packetSize = packetSize;
       this.firstSequencerSeed = XXH3.hash64(new byte[] {(byte)(number), (byte)(number >> 8), (byte)(number >> 16), (byte)(number >> 24)}, 4, firstSeed);
       this.secondSequencerSeed = XXH3.hash64(new byte[] {(byte)(number >> 24), (byte)(number >> 16), (byte)(number >> 8), (byte)(number)}, 4, secondSeed);
+      this.thirdSequencerSeed = XXH3.hash64(new byte[] {(byte)(number >> 24), (byte)(number >> 16), (byte)(number >> 8), (byte)(number)}, 4, firstSeed);
+      this.fourthSequencerSeed = XXH3.hash64(new byte[] {(byte)(number), (byte)(number >> 8), (byte)(number >> 16), (byte)(number >> 24)}, 4, secondSeed);
       this.firstSequencer = new VTSplitMix64Random(firstSequencerSeed);
       this.secondSequencer = new VTSplitMix64Random(secondSequencerSeed);
+      this.thirdSequencer = new VTSplitMix64Random(thirdSequencerSeed);
+      this.fourthSequencer = new VTSplitMix64Random(fourthSequencerSeed);
       this.intermediateDataPacketBuffer = new VTByteArrayOutputStream(VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES);
       this.dataPacketBuffer = new VTByteArrayOutputStream(VTSystem.VT_PACKET_HEADER_SIZE_BYTES + packetSize);
       this.dataPacketStream = new VTLittleEndianOutputStream(dataPacketBuffer);
@@ -394,7 +402,9 @@ public final class VTMultiplexingOutputStream
     public final void close() throws IOException
     {
       closed = true;
+      //throttled.bypass();
       writeClosePacket(type, number);
+      //throttled.restore();
       if (propagated.size() > 0)
       {
         for (Closeable closeable : propagated)
@@ -414,7 +424,9 @@ public final class VTMultiplexingOutputStream
     public final void open() throws IOException
     {
       closed = false;
+      //throttled.bypass();
       writeOpenPacket(type, number);
+      //throttled.restore();
       firstSequencer.setSeed(firstSequencerSeed);
       secondSequencer.setSeed(secondSequencerSeed);
       if ((type & VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) != 0)
@@ -444,44 +456,53 @@ public final class VTMultiplexingOutputStream
       this.propagated.remove(propagated);
     }
     
-    private synchronized final void writeDataPacket(final int type, final int number, final byte[] data, final int offset, final int length) throws IOException
+    private final void writeDataPacket(final int type, final int number, final byte[] data, final int offset, final int length) throws IOException
     {
-      dataPacketBuffer.reset();
-      intermediateDataPacketBuffer.reset();
-      intermediatePacketStream.write(data, offset, length);
-      intermediatePacketStream.flush();
-      dataPacketStream.writeLong(firstSequencer.nextLong() ^ secondSequencer.nextLong() ^ XXH3.hash64(intermediateDataPacketBuffer.buf(), intermediateDataPacketBuffer.count()));
-      dataPacketStream.writeByte(type);
-      dataPacketStream.writeSubInt(number);
-      dataPacketStream.writeInt(intermediateDataPacketBuffer.count());
-      dataPacketStream.write(intermediateDataPacketBuffer.buf(), 0, intermediateDataPacketBuffer.count());
-      output.write(dataPacketBuffer.buf(), 0, dataPacketBuffer.count());
-      output.flush();
-      transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES + intermediateDataPacketBuffer.count());
+      synchronized (dataPacketBuffer)
+      {
+        dataPacketBuffer.reset();
+        intermediateDataPacketBuffer.reset();
+        intermediatePacketStream.write(data, offset, length);
+        intermediatePacketStream.flush();
+        dataPacketStream.writeLong(firstSequencer.nextLong() ^ secondSequencer.nextLong() ^ XXH3.hash64(intermediateDataPacketBuffer.buf(), intermediateDataPacketBuffer.count()));
+        dataPacketStream.writeByte(type);
+        dataPacketStream.writeSubInt(number);
+        dataPacketStream.writeInt(intermediateDataPacketBuffer.count());
+        dataPacketStream.write(intermediateDataPacketBuffer.buf(), 0, intermediateDataPacketBuffer.count());
+        output.write(dataPacketBuffer.buf(), 0, dataPacketBuffer.count());
+        output.flush();
+        transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES + intermediateDataPacketBuffer.count());
+      }
     }
     
-    private synchronized final void writeClosePacket(final int type, final int number) throws IOException
+    private final void writeClosePacket(final int type, final int number) throws IOException
     {
-      controlPacketBuffer.reset();
-      controlPacketStream.writeLong(firstSequencer.nextLong() ^ secondSequencer.nextLong() ^ - 2);
-      controlPacketStream.writeByte(type);
-      controlPacketStream.writeSubInt(number);
-      controlPacketStream.writeInt(-2);
-      control.write(controlPacketBuffer.buf(), 0, controlPacketBuffer.count());
-      control.flush();
-      transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
+      synchronized (controlPacketBuffer)
+      {
+        controlPacketBuffer.reset();
+        controlPacketStream.writeLong(thirdSequencer.nextLong() ^ fourthSequencer.nextLong() ^ -2);
+        controlPacketStream.writeByte(type);
+        controlPacketStream.writeSubInt(number);
+        controlPacketStream.writeInt(-2);
+        control.write(controlPacketBuffer.buf(), 0, controlPacketBuffer.count());
+        control.flush();
+        transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
+      }
     }
     
-    private synchronized final void writeOpenPacket(final int type, final int number) throws IOException
+    private final void writeOpenPacket(final int type, final int number) throws IOException
     {
-      controlPacketBuffer.reset();
-      controlPacketStream.writeLong(firstSequencer.nextLong() ^ secondSequencer.nextLong() ^ -3);
-      controlPacketStream.writeByte(type);
-      controlPacketStream.writeSubInt(number);
-      controlPacketStream.writeInt(-3);
-      control.write(controlPacketBuffer.buf(), 0, controlPacketBuffer.count());
-      control.flush();
-      transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
+      synchronized (controlPacketBuffer)
+      {
+        controlPacketBuffer.reset();
+        controlPacketStream.writeLong(thirdSequencer.nextLong() ^ fourthSequencer.nextLong() ^ -3);
+        controlPacketStream.writeByte(type);
+        controlPacketStream.writeSubInt(number);
+        controlPacketStream.writeInt(-3);
+        control.write(controlPacketBuffer.buf(), 0, controlPacketBuffer.count());
+        control.flush();
+        transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
+      }
     }
   }
 }

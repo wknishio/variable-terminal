@@ -9,6 +9,7 @@ import org.vash.vate.engineering.clientside.throttle.NanoThrottle;
 public final class VTThrottledOutputStream extends FilterOutputStream
 {
   private final NanoThrottle throttler;
+  private long byteRate;
   
   public VTThrottledOutputStream(final OutputStream out, final NanoThrottle throttler)
   {
@@ -64,5 +65,17 @@ public final class VTThrottledOutputStream extends FilterOutputStream
     }
     throttler.setRate(Long.MAX_VALUE);
     throttler.wakeAllWaitingThreads(this);
+  }
+  
+  public final void bypass()
+  {
+    byteRate = (long) throttler.getRate();
+    throttler.setRate(Long.MAX_VALUE);
+    throttler.wakeAllWaitingThreads(this);
+  }
+  
+  public final void restore()
+  {
+    throttler.setRate(byteRate);
   }
 }

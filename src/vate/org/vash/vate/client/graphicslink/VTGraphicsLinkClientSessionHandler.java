@@ -9,15 +9,15 @@ public class VTGraphicsLinkClientSessionHandler implements Runnable
     this.session = session;
   }
   
-  public boolean isFinished()
-  {
-    return session.isFinished();
-  }
+//  public boolean isFinished()
+//  {
+//    return session.isFinished();
+//  }
   
-  public void setFinished(boolean finished)
-  {
-    session.setFinished(finished);
-  }
+//  public void setFinished(boolean finished)
+//  {
+//    session.setFinished(finished);
+//  }
   
   public boolean isStopped()
   {
@@ -38,11 +38,6 @@ public class VTGraphicsLinkClientSessionHandler implements Runnable
   {
     session.setReadOnly(readOnly);
   }
-  
-  /*
-   * public void setHighQuality(boolean highQuality) {
-   * session.setHighQuality(highQuality); }
-   */
   
   public void run()
   {

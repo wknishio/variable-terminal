@@ -14,17 +14,20 @@ public class VTGRAPHICSLINK extends VTServerStandardRemoteConsoleCommandProcesso
   
   public void execute(String command, String[] parsed) throws Exception
   {
+    if (session.getGraphicsServer().aliveThread())
+    {
+      //session.getGraphicsServer().setStopped(true);
+      session.getGraphicsServer().joinThread();
+    }
     if (parsed.length >= 2)
     {
       if (parsed[1].toUpperCase().startsWith("V"))
       {
-        session.getGraphicsServer().joinThread();
         session.getGraphicsServer().setReadOnly(true);
         session.getGraphicsServer().startThread();
       }
       else if (parsed[1].toUpperCase().startsWith("C"))
       {
-        session.getGraphicsServer().joinThread();
         session.getGraphicsServer().setReadOnly(false);
         session.getGraphicsServer().startThread();
       }
@@ -35,17 +38,8 @@ public class VTGRAPHICSLINK extends VTServerStandardRemoteConsoleCommandProcesso
     }
     else if (parsed.length == 1)
     {
-      if (session.getGraphicsServer().aliveThread())
-      {
-        session.getGraphicsServer().setStopped(true);
-        session.getGraphicsServer().joinThread();
-      }
-      else
-      {
-        session.getGraphicsServer().joinThread();
-        session.getGraphicsServer().setReadOnly(false);
-        session.getGraphicsServer().startThread();
-      }
+      session.getGraphicsServer().setReadOnly(false);
+      session.getGraphicsServer().startThread();
     }
   }
   

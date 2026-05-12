@@ -31,11 +31,6 @@ public class VTGraphicsLinkServerSessionHandler implements Runnable
     session.setReadOnly(readOnly);
   }
   
-  /*
-   * public void setHighQuality(boolean highQuality) {
-   * session.setHighQuality(highQuality); }
-   */
-  
   public void run()
   {
     try

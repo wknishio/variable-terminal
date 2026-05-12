@@ -39,6 +39,7 @@ public class VTGraphicsLinkServerSession
     boolean controlProviderInitialized = false;
     try
     {
+      session.getConnection().resetGraphicsStreams();
       viewProviderInitialized = session.getViewProvider().isScreenCaptureInitialized(CUSTOM_CODEC_PADDING_SIZE) || session.getViewProvider().initializeScreenCapture(CUSTOM_CODEC_PADDING_SIZE);
       controlProviderInitialized = session.getControlProvider().isInputControlInitialized() || session.getControlProvider().initializeInputControl();
     }
@@ -48,7 +49,6 @@ public class VTGraphicsLinkServerSession
     }
     try
     {
-      session.getConnection().resetGraphicsStreams();
       if (viewProviderInitialized && controlProviderInitialized)
       {
         session.getConnection().getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_SESSION_STARTED);
@@ -120,17 +120,8 @@ public class VTGraphicsLinkServerSession
     reader.setReadOnly(readOnly);
   }
   
-  /*
-   * public void setHighQuality(boolean highQuality) {
-   * writer.setHighQuality(highQuality); }
-   */
-  
   public void waitSession()
   {
-    /*
-     * while(!isStopped()) { try { Thread.sleep(1); } catch
-     * (InterruptedException e) { } }
-     */
     synchronized (this)
     {
       while (!isStopped())
@@ -166,10 +157,6 @@ public class VTGraphicsLinkServerSession
   
   public void waitThreads()
   {
-    /*
-     * while(readerThread.isAlive() || writerThread.isAlive()) { try {
-     * Thread.sleep(1); } catch (InterruptedException e) { } }
-     */
     session.getClipboardTransferTask().joinThread();
     try
     {

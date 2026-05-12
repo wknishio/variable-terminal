@@ -35,11 +35,6 @@ public class VTGraphicsLinkServer extends VTTask
     sessionHandler.setReadOnly(readOnly);
   }
   
-  /*
-   * public void setHighQuality(boolean highQuality) {
-   * sessionHandler.setHighQuality(highQuality); }
-   */
-  
   public void task()
   {
     sessionHandler.run();

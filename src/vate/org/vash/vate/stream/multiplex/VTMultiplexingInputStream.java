@@ -249,20 +249,37 @@ public final class VTMultiplexingInputStream
   private final void readPackets() throws IOException
   {
     VTMultiplexedInputStream stream;
-    long sequence;
+    long hash;
+    long first;
+    long second;
     int type; 
     int number;
     int length;
     
     while (!closed)
     {
-      sequence = input.readLong();
+      hash = input.readLong();
       type = input.readByte();
       number = input.readSubInt();
       length = input.readInt();
       input.readFully(packetDataBuffer, 0, length);
       stream = getInputStream(type, number);
-      if ((stream == null) || ((stream.getFirstSequencer().nextLong() ^ stream.getSecondSequencer().nextLong() ^ XXH3.hash64(packetDataBuffer, length)) != sequence))
+      if (stream == null)
+      {
+        close();
+        return;
+      }
+      if (length >= 0)
+      {
+        first = stream.getFirstSequencer().nextLong();
+        second = stream.getSecondSequencer().nextLong();
+      }
+      else
+      {
+        first = stream.getThirdSequencer().nextLong();
+        second = stream.getFourthSequencer().nextLong();
+      }
+      if ((first ^ second ^ XXH3.hash64(packetDataBuffer, length)) != hash)
       {
         close();
         return;
@@ -306,6 +323,8 @@ public final class VTMultiplexingInputStream
     private final int number;
     private final long firstSequencerSeed;
     private final long secondSequencerSeed;
+    private final long thirdSequencerSeed;
+    private final long fourthSequencerSeed;
     private volatile int type;
     private final VTPipedInputStream bufferedInputStream;
     private final VTPipedOutputStream bufferedOutputStream;
@@ -318,6 +337,8 @@ public final class VTMultiplexingInputStream
     private final Collection<Closeable> propagated;
     private final Random firstSequencer;
     private final Random secondSequencer;
+    private final Random thirdSequencer;
+    private final Random fourthSequencer;
     
     private VTMultiplexedInputStream(final int type, final int number, final int bufferSize, final long firstSeed, final long secondSeed)
     {
@@ -325,8 +346,12 @@ public final class VTMultiplexingInputStream
       this.number = number;
       this.firstSequencerSeed = XXH3.hash64(new byte[] {(byte)(number), (byte)(number >> 8), (byte)(number >> 16), (byte)(number >> 24)}, 4, firstSeed);
       this.secondSequencerSeed = XXH3.hash64(new byte[] {(byte)(number >> 24), (byte)(number >> 16), (byte)(number >> 8), (byte)(number)}, 4, secondSeed);
+      this.thirdSequencerSeed = XXH3.hash64(new byte[] {(byte)(number >> 24), (byte)(number >> 16), (byte)(number >> 8), (byte)(number)}, 4, firstSeed);
+      this.fourthSequencerSeed = XXH3.hash64(new byte[] {(byte)(number), (byte)(number >> 8), (byte)(number >> 16), (byte)(number >> 24)}, 4, secondSeed);
       this.firstSequencer = new VTSplitMix64Random(firstSequencerSeed);
       this.secondSequencer = new VTSplitMix64Random(secondSequencerSeed);
+      this.thirdSequencer = new VTSplitMix64Random(thirdSequencerSeed);
+      this.fourthSequencer = new VTSplitMix64Random(fourthSequencerSeed);
       this.propagated = new ConcurrentLinkedQueue<Closeable>();
       
       if ((type & VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT) == VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED)
@@ -583,6 +608,16 @@ public final class VTMultiplexingInputStream
     private final Random getSecondSequencer()
     {
       return secondSequencer;
+    }
+    
+    private final Random getThirdSequencer()
+    {
+      return thirdSequencer;
+    }
+    
+    private final Random getFourthSequencer()
+    {
+      return fourthSequencer;
     }
   }
   
