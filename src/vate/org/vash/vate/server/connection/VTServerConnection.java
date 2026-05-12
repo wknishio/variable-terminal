@@ -575,7 +575,7 @@ public class VTServerConnection
     blake3Digest.update(remoteNonce);
     blake3Digest.update(digestedCredentials);
     blake3Digest.update(encryptionKey);
-    long outputSecondSeed = blake3Digest.digestLong();    
+    long outputSecondSeed = blake3Digest.digestLong();
     
     int inputChannel = 0;
     int outputChannel = 0;
@@ -867,6 +867,9 @@ public class VTServerConnection
   
   public void closeGraphicsStreams() throws IOException
   {
+    graphicsDirectImageInputStream.close();
+    graphicsHeavyImageDataInputStream.close();
+    graphicsFastImageDataInputStream.close();
     graphicsDirectImageOutputStream.close();
     graphicsHeavyImageDataOutputStream.close();
     graphicsFastImageDataOutputStream.close();

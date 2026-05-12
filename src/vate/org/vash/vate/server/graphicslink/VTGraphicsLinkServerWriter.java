@@ -206,14 +206,6 @@ public class VTGraphicsLinkServerWriter implements Runnable
     this.stopped = stopped;
     if (stopped)
     {
-      try
-      {
-        connection.closeGraphicsStreams();
-      }
-      catch (Throwable e)
-      {
-        // e.printStackTrace();
-      }
       synchronized (screenCaptureIntervalSynchronizer)
       {
         screenCaptureIntervalSynchronizer.notify();

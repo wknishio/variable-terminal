@@ -583,14 +583,6 @@ public class VTGraphicsLinkClientWriter implements Runnable
       {
         remoteInterface.stopAsynchronousRepainter();
       }
-      try
-      {
-        connection.closeGraphicsStreams();
-      }
-      catch (Throwable e)
-      {
-        // e.printStackTrace();
-      }
       synchronized (this)
       {
         notify();

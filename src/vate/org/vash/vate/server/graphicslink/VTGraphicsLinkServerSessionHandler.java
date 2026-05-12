@@ -40,7 +40,6 @@ public class VTGraphicsLinkServerSessionHandler implements Runnable
   {
     try
     {
-      session.getSession().getConnection().resetGraphicsStreams();
       if (session.verifySession())
       {
         session.sendInitialScreenSize();
@@ -50,11 +49,16 @@ public class VTGraphicsLinkServerSessionHandler implements Runnable
         session.waitThreads();
         session.endSession();
       }
+      else
+      {
+        session.getSession().getConnection().closeGraphicsStreams();
+      }
     }
     catch (Throwable e)
     {
       // e.printStackTrace();
     }
+    
 //    System.runFinalization();
     System.gc();
   }

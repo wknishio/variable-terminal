@@ -48,6 +48,7 @@ public class VTGraphicsLinkServerSession
     }
     try
     {
+      session.getConnection().resetGraphicsStreams();
       if (viewProviderInitialized && controlProviderInitialized)
       {
         session.getConnection().getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_SESSION_STARTED);
@@ -106,6 +107,7 @@ public class VTGraphicsLinkServerSession
   public void setStopped(boolean stopped)
   {
     writer.setStopped(stopped);
+    reader.setStopped(stopped);
   }
   
   public boolean isReadOnly()
@@ -148,6 +150,14 @@ public class VTGraphicsLinkServerSession
   public void tryStopThreads()
   {
     setStopped(true);
+    try
+    {
+      session.getConnection().closeGraphicsStreams();
+    }
+    catch (Throwable t)
+    {
+      
+    }
     if (session.getClipboardTransferTask().aliveThread())
     {
       session.getClipboardTransferTask().interruptThread();
@@ -185,6 +195,8 @@ public class VTGraphicsLinkServerSession
   {
     try
     {
+      //session.getConnection().closeGraphicsStreams();
+      //session.getConnection().resetGraphicsStreams();
       //session.getConnection().getGraphicsDirectImageDataOutputStream().close();
       //session.getConnection().getGraphicsDeflatedImageDataOutputStream().close();
       //session.getConnection().getGraphicsSnappedImageDataOutputStream().close();
