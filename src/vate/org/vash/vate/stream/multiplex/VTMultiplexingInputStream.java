@@ -250,8 +250,6 @@ public final class VTMultiplexingInputStream
   {
     VTMultiplexedInputStream stream;
     long hash;
-    long first;
-    long second;
     int type; 
     int number;
     int length;
@@ -271,21 +269,11 @@ public final class VTMultiplexingInputStream
       }
       if (length >= 0)
       {
-        first = stream.getFirstSequencer().nextLong();
-        second = stream.getSecondSequencer().nextLong();
-      }
-      else
-      {
-        first = stream.getThirdSequencer().nextLong();
-        second = stream.getFourthSequencer().nextLong();
-      }
-      if ((first ^ second ^ XXH3.hash64(packetDataBuffer, length)) != hash)
-      {
-        close();
-        return;
-      }
-      if (length > 0)
-      {
+        if ((stream.getFirstSequencer().nextLong() ^ stream.getSecondSequencer().nextLong() ^ XXH3.hash64(packetDataBuffer, length)) != hash)
+        {
+          close();
+          return;
+        }
         OutputStream out = stream.getOutputStream();
         try
         {
@@ -298,20 +286,28 @@ public final class VTMultiplexingInputStream
         }
         transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES + length);
       }
-      else if (length == -2)
-      {
-        close(type, number);
-        transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
-      }
-      else if (length == -3)
-      {
-        open(type, number);
-        transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
-      }
       else
       {
-        close();
-        return;
+        if ((stream.getThirdSequencer().nextLong() ^ stream.getFourthSequencer().nextLong() ^ XXH3.hash64(packetDataBuffer, length)) != hash)
+        {
+          close();
+          return;
+        }
+        if (length == -2)
+        {
+          close(type, number);
+          transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
+        }
+        else if (length == -3)
+        {
+          open(type, number);
+          transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
+        }
+        else
+        {
+          close();
+          return;
+        }
       }
     }
   }
