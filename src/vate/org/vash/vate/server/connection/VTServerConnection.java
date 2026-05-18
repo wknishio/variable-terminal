@@ -543,8 +543,8 @@ public class VTServerConnection
     this.digestedCredentials = digestedCredentials;
     exchangeNonces(true);
     cryptoEngine.initializeServerEngine(encryptionType, remoteNonce, localNonce, encryptionKey, digestedCredentials);
-    connectionInputStream = new BufferedInputStream(cryptoEngine.getDecryptedInputStream(connectionSocketInputStream, VTSystem.VT_CONNECTION_INPUT_PACKET_BUFFER_SIZE_BYTES), VTSystem.VT_CONNECTION_INPUT_PACKET_BUFFER_SIZE_BYTES);
-    connectionOutputStream = new BufferedOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream, VTSystem.VT_CONNECTION_OUTPUT_PACKET_BUFFER_SIZE_BYTES), VTSystem.VT_CONNECTION_OUTPUT_PACKET_BUFFER_SIZE_BYTES);
+    connectionInputStream = new BufferedInputStream(cryptoEngine.getDecryptedInputStream(connectionSocketInputStream, VTSystem.VT_CONNECTION_INPUT_BUFFER_SIZE_BYTES), VTSystem.VT_CONNECTION_INPUT_BUFFER_SIZE_BYTES);
+    connectionOutputStream = new BufferedOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream, VTSystem.VT_CONNECTION_OUTPUT_BUFFER_SIZE_BYTES), VTSystem.VT_CONNECTION_OUTPUT_BUFFER_SIZE_BYTES);
   }
   
   private void setMultiplexedStreams() throws IOException
@@ -580,8 +580,8 @@ public class VTServerConnection
     int inputChannel = 0;
     int outputChannel = 0;
     
-    multiplexedConnectionInputStream = new VTMultiplexingInputStream(connectionInputStream, true, VTSystem.VT_PACKET_DATA_SIZE_BYTES, VTSystem.VT_CHANNEL_PACKET_BUFFER_SIZE_BYTES, inputFirstSeed, inputSecondSeed, executorService, false);
-    multiplexedConnectionOutputStream = new VTMultiplexingOutputStream(connectionOutputStream, true, VTSystem.VT_PACKET_DATA_SIZE_BYTES, VTSystem.VT_CONNECTION_OUTPUT_PACKET_BUFFER_SIZE_BYTES, outputFirstSeed, outputSecondSeed, executorService);
+    multiplexedConnectionInputStream = new VTMultiplexingInputStream(connectionInputStream, true, VTSystem.VT_PACKET_DATA_SIZE_BYTES, VTSystem.VT_CHANNEL_BUFFER_SIZE_BYTES, inputFirstSeed, inputSecondSeed, executorService, false);
+    multiplexedConnectionOutputStream = new VTMultiplexingOutputStream(connectionOutputStream, true, VTSystem.VT_PACKET_DATA_SIZE_BYTES, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES, outputFirstSeed, outputSecondSeed, executorService);
     
     pingServerInputStream = multiplexedConnectionInputStream.linkInputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED | VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED, inputChannel++);
     pingServerOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED | VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED, outputChannel++);
