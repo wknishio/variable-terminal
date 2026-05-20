@@ -784,7 +784,7 @@ public class VTGraphicsLinkServerWriter implements Runnable
       if (jpgWriterParam.canWriteCompressed())
       {
         jpgWriterParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-        jpgWriterParam.setCompressionQuality(0.50f);
+        jpgWriterParam.setCompressionQuality(0.75f);
       }
       if (jpgWriterParam.canWriteProgressive())
       {
