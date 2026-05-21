@@ -305,17 +305,7 @@ public final class VTImageIO
           
           return image;
         }
-        if (colors == 64)
-        {
-          BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
-          
-          byte[] data = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
-          
-          decodeImage8(littleEndianInputStream, data, width, size);
-          
-          return image;
-        }
-        if (colors == 8)
+        if (colors == 64 || colors == 16 || colors == 8 || colors == 4)
         {
           BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
           
@@ -462,13 +452,7 @@ public final class VTImageIO
           
           encodeImage15(littleEndianOutputStream, data, width, size);
         }
-        if (colors == 64)
-        {
-          byte[] data = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
-          
-          encodeImage8(littleEndianOutputStream, data, width, size);
-        }
-        if (colors == 8)
+        if (colors == 64 || colors == 16 || colors == 8 || colors == 4)
         {
           byte[] data = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
           
