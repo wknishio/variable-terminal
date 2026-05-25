@@ -1536,7 +1536,7 @@ public class VTClientConfigurationDialog extends Dialog
         }
         catch (Throwable e)
         {
-          
+          client.setNatPort(null);
         }
         client.setEncryptionType(encryptionType.getParameter());
         try

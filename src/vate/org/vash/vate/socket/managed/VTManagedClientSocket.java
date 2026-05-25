@@ -258,6 +258,65 @@ public class VTManagedClientSocket
     }
   }
   
+  public VTManagedClientSocket(String host, int port, int natPort, VTProxy proxy)
+  {
+    vtclient = new VTClient(true, proxy);
+    vtclient.setDaemon(true);
+    vtclient.addSessionListener(new VTManagedClientSocketClientSessionListener());
+    vtclient.setSessionShell("N");
+    vtclient.setAddress(host);
+    vtclient.setPort(port);
+    vtclient.setNatPort(natPort);
+  }
+  
+  public VTManagedClientSocket(String host, int port, int natPort, String type, String key, VTProxy proxy)
+  {
+    vtclient = new VTClient(true, proxy);
+    vtclient.setDaemon(true);
+    vtclient.addSessionListener(new VTManagedClientSocketClientSessionListener());
+    vtclient.setSessionShell("N");
+    vtclient.setAddress(host);
+    vtclient.setPort(port);
+    vtclient.setNatPort(natPort);
+    vtclient.setEncryptionType(type);
+    try
+    {
+      if (key != null)
+      {
+        vtclient.setEncryptionKey(key.getBytes("UTF-8"));
+      }
+    }
+    catch (Throwable t)
+    {
+      
+    }
+  }
+  
+  public VTManagedClientSocket(String host, int port, int natPort, String type, String key, String user, String password, VTProxy proxy)
+  {
+    vtclient = new VTClient(true, proxy);
+    vtclient.setDaemon(true);
+    vtclient.addSessionListener(new VTManagedClientSocketClientSessionListener());
+    vtclient.setSessionShell("N");
+    vtclient.setAddress(host);
+    vtclient.setPort(port);
+    vtclient.setNatPort(natPort);
+    vtclient.setUser(user);
+    vtclient.setPassword(password);
+    vtclient.setEncryptionType(type);
+    try
+    {
+      if (key != null)
+      {
+        vtclient.setEncryptionKey(key.getBytes("UTF-8"));
+      }
+    }
+    catch (Throwable t)
+    {
+      
+    }
+  }
+  
   public VTManagedClientSocket(String host, int port, boolean active, VTProxy proxy)
   {
     vtclient = new VTClient(true, proxy);
@@ -301,6 +360,68 @@ public class VTManagedClientSocket
     vtclient.setSessionShell("N");
     vtclient.setAddress(host);
     vtclient.setPort(port);
+    vtclient.setUser(user);
+    vtclient.setPassword(password);
+    vtclient.setEncryptionType(type);
+    try
+    {
+      if (key != null)
+      {
+        vtclient.setEncryptionKey(key.getBytes("UTF-8"));
+      }
+    }
+    catch (Throwable t)
+    {
+      
+    }
+  }
+  
+  public VTManagedClientSocket(String host, int port, int natPort, boolean active, VTProxy proxy)
+  {
+    vtclient = new VTClient(true, proxy);
+    vtclient.setActive(active);
+    vtclient.setDaemon(true);
+    vtclient.addSessionListener(new VTManagedClientSocketClientSessionListener());
+    vtclient.setSessionShell("N");
+    vtclient.setAddress(host);
+    vtclient.setPort(port);
+    vtclient.setNatPort(natPort);
+  }
+  
+  public VTManagedClientSocket(String host, int port, int natPort, String type, String key, boolean active, VTProxy proxy)
+  {
+    vtclient = new VTClient(true, proxy);
+    vtclient.setActive(active);
+    vtclient.setDaemon(true);
+    vtclient.addSessionListener(new VTManagedClientSocketClientSessionListener());
+    vtclient.setSessionShell("N");
+    vtclient.setAddress(host);
+    vtclient.setPort(port);
+    vtclient.setNatPort(natPort);
+    vtclient.setEncryptionType(type);
+    try
+    {
+      if (key != null)
+      {
+        vtclient.setEncryptionKey(key.getBytes("UTF-8"));
+      }
+    }
+    catch (Throwable t)
+    {
+      
+    }
+  }
+  
+  public VTManagedClientSocket(String host, int port, int natPort, String type, String key, String user, String password, boolean active, VTProxy proxy)
+  {
+    vtclient = new VTClient(true, proxy);
+    vtclient.setActive(active);
+    vtclient.setDaemon(true);
+    vtclient.addSessionListener(new VTManagedClientSocketClientSessionListener());
+    vtclient.setSessionShell("N");
+    vtclient.setAddress(host);
+    vtclient.setPort(port);
+    vtclient.setNatPort(natPort);
     vtclient.setUser(user);
     vtclient.setPassword(password);
     vtclient.setEncryptionType(type);
@@ -399,6 +520,65 @@ public class VTManagedClientSocket
     }
   }
   
+  public VTManagedClientSocket(boolean managed, String host, int port, int natPort, VTProxy proxy)
+  {
+    vtclient = new VTClient(managed, proxy);
+    vtclient.setDaemon(true);
+    vtclient.addSessionListener(new VTManagedClientSocketClientSessionListener());
+    vtclient.setSessionShell("N");
+    vtclient.setAddress(host);
+    vtclient.setPort(port);
+    vtclient.setNatPort(natPort);
+  }
+  
+  public VTManagedClientSocket(boolean managed, String host, int port, int natPort, String type, String key, VTProxy proxy)
+  {
+    vtclient = new VTClient(managed, proxy);
+    vtclient.setDaemon(true);
+    vtclient.addSessionListener(new VTManagedClientSocketClientSessionListener());
+    vtclient.setSessionShell("N");
+    vtclient.setAddress(host);
+    vtclient.setPort(port);
+    vtclient.setNatPort(natPort);
+    vtclient.setEncryptionType(type);
+    try
+    {
+      if (key != null)
+      {
+        vtclient.setEncryptionKey(key.getBytes("UTF-8"));
+      }
+    }
+    catch (Throwable t)
+    {
+      
+    }
+  }
+  
+  public VTManagedClientSocket(boolean managed, String host, int port, int natPort, String type, String key, String user, String password, VTProxy proxy)
+  {
+    vtclient = new VTClient(managed, proxy);
+    vtclient.setDaemon(true);
+    vtclient.addSessionListener(new VTManagedClientSocketClientSessionListener());
+    vtclient.setSessionShell("N");
+    vtclient.setAddress(host);
+    vtclient.setPort(port);
+    vtclient.setNatPort(natPort);
+    vtclient.setUser(user);
+    vtclient.setPassword(password);
+    vtclient.setEncryptionType(type);
+    try
+    {
+      if (key != null)
+      {
+        vtclient.setEncryptionKey(key.getBytes("UTF-8"));
+      }
+    }
+    catch (Throwable t)
+    {
+      
+    }
+  }
+  
   public VTManagedClientSocket(boolean managed, String host, int port, boolean active, VTProxy proxy)
   {
     vtclient = new VTClient(managed, proxy);
@@ -442,6 +622,68 @@ public class VTManagedClientSocket
     vtclient.setSessionShell("N");
     vtclient.setAddress(host);
     vtclient.setPort(port);
+    vtclient.setUser(user);
+    vtclient.setPassword(password);
+    vtclient.setEncryptionType(type);
+    try
+    {
+      if (key != null)
+      {
+        vtclient.setEncryptionKey(key.getBytes("UTF-8"));
+      }
+    }
+    catch (Throwable t)
+    {
+      
+    }
+  }
+  
+  public VTManagedClientSocket(boolean managed, String host, int port, int natPort, boolean active, VTProxy proxy)
+  {
+    vtclient = new VTClient(managed, proxy);
+    vtclient.setActive(active);
+    vtclient.setDaemon(true);
+    vtclient.addSessionListener(new VTManagedClientSocketClientSessionListener());
+    vtclient.setSessionShell("N");
+    vtclient.setAddress(host);
+    vtclient.setPort(port);
+    vtclient.setNatPort(natPort);
+  }
+  
+  public VTManagedClientSocket(boolean managed, String host, int port, int natPort, String type, String key, boolean active, VTProxy proxy)
+  {
+    vtclient = new VTClient(managed, proxy);
+    vtclient.setActive(active);
+    vtclient.setDaemon(true);
+    vtclient.addSessionListener(new VTManagedClientSocketClientSessionListener());
+    vtclient.setSessionShell("N");
+    vtclient.setAddress(host);
+    vtclient.setPort(port);
+    vtclient.setNatPort(natPort);
+    vtclient.setEncryptionType(type);
+    try
+    {
+      if (key != null)
+      {
+        vtclient.setEncryptionKey(key.getBytes("UTF-8"));
+      }
+    }
+    catch (Throwable t)
+    {
+      
+    }
+  }
+  
+  public VTManagedClientSocket(boolean managed, String host, int port, int natPort, String type, String key, String user, String password, boolean active, VTProxy proxy)
+  {
+    vtclient = new VTClient(managed, proxy);
+    vtclient.setActive(active);
+    vtclient.setDaemon(true);
+    vtclient.addSessionListener(new VTManagedClientSocketClientSessionListener());
+    vtclient.setSessionShell("N");
+    vtclient.setAddress(host);
+    vtclient.setPort(port);
+    vtclient.setNatPort(natPort);
     vtclient.setUser(user);
     vtclient.setPassword(password);
     vtclient.setEncryptionType(type);
