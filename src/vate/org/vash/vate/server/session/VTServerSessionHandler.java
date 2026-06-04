@@ -3,7 +3,7 @@ package org.vash.vate.server.session;
 import java.util.Collection;
 
 import org.vash.vate.console.VTMainConsole;
-import org.vash.vate.monitor.VTDataMonitorConnection;
+import org.vash.vate.monitor.VTTrafficMonitorConnection;
 import org.vash.vate.server.VTServer;
 import org.vash.vate.server.authentication.VTServerAuthenticator;
 import org.vash.vate.server.connection.VTServerConnection;
@@ -80,7 +80,7 @@ public class VTServerSessionHandler implements Runnable
   private void processSession()
   {
     boolean started = false;
-    VTDataMonitorConnection dataConnection = null;
+    VTTrafficMonitorConnection trafficMonitorConnection = null;
     try
     {
       connection.startConnection();
@@ -110,10 +110,10 @@ public class VTServerSessionHandler implements Runnable
       {
         
       }
-      dataConnection = new VTDataMonitorConnection(connection.getMultiplexedConnectionInputStream(), connection.getMultiplexedConnectionOutputStream());
-      if (session.getServer().getMonitorService() != null)
+      trafficMonitorConnection = new VTTrafficMonitorConnection(connection.getMultiplexedConnectionInputStream(), connection.getMultiplexedConnectionOutputStream());
+      if (session.getServer().getTrafficMonitorService() != null)
       {
-        session.getServer().getMonitorService().addDataConnection(dataConnection);
+        session.getServer().getTrafficMonitorService().addMonitorConnection(trafficMonitorConnection);
       }
       session.waitSession();
       session.stopShell();
@@ -146,9 +146,9 @@ public class VTServerSessionHandler implements Runnable
         
       }
     }
-    if (dataConnection != null && session.getServer().getMonitorService() != null)
+    if (trafficMonitorConnection != null && session.getServer().getTrafficMonitorService() != null)
     {
-      session.getServer().getMonitorService().removeDataConnection(dataConnection);
+      session.getServer().getTrafficMonitorService().removeMonitorConnection(trafficMonitorConnection);
     }
     session.clearSessionCloseables();
   }

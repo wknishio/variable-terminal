@@ -3,12 +3,12 @@ package org.vash.vate.monitor;
 import org.vash.vate.stream.multiplex.VTMultiplexingInputStream;
 import org.vash.vate.stream.multiplex.VTMultiplexingOutputStream;
 
-public class VTDataMonitorConnection
+public class VTTrafficMonitorConnection
 {
   private final VTMultiplexingInputStream input;
   private final VTMultiplexingOutputStream output;
   
-  public VTDataMonitorConnection(VTMultiplexingInputStream input, VTMultiplexingOutputStream output)
+  public VTTrafficMonitorConnection(VTMultiplexingInputStream input, VTMultiplexingOutputStream output)
   {
     this.input = input;
     this.output = output;

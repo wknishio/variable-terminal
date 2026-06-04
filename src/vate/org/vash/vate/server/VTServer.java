@@ -20,8 +20,8 @@ import org.vash.vate.audio.VTAudioSystem;
 import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.exception.VTUncaughtExceptionHandler;
 import org.vash.vate.graphics.message.VTTrayIconInterface;
-import org.vash.vate.monitor.VTDataMonitorMenu;
-import org.vash.vate.monitor.VTDataMonitorService;
+import org.vash.vate.monitor.VTTrafficMonitorMenu;
+import org.vash.vate.monitor.VTTrafficMonitorService;
 import org.vash.vate.parser.VTArgumentParser;
 import org.vash.vate.parser.VTConfigurationProperties;
 import org.vash.vate.parser.VTPropertiesBuilder;
@@ -83,7 +83,7 @@ public class VTServer implements Runnable
   private int pingInterval = 0;
   private int reconnectTimeout = 0;
   private Future<?> runThread;
-  private VTDataMonitorService monitorService;
+  private VTTrafficMonitorService trafficMonitorService;
   private VTProxy proxy;
   
   private static final String VT_SERVER_SETTINGS_COMMENTS = 
@@ -148,9 +148,9 @@ public class VTServer implements Runnable
     return managed;
   }
   
-  public VTDataMonitorService getMonitorService()
+  public VTTrafficMonitorService getTrafficMonitorService()
   {
-    return monitorService;
+    return trafficMonitorService;
   }
   
   public void stop()
@@ -181,9 +181,9 @@ public class VTServer implements Runnable
     
     try
     {
-      if (monitorService != null)
+      if (trafficMonitorService != null)
       {
-        monitorService.close();
+        trafficMonitorService.close();
       }
     }
     catch (Throwable t)
@@ -2226,7 +2226,7 @@ public class VTServer implements Runnable
   
   private void runServer()
   {
-    monitorService = new VTDataMonitorService(executorService);
+    trafficMonitorService = new VTTrafficMonitorService(executorService);
     if (!VTMainConsole.isDaemon() && VTMainConsole.isGraphical())
     {
       VTMainConsole.initialize();
@@ -2235,8 +2235,8 @@ public class VTServer implements Runnable
       {
         connectionDialog = new VTServerSettingsDialog(VTMainConsole.getFrame(), "Variable-Terminal " + VTSystem.VT_VERSION + " - Server - Connection", true, this);
         inputMenuBar = new VTServerLocalGraphicalConsoleMenuBar(VTMainConsole.getConsoleInstance(), connectionDialog);
-        monitorService.addUploadMonitorPanel(new VTDataMonitorMenu(inputMenuBar.getUploadMonitorMenu()));
-        monitorService.addDownloadMonitorPanel(new VTDataMonitorMenu(inputMenuBar.getDownloadMonitorMenu()));
+        trafficMonitorService.addUploadMonitorPanel(new VTTrafficMonitorMenu(inputMenuBar.getUploadMonitorMenu()));
+        trafficMonitorService.addDownloadMonitorPanel(new VTTrafficMonitorMenu(inputMenuBar.getDownloadMonitorMenu()));
         VTMainConsole.getFrame().setMenuBar(inputMenuBar);
         VTMainConsole.getFrame().pack();
 //        try
@@ -2321,9 +2321,9 @@ public class VTServer implements Runnable
   
   public void run()
   {
-    if (monitorService != null)
+    if (trafficMonitorService != null)
     {
-      executorService.execute(monitorService);
+      executorService.execute(trafficMonitorService);
     }
     serverConnector = new VTServerConnector(this, new VTBlake3SecureRandom(new SecureRandom()), proxy, managed);
     serverConnector.setPassive(passive);

@@ -6,7 +6,7 @@ import org.vash.vate.client.VTClient;
 import org.vash.vate.client.authentication.VTClientAuthenticator;
 import org.vash.vate.client.connection.VTClientConnection;
 import org.vash.vate.console.VTMainConsole;
-import org.vash.vate.monitor.VTDataMonitorConnection;
+import org.vash.vate.monitor.VTTrafficMonitorConnection;
 
 public class VTClientSessionHandler implements Runnable
 {
@@ -72,7 +72,7 @@ public class VTClientSessionHandler implements Runnable
   private void processSession()
   {
     boolean started = false;
-    VTDataMonitorConnection dataConnection = null;
+    VTTrafficMonitorConnection trafficMonitorConnection = null;
     try
     {
       connection.startConnection();
@@ -100,10 +100,10 @@ public class VTClientSessionHandler implements Runnable
       {
         
       }
-      dataConnection = new VTDataMonitorConnection(connection.getMultiplexedConnectionInputStream(), connection.getMultiplexedConnectionOutputStream());
-      if (session.getClient().getMonitorService() != null)
+      trafficMonitorConnection = new VTTrafficMonitorConnection(connection.getMultiplexedConnectionInputStream(), connection.getMultiplexedConnectionOutputStream());
+      if (session.getClient().getTrafficMonitorService() != null)
       {
-        session.getClient().getMonitorService().addDataConnection(dataConnection);
+        session.getClient().getTrafficMonitorService().addMonitorConnection(trafficMonitorConnection);
       }
       session.waitSession();
       session.tryStopSessionThreads();
@@ -155,9 +155,9 @@ public class VTClientSessionHandler implements Runnable
         
       }
     }
-    if (dataConnection != null && session.getClient().getMonitorService() != null)
+    if (trafficMonitorConnection != null && session.getClient().getTrafficMonitorService() != null)
     {
-      session.getClient().getMonitorService().removeDataConnection(dataConnection);
+      session.getClient().getTrafficMonitorService().removeMonitorConnection(trafficMonitorConnection);
     }
     session.clearSessionCloseables();
   }

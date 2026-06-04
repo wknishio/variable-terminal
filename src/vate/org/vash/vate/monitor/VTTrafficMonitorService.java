@@ -10,7 +10,7 @@ import java.util.concurrent.ExecutorService;
 import org.vash.vate.ping.VTNanoPingListener;
 import org.vash.vate.task.VTTask;
 
-public class VTDataMonitorService extends VTTask implements VTNanoPingListener
+public class VTTrafficMonitorService extends VTTask implements VTNanoPingListener
 {
   private volatile long currentInput;
   private volatile long currentOutput;
@@ -23,11 +23,11 @@ public class VTDataMonitorService extends VTTask implements VTNanoPingListener
   private volatile long monitorNanoDelay = -1;
   @SuppressWarnings("unused")
   private volatile long monitorMilliDelay = -1;
-  private final ConcurrentLinkedQueue<VTDataMonitorConnection> connections = new ConcurrentLinkedQueue<VTDataMonitorConnection>();
-  private final ConcurrentLinkedQueue<VTDataMonitorPanel> uploadMonitorPanels = new ConcurrentLinkedQueue<VTDataMonitorPanel>();
-  private final ConcurrentLinkedQueue<VTDataMonitorPanel> downloadMonitorPanels = new ConcurrentLinkedQueue<VTDataMonitorPanel>();
+  private final ConcurrentLinkedQueue<VTTrafficMonitorConnection> connections = new ConcurrentLinkedQueue<VTTrafficMonitorConnection>();
+  private final ConcurrentLinkedQueue<VTTrafficMonitorPanel> uploadMonitorPanels = new ConcurrentLinkedQueue<VTTrafficMonitorPanel>();
+  private final ConcurrentLinkedQueue<VTTrafficMonitorPanel> downloadMonitorPanels = new ConcurrentLinkedQueue<VTTrafficMonitorPanel>();
   
-  public VTDataMonitorService(ExecutorService executorService)
+  public VTTrafficMonitorService(ExecutorService executorService)
   {
     super(executorService);
   }
@@ -47,32 +47,32 @@ public class VTDataMonitorService extends VTTask implements VTNanoPingListener
     }
   }
   
-  public void addDataConnection(VTDataMonitorConnection connection)
+  public void addMonitorConnection(VTTrafficMonitorConnection connection)
   {
     connections.add(connection);
   }
   
-  public void removeDataConnection(VTDataMonitorConnection connection)
+  public void removeMonitorConnection(VTTrafficMonitorConnection connection)
   {
     connections.remove(connection);
   }
   
-  public void addUploadMonitorPanel(VTDataMonitorPanel panel)
+  public void addUploadMonitorPanel(VTTrafficMonitorPanel panel)
   {
     uploadMonitorPanels.add(panel);
   }
   
-  public void removeUploadMonitorPanel(VTDataMonitorPanel panel)
+  public void removeUploadMonitorPanel(VTTrafficMonitorPanel panel)
   {
     uploadMonitorPanels.remove(panel);
   }
   
-  public void addDownloadMonitorPanel(VTDataMonitorPanel panel)
+  public void addDownloadMonitorPanel(VTTrafficMonitorPanel panel)
   {
     downloadMonitorPanels.add(panel);
   }
   
-  public void removeDownloadMonitorPanel(VTDataMonitorPanel panel)
+  public void removeDownloadMonitorPanel(VTTrafficMonitorPanel panel)
   {
     downloadMonitorPanels.remove(panel);
   }
@@ -103,7 +103,7 @@ public class VTDataMonitorService extends VTTask implements VTNanoPingListener
       }
       currentInput = 0;
       currentOutput = 0;
-      for (VTDataMonitorConnection connection : connections)
+      for (VTTrafficMonitorConnection connection : connections)
       {
         transferredInput = connection.getInput().getTransferredBytes();
         transferredOutput = connection.getOutput().getTransferredBytes();
@@ -128,7 +128,7 @@ public class VTDataMonitorService extends VTTask implements VTNanoPingListener
         String uploadMessage = "Tx: " + humanReadableByteCount(differenceOutput) + "/s";
         try
         {
-          for (VTDataMonitorPanel uploadMonitorPanel : uploadMonitorPanels)
+          for (VTTrafficMonitorPanel uploadMonitorPanel : uploadMonitorPanels)
           {
             uploadMonitorPanel.setMessage(uploadMessage);
           }
@@ -144,7 +144,7 @@ public class VTDataMonitorService extends VTTask implements VTNanoPingListener
         String downloadMessage = "Rx: " + humanReadableByteCount(differenceInput) + "/s";
         try
         {
-          for (VTDataMonitorPanel downloadMonitorPanel : downloadMonitorPanels)
+          for (VTTrafficMonitorPanel downloadMonitorPanel : downloadMonitorPanels)
           {
             downloadMonitorPanel.setMessage(downloadMessage);
           }
@@ -175,7 +175,7 @@ public class VTDataMonitorService extends VTTask implements VTNanoPingListener
   {
     lastInput = 0;
     lastOutput = 0;
-    for (VTDataMonitorConnection reset : connections)
+    for (VTTrafficMonitorConnection reset : connections)
     {
       reset.getInput().resetTransferredBytes();
       reset.getOutput().resetTransferredBytes();

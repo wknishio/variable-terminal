@@ -36,7 +36,7 @@ import org.vash.vate.graphics.control.VTAWTControlEvent;
 import org.vash.vate.graphics.control.VTAWTControlProvider;
 import org.vash.vate.graphics.device.VTGraphicalDeviceResolver;
 import org.vash.vate.graphics.font.VTFontManager;
-import org.vash.vate.monitor.VTDataMonitorMenu;
+import org.vash.vate.monitor.VTTrafficMonitorMenu;
 
 public class VTGraphicsLinkClientWriter implements Runnable
 {
@@ -1779,8 +1779,8 @@ public class VTGraphicsLinkClientWriter implements Runnable
   public void run()
   {
     createCustomCursor();
-    VTDataMonitorMenu uploadMonitorPanel = null;
-    VTDataMonitorMenu downloadMonitorPanel = null;
+    VTTrafficMonitorMenu uploadMonitorPanel = null;
+    VTTrafficMonitorMenu downloadMonitorPanel = null;
     try
     {
       if (VTMainConsole.isGraphical())
@@ -1808,12 +1808,12 @@ public class VTGraphicsLinkClientWriter implements Runnable
       frame.setLayout(frameLayout);
       frame.getInsets().set(0, 0, 0, 0);
       menuBar = new VTGraphicsLinkClientOptionsMenuBar(this, frame);
-      if (session.getSession().getClient().getMonitorService() != null)
+      if (session.getSession().getClient().getTrafficMonitorService() != null)
       {
-        uploadMonitorPanel = new VTDataMonitorMenu(menuBar.getUploadMonitorMenu());
-        downloadMonitorPanel = new VTDataMonitorMenu(menuBar.getDownloadMonitorMenu());
-        session.getSession().getClient().getMonitorService().addUploadMonitorPanel(uploadMonitorPanel);
-        session.getSession().getClient().getMonitorService().addDownloadMonitorPanel(downloadMonitorPanel);
+        uploadMonitorPanel = new VTTrafficMonitorMenu(menuBar.getUploadMonitorMenu());
+        downloadMonitorPanel = new VTTrafficMonitorMenu(menuBar.getDownloadMonitorMenu());
+        session.getSession().getClient().getTrafficMonitorService().addUploadMonitorPanel(uploadMonitorPanel);
+        session.getSession().getClient().getTrafficMonitorService().addDownloadMonitorPanel(downloadMonitorPanel);
       }
       scrolledMaybe = new VTGraphicsLinkClientWriterScrollPane(VTGraphicsLinkClientWriterScrollPane.SCROLLBARS_AS_NEEDED);
       scrolledMaybe.setBackground(Color.BLACK);
@@ -1949,13 +1949,13 @@ public class VTGraphicsLinkClientWriter implements Runnable
     {
       remoteInterface.stopAsynchronousRepainter();
     }
-    if (uploadMonitorPanel != null && session.getSession().getClient().getMonitorService() != null)
+    if (uploadMonitorPanel != null && session.getSession().getClient().getTrafficMonitorService() != null)
     {
-      session.getSession().getClient().getMonitorService().removeUploadMonitorPanel(uploadMonitorPanel);
+      session.getSession().getClient().getTrafficMonitorService().removeUploadMonitorPanel(uploadMonitorPanel);
     }
-    if (downloadMonitorPanel != null && session.getSession().getClient().getMonitorService() != null)
+    if (downloadMonitorPanel != null && session.getSession().getClient().getTrafficMonitorService() != null)
     {
-      session.getSession().getClient().getMonitorService().removeDownloadMonitorPanel(downloadMonitorPanel);
+      session.getSession().getClient().getTrafficMonitorService().removeDownloadMonitorPanel(downloadMonitorPanel);
     }
     if (frame != null)
     {
