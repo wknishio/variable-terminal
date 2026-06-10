@@ -1,6 +1,5 @@
 package org.vash.vate.server.screenshot;
 
-import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
@@ -29,15 +28,12 @@ import org.vash.vate.VTSystem;
 import org.vash.vate.com.pngencoder.PngEncoder;
 import org.vash.vate.graphics.capture.VTAWTScreenCaptureProvider;
 import org.vash.vate.graphics.device.VTGraphicalDeviceResolver;
-import org.vash.vate.graphics.image.VTImageIO;
 import org.vash.vate.server.connection.VTServerConnection;
 import org.vash.vate.server.session.VTServerSession;
 import org.vash.vate.task.VTTask;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-// import org.eclipse.swt.SWT;
 
 public class VTServerScreenshotTask extends VTTask
 {
@@ -52,21 +48,15 @@ public class VTServerScreenshotTask extends VTTask
   private File screenshotFile;
   private GregorianCalendar clock;
   private VTServerConnection connection;
-  // private VTServerSession session;
   private VTAWTScreenCaptureProvider screenshotProvider;
   private PngEncoder pngEncoder;
-  private BufferedImage convertedImage = null;
-  private Graphics2D convertedGraphics = null;
-  private DataBuffer recyclableDataBuffer;
   private ImageWriter jpgWriter;
   private ImageWriteParam jpgWriterParam;
   private ImageOutputStream jpgImageOutputStream;
-  // private VTServerGraphicsResource graphicsResource;
   
   public VTServerScreenshotTask(VTServerSession session)
   {
     super(session.getExecutorService());
-    // this.session = session;
     this.connection = session.getConnection();
     this.screenshotProvider = session.getScreenshotProvider();
     this.drawPointer = false;
@@ -79,9 +69,6 @@ public class VTServerScreenshotTask extends VTTask
     try
     {
       this.pngEncoder = new PngEncoder().withCompressionLevel(Deflater.BEST_SPEED + 3);
-      //this.pngEncoder = new PngEncoder(PngEncoder.COLOR_TRUECOLOR, PngEncoder.BEST_SPEED);
-      //this.pngEncoder.setIndexedColorMode(PngEncoder.INDEXED_COLORS_ORIGINAL);
-      
       this.jpgWriter = ImageIO.getImageWritersByFormatName("jpeg").next();
       this.jpgWriterParam = jpgWriter.getDefaultWriteParam();
       if (jpgWriterParam.canWriteCompressed())
@@ -102,47 +89,11 @@ public class VTServerScreenshotTask extends VTTask
     {
       //t.printStackTrace();
     }
-    // this.screenshotProvider.setGraphicsDevice(null);
-    // this.provider = new
-    // VTSWTScreenshotProvider(session.getServer().getGraphics());
   }
   
   public void dispose()
   {
     pngEncoder = null;
-    if (convertedImage != null)
-    {
-      try
-      {
-        convertedImage.flush();
-      }
-      catch (Throwable t)
-      {
-        
-      }
-      convertedImage = null;
-    }
-    if (convertedGraphics != null)
-    {
-      try
-      {
-        convertedGraphics.dispose();
-      }
-      catch (Throwable t)
-      {
-        
-      }
-      convertedGraphics = null;
-    }
-    if (recyclableDataBuffer != null)
-    {
-      recyclableDataBuffer = null;
-    }
-    // if (screenshotProvider != null)
-    // {
-    // screenshotProvider.dispose();
-    // }
-    // screenshotProvider = null;
   }
   
   public boolean isFinished()
@@ -231,8 +182,6 @@ public class VTServerScreenshotTask extends VTTask
       }
       connection.getResultWriter().write("\rVT>Screen capture on server starting...\nVT>");
       connection.getResultWriter().flush();
-      // provider.initialize();
-      // clock.setTimeInMillis(System.currentTimeMillis());
       clock.setTime(Calendar.getInstance().getTime());
       if (useJPG)
       {
@@ -242,38 +191,23 @@ public class VTServerScreenshotTask extends VTTask
       {
         screenshotFile = new File(firstFormat.format(clock.getTime()) + "-" + clock.get(GregorianCalendar.YEAR) + "-" + secondFormat.format(clock.getTime()) + ".png");
       }
-      
       photoOutputStream = new BufferedOutputStream(Channels.newOutputStream(new FileOutputStream(screenshotFile).getChannel()), fileScreenshotBufferSize);
-      // screenshotProvider.writeHighQualityScreenshot(photoOutputStream,
-      // SWT.IMAGE_BMP);
       BufferedImage screenCapture = screenshotProvider.createScreenCapture(0, drawPointer);
-      //int lastColors = screenshotProvider.getColorCount();
-      
       if (useJPG)
       {
         if (screenshotProvider.getColorCount() == 16 || screenshotProvider.getColorCount() == 8 || screenshotProvider.getColorCount() == 4)
         {
           jpgWriterParam.setDestinationType(ImageTypeSpecifier.createFromBufferedImageType(BufferedImage.TYPE_BYTE_GRAY));
-          IIOMetadata jpgWriterMetadata = setJpegSubsamplingMode444(jpgWriter.getDefaultImageMetadata(ImageTypeSpecifier.createFromRenderedImage(screenCapture), jpgWriterParam));
-          convertedImage = VTImageIO.createImage(0, 0, screenCapture.getWidth(), screenCapture.getHeight(), BufferedImage.TYPE_BYTE_GRAY, 0, recyclableDataBuffer);
-          recyclableDataBuffer = convertedImage.getRaster().getDataBuffer();
-          convertedGraphics = convertedImage.createGraphics();
-          convertedGraphics.setRenderingHints(VTSystem.VT_GRAPHICS_RENDERING_HINTS);
-          convertedGraphics.drawImage(screenCapture, 0, 0, null);
-          jpgImageOutputStream = ImageIO.createImageOutputStream(photoOutputStream);
-          jpgWriter.setOutput(jpgImageOutputStream);
-          jpgWriter.write(jpgWriterMetadata, new IIOImage(convertedImage, null, jpgWriterMetadata), jpgWriterParam);
-          jpgImageOutputStream.flush();
         }
         else
         {
           jpgWriterParam.setDestinationType(jpgWriter.getDefaultWriteParam().getDestinationType());
-          IIOMetadata jpgWriterMetadata = setJpegSubsamplingMode444(jpgWriter.getDefaultImageMetadata(ImageTypeSpecifier.createFromRenderedImage(screenCapture), jpgWriterParam));
-          jpgImageOutputStream = ImageIO.createImageOutputStream(photoOutputStream);
-          jpgWriter.setOutput(jpgImageOutputStream);
-          jpgWriter.write(jpgWriterMetadata, new IIOImage(screenCapture, null, jpgWriterMetadata), jpgWriterParam);
-          jpgImageOutputStream.flush();
         }
+        IIOMetadata jpgWriterMetadata = setJpegSubsamplingMode444(jpgWriter.getDefaultImageMetadata(ImageTypeSpecifier.createFromRenderedImage(screenCapture), jpgWriterParam));
+        jpgImageOutputStream = ImageIO.createImageOutputStream(photoOutputStream);
+        jpgWriter.setOutput(jpgImageOutputStream);
+        jpgWriter.write(jpgWriterMetadata, new IIOImage(screenCapture, null, jpgWriterMetadata), jpgWriterParam);
+        jpgImageOutputStream.flush();
       }
       else
       {
@@ -294,10 +228,7 @@ public class VTServerScreenshotTask extends VTTask
           pngEncoder.encode(screenCapture, photoOutputStream);
         }
       }
-      
       photoOutputStream.flush();
-      // photoOutputStream.close();
-      // provider.dispose();
       synchronized (this)
       {
         connection.getResultWriter().write("\rVT>Screen capture on server saved in:\nVT>[" + screenshotFile.getAbsolutePath() + "]\nVT>");
@@ -343,30 +274,6 @@ public class VTServerScreenshotTask extends VTTask
       {
         
       }
-    }
-    if (convertedImage != null)
-    {
-      try
-      {
-        convertedImage.flush();
-      }
-      catch (Throwable t)
-      {
-        
-      }
-      convertedImage = null;
-    }
-    if (convertedGraphics != null)
-    {
-      try
-      {
-        convertedGraphics.dispose();
-      }
-      catch (Throwable t)
-      {
-        
-      }
-      convertedGraphics = null;
     }
 //    System.runFinalization();
 //    System.gc();

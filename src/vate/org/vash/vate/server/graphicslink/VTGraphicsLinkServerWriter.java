@@ -1,7 +1,6 @@
 package org.vash.vate.server.graphicslink;
 
 import java.awt.Dimension;
-import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
@@ -65,8 +64,6 @@ public class VTGraphicsLinkServerWriter implements Runnable
   private VTRectangle resultArea;
   private double captureScale;
   private BufferedImage imageDataBuffer;
-  private BufferedImage convertedDataBuffer;
-  private Graphics2D convertedGraphics;
   private GraphicsDevice nextDevice;
   private GraphicsDevice currentDevice;
   private VTByteArrayOutputStream imageOutputBuffer = new VTByteArrayOutputStream(IMAGE_OUTPUT_BUFFER_SIZE);
@@ -79,7 +76,6 @@ public class VTGraphicsLinkServerWriter implements Runnable
   private ImageWriteParam jpgWriterParam;
   private ImageOutputStream jpgImageOutputStream;
   private PngEncoder pngEncoder;
-  private DataBuffer recyclableDataBuffer;
   // private long startTime, endTime, total, number;
   
   public VTGraphicsLinkServerWriter(VTGraphicsLinkServerSession session)
@@ -153,32 +149,6 @@ public class VTGraphicsLinkServerWriter implements Runnable
     pngEncoder = null;
     jpgWriter = null;
     jpgWriterParam = null;
-    
-    if (convertedDataBuffer != null)
-    {
-      try
-      {
-        convertedDataBuffer.flush();
-      }
-      catch (Throwable t)
-      {
-        
-      }
-      convertedDataBuffer = null;
-    }
-    
-    if (convertedGraphics != null)
-    {
-      try
-      {
-        convertedGraphics.dispose();
-      }
-      catch (Throwable t)
-      {
-        
-      }
-      convertedGraphics = null;
-    }
   }
   
   public boolean isStopped()
@@ -317,12 +287,6 @@ public class VTGraphicsLinkServerWriter implements Runnable
     {
       if (lastColors == 16 || lastColors == 8 || lastColors == 4)
       {
-        convertedDataBuffer = VTImageIO.createImage(0, 0, lastWidth, lastHeight, BufferedImage.TYPE_BYTE_GRAY, 0, recyclableDataBuffer);
-        recyclableDataBuffer = convertedDataBuffer.getRaster().getDataBuffer();
-        convertedGraphics = convertedDataBuffer.createGraphics();
-        convertedGraphics.setRenderingHints(VTSystem.VT_GRAPHICS_RENDERING_HINTS);
-        convertedGraphics.drawImage(imageDataBuffer, 0, 0, null);
-        imageDataBuffer = convertedDataBuffer;
         jpgWriterParam.setDestinationType(ImageTypeSpecifier.createFromBufferedImageType(BufferedImage.TYPE_BYTE_GRAY));
       }
       else
@@ -441,15 +405,6 @@ public class VTGraphicsLinkServerWriter implements Runnable
     {
       if (lastColors == 16 || lastColors == 8 || lastColors == 4)
       {
-        if (convertedDataBuffer == null || convertedDataBuffer.getType() != BufferedImage.TYPE_BYTE_GRAY)
-        {
-          convertedDataBuffer = VTImageIO.createImage(0, 0, lastWidth, lastHeight, BufferedImage.TYPE_BYTE_GRAY, 0, recyclableDataBuffer);
-          recyclableDataBuffer = convertedDataBuffer.getRaster().getDataBuffer();
-          convertedGraphics = convertedDataBuffer.createGraphics();
-          convertedGraphics.setRenderingHints(VTSystem.VT_GRAPHICS_RENDERING_HINTS);
-        }
-        convertedGraphics.drawImage(imageDataBuffer, 0, 0, null);
-        imageDataBuffer = convertedDataBuffer;
         jpgWriterParam.setDestinationType(ImageTypeSpecifier.createFromBufferedImageType(BufferedImage.TYPE_BYTE_GRAY));
       }
       else
@@ -957,30 +912,6 @@ public class VTGraphicsLinkServerWriter implements Runnable
                   lastColors = viewProvider.getColorCount();
                   lastDataType = imageDataBuffer.getRaster().getDataBuffer().getDataType();
                   lastImageCoding = imageCoding;
-                  if (convertedDataBuffer != null)
-                  {
-                    try
-                    {
-                      convertedDataBuffer.flush();
-                    }
-                    catch (Throwable t)
-                    {
-                      
-                    }
-                    convertedDataBuffer = null;
-                  }
-                  if (convertedGraphics != null)
-                  {
-                    try
-                    {
-                      convertedGraphics.dispose();
-                    }
-                    catch (Throwable t)
-                    {
-                      
-                    }
-                    convertedGraphics = null;
-                  }
                   if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)
                   {
                     lastImageBufferByte = ((DataBufferByte) imageDataBuffer.getRaster().getDataBuffer()).getData();
