@@ -729,10 +729,9 @@ public class VTGraphicsLinkServerWriter implements Runnable
     
     try
     {
-      pngEncoder = new PngEncoder().withCompressionLevel(Deflater.BEST_SPEED + 3);
+      pngEncoder = new PngEncoder().withCompressionLevel(Deflater.BEST_SPEED + 2);
       //pngEncoder = new PngEncoder(PngEncoder.COLOR_INDEXED, PngEncoder.BEST_SPEED);
       //pngEncoder.setIndexedColorMode(PngEncoder.INDEXED_COLORS_ORIGINAL);
-      
       jpgImageOutputStream = ImageIO.createImageOutputStream(imageOutputBuffer);
       jpgWriter = ImageIO.getImageWritersByFormatName("jpeg").next();
       jpgWriterParam = jpgWriter.getDefaultWriteParam();

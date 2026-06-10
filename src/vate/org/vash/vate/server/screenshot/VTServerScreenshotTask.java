@@ -68,7 +68,7 @@ public class VTServerScreenshotTask extends VTTask
     this.useJPG = false;
     try
     {
-      this.pngEncoder = new PngEncoder().withCompressionLevel(Deflater.BEST_SPEED + 3);
+      this.pngEncoder = new PngEncoder().withCompressionLevel(Deflater.BEST_SPEED + 2);
       this.jpgWriter = ImageIO.getImageWritersByFormatName("jpeg").next();
       this.jpgWriterParam = jpgWriter.getDefaultWriteParam();
       if (jpgWriterParam.canWriteCompressed())
