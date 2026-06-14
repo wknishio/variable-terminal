@@ -288,7 +288,7 @@ public final class VTMultiplexingInputStream
       }
       else
       {
-        if ((stream.getThirdSequencer().nextLong() ^ stream.getFourthSequencer().nextLong() ^ XXH3.hash64(packetDataBuffer, length)) != hash)
+        if ((stream.getThirdSequencer().nextLong() ^ stream.getFourthSequencer().nextLong() ^ length) != hash)
         {
           close();
           return;
@@ -296,18 +296,17 @@ public final class VTMultiplexingInputStream
         if (length == -2)
         {
           close(type, number);
-          transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
         }
         else if (length == -3)
         {
           open(type, number);
-          transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
         }
         else
         {
           close();
           return;
         }
+        transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
       }
     }
   }
