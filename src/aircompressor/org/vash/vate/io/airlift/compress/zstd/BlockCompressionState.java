@@ -34,6 +34,9 @@ class BlockCompressionState
 
     public void slideWindow(int slideWindowSize)
     {
+        // if new value is negative, set it to zero branchless
+        windowBaseOffset = windowBaseOffset - slideWindowSize;
+        windowBaseOffset = windowBaseOffset & (~(windowBaseOffset >> 31));
         for (int i = 0; i < hashTable.length; i++) {
             int newValue = hashTable[i] - slideWindowSize;
             // if new value is negative, set it to zero branchless

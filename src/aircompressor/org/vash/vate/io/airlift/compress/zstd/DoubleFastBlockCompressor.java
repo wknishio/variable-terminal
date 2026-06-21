@@ -37,6 +37,7 @@ class DoubleFastBlockCompressor
     
     public int compressBlockMinMatch(Object inputBase, final long inputAddress, int inputSize, SequenceStore output, BlockCompressionState state, RepeatedOffsets offsets, CompressionParameters parameters)
     {
+        final int matchSearchLength = 3;
         //final int matchSearchLength = 3;
 
         // Offsets in hash tables are relative to baseAddress. Hash tables can be reused across calls to compressBlock as long as
@@ -79,7 +80,7 @@ class DoubleFastBlockCompressor
         }
 
         while (input < inputLimit) {   // < instead of <=, because repcode check at (input+1)
-            int shortHash = hash(inputBase, input, shortHashBits, MIN_MATCH);
+            int shortHash = hash(inputBase, input, shortHashBits, matchSearchLength);
             long shortMatchAddress = baseAddress + shortHashTable[shortHash];
 
             int longHash = hash8(UnsafeUtils.getLong(inputBase, input), longHashBits);
@@ -157,10 +158,10 @@ class DoubleFastBlockCompressor
             if (input <= inputLimit) {
                 // Fill Table
                 longHashTable[hash8(UnsafeUtils.getLong(inputBase, baseAddress + current + 2), longHashBits)] = current + 2;
-                shortHashTable[hash(inputBase, baseAddress + current + 2, shortHashBits, MIN_MATCH)] = current + 2;
+                shortHashTable[hash(inputBase, baseAddress + current + 2, shortHashBits, matchSearchLength)] = current + 2;
 
                 longHashTable[hash8(UnsafeUtils.getLong(inputBase, input - 2), longHashBits)] = (int) (input - 2 - baseAddress);
-                shortHashTable[hash(inputBase, input - 2, shortHashBits, MIN_MATCH)] = (int) (input - 2 - baseAddress);
+                shortHashTable[hash(inputBase, input - 2, shortHashBits, matchSearchLength)] = (int) (input - 2 - baseAddress);
 
                 while (input <= inputLimit && offset2 > 0 && UnsafeUtils.getSubInt(inputBase, input) == UnsafeUtils.getSubInt(inputBase, input - offset2)) {
                     int repetitionLength = count(inputBase, input + MIN_MATCH, inputEnd, input + MIN_MATCH - offset2) + MIN_MATCH;
@@ -170,7 +171,7 @@ class DoubleFastBlockCompressor
                     offset2 = offset1;
                     offset1 = temp;
 
-                    shortHashTable[hash(inputBase, input, shortHashBits, MIN_MATCH)] = (int) (input - baseAddress);
+                    shortHashTable[hash(inputBase, input, shortHashBits, matchSearchLength)] = (int) (input - baseAddress);
                     longHashTable[hash8(UnsafeUtils.getLong(inputBase, input), longHashBits)] = (int) (input - baseAddress);
 
                     output.storeSequence(inputBase, anchor, 0, 0, repetitionLength - MIN_MATCH);
