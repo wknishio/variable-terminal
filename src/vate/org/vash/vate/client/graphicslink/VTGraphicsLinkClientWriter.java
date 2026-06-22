@@ -899,7 +899,7 @@ public class VTGraphicsLinkClientWriter implements Runnable
     }
   }
   
-  public void synchronizeColorQuality()
+  public void sendColorQuality()
   {
     try
     {
@@ -955,7 +955,6 @@ public class VTGraphicsLinkClientWriter implements Runnable
       {
         connection.getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_IMAGE_COLOR_QUALITY_64);
       }
-      connection.getGraphicsControlDataOutputStream().flush();
     }
     catch (IOException e)
     {
@@ -969,7 +968,7 @@ public class VTGraphicsLinkClientWriter implements Runnable
     }
   }
   
-  public void synchronizeImageCoding()
+  public void sendImageCoding()
   {
     try
     {
@@ -1095,7 +1094,7 @@ public class VTGraphicsLinkClientWriter implements Runnable
     }
   }
   
-  public void synchronizeScreenCaptureArea()
+  public void sendScreenCaptureArea()
   {
     try
     {
