@@ -64,19 +64,8 @@ class BitInputStream
      */
     public static long peekBits(int bitsConsumed, long bitContainer, int numberOfBits)
     {
-      //return (((bitContainer << bitsConsumed) >>> 1) >>> (63 - numberOfBits));
-      return ((1L << numberOfBits) - 1) & ((bitContainer << bitsConsumed) >>> (64 - numberOfBits));
+      return ((1L << numberOfBits) - 1) & (bitContainer >>> (64 - bitsConsumed - numberOfBits));
     }
-    
-    //return ((1L << numberOfBits) - 1) & (bitContainer >>> (64 - bitsConsumed - numberOfBits));
-    
-    //
-    //if (numberOfBits <= 0)
-    //{
-      //return 0;
-    //}
-    //return ((bitContainer << bitsConsumed) >>> (64 - numberOfBits));
-    //return (((bitContainer << bitsConsumed) >>> 1) >>> (63 - numberOfBits));
 
     /**
      * numberOfBits must be > 0
