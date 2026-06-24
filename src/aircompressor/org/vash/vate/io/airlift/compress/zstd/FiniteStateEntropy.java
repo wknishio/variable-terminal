@@ -212,9 +212,9 @@ class FiniteStateEntropy
             input--;
             state2 = table.encode(stream, state2, UnsafeUtils.getByte(inputBase, input));
 
-            if (SIZE_OF_LONG * 8 < MAX_TABLE_LOG * 2 + 7) {
-                stream.flush();
-            }
+//            if (SIZE_OF_LONG * 8 < MAX_TABLE_LOG * 2 + 7) {
+//                stream.flush();
+//            }
 
             input--;
             state1 = table.encode(stream, state1, UnsafeUtils.getByte(inputBase, input));
