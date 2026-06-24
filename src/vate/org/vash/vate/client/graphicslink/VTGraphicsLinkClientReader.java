@@ -559,21 +559,6 @@ public class VTGraphicsLinkClientReader implements Runnable
             {
               if (currentDataType == DataBuffer.TYPE_BYTE)
               {
-                vtCustomCodec.decodeFrame8(connection.getGraphicsFastImageDataInputStream(), null, lastImageBufferByte, width, height);
-              }
-              else if (currentDataType == DataBuffer.TYPE_USHORT)
-              {
-                vtCustomCodec.decodeFrame15(connection.getGraphicsFastImageDataInputStream(), null, lastImageBufferUShort, width, height);
-              }
-              else if (currentDataType == DataBuffer.TYPE_INT)
-              {
-                vtCustomCodec.decodeFrame24(connection.getGraphicsFastImageDataInputStream(), null, lastImageBufferInt, width, height);
-              }
-            }
-            else
-            {
-              if (currentDataType == DataBuffer.TYPE_BYTE)
-              {
                 vtCustomCodec.decodeFrame8(connection.getGraphicsHeavyImageDataInputStream(), null, lastImageBufferByte, width, height);
               }
               else if (currentDataType == DataBuffer.TYPE_USHORT)
@@ -583,6 +568,21 @@ public class VTGraphicsLinkClientReader implements Runnable
               else if (currentDataType == DataBuffer.TYPE_INT)
               {
                 vtCustomCodec.decodeFrame24(connection.getGraphicsHeavyImageDataInputStream(), null, lastImageBufferInt, width, height);
+              }
+            }
+            else
+            {
+              if (currentDataType == DataBuffer.TYPE_BYTE)
+              {
+                vtCustomCodec.decodeFrame8(connection.getGraphicsFastImageDataInputStream(), null, lastImageBufferByte, width, height);
+              }
+              else if (currentDataType == DataBuffer.TYPE_USHORT)
+              {
+                vtCustomCodec.decodeFrame15(connection.getGraphicsFastImageDataInputStream(), null, lastImageBufferUShort, width, height);
+              }
+              else if (currentDataType == DataBuffer.TYPE_INT)
+              {
+                vtCustomCodec.decodeFrame24(connection.getGraphicsFastImageDataInputStream(), null, lastImageBufferInt, width, height);
               }
             }
             writer.refreshRemoteGraphics(currentImageDataBuffer);
@@ -607,22 +607,6 @@ public class VTGraphicsLinkClientReader implements Runnable
               currentDataType = currentImageDataBuffer.getRaster().getDataBuffer().getDataType();
               if (currentDataType == DataBuffer.TYPE_BYTE)
               {
-                vtCustomCodec.decodeFrame8(connection.getGraphicsFastImageDataInputStream(), null, lastImageBufferByte, currentImageDataBuffer.getWidth(), currentImageDataBuffer.getHeight());
-              }
-              else if (currentDataType == DataBuffer.TYPE_USHORT)
-              {
-                vtCustomCodec.decodeFrame15(connection.getGraphicsFastImageDataInputStream(), null, lastImageBufferUShort, currentImageDataBuffer.getWidth(), currentImageDataBuffer.getHeight());
-              }
-              else if (currentDataType == DataBuffer.TYPE_INT)
-              {
-                vtCustomCodec.decodeFrame24(connection.getGraphicsFastImageDataInputStream(), null, lastImageBufferInt, currentImageDataBuffer.getWidth(), currentImageDataBuffer.getHeight());
-              }
-            }
-            else
-            {
-              currentDataType = currentImageDataBuffer.getRaster().getDataBuffer().getDataType();
-              if (currentDataType == DataBuffer.TYPE_BYTE)
-              {
                 vtCustomCodec.decodeFrame8(connection.getGraphicsHeavyImageDataInputStream(), null, lastImageBufferByte, currentImageDataBuffer.getWidth(), currentImageDataBuffer.getHeight());
               }
               else if (currentDataType == DataBuffer.TYPE_USHORT)
@@ -632,6 +616,22 @@ public class VTGraphicsLinkClientReader implements Runnable
               else if (currentDataType == DataBuffer.TYPE_INT)
               {
                 vtCustomCodec.decodeFrame24(connection.getGraphicsHeavyImageDataInputStream(), null, lastImageBufferInt, currentImageDataBuffer.getWidth(), currentImageDataBuffer.getHeight());
+              }
+            }
+            else
+            {
+              currentDataType = currentImageDataBuffer.getRaster().getDataBuffer().getDataType();
+              if (currentDataType == DataBuffer.TYPE_BYTE)
+              {
+                vtCustomCodec.decodeFrame8(connection.getGraphicsFastImageDataInputStream(), null, lastImageBufferByte, currentImageDataBuffer.getWidth(), currentImageDataBuffer.getHeight());
+              }
+              else if (currentDataType == DataBuffer.TYPE_USHORT)
+              {
+                vtCustomCodec.decodeFrame15(connection.getGraphicsFastImageDataInputStream(), null, lastImageBufferUShort, currentImageDataBuffer.getWidth(), currentImageDataBuffer.getHeight());
+              }
+              else if (currentDataType == DataBuffer.TYPE_INT)
+              {
+                vtCustomCodec.decodeFrame24(connection.getGraphicsFastImageDataInputStream(), null, lastImageBufferInt, currentImageDataBuffer.getWidth(), currentImageDataBuffer.getHeight());
               }
             }
             writer.differenceRemoteGraphics(currentImageDataBuffer);
