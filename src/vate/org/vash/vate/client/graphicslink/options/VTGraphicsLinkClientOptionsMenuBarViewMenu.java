@@ -315,8 +315,8 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
     // this.imageFormatMenu.add(colorCodingMenu);
     this.imageFormatMenu.add(imageCodingZSTDOption);
     this.imageFormatMenu.add(imageCodingDEFLATEOption);
-    this.imageFormatMenu.add(imageCodingJPGOption);
     this.imageFormatMenu.add(imageCodingPNGOption);
+    this.imageFormatMenu.add(imageCodingJPGOption);
     // this.imageFormatMenu.add(imageCodingGIFOption);
     
     this.add(refreshModeMenu);
