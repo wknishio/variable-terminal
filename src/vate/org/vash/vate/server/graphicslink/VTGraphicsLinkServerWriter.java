@@ -281,6 +281,16 @@ public class VTGraphicsLinkServerWriter implements Runnable
     List<VTRectangle> blockAreas = VTImageDataUtils.splitBlockArea(imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea, 16, 16);
     //System.out.println("blocks_before:" + blockAreas.size());
     blockAreas = VTImageDataUtils.mergeNeighbourAreas(blockAreas);
+    VTRectangle maxBlockArea = null;
+    int maxBlockAreaSize = 0;
+    for (VTRectangle blockArea : blockAreas)
+    {
+      if (blockArea.width * blockArea.height > maxBlockAreaSize)
+      {
+        maxBlockArea = blockArea;
+        maxBlockAreaSize = blockArea.width * blockArea.height;
+      }
+    }
     //System.out.println("blocks_after:" + blockAreas.size());
     connection.getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_IMAGE_STANDARD_REFRESH_FRAME);
     if (imageCoding == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_JPG)
@@ -309,6 +319,8 @@ public class VTGraphicsLinkServerWriter implements Runnable
       connection.getGraphicsControlDataOutputStream().writeInt(imageDataBuffer.getWidth());
       connection.getGraphicsControlDataOutputStream().writeInt(imageDataBuffer.getHeight());
       connection.getGraphicsControlDataOutputStream().writeInt(blockAreas.size());
+      connection.getGraphicsControlDataOutputStream().writeInt(maxBlockArea.width);
+      connection.getGraphicsControlDataOutputStream().writeInt(maxBlockArea.height);
       connection.getGraphicsControlDataOutputStream().flush();
       for (VTRectangle blockArea : blockAreas)
       {
@@ -318,6 +330,8 @@ public class VTGraphicsLinkServerWriter implements Runnable
         connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
         connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.x);
         connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.y);
+        connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.width);
+        connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.height);
         imageOutputBuffer.writeTo(connection.getGraphicsDirectImageDataOutputStream());
       }
       connection.getGraphicsDirectImageDataOutputStream().flush();
@@ -330,50 +344,21 @@ public class VTGraphicsLinkServerWriter implements Runnable
       connection.getGraphicsControlDataOutputStream().writeInt(imageDataBuffer.getWidth());
       connection.getGraphicsControlDataOutputStream().writeInt(imageDataBuffer.getHeight());
       connection.getGraphicsControlDataOutputStream().writeInt(blockAreas.size());
+      connection.getGraphicsControlDataOutputStream().writeInt(maxBlockArea.width);
+      connection.getGraphicsControlDataOutputStream().writeInt(maxBlockArea.height);
       connection.getGraphicsControlDataOutputStream().flush();
-      if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)
+      for (VTRectangle blockArea : blockAreas)
       {
-        pngEncoder.setColorType(PngEncoder.COLOR_INDEXED);
-        pngEncoder.setIndexedColorMode(PngEncoder.INDEXED_COLORS_ORIGINAL);
-        for (VTRectangle blockArea : blockAreas)
-        {
-          imageOutputBuffer.reset();
-          pngEncoder.encode(imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
-          connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
-          connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.x);
-          connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.y);
-          imageOutputBuffer.writeTo(connection.getGraphicsDirectImageDataOutputStream());
-        }
-        connection.getGraphicsDirectImageDataOutputStream().flush();
+        imageOutputBuffer.reset();
+        pngEncoder.encode(imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
+        connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
+        connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.x);
+        connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.y);
+        connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.width);
+        connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.height);
+        imageOutputBuffer.writeTo(connection.getGraphicsDirectImageDataOutputStream());
       }
-      else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_USHORT)
-      {
-        pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
-        for (VTRectangle blockArea : blockAreas)
-        {
-          imageOutputBuffer.reset();
-          pngEncoder.encode(imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
-          connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
-          connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.x);
-          connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.y);
-          imageOutputBuffer.writeTo(connection.getGraphicsDirectImageDataOutputStream());
-        }
-        connection.getGraphicsDirectImageDataOutputStream().flush();
-      }
-      else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT)
-      {
-        pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
-        for (VTRectangle blockArea : blockAreas)
-        {
-          imageOutputBuffer.reset();
-          pngEncoder.encode(imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
-          connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
-          connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.x);
-          connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.y);
-          imageOutputBuffer.writeTo(connection.getGraphicsDirectImageDataOutputStream());
-        }
-        connection.getGraphicsDirectImageDataOutputStream().flush();
-      }
+      connection.getGraphicsDirectImageDataOutputStream().flush();
     }
     //long endTime = System.nanoTime();
     //System.out.println("image encoding time: " + (endTime - startTime) / 1000);
@@ -399,6 +384,16 @@ public class VTGraphicsLinkServerWriter implements Runnable
     }
     //System.out.println("blocks_before:" + blockAreas.size());
     blockAreas = VTImageDataUtils.mergeNeighbourAreas(blockAreas);
+    VTRectangle maxBlockArea = null;
+    int maxBlockAreaSize = 0;
+    for (VTRectangle blockArea : blockAreas)
+    {
+      if (blockArea.width * blockArea.height > maxBlockAreaSize)
+      {
+        maxBlockArea = blockArea;
+        maxBlockAreaSize = blockArea.width * blockArea.height;
+      }
+    }
     //System.out.println("blocks_after:" + blockAreas.size());
     connection.getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_IMAGE_STANDARD_DIFFERENTIAL_FRAME);
     if (imageCoding == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_JPG)
@@ -425,6 +420,8 @@ public class VTGraphicsLinkServerWriter implements Runnable
       }
       connection.getGraphicsControlDataOutputStream().writeInt(lastColors);
       connection.getGraphicsControlDataOutputStream().writeInt(blockAreas.size());
+      connection.getGraphicsControlDataOutputStream().writeInt(maxBlockArea.width);
+      connection.getGraphicsControlDataOutputStream().writeInt(maxBlockArea.height);
       connection.getGraphicsControlDataOutputStream().flush();
       for (VTRectangle blockArea : blockAreas)
       {
@@ -434,6 +431,8 @@ public class VTGraphicsLinkServerWriter implements Runnable
         connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
         connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.x);
         connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.y);
+        connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.width);
+        connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.height);
         imageOutputBuffer.writeTo(connection.getGraphicsDirectImageDataOutputStream());
       }
       connection.getGraphicsDirectImageDataOutputStream().flush();
@@ -444,50 +443,21 @@ public class VTGraphicsLinkServerWriter implements Runnable
       connection.getGraphicsControlDataOutputStream().writeInt(imageDataBuffer.getType());
       connection.getGraphicsControlDataOutputStream().writeInt(lastColors);
       connection.getGraphicsControlDataOutputStream().writeInt(blockAreas.size());
+      connection.getGraphicsControlDataOutputStream().writeInt(maxBlockArea.width);
+      connection.getGraphicsControlDataOutputStream().writeInt(maxBlockArea.height);
       connection.getGraphicsControlDataOutputStream().flush();
-      if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)
+      for (VTRectangle blockArea : blockAreas)
       {
-        pngEncoder.setColorType(PngEncoder.COLOR_INDEXED);
-        pngEncoder.setIndexedColorMode(PngEncoder.INDEXED_COLORS_ORIGINAL);
-        for (VTRectangle blockArea : blockAreas)
-        {
-          imageOutputBuffer.reset();
-          pngEncoder.encode(imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
-          connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
-          connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.x);
-          connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.y);
-          imageOutputBuffer.writeTo(connection.getGraphicsDirectImageDataOutputStream());
-        }
-        connection.getGraphicsDirectImageDataOutputStream().flush();
+        imageOutputBuffer.reset();
+        pngEncoder.encode(imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
+        connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
+        connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.x);
+        connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.y);
+        connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.width);
+        connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.height);
+        imageOutputBuffer.writeTo(connection.getGraphicsDirectImageDataOutputStream());
       }
-      else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_USHORT)
-      {
-        pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
-        for (VTRectangle blockArea : blockAreas)
-        {
-          imageOutputBuffer.reset();
-          pngEncoder.encode(imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
-          connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
-          connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.x);
-          connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.y);
-          imageOutputBuffer.writeTo(connection.getGraphicsDirectImageDataOutputStream());
-        }
-        connection.getGraphicsDirectImageDataOutputStream().flush();
-      }
-      else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT)
-      {
-        pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
-        for (VTRectangle blockArea : blockAreas)
-        {
-          imageOutputBuffer.reset();
-          pngEncoder.encode(imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
-          connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
-          connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.x);
-          connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.y);
-          imageOutputBuffer.writeTo(connection.getGraphicsDirectImageDataOutputStream());
-        }
-        connection.getGraphicsDirectImageDataOutputStream().flush();
-      }
+      connection.getGraphicsDirectImageDataOutputStream().flush();
     }
     //long endTime = System.nanoTime();
     //System.out.println("image encoding time: " + (endTime - startTime) / 1000);
