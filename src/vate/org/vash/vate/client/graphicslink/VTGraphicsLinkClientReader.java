@@ -42,7 +42,7 @@ public class VTGraphicsLinkClientReader implements Runnable
   private ImageReader currentImageReader;
   //private ImageReadParam currentImageReaderParam;
   private ImageReader pngImageReader;
-  private ImageReader jpegImageReader;
+  private ImageReader jpgImageReader;
   //private ImageReadParam jpgReaderParam;
   private ImageInputStream imageInputStream;
   private VTIncrementalIIOReadUpdateListener incrementalImageReader = new VTIncrementalIIOReadUpdateListener();
@@ -158,11 +158,11 @@ public class VTGraphicsLinkClientReader implements Runnable
       pngImageReader = null;
     }
     
-    if (jpegImageReader != null)
+    if (jpgImageReader != null)
     {
-      jpegImageReader.removeAllIIOReadUpdateListeners();
-      jpegImageReader.dispose();
-      jpegImageReader = null;
+      jpgImageReader.removeAllIIOReadUpdateListeners();
+      jpgImageReader.dispose();
+      jpgImageReader = null;
     }
     
     currentImageReader = null;
@@ -245,10 +245,10 @@ public class VTGraphicsLinkClientReader implements Runnable
       {
         vtCustomCodec = new VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII();
         pngImageReader = new PngImageReader(new PngImageReaderSpi());
-        jpegImageReader = ImageIO.getImageReadersByFormatName("jpeg").next();
+        jpgImageReader = ImageIO.getImageReadersByFormatName("jpeg").next();
         limitedInputStream = new VTSizedInputStream(connection.getGraphicsDirectImageDataInputStream());
         pngImageReader.addIIOReadUpdateListener(incrementalImageReader);
-        jpegImageReader.addIIOReadUpdateListener(incrementalImageReader);
+        jpgImageReader.addIIOReadUpdateListener(incrementalImageReader);
         VTMainConsole.print("\rVT>Remote graphics link started!\nVT>");
       }
     }
@@ -293,7 +293,7 @@ public class VTGraphicsLinkClientReader implements Runnable
             }
             if (connection.getGraphicsControlDataInputStream().read() == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_JPG)
             {
-              currentImageReader = jpegImageReader;
+              currentImageReader = jpgImageReader;
               //currentImageReaderParam = jpgReaderParam;
             }
             else
@@ -320,7 +320,7 @@ public class VTGraphicsLinkClientReader implements Runnable
             int count = connection.getGraphicsControlDataInputStream().readInt();
             int maxWidth = connection.getGraphicsControlDataInputStream().readInt();
             int maxHeight = connection.getGraphicsControlDataInputStream().readInt();
-            nextImageDataBuffer = VTImageIO.createImage(0, 0, maxWidth, maxHeight, (currentImageReader == pngImageReader ? type : (colors > 16 ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_BYTE_GRAY)), colors, recyclableNextDataBuffer);
+            nextImageDataBuffer = VTImageIO.createImage(0, 0, maxWidth, maxHeight, (currentImageReader == jpgImageReader ? (colors > 16 ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_BYTE_GRAY) : type), colors, recyclableNextDataBuffer);
             recyclableNextDataBuffer = nextImageDataBuffer.getRaster().getDataBuffer();
             
             for (int i = 0; i < count; i++)
@@ -330,7 +330,7 @@ public class VTGraphicsLinkClientReader implements Runnable
               int y = connection.getGraphicsDirectImageDataInputStream().readInt();
               int w = connection.getGraphicsDirectImageDataInputStream().readInt();
               int h = connection.getGraphicsDirectImageDataInputStream().readInt();
-              nextImageDataBuffer = VTImageIO.createImage(0, 0, w, h, (currentImageReader == pngImageReader ? type : (colors > 16 ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_BYTE_GRAY)), colors, recyclableNextDataBuffer);
+              nextImageDataBuffer = VTImageIO.createImage(0, 0, w, h, (currentImageReader == jpgImageReader ? (colors > 16 ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_BYTE_GRAY) : type), colors, recyclableNextDataBuffer);
               limitedInputStream.size(size);
               incrementalImageReader.setOffsetX(x);
               incrementalImageReader.setOffsetY(y);
@@ -366,7 +366,7 @@ public class VTGraphicsLinkClientReader implements Runnable
             writer.requestInterfaceRefresh();
             if (connection.getGraphicsControlDataInputStream().read() == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_JPG)
             {
-              currentImageReader = jpegImageReader;
+              currentImageReader = jpgImageReader;
               //currentImageReaderParam = jpgReaderParam;
             }
             else
@@ -383,7 +383,7 @@ public class VTGraphicsLinkClientReader implements Runnable
             int count = connection.getGraphicsControlDataInputStream().readInt();
             int maxWidth = connection.getGraphicsControlDataInputStream().readInt();
             int maxHeight = connection.getGraphicsControlDataInputStream().readInt();
-            nextImageDataBuffer = VTImageIO.createImage(0, 0, maxWidth, maxHeight, (currentImageReader == pngImageReader ? type : (colors > 16 ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_BYTE_GRAY)), colors, recyclableNextDataBuffer);
+            nextImageDataBuffer = VTImageIO.createImage(0, 0, maxWidth, maxHeight, (currentImageReader == jpgImageReader ? (colors > 16 ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_BYTE_GRAY) : type), colors, recyclableNextDataBuffer);
             recyclableNextDataBuffer = nextImageDataBuffer.getRaster().getDataBuffer();
             
             for (int i = 0; i < count; i++)
@@ -393,7 +393,7 @@ public class VTGraphicsLinkClientReader implements Runnable
               int y = connection.getGraphicsDirectImageDataInputStream().readInt();
               int w = connection.getGraphicsDirectImageDataInputStream().readInt();
               int h = connection.getGraphicsDirectImageDataInputStream().readInt();
-              nextImageDataBuffer = VTImageIO.createImage(0, 0, w, h, (currentImageReader == pngImageReader ? type : (colors > 16 ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_BYTE_GRAY)), colors, recyclableNextDataBuffer);
+              nextImageDataBuffer = VTImageIO.createImage(0, 0, w, h, (currentImageReader == jpgImageReader ? (colors > 16 ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_BYTE_GRAY) : type), colors, recyclableNextDataBuffer);
               limitedInputStream.size(size);
               incrementalImageReader.setOffsetX(x);
               incrementalImageReader.setOffsetY(y);
