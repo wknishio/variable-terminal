@@ -33,7 +33,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.vash.vate.VTSystem;
 import org.vash.vate.com.googlecode.lanterna.*;
 import org.vash.vate.com.googlecode.lanterna.TextColor.ANSI;
 import org.vash.vate.com.googlecode.lanterna.graphics.TextGraphics;
@@ -93,6 +92,21 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
 
     // Used as a middle-ground when copying large segments when scrolling
     private BufferedImage copybuffer;
+    
+    public static final Map<RenderingHints.Key, Object> VT_GRAPHICS_RENDERING_HINTS;
+    
+    static
+    {
+      VT_GRAPHICS_RENDERING_HINTS = new LinkedHashMap<RenderingHints.Key, Object>();
+      VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
+      VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+      VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_SPEED);
+      VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_DISABLE);
+      VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+      VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
+      VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+      VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
+    }
 
     /**
      * Creates a new GraphicalTerminalImplementation component using custom settings and a custom scroll controller. The
@@ -367,7 +381,7 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
         //Setup the graphics object
         ensureGraphicBufferHasRightSize();
         final Graphics2D backbufferGraphics = backbuffer.createGraphics();
-        backbufferGraphics.setRenderingHints(VTSystem.VT_GRAPHICS_RENDERING_HINTS);
+        backbufferGraphics.setRenderingHints(VT_GRAPHICS_RENDERING_HINTS);
 
         if(isTextAntiAliased()) {
             backbufferGraphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
@@ -387,7 +401,7 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
             int gap = scrollOffsetFromTopInPixels - lastBufferUpdateScrollPosition;
             if(gap / fontHeight < viewportSize.getRows()) {
                 Graphics2D graphics = copybuffer.createGraphics();
-                graphics.setRenderingHints(VTSystem.VT_GRAPHICS_RENDERING_HINTS);
+                graphics.setRenderingHints(VT_GRAPHICS_RENDERING_HINTS);
                 graphics.setClip(0, 0, getWidth(), getHeight() - gap);
                 graphics.drawImage(backbuffer, 0, -gap, null);
                 graphics.dispose();
@@ -408,7 +422,7 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
             int gap = lastBufferUpdateScrollPosition - scrollOffsetFromTopInPixels;
             if(gap / fontHeight < viewportSize.getRows()) {
                 Graphics2D graphics = copybuffer.createGraphics();
-                graphics.setRenderingHints(VTSystem.VT_GRAPHICS_RENDERING_HINTS);
+                graphics.setRenderingHints(VT_GRAPHICS_RENDERING_HINTS);
                 graphics.setClip(0, 0, getWidth(), getHeight() - gap);
                 graphics.drawImage(backbuffer, 0, 0, null);
                 graphics.dispose();
@@ -558,7 +572,7 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
 
             BufferedImage newBackbuffer = new BufferedImage(Math.max(getWidth(), 1) * 2, Math.max(getHeight(), 1) * 2, BufferedImage.TYPE_INT_RGB);
             Graphics2D graphics = newBackbuffer.createGraphics();
-            graphics.setRenderingHints(VTSystem.VT_GRAPHICS_RENDERING_HINTS);
+            graphics.setRenderingHints(VT_GRAPHICS_RENDERING_HINTS);
             graphics.fillRect(0, 0, newBackbuffer.getWidth(), newBackbuffer.getHeight());
             graphics.drawImage(backbuffer, 0, 0, null);
             graphics.dispose();

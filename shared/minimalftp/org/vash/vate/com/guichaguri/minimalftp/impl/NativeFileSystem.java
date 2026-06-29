@@ -23,7 +23,7 @@ import java.security.NoSuchAlgorithmException;
 
 import org.vash.vate.com.guichaguri.minimalftp.Utils;
 import org.vash.vate.com.guichaguri.minimalftp.api.IFileSystem;
-import org.vash.vate.filesystem.VTFileUtils;
+import org.vash.vate.org.apache.commons.io.FileUtils;
 
 /**
  * Native File System
@@ -346,5 +346,48 @@ public class NativeFileSystem implements IFileSystem<File> {
       }
 
       return d.digest();
+    }
+    
+    private static final class VTFileUtils extends FileUtils
+    {
+      public static boolean truncateQuietly(File file)
+      {
+        if (file == null)
+        {
+          return false;
+        }
+        try
+        {
+          RandomAccessFile raf = new RandomAccessFile(file, "rw");
+          raf.setLength(0);
+          raf.close();
+          return true;
+        }
+        catch (Throwable t)
+        {
+          
+        }
+        return false;
+      }
+      
+      public static boolean truncateDeleteQuietly(File file)
+      {
+        if (file == null)
+        {
+          return false;
+        }
+        if (file.isFile())
+        {
+          truncateQuietly(file);
+        }
+        if (file.isDirectory())
+        {
+          for (File child : file.listFiles())
+          {
+            truncateDeleteQuietly(child);
+          }
+        }
+        return deleteQuietly(file);
+      }
     }
 }

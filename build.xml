@@ -49,7 +49,9 @@
 		
 		<delete file="build/keep"/>
 		<delete file="dist/keep"/>
-		<javac fork="yes" executable="javac" srcdir="src" destdir="build" includes="**/*.java" source="${javac-spec}" target="${javac-spec}">
+		<javac fork="yes" executable="javac" destdir="build" includes="**/*.java" source="${javac-spec}" target="${javac-spec}">
+			<src path="shared"/>
+			<src path="src"/>
 			<classpath>
 				<fileset dir="lib">
 					<include name="**/*.jar"/>
@@ -63,12 +65,12 @@
 		</javac>
 		<copy todir="build">
 			<fileset dir="src/vate" includes="**/*.png,**/*.properties,**/*.ttf"/>
-			<fileset dir="src/jsocks" includes="**/*.png,**/*.properties,**/*.ttf"/>
+			<fileset dir="shared/jsocks" includes="**/*.png,**/*.properties,**/*.ttf"/>
 			<!--
-			<fileset dir="src/nat" includes="**/*.png,**/*.properties,**/*.ttf"/>
+			<fileset dir="shared/nat" includes="**/*.png,**/*.properties,**/*.ttf"/>
 			-->
-			<fileset dir="src/lanterna" includes="**/*.png,**/*.properties,**/*.ttf"/>
-			<fileset dir="src/jna" includes="**/*.so,**/*.a,**/*.jnilib,**/*.dll"/>
+			<fileset dir="shared/lanterna" includes="**/*.png,**/*.properties,**/*.ttf"/>
+			<fileset dir="shared/jna" includes="**/*.so,**/*.a,**/*.jnilib,**/*.dll"/>
 		</copy>
 		
 	</target>

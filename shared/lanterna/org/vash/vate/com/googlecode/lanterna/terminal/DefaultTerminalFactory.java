@@ -36,7 +36,6 @@ import org.vash.vate.com.googlecode.lanterna.terminal.ansi.TelnetTerminalServer;
 import org.vash.vate.com.googlecode.lanterna.terminal.ansi.UnixLikeTTYTerminal;
 import org.vash.vate.com.googlecode.lanterna.terminal.ansi.UnixTerminal;
 import org.vash.vate.com.googlecode.lanterna.terminal.swing.*;
-import org.vash.vate.nativeutils.VTMainNativeUtils;
 
 /**
  * This TerminalFactory implementation uses a simple auto-detection mechanism for figuring out which terminal 
@@ -598,14 +597,14 @@ public class DefaultTerminalFactory implements TerminalFactory {
 			Object consoleResult = consoleMethod.invoke(null);
 			if (consoleResult != null)
 			{
-				return VTMainNativeUtils.isatty(0) != 0 && VTMainNativeUtils.isatty(1) != 0;
+				return true;
 			}
 			try
 			{
 				if (FileDescriptor.in.valid())
 				{
 					FileDescriptor.in.sync();
-					return VTMainNativeUtils.isatty(0) != 0 && VTMainNativeUtils.isatty(1) != 0;
+					return true;
 				}
 				else
 				{
@@ -624,7 +623,7 @@ public class DefaultTerminalFactory implements TerminalFactory {
         if (FileDescriptor.in.valid())
         {
           FileDescriptor.in.sync();
-          return VTMainNativeUtils.isatty(0) != 0 && VTMainNativeUtils.isatty(1) != 0;
+          return true;
         }
         else
         {

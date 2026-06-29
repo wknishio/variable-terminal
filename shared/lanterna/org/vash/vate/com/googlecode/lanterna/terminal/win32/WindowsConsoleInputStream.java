@@ -12,7 +12,6 @@ import org.vash.vate.com.googlecode.lanterna.terminal.win32.WinDef.KEY_EVENT_REC
 import org.vash.vate.com.googlecode.lanterna.terminal.win32.WinDef.MOUSE_EVENT_RECORD;
 import org.vash.vate.com.googlecode.lanterna.terminal.win32.WinDef.WINDOW_BUFFER_SIZE_RECORD;
 import org.vash.vate.compatibility.VTArrays;
-import org.vash.vate.console.VTMainConsole;
 
 import com.sun.jna.platform.win32.WinNT.HANDLE;
 import com.sun.jna.ptr.IntByReference;

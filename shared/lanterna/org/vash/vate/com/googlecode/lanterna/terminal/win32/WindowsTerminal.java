@@ -18,7 +18,6 @@ import org.vash.vate.com.googlecode.lanterna.terminal.ansi.UnixLikeTerminal;
 import org.vash.vate.com.googlecode.lanterna.terminal.win32.WinDef.CONSOLE_SCREEN_BUFFER_INFO;
 import org.vash.vate.com.googlecode.lanterna.terminal.win32.WinDef.MOUSE_EVENT_RECORD;
 import org.vash.vate.com.googlecode.lanterna.terminal.win32.WinDef.WINDOW_BUFFER_SIZE_RECORD;
-import org.vash.vate.nativeutils.VTMainNativeUtils;
 
 import com.sun.jna.ptr.IntByReference;
 
