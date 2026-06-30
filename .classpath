@@ -1,35 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="shared/aircompressor"/>
-	<classpathentry kind="src" path="shared/base85"/>
-	<classpathentry kind="src" path="shared/beanshell"/>
-	<classpathentry kind="src" path="shared/bouncycastle"/>
-	<classpathentry kind="src" path="shared/bric"/>
-	<classpathentry kind="src" path="shared/commons-codec"/>
-	<classpathentry kind="src" path="shared/commons-httpclient"/>
-	<classpathentry kind="src" path="shared/commons-io"/>
-	<classpathentry kind="src" path="shared/commons-lang3"/>
-	<classpathentry kind="src" path="shared/commons-logging"/>
-	<classpathentry kind="src" path="shared/commons-rng"/>
-	<classpathentry kind="src" path="shared/compat"/>
-	<classpathentry kind="src" path="shared/infinispan"/>
-	<classpathentry kind="src" path="shared/javapng"/>
-	<classpathentry kind="src" path="shared/jna"/>
-	<classpathentry kind="src" path="shared/jsap"/>
-	<classpathentry kind="src" path="shared/jsocks"/>
-	<classpathentry kind="src" path="shared/jzlib"/>
-	<classpathentry kind="src" path="shared/lanterna"/>
-	<classpathentry kind="src" path="shared/lz4"/>
-	<classpathentry kind="src" path="shared/minimalftp"/>
-	<classpathentry kind="src" path="shared/pngencoder"/>
-	<classpathentry kind="src" path="shared/portmapper"/>
-	<classpathentry kind="src" path="shared/slf4j-api"/>
-	<classpathentry kind="src" path="shared/slf4j-nop"/>
-	<classpathentry kind="src" path="shared/snappy"/>
-	<classpathentry kind="src" path="shared/throttle"/>
 	<classpathentry kind="src" path="src/vate"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/concentus-opus.jar"/>
 	<classpathentry kind="lib" path="lib/jspeex.jar"/>
+	<classpathentry kind="lib" path="lib/vate-awt.jar"/>
+	<classpathentry kind="lib" path="lib/vate-jna.jar"/>
+	<classpathentry kind="lib" path="lib/vate-shared.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
