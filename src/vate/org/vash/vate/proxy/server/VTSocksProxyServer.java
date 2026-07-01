@@ -580,11 +580,14 @@ public class VTSocksProxyServer implements Runnable {
 	}
 
 	private void onUDP(ProxyMessage msg) throws IOException {
-		if (msg.ip.getHostAddress().equals("0.0.0.0") || msg.ip.getHostAddress().equals("::")
-				|| msg.ip.getHostAddress().equals("::0") || msg.ip.getHostAddress().equals("0:0:0:0:0:0:0:0")
-				|| msg.ip.getHostAddress().equals("00:00:00:00:00:00:00:00")
-				|| msg.ip.getHostAddress().equals("0000:0000:0000:0000:0000:0000:0000:0000"))
-			msg.ip = sock.getInetAddress();
+//		if (msg.ip.getHostAddress().equals("0.0.0.0") || msg.ip.getHostAddress().equals("::")
+//				|| msg.ip.getHostAddress().equals("::0") || msg.ip.getHostAddress().equals("0:0:0:0:0:0:0:0")
+//				|| msg.ip.getHostAddress().equals("00:00:00:00:00:00:00:00")
+//				|| msg.ip.getHostAddress().equals("0000:0000:0000:0000:0000:0000:0000:0000"))
+	  if (msg.ip.isAnyLocalAddress())
+		{
+		  msg.ip = sock.getInetAddress();
+		}
 		//System.out.println("onUDP()");
 		// LOG.info(connectionId + " Creating UDP relay server for " + msg.ip +
 		// ":" + msg.port);

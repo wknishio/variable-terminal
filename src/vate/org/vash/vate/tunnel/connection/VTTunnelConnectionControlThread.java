@@ -371,12 +371,13 @@ public class VTTunnelConnectionControlThread implements Runnable
                     
                     int localPort = datagramSocket.getLocalPort();
                     InetAddress localAddress = datagramSocket.getLocalAddress();
-                    String hostAddress = localAddress.getHostAddress();
+                    //String hostAddress = localAddress.getHostAddress();
                     
-                    if (hostAddress.equals("0.0.0.0") || hostAddress.equals("::")
-                    || hostAddress.equals("::0") || hostAddress.equals("0:0:0:0:0:0:0:0")
-                    || hostAddress.equals("00:00:00:00:00:00:00:00")
-                    || hostAddress.equals("0000:0000:0000:0000:0000:0000:0000:0000"))
+//                    if (hostAddress.equals("0.0.0.0") || hostAddress.equals("::")
+//                    || hostAddress.equals("::0") || hostAddress.equals("0:0:0:0:0:0:0:0")
+//                    || hostAddress.equals("00:00:00:00:00:00:00:00")
+//                    || hostAddress.equals("0000:0000:0000:0000:0000:0000:0000:0000"))
+                    if (localAddress.isAnyLocalAddress())
                     {
                       try
                       {

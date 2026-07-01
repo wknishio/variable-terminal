@@ -253,11 +253,15 @@ public class VTSocksPlusHttpProxyServerLauncher
     if (validation != null)
     {
       VTSocksProxyServer socksServer = new VTSocksProxyServer(new VTSocksHttpProxyAuthenticatorUsernamePassword(validation, new LinkedHashSet<String>(), new VTSplitMix64Random(secureRandom.nextLong()), socksPlusHttpProxyServer.executorService, socksPlusHttpProxyServer.bind, 0, 0, null), socksPlusHttpProxyServer.executorService, false, false, 0, null);
+      socksServer.setAcceptTimeout(0);
+      socksServer.setIdleTimeout(0);
       socksServer.start(socksPlusHttpProxyServer.port, socksPlusHttpProxyServer.host, socksPlusHttpProxyServer.bind);
     }
     else
     {
       VTSocksProxyServer socksServer = new VTSocksProxyServer(new VTSocksHttpProxyAuthenticatorNone(socksPlusHttpProxyServer.executorService, socksPlusHttpProxyServer.bind, 0, 0, null), socksPlusHttpProxyServer.executorService, false, false, 0, null);
+      socksServer.setAcceptTimeout(0);
+      socksServer.setIdleTimeout(0);
       socksServer.start(socksPlusHttpProxyServer.port, socksPlusHttpProxyServer.host, socksPlusHttpProxyServer.bind);
     }
   }
