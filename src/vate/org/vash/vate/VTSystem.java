@@ -160,7 +160,6 @@ public class VTSystem
   public static final String VT_CONNECTION_ENCRYPTION_SALSA_STRING = "SALSA";
   public static final String VT_CONNECTION_ENCRYPTION_HC_STRING = "HC";
   public static final String VT_CONNECTION_ENCRYPTION_GRAIN_STRING = "GRAIN";
-  //public static final String VT_CONNECTION_ENCRYPTION_RABBIT_STRING = "RABBIT";
   public static final String VT_CONNECTION_ENCRYPTION_ZUC_STRING = "ZUC";
   public static final String VT_CONNECTION_ENCRYPTION_LEA_STRING = "LEA";
   
