@@ -68,7 +68,6 @@ public class VTSystem
   public static final int VT_CONNECTION_ENCRYPTION_SALSA = 1;
   public static final int VT_CONNECTION_ENCRYPTION_HC = 2;
   public static final int VT_CONNECTION_ENCRYPTION_GRAIN = 3;
-  //public static final int VT_CONNECTION_ENCRYPTION_RABBIT = 4;
   public static final int VT_CONNECTION_ENCRYPTION_ZUC = 4;
   public static final int VT_CONNECTION_ENCRYPTION_LEA = 5;
   
@@ -223,29 +222,7 @@ public class VTSystem
     }
     
     ImageIO.setUseCache(false);
-    //disableAccessWarnings();
-    //System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
-    //System.setProperty("jdk.http.auth.proxying.disabledSchemes", "");
-    //Authenticator.setDefault(VTProxyAuthenticator.getInstance());
-    //VTTLSUtilities.install();
     VTHelpManager.initialize();
-    
-//    try
-//    {
-//      System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.NoOpLog");
-//      LogManager logManager = java.util.logging.LogManager.getLogManager();
-//      Enumeration<String> loggerNames = logManager.getLoggerNames();
-//      java.util.logging.Logger.global.setLevel(Level.OFF);
-//      while (loggerNames.hasMoreElements())
-//      {
-//        String loggerName = loggerNames.nextElement();
-//        logManager.getLogger(loggerName).setLevel(Level.OFF);
-//      }
-//    }
-//    catch (Throwable t)
-//    {
-//      
-//    }
     
     initialized = true;
   }
@@ -298,29 +275,6 @@ public class VTSystem
       desktopIcon = null;
     }
   }
-  
-//  public static void disableAccessWarnings()
-//  {
-//    try
-//    {
-//      Class<?> unsafeClass = Class.forName("sun.misc.Unsafe");
-//      Field field = unsafeClass.getDeclaredField("theUnsafe");
-//      field.setAccessible(true);
-//      Object unsafe = field.get(null);
-//      
-//      Method putObjectVolatile = unsafeClass.getDeclaredMethod("putObjectVolatile", Object.class, long.class, Object.class);
-//      Method staticFieldOffset = unsafeClass.getDeclaredMethod("staticFieldOffset", Field.class);
-//      
-//      Class<?> loggerClass = Class.forName("jdk.internal.module.IllegalAccessLogger");
-//      Field loggerField = loggerClass.getDeclaredField("logger");
-//      Long offset = (Long) staticFieldOffset.invoke(unsafe, loggerField);
-//      putObjectVolatile.invoke(unsafe, loggerClass, offset, null);
-//    }
-//    catch (Throwable ignored)
-//    {
-//      
-//    }
-//  }
   
   public static CharsetEncoder getFlexibleCharsetEncoder(String charsetName)
   {
