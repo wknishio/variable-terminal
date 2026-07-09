@@ -1464,9 +1464,19 @@ public class VTClient implements Runnable
           {
             hostPort = 6060;
           }
-          else
+          VTMainConsole.print("VT>Use nat port in connection?(Y/N, default:N):");
+          line = VTMainConsole.readLine(true);
+          if (line == null)
           {
-            VTMainConsole.print("VT>Use nat port in connection?(Y/N, default:N):");
+            VTRuntimeExit.exit(0);
+          }
+          else if (skipConfiguration)
+          {
+            return;
+          }
+          if (line.toUpperCase().startsWith("Y"))
+          {
+            VTMainConsole.print("VT>Enter connection nat port(from 1 to 65535, default:" + hostPort + "):");
             line = VTMainConsole.readLine(true);
             if (line == null)
             {
@@ -1476,37 +1486,24 @@ public class VTClient implements Runnable
             {
               return;
             }
-            if (line.toUpperCase().startsWith("Y"))
+            if (line.length() > 0)
             {
-              VTMainConsole.print("VT>Enter connection nat port(from 1 to 65535, default:" + hostPort + "):");
-              line = VTMainConsole.readLine(true);
-              if (line == null)
+              try
               {
-                VTRuntimeExit.exit(0);
+                natPort = Integer.parseInt(line);
               }
-              else if (skipConfiguration)
-              {
-                return;
-              }
-              if (line.length() > 0)
-              {
-                try
-                {
-                  natPort = Integer.parseInt(line);
-                }
-                catch (Throwable t)
-                {
-                  natPort = hostPort;
-                }
-              }
-              else
+              catch (Throwable t)
               {
                 natPort = hostPort;
               }
-              if (natPort > 65535 || natPort < 1)
-              {
-                natPort = hostPort;
-              }
+            }
+            else
+            {
+              natPort = hostPort;
+            }
+            if (natPort > 65535 || natPort < 1)
+            {
+              natPort = hostPort;
             }
           }
         }

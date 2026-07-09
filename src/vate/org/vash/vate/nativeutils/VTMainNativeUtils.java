@@ -1145,7 +1145,7 @@ public class VTMainNativeUtils
         {
           if (!isNativeAvailable() && checkPowershell2Available() && checkSystemAvailable())
           {
-            if (!disabledTerminalSanity)
+            if (disabledTerminalSanity)
             {
               Runtime.getRuntime().removeShutdownHook(restoreTerminalSanityPowershellHook);
               executeSystem(true, "", "powershell", "-Command", WIN32_RESTORE_CANONICAL_INPUT_POWERSHELL);
@@ -1219,7 +1219,7 @@ public class VTMainNativeUtils
       {
         if (!isNativeAvailable() && checkPowershell2Available() && checkSystemAvailable())
         {
-          if (!disabledTerminalEcho)
+          if (disabledTerminalEcho)
           {
             Runtime.getRuntime().removeShutdownHook(restoreTerminalEchoPowershellHook);
             executeSystem(true, "", "powershell", "-Command", WIN32_RESTORE_ECHO_INPUT_POWERSHELL);

@@ -559,7 +559,7 @@ public final class VTMainConsole
     {
       return;
     }
-    Thread thread = new Thread("VTSystemConsole")
+    Thread thread = new Thread("VTMainConsole")
     {
       public void run()
       {

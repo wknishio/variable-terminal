@@ -161,7 +161,6 @@ public abstract class VTConsole
   
   public abstract String readLine(boolean echo) throws InterruptedException;
   
-  // public abstract boolean isReadingLine();
   public abstract void interruptReadLine();
   
   public abstract void print(String str);

@@ -42,7 +42,7 @@ public abstract class VTTask implements Runnable, Closeable
     {
       try
       {
-        //taskThread.stop();
+        // taskThread.stop();
       }
       catch (Throwable t)
       {

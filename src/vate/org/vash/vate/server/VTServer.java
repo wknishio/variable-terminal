@@ -76,7 +76,6 @@ public class VTServer implements Runnable
   private VTTrayIconInterface trayIconInterface;
   private boolean skipConfiguration;
   private boolean echoCommands = false;
-  //private boolean running = true;
   private boolean reconfigure = false;
   private Collection<VTServerSessionListener> listeners = new ConcurrentLinkedQueue<VTServerSessionListener>();
   private int pingLimit = 0;
