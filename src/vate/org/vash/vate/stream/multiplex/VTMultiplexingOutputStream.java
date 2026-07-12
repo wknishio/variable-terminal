@@ -480,7 +480,7 @@ public final class VTMultiplexingOutputStream
       synchronized (controlPacketBuffer)
       {
         controlPacketBuffer.reset();
-        controlPacketStream.writeLong(thirdSequencer.nextLong() ^ fourthSequencer.nextLong() ^ -2);
+        controlPacketStream.writeLong(thirdSequencer.nextLong() ^ fourthSequencer.nextLong() ^ (-2 ^ ((type & 0xFF) ^ (number << 8))));
         controlPacketStream.writeByte(type);
         controlPacketStream.writeSubInt(number);
         controlPacketStream.writeInt(-2);
@@ -495,7 +495,7 @@ public final class VTMultiplexingOutputStream
       synchronized (controlPacketBuffer)
       {
         controlPacketBuffer.reset();
-        controlPacketStream.writeLong(thirdSequencer.nextLong() ^ fourthSequencer.nextLong() ^ -3);
+        controlPacketStream.writeLong(thirdSequencer.nextLong() ^ fourthSequencer.nextLong() ^ (-3 ^ ((type & 0xFF) ^ (number << 8))));
         controlPacketStream.writeByte(type);
         controlPacketStream.writeSubInt(number);
         controlPacketStream.writeInt(-3);
