@@ -5,6 +5,7 @@
 	<classpathentry kind="lib" path="lib/concentus-opus.jar"/>
 	<classpathentry kind="lib" path="lib/jspeex.jar"/>
 	<classpathentry kind="lib" path="lib/vate-awt.jar"/>
+	<classpathentry kind="lib" path="lib/vate-compat.jar"/>
 	<classpathentry kind="lib" path="lib/vate-jna.jar"/>
 	<classpathentry kind="lib" path="lib/vate-shared.jar"/>
 	<classpathentry kind="output" path="bin"/>
