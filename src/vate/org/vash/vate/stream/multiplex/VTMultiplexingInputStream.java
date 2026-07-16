@@ -288,7 +288,7 @@ public final class VTMultiplexingInputStream
       }
       else
       {
-        if ((stream.getThirdSequencer().nextLong() ^ stream.getFourthSequencer().nextLong() ^ (length ^ ((type & 0xFF) ^ (number << 8)))) != hash)
+        if ((stream.getThirdSequencer().nextLong() ^ stream.getFourthSequencer().nextLong() ^ ((long) (length)) ^ ((long) ((type & 0xFF) ^ (number << 8)))) != hash)
         {
           close();
           return;
