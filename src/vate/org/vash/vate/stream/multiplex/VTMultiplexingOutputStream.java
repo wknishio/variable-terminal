@@ -133,8 +133,8 @@ public final class VTMultiplexingOutputStream
     if (stream != null)
     {
       stream.type(type);
-      stream.output(output);
-      stream.control(original);
+      stream.setDataOutputStream(output);
+      stream.setControlOutputStream(original);
       return stream;
     }
     stream = new VTMultiplexedOutputStream(output, original, type, number, packetSize, firstSeed, secondSeed);
@@ -179,8 +179,8 @@ public final class VTMultiplexingOutputStream
       if (stream != null && stream.getLink() == null)
       {
         stream.type(type);
-        stream.output(output);
-        stream.control(original);
+        stream.setDataOutputStream(output);
+        stream.setControlOutputStream(original);
         return stream;
       }
       else if (stream == null)
@@ -276,19 +276,19 @@ public final class VTMultiplexingOutputStream
     private final VTLittleEndianOutputStream dataPacketStream;
     private final VTByteArrayOutputStream controlPacketBuffer;
     private final VTLittleEndianOutputStream controlPacketStream;
-    private OutputStream output;
-    private OutputStream control;
-    private OutputStream content;
+    private OutputStream dataOutputStream;
+    private OutputStream controlOutputStream;
+    private OutputStream contentOutputStream;
     private final Collection<Closeable> propagated;
     private final Random firstSequencer;
     private final Random secondSequencer;
     private final Random thirdSequencer;
     private final Random fourthSequencer;
     
-    private VTMultiplexedOutputStream(final OutputStream output, final OutputStream control, final int type, final int number, final int packetSize, final long firstSeed, final long secondSeed)
+    private VTMultiplexedOutputStream(final OutputStream dataOutputStream, final OutputStream controlOutputStream, final int type, final int number, final int packetSize, final long firstSeed, final long secondSeed)
     {
-      this.output = output;
-      this.control = control;
+      this.dataOutputStream = dataOutputStream;
+      this.controlOutputStream = controlOutputStream;
       this.type = type;
       this.number = number;
       this.packetSize = packetSize;
@@ -310,17 +310,17 @@ public final class VTMultiplexingOutputStream
       
       if ((type & VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) == 0)
       {
-        content = packetContentBuffer;
+        contentOutputStream = packetContentBuffer;
       }
       else
       {
         if ((type & VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_HEAVY) != 0)
         {
-          content = VTCompressorSelector.createDirectZstdOutputStream(packetContentBuffer);
+          contentOutputStream = VTCompressorSelector.createDirectZstdOutputStream(packetContentBuffer);
         }
         else
         {
-          content = VTCompressorSelector.createDirectLz4OutputStream(packetContentBuffer);
+          contentOutputStream = VTCompressorSelector.createDirectLz4OutputStream(packetContentBuffer);
         }
       }
     }
@@ -335,19 +335,19 @@ public final class VTMultiplexingOutputStream
       return type;
     }
     
-    public final void type(final int type)
+    private final void type(final int type)
     {
       this.type = type;
     }
     
-    public final void output(final OutputStream out)
+    private final void setDataOutputStream(final OutputStream dataOutputStream)
     {
-      this.output = out;
+      this.dataOutputStream = dataOutputStream;
     }
     
-    public final void control(final OutputStream control)
+    private final void setControlOutputStream(final OutputStream controlOutputStream)
     {
-      this.control = control;
+      this.controlOutputStream = controlOutputStream;
     }
     
     public final Object getLink()
@@ -355,7 +355,7 @@ public final class VTMultiplexingOutputStream
       return link;
     }
     
-    public final void setLink(final Object link)
+    private final void setLink(final Object link)
     {
       this.link = link;
     }
@@ -433,16 +433,16 @@ public final class VTMultiplexingOutputStream
       {
         if ((type & VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_HEAVY) != 0)
         {
-          content = VTCompressorSelector.createDirectZstdOutputStream(packetContentBuffer);
+          contentOutputStream = VTCompressorSelector.createDirectZstdOutputStream(packetContentBuffer);
         }
         else
         {
-          content = VTCompressorSelector.createDirectLz4OutputStream(packetContentBuffer);
+          contentOutputStream = VTCompressorSelector.createDirectLz4OutputStream(packetContentBuffer);
         }
       }
       else
       {
-        content = packetContentBuffer;
+        contentOutputStream = packetContentBuffer;
       }
     }
     
@@ -456,21 +456,21 @@ public final class VTMultiplexingOutputStream
       this.propagated.remove(propagated);
     }
     
-    private final void writeDataPacket(final int type, final int number, final byte[] data, final int offset, final int length) throws IOException
+    private final void writeDataPacket(final int type, final int number, final byte[] buffer, final int offset, final int length) throws IOException
     {
       synchronized (dataPacketBuffer)
       {
         dataPacketBuffer.reset();
         packetContentBuffer.reset();
-        content.write(data, offset, length);
-        content.flush();
+        contentOutputStream.write(buffer, offset, length);
+        contentOutputStream.flush();
         dataPacketStream.writeLong(firstSequencer.nextLong() ^ secondSequencer.nextLong() ^ XXH3.hash64(packetContentBuffer.buf(), packetContentBuffer.count()));
         dataPacketStream.writeByte(type);
         dataPacketStream.writeSubInt(number);
         dataPacketStream.writeInt(packetContentBuffer.count());
         dataPacketStream.write(packetContentBuffer.buf(), 0, packetContentBuffer.count());
-        output.write(dataPacketBuffer.buf(), 0, dataPacketBuffer.count());
-        output.flush();
+        dataOutputStream.write(dataPacketBuffer.buf(), 0, dataPacketBuffer.count());
+        dataOutputStream.flush();
         transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES + packetContentBuffer.count());
       }
     }
@@ -484,8 +484,8 @@ public final class VTMultiplexingOutputStream
         controlPacketStream.writeByte(type);
         controlPacketStream.writeSubInt(number);
         controlPacketStream.writeInt(-2);
-        control.write(controlPacketBuffer.buf(), 0, controlPacketBuffer.count());
-        control.flush();
+        controlOutputStream.write(controlPacketBuffer.buf(), 0, controlPacketBuffer.count());
+        controlOutputStream.flush();
         transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
       }
     }
@@ -499,8 +499,8 @@ public final class VTMultiplexingOutputStream
         controlPacketStream.writeByte(type);
         controlPacketStream.writeSubInt(number);
         controlPacketStream.writeInt(-3);
-        control.write(controlPacketBuffer.buf(), 0, controlPacketBuffer.count());
-        control.flush();
+        controlOutputStream.write(controlPacketBuffer.buf(), 0, controlPacketBuffer.count());
+        controlOutputStream.flush();
         transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
       }
     }

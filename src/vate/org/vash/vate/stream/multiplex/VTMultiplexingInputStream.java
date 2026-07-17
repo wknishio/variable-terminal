@@ -28,7 +28,7 @@ public final class VTMultiplexingInputStream
 {
   private volatile boolean closed = false;
   private final int bufferSize;
-  private final byte[] packetDataBuffer;
+  private final byte[] packetContentBuffer;
   private Future<?> packetReaderThread;
   private final VTLittleEndianInputStream input;
   private final VTMultiplexingInputStreamPacketReader packetReader;
@@ -44,7 +44,7 @@ public final class VTMultiplexingInputStream
   {
     this.input = new VTLittleEndianInputStream(input);
     this.server = server;
-    this.packetDataBuffer = new byte[packetSize * 2];
+    this.packetContentBuffer = new byte[packetSize * 2];
     this.bufferSize = bufferSize;
     this.firstSeed = firstSeed;
     this.secondSeed = secondSeed;
@@ -260,7 +260,7 @@ public final class VTMultiplexingInputStream
       type = input.readByte();
       number = input.readSubInt();
       length = input.readInt();
-      input.readFully(packetDataBuffer, 0, length);
+      input.readFully(packetContentBuffer, 0, length);
       stream = getInputStream(type, number);
       if (stream == null)
       {
@@ -269,7 +269,7 @@ public final class VTMultiplexingInputStream
       }
       if (length >= 0)
       {
-        if ((stream.getFirstSequencer().nextLong() ^ stream.getSecondSequencer().nextLong() ^ XXH3.hash64(packetDataBuffer, length)) != hash)
+        if ((stream.getFirstSequencer().nextLong() ^ stream.getSecondSequencer().nextLong() ^ XXH3.hash64(packetContentBuffer, length)) != hash)
         {
           close();
           return;
@@ -277,7 +277,7 @@ public final class VTMultiplexingInputStream
         OutputStream out = stream.getOutputStream();
         try
         {
-          out.write(packetDataBuffer, 0, length);
+          out.write(packetContentBuffer, 0, length);
           out.flush();
         }
         catch (Throwable e)
@@ -396,7 +396,7 @@ public final class VTMultiplexingInputStream
       return type;
     }
     
-    public final void type(final int type)
+    private final void type(final int type)
     {
       this.type = type;
     }
@@ -406,7 +406,7 @@ public final class VTMultiplexingInputStream
       return link;
     }
     
-    public final void setLink(final Object link)
+    private final void setLink(final Object link)
     {
       this.link = link;
     }
@@ -458,7 +458,7 @@ public final class VTMultiplexingInputStream
       {
         if (compressedInputPipe == null)
         {
-          compressedInputPipe = new VTByteArrayInputStream(new byte[packetDataBuffer.length]);
+          compressedInputPipe = new VTByteArrayInputStream(new byte[packetContentBuffer.length]);
         }
         if ((type & VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_HEAVY) != 0)
         {
