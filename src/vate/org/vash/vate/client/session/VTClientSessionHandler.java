@@ -84,7 +84,7 @@ public class VTClientSessionHandler implements Runnable
       started = true;
       try
       {
-        for (VTClientSessionListener listener : listeners.toArray(new VTClientSessionListener[] {}))
+        for (VTClientSessionListener listener : listeners)
         {
           try
           {
@@ -138,7 +138,7 @@ public class VTClientSessionHandler implements Runnable
     {
       try
       {
-        for (VTClientSessionListener listener : listeners.toArray(new VTClientSessionListener[] {}))
+        for (VTClientSessionListener listener : listeners)
         {
           try
           {

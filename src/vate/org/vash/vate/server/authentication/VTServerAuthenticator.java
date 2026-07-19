@@ -140,9 +140,9 @@ public class VTServerAuthenticator
     
     List<byte[]> possibleCredentials = new ArrayList<byte[]>();
     VTCredential[] serverCredentials = server.getUserCredentials().toArray(new VTCredential[] {});
-    if (server.getUserCredentials().size() > 0)
+    if (serverCredentials.length > 0)
     {
-      for (VTCredential credential : server.getUserCredentials())
+      for (VTCredential credential : serverCredentials)
       {
         String credentialUser = credential.getUser();
         String credentialPassword = credential.getPassword();

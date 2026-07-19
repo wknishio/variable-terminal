@@ -94,7 +94,7 @@ public class VTServerSessionHandler implements Runnable
       started = true;
       try
       {
-        for (VTServerSessionListener listener : listeners.toArray(new VTServerSessionListener[] {}))
+        for (VTServerSessionListener listener : listeners)
         {
           try
           {
@@ -129,7 +129,7 @@ public class VTServerSessionHandler implements Runnable
     {
       try
       {
-        for (VTServerSessionListener listener : listeners.toArray(new VTServerSessionListener[] {}))
+        for (VTServerSessionListener listener : listeners)
         {
           try
           {
