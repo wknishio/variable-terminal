@@ -75,7 +75,7 @@
 			<fileset dir="script/lib"/>
 		</copy>
 		
-		<jar destfile="dist/lib/vate-lib.jar" update="false">
+		<jar destfile="dist/lib/vate-lib.jar" filesetmanifest="mergewithoutmain" update="false">
 			<manifest>
 				<attribute name="Built-By" value="William Kendi Nishio"/>
 				<attribute name="Build-Date" value="${build.time.era} ${build.time.date}"/>

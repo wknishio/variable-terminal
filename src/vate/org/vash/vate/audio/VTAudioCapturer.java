@@ -14,15 +14,15 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Mixer;
 import javax.sound.sampled.TargetDataLine;
 
-import org.concentus.OpusApplication;
-import org.concentus.OpusEncoder;
-import org.concentus.OpusException;
-import org.concentus.OpusMode;
-import org.concentus.OpusSignal;
 import org.vash.vate.VTSystem;
 import org.vash.vate.stream.endian.VTLittleEndianByteArrayInputOutputStream;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
-import org.xiph.speex.SpeexEncoder;
+import org.vash.vate.org.concentus.OpusApplication;
+import org.vash.vate.org.concentus.OpusEncoder;
+import org.vash.vate.org.concentus.OpusException;
+import org.vash.vate.org.concentus.OpusMode;
+import org.vash.vate.org.concentus.OpusSignal;
+import org.vash.vate.org.xiph.speex.SpeexEncoder;
 
 public class VTAudioCapturer
 {
