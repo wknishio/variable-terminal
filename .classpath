@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src/vate"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/concentus-opus.jar"/>
 	<classpathentry kind="lib" path="lib/vate-awt.jar"/>
 	<classpathentry kind="lib" path="lib/vate-compat.jar"/>
 	<classpathentry kind="lib" path="lib/vate-jna.jar"/>

@@ -13,9 +13,9 @@ import javax.sound.sampled.SourceDataLine;
 
 import org.vash.vate.VTSystem;
 import org.vash.vate.stream.endian.VTLittleEndianInputStream;
-import org.vash.vate.org.concentus.OpusDecoder;
-import org.vash.vate.org.concentus.OpusException;
 import org.vash.vate.org.xiph.speex.SpeexDecoder;
+import org.concentus.OpusDecoder;
+import org.concentus.OpusException;
 
 public class VTAudioPlayer
 {
