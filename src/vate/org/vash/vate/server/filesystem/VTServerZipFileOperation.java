@@ -78,7 +78,7 @@ public class VTServerZipFileOperation extends VTTask
       {
         try
         {
-          if (VTZipUtils.createZipFile(zipFilePath, Deflater.BEST_SPEED, Deflater.DEFAULT_STRATEGY, readBuffer, sourcePaths))
+          if (VTZipUtils.createZipFile(zipFilePath, Deflater.BEST_SPEED + 1, Deflater.DEFAULT_STRATEGY, readBuffer, sourcePaths))
           {
             synchronized (this)
             {
