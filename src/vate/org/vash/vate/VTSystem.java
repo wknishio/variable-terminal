@@ -35,7 +35,7 @@ public class VTSystem
   
   public static final int VT_CONNECTION_INPUT_BUFFER_SIZE_BYTES = 1024 * 1024 * 4;
   public static final int VT_CONNECTION_OUTPUT_BUFFER_SIZE_BYTES = 1024 * 64;
-  public static final int VT_CHANNEL_BUFFER_SIZE_BYTES = 1024 * 256;
+  public static final int VT_CHANNEL_BUFFER_SIZE_BYTES = 1024 * 64;
   public static final int VT_STANDARD_BUFFER_SIZE_BYTES = 1024 * 64;
   public static final int VT_COMPRESSION_BUFFER_SIZE_BYTES = 1024 * 64;
   public static final int VT_FILE_BUFFER_SIZE_BYTES = 1024 * 64;
