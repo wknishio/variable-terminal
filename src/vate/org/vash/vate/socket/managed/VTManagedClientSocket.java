@@ -10,7 +10,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import org.vash.vate.VTSystem;
 import org.vash.vate.client.VTClient;
 import org.vash.vate.client.connection.VTClientConnection;
 import org.vash.vate.client.session.VTClientSession;
@@ -133,9 +132,7 @@ public class VTManagedClientSocket
     
     public VTRemoteSocketFactory createRemoteSocketFactory(int type)
     {
-      type |= VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT;
-      VTTunnelConnection connection = session.getTunnelsHandler().getConnection();
-      return connection.createRemoteSocketFactory(connection.getResponseChannel(type));
+      return session.createRemoteSocketFactory(type);
     }
     
     public VTTunnelConnection getTunnelConnection()

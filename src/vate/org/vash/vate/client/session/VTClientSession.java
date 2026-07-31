@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 
+import org.vash.vate.VTSystem;
 import org.vash.vate.client.VTClient;
 import org.vash.vate.client.connection.VTClientConnection;
 import org.vash.vate.client.console.remote.VTClientRemoteConsoleReader;
@@ -18,6 +19,7 @@ import org.vash.vate.graphics.clipboard.VTClipboardTransferTask;
 import org.vash.vate.ping.VTNanoPingListener;
 import org.vash.vate.ping.VTNanoPingService;
 import org.vash.vate.socket.remote.VTRemotePipedSocketFactory;
+import org.vash.vate.socket.remote.VTRemoteSocketFactory;
 import org.vash.vate.tunnel.connection.VTTunnelConnection;
 import org.vash.vate.tunnel.connection.VTTunnelConnectionHandler;
 
@@ -197,6 +199,12 @@ public class VTClientSession
   public VTRemotePipedSocketFactory createRemotePipedSocketFactory(int type)
   {
     return tunnelsHandler.getConnection().createRemotePipedSocketFactory(type);
+  }
+  
+  public VTRemoteSocketFactory createRemoteSocketFactory(int type)
+  {
+    type |= VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT;
+    return tunnelsHandler.getConnection().createRemoteSocketFactory(tunnelsHandler.getConnection().getResponseChannel(type));
   }
   
   // public VTTunnelConnectionHandler getSOCKSTunnelsHandler()
