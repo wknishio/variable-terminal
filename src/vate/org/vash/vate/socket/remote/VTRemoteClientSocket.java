@@ -12,35 +12,35 @@ import java.nio.channels.SocketChannel;
 
 import org.vash.vate.proxy.client.VTProxy;
 
-public class VTRemoteSocket extends Socket
+public class VTRemoteClientSocket extends Socket
 {
   private final VTRemoteSocketFactory remoteSocketFactory;
   private Socket remoteSocket;
   
-  public VTRemoteSocket(VTRemoteSocketFactory remoteSocketFactory)
+  public VTRemoteClientSocket(VTRemoteSocketFactory remoteSocketFactory)
   {
     this.remoteSocketFactory = remoteSocketFactory;
   }
   
-  public VTRemoteSocket(VTRemoteSocketFactory remoteSocketFactory, String host, int port) throws IOException
+  public VTRemoteClientSocket(VTRemoteSocketFactory remoteSocketFactory, String host, int port) throws IOException
   {
     this.remoteSocketFactory = remoteSocketFactory;
     connect(host, port, 0, 0);
   }
   
-  public VTRemoteSocket(VTRemoteSocketFactory remoteSocketFactory, String host, int port, int connectTimeout) throws IOException
+  public VTRemoteClientSocket(VTRemoteSocketFactory remoteSocketFactory, String host, int port, int connectTimeout) throws IOException
   {
     this.remoteSocketFactory = remoteSocketFactory;
     connect(host, port, connectTimeout);
   }
   
-  public VTRemoteSocket(VTRemoteSocketFactory remoteSocketFactory, String host, int port, int connectTimeout, int dataTimeout) throws IOException
+  public VTRemoteClientSocket(VTRemoteSocketFactory remoteSocketFactory, String host, int port, int connectTimeout, int dataTimeout) throws IOException
   {
     this.remoteSocketFactory = remoteSocketFactory;
     connect(host, port, connectTimeout, dataTimeout);
   }
   
-  public VTRemoteSocket(VTRemoteSocketFactory remoteSocketFactory, String host, int port, int connectTimeout, int dataTimeout, VTProxy proxy) throws IOException
+  public VTRemoteClientSocket(VTRemoteSocketFactory remoteSocketFactory, String host, int port, int connectTimeout, int dataTimeout, VTProxy proxy) throws IOException
   {
     this.remoteSocketFactory = remoteSocketFactory;
     connect(host, port, connectTimeout, dataTimeout, proxy);
