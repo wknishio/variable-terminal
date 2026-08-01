@@ -235,8 +235,8 @@ public class VTSystem
   public static final int VT_AUDIO_CODEC_DEFAULT = VT_AUDIO_CODEC_OPUS;
   
   public static final int VT_AUDIO_CODEC_FRAME_MILLISECONDS = 20;
-  public static final int VT_AUDIO_LINE_CAPTURE_BUFFER_MILLISECONDS = 500;
-  public static final int VT_AUDIO_LINE_PLAYBACK_BUFFER_MILLISECONDS = 500;
+  public static final int VT_AUDIO_LINE_CAPTURE_BUFFER_MILLISECONDS = 320;
+  public static final int VT_AUDIO_LINE_PLAYBACK_BUFFER_MILLISECONDS = 320;
   
   public static final String VT_VERSION = "v" + VTSystem.VT_MAJOR_VERSION + "." + VTSystem.VT_MINOR_VERSION + "." + VTSystem.VT_REVISION_VERSION;
   public static final String VT_YEAR = VT_ERA_DATEFORMAT.format(VT_YEAR_CALENDAR.getTime()) + " " + String.valueOf(VT_YEAR_CALENDAR.get(Calendar.YEAR));
