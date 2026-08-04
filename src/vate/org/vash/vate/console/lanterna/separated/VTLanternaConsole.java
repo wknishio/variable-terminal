@@ -626,7 +626,7 @@ public class VTLanternaConsole extends VTConsole
     AWTTerminalFontConfiguration.setBaseFontSize(VTFontManager.BASE_FONT_SIZE_MONOSPACED);
     AWTTerminalFontConfiguration.setFontScalingFactor(VTFontManager.FONT_SCALING_FACTOR_MONOSPACED);
     DefaultTerminalFactory factory = new DefaultTerminalFactory();
-    factory.setLastLineBackground(new Color(94, 94, 94));
+    //factory.setLastLineBackground(new Color(94, 94, 94));
     factory.setForceAWTOverSwing(true);
     // factory.addTerminalEmulatorFrameAutoCloseTrigger(TerminalEmulatorAutoCloseTrigger.CloseOnExitPrivateMode);
     factory.setInitialTerminalSize(new TerminalSize(consoleOutputColumns, consoleOutputLines + consoleInputLines));
@@ -2560,9 +2560,10 @@ public class VTLanternaConsole extends VTConsole
     inputBox.setTheme(inputTheme);
     outputBox.setTheme(outputTheme);
     
-    if (awtTerminal != null)
+    if (panel != null)
     {
       awtTerminal.getTerminalImplementation().setLastLineBackground(lastLineBackgroundDefault);
+      panel.setLastLineBackgroundColor(lastLineBackgroundDefault);
     }
   }
   
