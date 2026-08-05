@@ -448,12 +448,13 @@ public class VTServer implements Runnable
   
   public void setUniqueUserCredential(String user, String password)
   {
-    //System.out.println("user=[" + user + "]");
-    //System.out.println("password=[" + password + "]");
     try
     {
       userCredentials.clear();
-      userCredentials.add(new VTCredential(user, password));
+      if (user != null && password != null)
+      {
+        userCredentials.add(new VTCredential(user, password));
+      }
     }
     catch (Throwable e)
     {

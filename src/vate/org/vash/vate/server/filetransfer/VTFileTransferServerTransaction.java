@@ -82,7 +82,8 @@ public class VTFileTransferServerTransaction implements Runnable
     blake3Digest.update(session.getServer().getConnection().getLocalNonce());
     blake3Digest.update(session.getServer().getConnection().getRemoteNonce());
     blake3Digest.update(session.getServer().getConnection().getEncryptionKey());
-    blake3Digest.update(session.getServer().getConnection().getDigestedCredentials());
+    blake3Digest.update(session.getServer().getConnection().getNegotiatedCredential());
+    blake3Digest.update(session.getServer().getConnection().getAuthenticatedCredential());
     digestSeed = blake3Digest.digestLong();
     
     //messageDigest = new VTXXHash64MessageDigest(XXHashFactory.safeInstance().newStreamingHash64(digestSeed));

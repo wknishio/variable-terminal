@@ -1290,6 +1290,11 @@ public class VTServerSettingsDialog extends Dialog
           sessionUser.setParameter(credentials[0].getUser());
           sessionPassword.setParameter(credentials[0].getUser());
         }
+        else if (credentials.length == 0)
+        {
+          sessionUser.setParameter("");
+          sessionPassword.setParameter("");
+        }
         sessionsMaximum.setParameter(String.valueOf(connector.getSessionsMaximum()));
         sessionShell.setParameter(connector.getSessionShell());
         pingLimit.setParameter(server.getPingLimit() > 0 ? server.getPingLimit() : "");
@@ -1322,6 +1327,11 @@ public class VTServerSettingsDialog extends Dialog
         {
           sessionUser.setParameter(credentials[0].getUser());
           sessionPassword.setParameter(credentials[0].getUser());
+        }
+        else if (credentials.length == 0)
+        {
+          sessionUser.setParameter("");
+          sessionPassword.setParameter("");
         }
         sessionsMaximum.setParameter(String.valueOf(server.getSessionsMaximum()));
         sessionShell.setParameter(server.getSessionShell());
@@ -1535,6 +1545,10 @@ public class VTServerSettingsDialog extends Dialog
         {
           server.setUniqueUserCredential(sessionUser.getParameter(), sessionPassword.getParameter());
         }
+        else if (server.getUserCredentials().size() == 1)
+        {
+          server.setUniqueUserCredential("", "");
+        }
         sessionUser.setParameter("");
         sessionPassword.setParameter("");
         try
@@ -1628,6 +1642,10 @@ public class VTServerSettingsDialog extends Dialog
         if (user != null && user.length() > 0)
         {
           server.setUniqueUserCredential(sessionUser.getParameter(), sessionPassword.getParameter());
+        }
+        else if (server.getUserCredentials().size() == 1)
+        {
+          server.setUniqueUserCredential("", "");
         }
         sessionUser.setParameter("");
         sessionPassword.setParameter("");

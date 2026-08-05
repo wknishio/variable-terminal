@@ -427,10 +427,10 @@ public final class VTMultiplexingOutputStream
       //throttled.bypass();
       writeOpenPacket(type, number);
       //throttled.restore();
-//      firstSequencer.setSeed(firstSequencerSeed);
-//      secondSequencer.setSeed(secondSequencerSeed);
-//      thirdSequencer.setSeed(thirdSequencerSeed);
-//      fourthSequencer.setSeed(fourthSequencerSeed);
+      firstSequencer.setSeed(firstSequencerSeed);
+      secondSequencer.setSeed(secondSequencerSeed);
+      thirdSequencer.setSeed(thirdSequencerSeed);
+      fourthSequencer.setSeed(fourthSequencerSeed);
       if ((type & VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) != 0)
       {
         if ((type & VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_HEAVY) != 0)

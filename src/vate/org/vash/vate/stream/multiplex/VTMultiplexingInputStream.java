@@ -484,10 +484,10 @@ public final class VTMultiplexingInputStream
     
     private final void open() throws IOException
     {
-//      firstSequencer.setSeed(firstSequencerSeed);
-//      secondSequencer.setSeed(secondSequencerSeed);
-//      thirdSequencer.setSeed(thirdSequencerSeed);
-//      fourthSequencer.setSeed(fourthSequencerSeed);
+      firstSequencer.setSeed(firstSequencerSeed);
+      secondSequencer.setSeed(secondSequencerSeed);
+      thirdSequencer.setSeed(thirdSequencerSeed);
+      fourthSequencer.setSeed(fourthSequencerSeed);
       if (bufferedInputStream != null)
       {
         bufferedInputStream.open();
@@ -615,30 +615,6 @@ public final class VTMultiplexingInputStream
     private final Random getFourthSequencer()
     {
       return fourthSequencer;
-    }
-    
-    @SuppressWarnings("unused")
-    private final long getFirstSequencerSeed()
-    {
-      return firstSequencerSeed;
-    }
-    
-    @SuppressWarnings("unused")
-    private final long getSecondSequencerSeed()
-    {
-      return secondSequencerSeed;
-    }
-    
-    @SuppressWarnings("unused")
-    private final long getThirdSequencerSeed()
-    {
-      return thirdSequencerSeed;
-    }
-    
-    @SuppressWarnings("unused")
-    private final long getFourthSequencerSeed()
-    {
-      return fourthSequencerSeed;
     }
   }
   

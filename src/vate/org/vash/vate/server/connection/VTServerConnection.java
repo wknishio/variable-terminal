@@ -56,7 +56,8 @@ public class VTServerConnection
   private int availableInputChannel;
   private int availableOutputChannel;
   private byte[] encryptionKey;
-  private byte[] digestedCredentials;
+  private byte[] negotiatedCredential;
+  private byte[] authenticatedCredential;
   private final byte[] localNonce = new byte[VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES];
   private final byte[] remoteNonce = new byte[VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES];
   private final byte[] randomData = new byte[VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES];
@@ -190,9 +191,14 @@ public class VTServerConnection
     return remoteNonce;
   }
   
-  public byte[] getDigestedCredentials()
+  public byte[] getNegotiatedCredential()
   {
-    return digestedCredentials;
+    return negotiatedCredential;
+  }
+  
+  public byte[] getAuthenticatedCredential()
+  {
+    return authenticatedCredential;
   }
   
   public void setEncryptionType(int encryptionType)
@@ -538,11 +544,12 @@ public class VTServerConnection
     nonceWriter.setOutputStream(authenticationWriter.getOutputStream());
   }
   
-  public void setConnectionStreams(byte[] digestedCredentials) throws IOException
+  public void setConnectionStreams(byte[] negotiatedCredential, byte[] authenticatedCredential) throws IOException
   {
-    this.digestedCredentials = digestedCredentials;
+    this.negotiatedCredential = negotiatedCredential;
+    this.authenticatedCredential = authenticatedCredential;
     exchangeNonces(true);
-    cryptoEngine.initializeServerEngine(encryptionType, remoteNonce, localNonce, encryptionKey, digestedCredentials);
+    cryptoEngine.initializeServerEngine(encryptionType, remoteNonce, localNonce, encryptionKey, negotiatedCredential, authenticatedCredential);
     connectionInputStream = new BufferedInputStream(cryptoEngine.getDecryptedInputStream(connectionSocketInputStream, VTSystem.VT_CONNECTION_INPUT_BUFFER_SIZE_BYTES), VTSystem.VT_CONNECTION_INPUT_BUFFER_SIZE_BYTES);
     connectionOutputStream = new BufferedOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream, VTSystem.VT_CONNECTION_OUTPUT_BUFFER_SIZE_BYTES), VTSystem.VT_CONNECTION_OUTPUT_BUFFER_SIZE_BYTES);
   }
@@ -553,28 +560,32 @@ public class VTServerConnection
     blake3Digest.update(remoteNonce);
     blake3Digest.update(localNonce);
     blake3Digest.update(encryptionKey);
-    blake3Digest.update(digestedCredentials);
+    blake3Digest.update(negotiatedCredential);
+    blake3Digest.update(authenticatedCredential);
     long inputFirstSeed = blake3Digest.digestLong();
     
     blake3Digest.reset();
     blake3Digest.update(remoteNonce);
     blake3Digest.update(localNonce);
-    blake3Digest.update(digestedCredentials);
     blake3Digest.update(encryptionKey);
+    blake3Digest.update(authenticatedCredential);
+    blake3Digest.update(negotiatedCredential);
     long inputSecondSeed = blake3Digest.digestLong();
     
     blake3Digest.reset();
     blake3Digest.update(localNonce);
     blake3Digest.update(remoteNonce);
     blake3Digest.update(encryptionKey);
-    blake3Digest.update(digestedCredentials);
+    blake3Digest.update(negotiatedCredential);
+    blake3Digest.update(authenticatedCredential);
     long outputFirstSeed = blake3Digest.digestLong();
     
     blake3Digest.reset();
     blake3Digest.update(localNonce);
     blake3Digest.update(remoteNonce);
-    blake3Digest.update(digestedCredentials);
     blake3Digest.update(encryptionKey);
+    blake3Digest.update(authenticatedCredential);
+    blake3Digest.update(negotiatedCredential);
     long outputSecondSeed = blake3Digest.digestLong();
     
     int inputChannel = 0;

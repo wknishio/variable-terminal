@@ -93,7 +93,12 @@ public class VTClientAuthenticator
     timeoutTask.stop();
   }
   
-  public byte[] getSecureDigestedCredential() throws UnsupportedEncodingException
+  public byte[] getNegotiatedCredential() throws UnsupportedEncodingException
+  {
+    return digestedCredential;
+  }
+  
+  public byte[] getAuthenticatedCredential() throws UnsupportedEncodingException
   {
     return computeSecurityDigest(remoteNonce, localNonce, encryptionKey, user.getBytes("UTF-8"), password.getBytes("UTF-8"), digestedCredential);
   }

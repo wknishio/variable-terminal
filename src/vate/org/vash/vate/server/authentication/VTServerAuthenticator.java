@@ -107,7 +107,12 @@ public class VTServerAuthenticator
     return password;
   }
   
-  public byte[] getSecureDigestedCredential() throws UnsupportedEncodingException
+  public byte[] getNegotiatedCredential() throws UnsupportedEncodingException
+  {
+    return digestedCredential;
+  }
+  
+  public byte[] getAuthenticatedCredential() throws UnsupportedEncodingException
   {
     return computeSecurityDigest(localNonce, remoteNonce, encryptionKey, user.getBytes("UTF-8"), password.getBytes("UTF-8"), digestedCredential);
   }
