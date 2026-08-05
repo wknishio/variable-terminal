@@ -250,30 +250,35 @@ public final class VTMultiplexingInputStream
   {
     VTMultiplexedInputStream stream;
     long hash;
+    long start;
+    long end;
     int type; 
     int number;
     int length;
     
     while (!closed)
     {
-      hash = input.readLong();
+      start = input.readLong();
       type = input.readByte();
       number = input.readSubInt();
       length = input.readInt();
       input.readFully(packetContentBuffer, 0, length);
+      hash = XXH3.hash64(packetContentBuffer, length);
+      end = input.readLong();
       stream = getInputStream(type, number);
       if (stream == null)
       {
         close();
         return;
       }
+      if (((stream.getFirstSequencer().nextLong() ^ stream.getSecondSequencer().nextLong() ^ hash) != start)
+      || ((stream.getThirdSequencer().nextLong() ^ stream.getFourthSequencer().nextLong() ^ hash) != end))
+      {
+        close();
+        return;
+      }
       if (length >= 0)
       {
-        if ((stream.getFirstSequencer().nextLong() ^ stream.getSecondSequencer().nextLong() ^ XXH3.hash64(packetContentBuffer, length)) != hash)
-        {
-          close();
-          return;
-        }
         OutputStream out = stream.getOutputStream();
         try
         {
@@ -288,11 +293,6 @@ public final class VTMultiplexingInputStream
       }
       else
       {
-        if ((stream.getThirdSequencer().nextLong() ^ stream.getFourthSequencer().nextLong() ^ ((long) (length)) ^ ((long) ((type & 0xFF) ^ (number << 8)))) != hash)
-        {
-          close();
-          return;
-        }
         if (length == -2)
         {
           close(type, number);
@@ -484,8 +484,10 @@ public final class VTMultiplexingInputStream
     
     private final void open() throws IOException
     {
-      firstSequencer.setSeed(firstSequencerSeed);
-      secondSequencer.setSeed(secondSequencerSeed);
+//      firstSequencer.setSeed(firstSequencerSeed);
+//      secondSequencer.setSeed(secondSequencerSeed);
+//      thirdSequencer.setSeed(thirdSequencerSeed);
+//      fourthSequencer.setSeed(fourthSequencerSeed);
       if (bufferedInputStream != null)
       {
         bufferedInputStream.open();
@@ -613,6 +615,30 @@ public final class VTMultiplexingInputStream
     private final Random getFourthSequencer()
     {
       return fourthSequencer;
+    }
+    
+    @SuppressWarnings("unused")
+    private final long getFirstSequencerSeed()
+    {
+      return firstSequencerSeed;
+    }
+    
+    @SuppressWarnings("unused")
+    private final long getSecondSequencerSeed()
+    {
+      return secondSequencerSeed;
+    }
+    
+    @SuppressWarnings("unused")
+    private final long getThirdSequencerSeed()
+    {
+      return thirdSequencerSeed;
+    }
+    
+    @SuppressWarnings("unused")
+    private final long getFourthSequencerSeed()
+    {
+      return fourthSequencerSeed;
     }
   }
   
