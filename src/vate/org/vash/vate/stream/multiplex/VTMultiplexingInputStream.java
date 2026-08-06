@@ -263,15 +263,11 @@ public final class VTMultiplexingInputStream
       number = input.readSubInt();
       length = input.readInt();
       input.readFully(packetContentBuffer, 0, length);
-      hash = XXH3.hash64(packetContentBuffer, length);
       end = input.readLong();
+      hash = XXH3.hash64(packetContentBuffer, length);
       stream = getInputStream(type, number);
-      if (stream == null)
-      {
-        close();
-        return;
-      }
-      if (((stream.getFirstSequencer().nextLong() ^ stream.getSecondSequencer().nextLong() ^ hash) != start)
+      if (stream == null
+      || ((stream.getFirstSequencer().nextLong() ^ stream.getSecondSequencer().nextLong() ^ hash) != start)
       || ((stream.getThirdSequencer().nextLong() ^ stream.getFourthSequencer().nextLong() ^ hash) != end))
       {
         close();
