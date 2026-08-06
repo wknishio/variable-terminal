@@ -248,7 +248,7 @@ public class VTProxy
     VTProxy proxyNext = proxy.getProxyNext();
     if (proxyNext != null)
     {
-      return nextSocket(nextSocket, bind, timeout, proxy);
+      return nextSocket(nextSocket, bind, timeout, proxyNext);
     }
     return nextSocket;
   }
