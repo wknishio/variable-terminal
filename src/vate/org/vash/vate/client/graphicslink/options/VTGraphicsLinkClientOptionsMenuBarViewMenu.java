@@ -61,17 +61,17 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
   private MenuItem decreaseCaptureFactorMenu;
   
   private CheckboxMenuItem trueColorOption;
-  private CheckboxMenuItem ultraColorOption;
+  //private CheckboxMenuItem ultraColorOption;
   private CheckboxMenuItem vastColorOption;
   private CheckboxMenuItem highColorOption;
   private CheckboxMenuItem extraColorOption;
-  private CheckboxMenuItem nextColorOption;
+  //private CheckboxMenuItem nextColorOption;
   private CheckboxMenuItem mediumColorOption;
   private CheckboxMenuItem simpleColorOption;
-  private CheckboxMenuItem fewColorOption;
+  //private CheckboxMenuItem fewColorOption;
   private CheckboxMenuItem lowColorOption;
   private CheckboxMenuItem grayColorOption;
-  private CheckboxMenuItem dullColorOption;
+  //private CheckboxMenuItem dullColorOption;
   private CheckboxMenuItem worstColorOption;
   
   private CheckboxMenuItem interruptedRefreshOption;
@@ -140,30 +140,30 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
     
     this.trueColorOption = new CheckboxMenuItem("True-24-Bit", false);
     this.trueColorOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuColorOptionsListener(writer, trueColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_16777216));
-    this.ultraColorOption = new CheckboxMenuItem("Ultra-21-Bit", false);
-    this.ultraColorOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuColorOptionsListener(writer, ultraColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_2097152));
+    //this.ultraColorOption = new CheckboxMenuItem("Ultra-21-Bit", false);
+    //this.ultraColorOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuColorOptionsListener(writer, ultraColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_2097152));
     this.vastColorOption = new CheckboxMenuItem("Vast-18-Bit", false);
     this.vastColorOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuColorOptionsListener(writer, vastColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_262144));
     this.highColorOption = new CheckboxMenuItem("High-15-Bit", false);
     this.highColorOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuColorOptionsListener(writer, highColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_32768));
     this.extraColorOption = new CheckboxMenuItem("Extra-12-Bit", false);
     this.extraColorOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuColorOptionsListener(writer, extraColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_4096));
-    this.nextColorOption = new CheckboxMenuItem("Next-9-Bit", false);
-    this.nextColorOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuColorOptionsListener(writer, nextColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_512));
+    //this.nextColorOption = new CheckboxMenuItem("Next-9-Bit", false);
+    //this.nextColorOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuColorOptionsListener(writer, nextColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_512));
     this.mediumColorOption = new CheckboxMenuItem("Medium-8-Bit", true);
     this.mediumColorOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuColorOptionsListener(writer, mediumColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_216));
     this.simpleColorOption = new CheckboxMenuItem("Simple-7-Bit", false);
     this.simpleColorOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuColorOptionsListener(writer, simpleColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_125));
-    this.fewColorOption = new CheckboxMenuItem("Few-6-Bit", false);
-    this.fewColorOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuColorOptionsListener(writer, fewColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_64));
-    this.lowColorOption = new CheckboxMenuItem("Low-5-Bit", false);
-    this.lowColorOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuColorOptionsListener(writer, lowColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_27));
+    //this.fewColorOption = new CheckboxMenuItem("Few-6-Bit", false);
+    //this.fewColorOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuColorOptionsListener(writer, fewColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_64));
+    this.lowColorOption = new CheckboxMenuItem("Low-6-Bit", false);
+    this.lowColorOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuColorOptionsListener(writer, lowColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_64));
     this.grayColorOption = new CheckboxMenuItem("Gray-4-Bit", false);
     this.grayColorOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuColorOptionsListener(writer, grayColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_16));
-    this.dullColorOption = new CheckboxMenuItem("Dull-3-Bit", false);
-    this.dullColorOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuColorOptionsListener(writer, dullColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_8));
-    this.worstColorOption = new CheckboxMenuItem("Worst-2-Bit", false);
-    this.worstColorOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuColorOptionsListener(writer, worstColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_4));
+    //this.dullColorOption = new CheckboxMenuItem("Dull-3-Bit", false);
+    //this.dullColorOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuColorOptionsListener(writer, dullColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_8));
+    this.worstColorOption = new CheckboxMenuItem("Worst-3-Bit", false);
+    this.worstColorOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuColorOptionsListener(writer, worstColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_8));
     
     this.interruptedRefreshOption = new CheckboxMenuItem("Suspend", false);
     this.interruptedRefreshOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuInterruptRefreshOptionListener(writer, interruptedRefreshOption));
@@ -249,17 +249,17 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
     this.drawPointerSizeMenu.add(normalizePointerOption);
     
     this.colorQualityMenu.add(trueColorOption);
-    this.colorQualityMenu.add(ultraColorOption);
+    //this.colorQualityMenu.add(ultraColorOption);
     this.colorQualityMenu.add(vastColorOption);
     this.colorQualityMenu.add(highColorOption);
     this.colorQualityMenu.add(extraColorOption);
-    this.colorQualityMenu.add(nextColorOption);
+    //this.colorQualityMenu.add(nextColorOption);
     this.colorQualityMenu.add(mediumColorOption);
     this.colorQualityMenu.add(simpleColorOption);
-    this.colorQualityMenu.add(fewColorOption);
+    //this.colorQualityMenu.add(fewColorOption);
     this.colorQualityMenu.add(lowColorOption);
     this.colorQualityMenu.add(grayColorOption);
-    this.colorQualityMenu.add(dullColorOption);
+    //this.colorQualityMenu.add(dullColorOption);
     this.colorQualityMenu.add(worstColorOption);
     
     this.refreshModeMenu.add(asynchronousRefreshOption);
@@ -338,209 +338,209 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
     if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_16777216)
     {
       trueColorOption.setState(true);
-      ultraColorOption.setState(false);
+      //ultraColorOption.setState(false);
       vastColorOption.setState(false);
       highColorOption.setState(false);
       extraColorOption.setState(false);
-      nextColorOption.setState(false);
+      //nextColorOption.setState(false);
       mediumColorOption.setState(false);
       simpleColorOption.setState(false);
-      fewColorOption.setState(false);
+      //fewColorOption.setState(false);
       lowColorOption.setState(false);
       grayColorOption.setState(false);
-      dullColorOption.setState(false);
+      //dullColorOption.setState(false);
       worstColorOption.setState(false);
     }
     else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_2097152)
     {
       trueColorOption.setState(false);
-      ultraColorOption.setState(true);
+      //ultraColorOption.setState(true);
       vastColorOption.setState(false);
       highColorOption.setState(false);
       extraColorOption.setState(false);
-      nextColorOption.setState(false);
+      //nextColorOption.setState(false);
       mediumColorOption.setState(false);
       simpleColorOption.setState(false);
-      fewColorOption.setState(false);
+      //fewColorOption.setState(false);
       lowColorOption.setState(false);
       grayColorOption.setState(false);
-      dullColorOption.setState(false);
+      //dullColorOption.setState(false);
       worstColorOption.setState(false);
     }
     else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_262144)
     {
       trueColorOption.setState(false);
-      ultraColorOption.setState(false);
+      //ultraColorOption.setState(false);
       vastColorOption.setState(true);
       highColorOption.setState(false);
       extraColorOption.setState(false);
-      nextColorOption.setState(false);
+      //nextColorOption.setState(false);
       mediumColorOption.setState(false);
       simpleColorOption.setState(false);
-      fewColorOption.setState(false);
+      //fewColorOption.setState(false);
       lowColorOption.setState(false);
       grayColorOption.setState(false);
-      dullColorOption.setState(false);
+      //dullColorOption.setState(false);
       worstColorOption.setState(false);
     }
     else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_32768)
     {
       trueColorOption.setState(false);
-      ultraColorOption.setState(false);
+      //ultraColorOption.setState(false);
       vastColorOption.setState(false);
       highColorOption.setState(true);
       extraColorOption.setState(false);
-      nextColorOption.setState(false);
+      //nextColorOption.setState(false);
       mediumColorOption.setState(false);
       simpleColorOption.setState(false);
-      fewColorOption.setState(false);
+      //fewColorOption.setState(false);
       lowColorOption.setState(false);
       grayColorOption.setState(false);
-      dullColorOption.setState(false);
+      //dullColorOption.setState(false);
       worstColorOption.setState(false);
     }
     else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_4096)
     {
       trueColorOption.setState(false);
-      ultraColorOption.setState(false);
+      //ultraColorOption.setState(false);
       vastColorOption.setState(false);
       highColorOption.setState(false);
       extraColorOption.setState(true);
-      nextColorOption.setState(false);
+      //nextColorOption.setState(false);
       mediumColorOption.setState(false);
       simpleColorOption.setState(false);
-      fewColorOption.setState(false);
+      //fewColorOption.setState(false);
       lowColorOption.setState(false);
       grayColorOption.setState(false);
-      dullColorOption.setState(false);
+      //dullColorOption.setState(false);
       worstColorOption.setState(false);
     }
     else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_512)
     {
       trueColorOption.setState(false);
-      ultraColorOption.setState(false);
+      //ultraColorOption.setState(false);
       vastColorOption.setState(false);
       highColorOption.setState(false);
       extraColorOption.setState(false);
-      nextColorOption.setState(true);
+      //nextColorOption.setState(true);
       mediumColorOption.setState(false);
       simpleColorOption.setState(false);
-      fewColorOption.setState(false);
+      //fewColorOption.setState(false);
       lowColorOption.setState(false);
       grayColorOption.setState(false);
-      dullColorOption.setState(false);
+      //dullColorOption.setState(false);
       worstColorOption.setState(false);
     }
     else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_216)
     {
       trueColorOption.setState(false);
-      ultraColorOption.setState(false);
+      //ultraColorOption.setState(false);
       vastColorOption.setState(false);
       highColorOption.setState(false);
       extraColorOption.setState(false);
-      nextColorOption.setState(false);
+      //nextColorOption.setState(false);
       mediumColorOption.setState(true);
       simpleColorOption.setState(false);
-      fewColorOption.setState(false);
+      //fewColorOption.setState(false);
       lowColorOption.setState(false);
       grayColorOption.setState(false);
-      dullColorOption.setState(false);
+      //dullColorOption.setState(false);
       worstColorOption.setState(false);
     }
     else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_125)
     {
       trueColorOption.setState(false);
-      ultraColorOption.setState(false);
+      //ultraColorOption.setState(false);
       vastColorOption.setState(false);
       highColorOption.setState(false);
       extraColorOption.setState(false);
-      nextColorOption.setState(false);
+      //nextColorOption.setState(false);
       mediumColorOption.setState(false);
       simpleColorOption.setState(true);
-      fewColorOption.setState(false);
+      //fewColorOption.setState(false);
       lowColorOption.setState(false);
       grayColorOption.setState(false);
-      dullColorOption.setState(false);
+      //dullColorOption.setState(false);
       worstColorOption.setState(false);
     }
     else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_64)
     {
       trueColorOption.setState(false);
-      ultraColorOption.setState(false);
+      //ultraColorOption.setState(false);
       vastColorOption.setState(false);
       highColorOption.setState(false);
       extraColorOption.setState(false);
-      nextColorOption.setState(false);
+      //nextColorOption.setState(false);
       mediumColorOption.setState(false);
       simpleColorOption.setState(false);
-      fewColorOption.setState(true);
-      lowColorOption.setState(false);
+      //fewColorOption.setState(true);
+      lowColorOption.setState(true);
       grayColorOption.setState(false);
-      dullColorOption.setState(false);
+      //dullColorOption.setState(false);
       worstColorOption.setState(false);
     }
     else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_27)
     {
       trueColorOption.setState(false);
-      ultraColorOption.setState(false);
+      //ultraColorOption.setState(false);
       vastColorOption.setState(false);
       highColorOption.setState(false);
       extraColorOption.setState(false);
-      nextColorOption.setState(false);
+      //nextColorOption.setState(false);
       mediumColorOption.setState(false);
       simpleColorOption.setState(false);
-      fewColorOption.setState(false);
+      //fewColorOption.setState(false);
       lowColorOption.setState(true);
       grayColorOption.setState(false);
-      dullColorOption.setState(false);
+      //dullColorOption.setState(false);
       worstColorOption.setState(false);
     }
     else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_16)
     {
       trueColorOption.setState(false);
-      ultraColorOption.setState(false);
+      //ultraColorOption.setState(false);
       vastColorOption.setState(false);
       highColorOption.setState(false);
       extraColorOption.setState(false);
-      nextColorOption.setState(false);
+      //nextColorOption.setState(false);
       mediumColorOption.setState(false);
       simpleColorOption.setState(false);
-      fewColorOption.setState(false);
+      //fewColorOption.setState(false);
       lowColorOption.setState(false);
       grayColorOption.setState(true);
-      dullColorOption.setState(false);
+      //dullColorOption.setState(false);
       worstColorOption.setState(false);
     }
     else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_8)
     {
       trueColorOption.setState(false);
-      ultraColorOption.setState(false);
+      //ultraColorOption.setState(false);
       vastColorOption.setState(false);
       highColorOption.setState(false);
       extraColorOption.setState(false);
-      nextColorOption.setState(false);
+      //nextColorOption.setState(false);
       mediumColorOption.setState(false);
       simpleColorOption.setState(false);
-      fewColorOption.setState(false);
+      //fewColorOption.setState(false);
       lowColorOption.setState(false);
       grayColorOption.setState(false);
-      dullColorOption.setState(true);
-      worstColorOption.setState(false);
+      //dullColorOption.setState(true);
+      worstColorOption.setState(true);
     }
     else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_4)
     {
       trueColorOption.setState(false);
-      ultraColorOption.setState(false);
+      //ultraColorOption.setState(false);
       vastColorOption.setState(false);
       highColorOption.setState(false);
       extraColorOption.setState(false);
-      nextColorOption.setState(false);
+      //nextColorOption.setState(false);
       mediumColorOption.setState(false);
       simpleColorOption.setState(false);
-      fewColorOption.setState(false);
+      //fewColorOption.setState(false);
       lowColorOption.setState(false);
       grayColorOption.setState(false);
-      dullColorOption.setState(false);
+      //dullColorOption.setState(false);
       worstColorOption.setState(true);
     }
     else
@@ -804,45 +804,45 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
   {
     CheckboxMenuItem enable = null;
     CheckboxMenuItem disable = null;
-    if (dullColorOption.getState())
-    {
-      disable = dullColorOption;
-      enable = worstColorOption;
-    }
+//    if (dullColorOption.getState())
+//    {
+//      disable = dullColorOption;
+//      enable = worstColorOption;
+//    }
     if (grayColorOption.getState())
     {
       disable = grayColorOption;
-      enable = dullColorOption;
+      enable = worstColorOption;
     }
     if (lowColorOption.getState())
     {
       disable = lowColorOption;
       enable = grayColorOption;
     }
-    if (fewColorOption.getState())
-    {
-      disable = fewColorOption;
-      enable = lowColorOption;
-    }
+//    if (fewColorOption.getState())
+//    {
+//      disable = fewColorOption;
+//      enable = lowColorOption;
+//    }
     if (simpleColorOption.getState())
     {
       disable = simpleColorOption;
-      enable = fewColorOption;
+      enable = lowColorOption;
     }
     if (mediumColorOption.getState())
     {
       disable = mediumColorOption;
       enable = simpleColorOption;
     }
-    if (nextColorOption.getState())
-    {
-      disable = nextColorOption;
-      enable = mediumColorOption;
-    }
+//    if (nextColorOption.getState())
+//    {
+//      disable = nextColorOption;
+//      enable = mediumColorOption;
+//    }
     if (extraColorOption.getState())
     {
       disable = extraColorOption;
-      enable = nextColorOption;
+      enable = mediumColorOption;
     }
     if (highColorOption.getState())
     {
@@ -854,15 +854,15 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
       disable = vastColorOption;
       enable = highColorOption;
     }
-    if (ultraColorOption.getState())
-    {
-      disable = ultraColorOption;
-      enable = vastColorOption;
-    }
+//    if (ultraColorOption.getState())
+//    {
+//      disable = ultraColorOption;
+//      enable = vastColorOption;
+//    }
     if (trueColorOption.getState())
     {
       disable = trueColorOption;
-      enable = ultraColorOption;
+      enable = vastColorOption;
     }
     if (enable != null)
     {
@@ -880,13 +880,13 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
     if (worstColorOption.getState())
     {
       disable = worstColorOption;
-      enable = dullColorOption;
-    }
-    if (dullColorOption.getState())
-    {
-      disable = dullColorOption;
       enable = grayColorOption;
     }
+//    if (dullColorOption.getState())
+//    {
+//      disable = dullColorOption;
+//      enable = grayColorOption;
+//    }
     if (grayColorOption.getState())
     {
       disable = grayColorOption;
@@ -895,13 +895,13 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
     if (lowColorOption.getState())
     {
       disable = lowColorOption;
-      enable = fewColorOption;
-    }
-    if (fewColorOption.getState())
-    {
-      disable = fewColorOption;
       enable = simpleColorOption;
     }
+//    if (fewColorOption.getState())
+//    {
+//      disable = fewColorOption;
+//      enable = simpleColorOption;
+//    }
     if (simpleColorOption.getState())
     {
        disable = simpleColorOption;
@@ -910,13 +910,13 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
     if (mediumColorOption.getState())
     {
       disable = mediumColorOption;
-      enable = nextColorOption;
-    }
-    if (nextColorOption.getState())
-    {
-      disable = nextColorOption;
       enable = extraColorOption;
     }
+//    if (nextColorOption.getState())
+//    {
+//      disable = nextColorOption;
+//      enable = extraColorOption;
+//    }
     if (extraColorOption.getState())
     {
       disable = extraColorOption;
@@ -930,13 +930,13 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
     if (vastColorOption.getState())
     {
       disable = vastColorOption;
-      enable = ultraColorOption;
-    }
-    if (ultraColorOption.getState())
-    {
-      disable = ultraColorOption;
       enable = trueColorOption;
     }
+//    if (ultraColorOption.getState())
+//    {
+//      disable = ultraColorOption;
+//      enable = trueColorOption;
+//    }
     if (enable != null)
     {
       disable.setState(false);

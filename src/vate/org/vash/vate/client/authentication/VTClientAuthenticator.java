@@ -13,6 +13,8 @@ public class VTClientAuthenticator
   private boolean accepted = false;
   private byte[] digestedCredential = new byte[VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES];
   private byte[] receivedCredential = new byte[VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES];
+  private byte[] negotiatedCredential = new byte[VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES];
+  private byte[] authenticatedCredential = new byte[VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES];
   private byte[] localNonce;
   private byte[] remoteNonce;
   private byte[] encryptionKey;
@@ -95,12 +97,12 @@ public class VTClientAuthenticator
   
   public byte[] getNegotiatedCredential() throws UnsupportedEncodingException
   {
-    return digestedCredential;
+    return negotiatedCredential;
   }
   
   public byte[] getAuthenticatedCredential() throws UnsupportedEncodingException
   {
-    return computeSecurityDigest(remoteNonce, localNonce, encryptionKey, user.getBytes("UTF-8"), password.getBytes("UTF-8"), digestedCredential);
+    return authenticatedCredential; 
   }
   
   public String getUser()
@@ -131,23 +133,20 @@ public class VTClientAuthenticator
     localNonce = connection.getLocalNonce();
     remoteNonce = connection.getRemoteNonce();
     encryptionKey = connection.getEncryptionKey();
-    
     blake3Digest.reset();
     byte[] seed = new byte[VTSystem.VT_SECURITY_SEED_SIZE_BYTES];
     System.arraycopy(localNonce, 0, seed, 0, VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES);
     System.arraycopy(remoteNonce, 0, seed, VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES, VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES);
     blake3Digest.setSeed(seed);
     blake3Digest.reset();
-    
     user = client.getUser();
     password = client.getPassword();
-    
     digestedCredential = computeSecurityDigest(remoteNonce, localNonce, encryptionKey, user.getBytes("UTF-8"), password.getBytes("UTF-8"));
-    
     connection.getAuthenticationWriter().write(digestedCredential);
     connection.getAuthenticationWriter().flush();
     connection.getAuthenticationReader().readFully(receivedCredential, 0, receivedCredential.length);
-    
+    negotiatedCredential = computeSecurityDigest(localNonce, remoteNonce, encryptionKey, user.getBytes("UTF-8"), password.getBytes("UTF-8"), digestedCredential, receivedCredential);
+    authenticatedCredential = computeSecurityDigest(remoteNonce, localNonce, encryptionKey, user.getBytes("UTF-8"), password.getBytes("UTF-8"), receivedCredential, digestedCredential, negotiatedCredential);
     accepted = true;
     stopTimeoutThread();
     return connection.isVerified();

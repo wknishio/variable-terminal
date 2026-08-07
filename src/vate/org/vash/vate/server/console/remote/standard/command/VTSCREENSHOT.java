@@ -83,10 +83,10 @@ public class VTSCREENSHOT extends VTServerStandardRemoteConsoleCommandProcessor
             {
               session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_16777216);
             }
-            if (parsed[i].toUpperCase().contains("U"))
-            {
-              session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_2097152);
-            }
+//            if (parsed[i].toUpperCase().contains("U"))
+//            {
+//              session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_2097152);
+//            }
             if (parsed[i].toUpperCase().contains("V"))
             {
               session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_262144);
@@ -99,10 +99,10 @@ public class VTSCREENSHOT extends VTServerStandardRemoteConsoleCommandProcessor
             {
               session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_4096);
             }
-            if (parsed[i].toUpperCase().contains("N"))
-            {
-              session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_512);
-            }
+//            if (parsed[i].toUpperCase().contains("N"))
+//            {
+//              session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_512);
+//            }
             if (parsed[i].toUpperCase().contains("M"))
             {
               session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_216);
@@ -111,25 +111,25 @@ public class VTSCREENSHOT extends VTServerStandardRemoteConsoleCommandProcessor
             {
               session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_125);
             }
-            if (parsed[i].toUpperCase().contains("F"))
-            {
-              session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_64);
-            }
+//            if (parsed[i].toUpperCase().contains("F"))
+//            {
+//              session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_64);
+//            }
             if (parsed[i].toUpperCase().contains("L"))
             {
-              session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_27);
+              session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_64);
             }
             if (parsed[i].toUpperCase().contains("G"))
             {
               session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_16);
             }
-            if (parsed[i].toUpperCase().contains("D"))
-            {
-              session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_8);
-            }
+//            if (parsed[i].toUpperCase().contains("D"))
+//            {
+//              session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_8);
+//            }
             if (parsed[i].toUpperCase().contains("W"))
             {
-              session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_4);
+              session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_8);
             }
           }
           session.getScreenshotTask().startThread();
