@@ -22,7 +22,6 @@ import org.vash.vate.stream.limit.VTSizedInputStream;
 
 public class VTGraphicsLinkClientReader implements Runnable
 {
-  //private static final int CODEC_PADDING_SIZE = VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII.CUSTOM_CODEC_PADDING_SIZE;
   private volatile boolean stopped;
   private boolean failed;
   private int currentDataType;
@@ -40,16 +39,13 @@ public class VTGraphicsLinkClientReader implements Runnable
   private VTGraphicsLinkClientWriter writer;
   private VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII vtCustomCodec;
   private ImageReader currentImageReader;
-  //private ImageReadParam currentImageReaderParam;
   private ImageReader pngImageReader;
   private ImageReader jpgImageReader;
-  //private ImageReadParam jpgReaderParam;
   private ImageInputStream imageInputStream;
   private VTIncrementalIIOReadUpdateListener incrementalImageReader = new VTIncrementalIIOReadUpdateListener();
   private VTSizedInputStream limitedInputStream;
   private DataBuffer recyclableCurrentDataBuffer;
   private DataBuffer recyclableNextDataBuffer;
-  // private long startTime, endTime;
   
   private class VTIncrementalIIOReadUpdateListener implements IIOReadUpdateListener
   {
@@ -109,7 +105,6 @@ public class VTGraphicsLinkClientReader implements Runnable
   {
     stopped = true;
     failed = false;
-    // imageBuffer = null;
     if (nextImageDataBuffer != null)
     {
       try
@@ -294,12 +289,10 @@ public class VTGraphicsLinkClientReader implements Runnable
             if (connection.getGraphicsControlDataInputStream().read() == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_JPG)
             {
               currentImageReader = jpgImageReader;
-              //currentImageReaderParam = jpgReaderParam;
             }
             else
             {
               currentImageReader = pngImageReader;
-              //currentImageReaderParam = null;
             }
             int type = connection.getGraphicsControlDataInputStream().readInt();
             int colors = connection.getGraphicsControlDataInputStream().readInt();
@@ -367,12 +360,10 @@ public class VTGraphicsLinkClientReader implements Runnable
             if (connection.getGraphicsControlDataInputStream().read() == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_JPG)
             {
               currentImageReader = jpgImageReader;
-              //currentImageReaderParam = jpgReaderParam;
             }
             else
             {
               currentImageReader = pngImageReader;
-              //currentImageReaderParam = null;
             }
             if (!writer.isSynchronousRefresh())
             {
@@ -423,7 +414,6 @@ public class VTGraphicsLinkClientReader implements Runnable
           }
           case VTSystem.VT_GRAPHICS_LINK_IMAGE_CUSTOM_REFRESH_FRAME:
           {
-            // System.out.println("VT_GRAPHICS_LINK_GRAPHICS_INDEPENDENT_FRAME_CUSTOM");
             writer.requestInterfaceRefresh();
             if (currentImageDataBuffer != null)
             {
@@ -455,8 +445,6 @@ public class VTGraphicsLinkClientReader implements Runnable
             colors = connection.getGraphicsControlDataInputStream().readInt();
             width = connection.getGraphicsControlDataInputStream().readInt();
             height = connection.getGraphicsControlDataInputStream().readInt();
-            //System.out.println("type:" + type);
-            //System.out.println("colors:" + colors);
             currentImageDataBuffer = VTImageIO.createImage(CUSTOM_CODEC_PADDING_SIZE, CUSTOM_CODEC_PADDING_SIZE, width, height, type, colors, recyclableCurrentDataBuffer);
             recyclableCurrentDataBuffer = currentImageDataBuffer.getRaster().getDataBuffer();
             
@@ -469,37 +457,18 @@ public class VTGraphicsLinkClientReader implements Runnable
                   lastImageBufferByte = null;
                   lastImageBufferUShort = ((DataBufferUShort) currentImageDataBuffer.getRaster().getDataBuffer()).getData();
                   lastImageBufferInt = null;
-//                previousImageBufferByte = null;
-//                if (previousImageBufferUShort == null || previousImageBufferUShort.length < lastImageBufferUShort.length)
-//                {
-//                  previousImageBufferUShort = new short[lastImageBufferUShort.length];
-//                }
-//                previousImageBufferInt = null;
-//                VTImageIO.clearBuffer(previousImageBufferUShort, BufferedImage.TYPE_USHORT_555_RGB, colors, 0);
                 }
                 if (colors == 64 || colors == 16 || colors == 8 || colors == 4)
                 {
                   lastImageBufferByte = ((DataBufferByte) currentImageDataBuffer.getRaster().getDataBuffer()).getData();
                   lastImageBufferUShort = null;
                   lastImageBufferInt = null;
-//                if (previousImageBufferByte == null || previousImageBufferByte.length < lastImageBufferByte.length)
-//                {
-//                  previousImageBufferByte = new byte[lastImageBufferByte.length];
-//                }
-//                previousImageBufferUShort = null;
-//                previousImageBufferInt = null;
-//                VTImageIO.clearBuffer(previousImageBufferByte, BufferedImage.TYPE_BYTE_INDEXED, colors, 0);
                 }
                 if (colors == 262144 || colors == 2097152)
                 {
                   lastImageBufferByte = null;
                   lastImageBufferUShort = null;
                   lastImageBufferInt = ((DataBufferInt) currentImageDataBuffer.getRaster().getDataBuffer()).getData();
-//                if (previousImageBufferInt == null || previousImageBufferInt.length < lastImageBufferInt.length)
-//                {
-//                  previousImageBufferInt = new int[lastImageBufferInt.length];
-//                }
-//                VTImageIO.clearBuffer(previousImageBufferInt, BufferedImage.TYPE_INT_RGB, colors, 0);
                 }
                 break;
               }
@@ -508,13 +477,6 @@ public class VTGraphicsLinkClientReader implements Runnable
                 lastImageBufferByte = ((DataBufferByte) currentImageDataBuffer.getRaster().getDataBuffer()).getData();
                 lastImageBufferUShort = null;
                 lastImageBufferInt = null;
-//              if (previousImageBufferByte == null || previousImageBufferByte.length < lastImageBufferByte.length)
-//              {
-//                previousImageBufferByte = new byte[lastImageBufferByte.length];
-//              }
-//              previousImageBufferUShort = null;
-//              previousImageBufferInt = null;
-//              VTImageIO.clearBuffer(previousImageBufferByte, BufferedImage.TYPE_BYTE_INDEXED, colors, 0);
                 break;
               }
               case BufferedImage.TYPE_USHORT_555_RGB:
@@ -522,13 +484,6 @@ public class VTGraphicsLinkClientReader implements Runnable
                 lastImageBufferByte = null;
                 lastImageBufferUShort = ((DataBufferUShort) currentImageDataBuffer.getRaster().getDataBuffer()).getData();
                 lastImageBufferInt = null;
-//              previousImageBufferByte = null;
-//              if (previousImageBufferUShort == null || previousImageBufferUShort.length < lastImageBufferUShort.length)
-//              {
-//                previousImageBufferUShort = new short[lastImageBufferUShort.length];
-//              }
-//              previousImageBufferInt = null;
-//              VTImageIO.clearBuffer(previousImageBufferUShort, BufferedImage.TYPE_USHORT_555_RGB, colors, 0);
                 break;
               }
               case BufferedImage.TYPE_INT_RGB:
@@ -536,13 +491,6 @@ public class VTGraphicsLinkClientReader implements Runnable
                 lastImageBufferByte = null;
                 lastImageBufferUShort = null;
                 lastImageBufferInt = ((DataBufferInt) currentImageDataBuffer.getRaster().getDataBuffer()).getData();
-//              previousImageBufferByte = null;
-//              previousImageBufferUShort = null;
-//              if (previousImageBufferInt == null || previousImageBufferInt.length < lastImageBufferInt.length)
-//              {
-//                previousImageBufferInt = new int[lastImageBufferInt.length];
-//              }
-//              VTImageIO.clearBuffer(previousImageBufferInt, BufferedImage.TYPE_INT_RGB, colors, 0);
                 break;
               }
               case BufferedImage.TYPE_INT_ARGB:
@@ -550,13 +498,6 @@ public class VTGraphicsLinkClientReader implements Runnable
                 lastImageBufferByte = null;
                 lastImageBufferUShort = null;
                 lastImageBufferInt = ((DataBufferInt) currentImageDataBuffer.getRaster().getDataBuffer()).getData();
-//              previousImageBufferByte = null;
-//              previousImageBufferUShort = null;
-//              if (previousImageBufferInt == null || previousImageBufferInt.length < lastImageBufferInt.length)
-//              {
-//                previousImageBufferInt = new int[lastImageBufferInt.length];
-//              }
-//              VTImageIO.clearBuffer(previousImageBufferInt, BufferedImage.TYPE_INT_RGB, colors, 0);
                 break;
               }
             }
@@ -566,7 +507,6 @@ public class VTGraphicsLinkClientReader implements Runnable
               writer.notifyAsynchronousRepainter();
             }
             currentDataType = currentImageDataBuffer.getRaster().getDataBuffer().getDataType();
-            // startTime = System.currentTimeMillis();
             if (coding == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_GZD)
             {
               if (currentDataType == DataBuffer.TYPE_BYTE)
@@ -598,18 +538,11 @@ public class VTGraphicsLinkClientReader implements Runnable
               }
             }
             writer.refreshRemoteGraphics(currentImageDataBuffer);
-            // endTime = System.currentTimeMillis();
-            // System.out.println("new frame decoding time: " + (endTime
-            // - startTime));
-//            System.runFinalization();
-//            System.gc();
             break;
           }
           case VTSystem.VT_GRAPHICS_LINK_IMAGE_CUSTOM_DIFFERENTIAL_FRAME:
           {
-            // System.out.println("VT_GRAPHICS_LINK_GRAPHICS_DIFFERENTIAL_FRAME_CUSTOM");
             writer.requestInterfaceRefresh();
-            // startTime = System.currentTimeMillis();
             if (!writer.isSynchronousRefresh())
             {
               writer.notifyAsynchronousRepainter();
@@ -647,9 +580,6 @@ public class VTGraphicsLinkClientReader implements Runnable
               }
             }
             writer.differenceRemoteGraphics(currentImageDataBuffer);
-            // endTime = System.currentTimeMillis();
-            // System.out.println("differential frame decoding time: " +
-            // (endTime - startTime));
             break;
           }
           case VTSystem.VT_GRAPHICS_LINK_SESSION_FINISHED:
@@ -659,7 +589,6 @@ public class VTGraphicsLinkClientReader implements Runnable
           }
           case VTSystem.VT_GRAPHICS_LINK_IMAGE_REMOTE_INTERFACE_AREA_CHANGE:
           {
-            // System.out.println("VT_GRAPHICS_LINK_GRAPHICS_REMOTE_INTERFACE_AREA_CHANGE");
             int width = connection.getGraphicsControlDataInputStream().readInt();
             int height = connection.getGraphicsControlDataInputStream().readInt();
             writer.resizeRemoteGraphics(width, height);
@@ -667,14 +596,12 @@ public class VTGraphicsLinkClientReader implements Runnable
           }
           case VTSystem.VT_GRAPHICS_LINK_IMAGE_REFRESH_NOT_NEEDED:
           {
-            // System.out.println("VT_GRAPHICS_LINK_GRAPHICS_REFRESH_NOT_NEEDED");
             writer.requestInterfaceRefresh();
             writer.notModifiedRemoteGraphics();
             break;
           }
           case VTSystem.VT_GRAPHICS_LINK_IMAGE_REFRESH_MODE_INTERRUPTED:
           {
-            // System.out.println("VT_GRAPHICS_LINK_GRAPHICS_REFRESH_MODE_INTERRUPTED");
             writer.requestInterfaceRefresh();
             writer.notModifiedRemoteGraphics();
             break;
@@ -689,7 +616,6 @@ public class VTGraphicsLinkClientReader implements Runnable
       catch (Throwable e)
       {
         //e.printStackTrace();
-        // e.printStackTrace(VTConsole.getSystemOut());
         stopped = true;
         break;
       }

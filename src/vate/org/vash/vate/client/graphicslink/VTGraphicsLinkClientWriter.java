@@ -79,8 +79,6 @@ public class VTGraphicsLinkClientWriter implements Runnable
   private VTGraphicsLinkClientWriterScrollPane scrolledMaybe;
   private VTGraphicsLinkClientWriterScrollPane scrolledNever;
   private VTGraphicsLinkClientWriterScrollPane scrolled;
-  // private VTGraphicsLinkClientWriterScrollPane scrolledWithBars;
-  // private VTGraphicsLinkClientWriterScrollPane scrolledWithoutBars;
   private VTGraphicsLinkClientWindowListener windowListener;
   private VTGraphicsLinkClientRemoteInterface remoteInterface;
   private VTGraphicsLinkClientRemoteInterfaceFocusListener focusListener;
@@ -88,12 +86,6 @@ public class VTGraphicsLinkClientWriter implements Runnable
   private VTGraphicsLinkClientRemoteInterfaceMouseListener mouseListener;
   private VTGraphicsLinkClientRemoteInterfaceMouseMoveListener mouseMotionListener;
   private VTGraphicsLinkClientRemoteInterfaceMouseWheelListener mouseWheelListener;
-  // private VTGraphicsLinkClientRemoteInterfaceScrollPaneListener
-  // scrollPaneListener;
-  // private VTGraphicsLinkClientRemoteInterfaceLockingKeySynchronizer
-  // lockingKeySynchronizer;
-  // private VTGraphicsLinkClientRemoteInterfaceCaptureAreaUpdater
-  // captureAreaUpdater;
   private VTGraphicsLinkClientRemoteInterfaceRefresher graphicsRefresher;
   private VTAWTControlProvider selfControlProvider;
   private int lastFrameState;
@@ -101,25 +93,8 @@ public class VTGraphicsLinkClientWriter implements Runnable
   private Runnable fullscreenToggler;
   private Runnable frameSizeAdjuster;
   private Runnable menubarToggler;
-  //private Point lastPointerPosition = new Point(0, 0);
   private int lastPointerX = -1;
   private int lastPointerY = -1;
-  // private Runnable requestFocus;
-  // private int frameInsetsTop;
-  // private int frameInsetsBottom;
-  // private int frameInsetsLeft;
-  // private int frameInsetsRight;
-  // private int scrolledInsetsTop;
-  // private int scrolledInsetsBottom;
-  // private int scrolledInsetsLeft;
-  // private int scrolledInsetsRight;
-  // private class VTGraphicaModeClientRequestFocus implements Runnable
-  // {
-  // public void run()
-  // {
-  // remoteInterface.requestFocus();
-  // }
-  // }
   
   private class VTGraphicsLinkClientMenubarToggler implements Runnable
   {
@@ -717,7 +692,6 @@ public class VTGraphicsLinkClientWriter implements Runnable
   
   public void writeEvent(VTAWTControlEvent event)
   {
-    /* if (event != null) { return; } */
     try
     {
       if (event != null && (!controlInterrupted && (terminalControlPolicy == TERMINAL_STATE_FOCUSED && remoteInterface.isFocusOwner()) || terminalControlPolicy == TERMINAL_STATE_VISIBLE))
@@ -832,11 +806,6 @@ public class VTGraphicsLinkClientWriter implements Runnable
             if (nextScrollPosition != null && !currentScrollPosition.equals(nextScrollPosition))
             {
               scrolled.setScrollPosition(nextScrollPosition);
-              
-              //Point scrolledPosition = scrolled.getScrollPosition();
-              
-              //deltaX = scrolledPosition.x - currentScrollPosition.x;
-              //deltaY = scrolledPosition.y - currentScrollPosition.y;
             }
             else
             {
@@ -1197,7 +1166,6 @@ public class VTGraphicsLinkClientWriter implements Runnable
   
   public void requestRefresh()
   {
-    // System.out.println("requestRefresh");
     try
     {
       connection.getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_IMAGE_REFRESH_REQUEST);
@@ -1217,10 +1185,8 @@ public class VTGraphicsLinkClientWriter implements Runnable
     {
       keyListener.setInterrupted(true);
       remoteInterface.removeMouseListener(mouseListener);
-      //remoteInterface.removeMouseMotionListener(mouseMotionListener);
       remoteInterface.removeMouseWheelListener(mouseWheelListener);
       menuBar.interruptControl();
-      // statusBar.setControlStatusText("Control: Interrupted");
     }
   }
   
@@ -1230,10 +1196,8 @@ public class VTGraphicsLinkClientWriter implements Runnable
     {
       keyListener.setInterrupted(false);
       remoteInterface.addMouseListener(mouseListener);
-      //remoteInterface.addMouseMotionListener(mouseMotionListener);
       remoteInterface.addMouseWheelListener(mouseWheelListener);
       menuBar.restabilishControl();
-      // statusBar.setControlStatusText("Control: Active ");
     }
   }
   
@@ -1243,13 +1207,11 @@ public class VTGraphicsLinkClientWriter implements Runnable
     {
       controlInterrupted = false;
       restablishControl();
-      // statusBar.update(statusBar.getGraphics());
     }
     else
     {
       controlInterrupted = true;
       interruptControl();
-      // statusBar.update(statusBar.getGraphics());
     }
   }
   
@@ -1509,7 +1471,6 @@ public class VTGraphicsLinkClientWriter implements Runnable
       area.width = size.width;
       area.height = size.height;
     }
-    // System.out.println("trueArea:" + area);
     return area;
   }
   
@@ -1548,8 +1509,6 @@ public class VTGraphicsLinkClientWriter implements Runnable
   
   public void requestFocus()
   {
-    // System.out.println("requestFocus()");
-    // System.out.println("writer.requestFocus()");
     if (remoteInterface != null)
     {
       remoteInterface.requestFocusInWindow();
@@ -1702,8 +1661,6 @@ public class VTGraphicsLinkClientWriter implements Runnable
       hasRefresh = false;
       hasDifference = false;
     }
-    // EventQueue.invokeLater(graphicsRefresher);
-    // requestRefresh();
   }
   
   private void createCustomCursor()
@@ -1719,12 +1676,6 @@ public class VTGraphicsLinkClientWriter implements Runnable
         {
           BufferedImage cursorImage = new BufferedImage(bestSize.width, bestSize.height, BufferedImage.TYPE_INT_ARGB);
           Point center = new Point(bestSize.width / 2, bestSize.height / 2);
-          // int limit = center.x;
-          // System.out.println("bestsize: x: " + bestSize.width + ",
-          // y: " + bestSize.height);
-          // System.out.println("center: x: " + center.x + ", y: " +
-          // center.y);
-          // System.out.println("limit: " + limit);
           for (int i = 2; i < center.x && (center.x - i) >= 0; i++)
           {
             cursorImage.setRGB(center.x - i, center.y, 0xFF000000);
@@ -1749,30 +1700,21 @@ public class VTGraphicsLinkClientWriter implements Runnable
             cursorImage.setRGB(center.x + 1, center.y + i, 0xFFFFFFFF);
             cursorImage.setRGB(center.x - 1, center.y + i, 0xFFFFFFFF);
           }
-          //cursor = toolkit.createCustomCursor(cursorImage, center, "VT_GRAPHICSLINK_CROSSHAIR_CURSOR");
-          // cursor =
-          // Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
         }
         else
         {
-          //cursor = Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
-          // cursor =
-          // Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+          
         }
-        // cursor = Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR);
       }
       catch (Throwable e)
       {
-        //cursor = null;
         // e.printStackTrace();
       }
     }
     else
     {
-      // cursor = Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
-      // cursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+      
     }
-    //cursor = Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
   }
   
   public void run()
@@ -1883,14 +1825,7 @@ public class VTGraphicsLinkClientWriter implements Runnable
       {
         frame.setSize(((screenSize.width * 3) / 4), ((screenSize.height * 3) / 4));
       }
-      // if (VTConsole.isGraphical())
-      // {
-      // frame.setLocationRelativeTo(VTGraphicalConsole.getFrame());
-      // }
-      // else
-      // {
-      // frame.setLocationByPlatform(true);
-      // }
+      
       frame.setLocationByPlatform(true);
       frame.setVisible(true);
       
@@ -1899,7 +1834,6 @@ public class VTGraphicsLinkClientWriter implements Runnable
       
       frame.getInsets().set(0, 0, 0, 0);
       scrolled.getInsets().set(0, 0, 0, 0);
-      // remoteInterface.getin
       
       synchronized (reader)
       {
@@ -1939,7 +1873,6 @@ public class VTGraphicsLinkClientWriter implements Runnable
       catch (Throwable e)
       {
         // e.printStackTrace();
-        // e.printStackTrace(VTConsole.getSystemOut());
         stopped = true;
         break;
       }

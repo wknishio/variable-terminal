@@ -37,7 +37,6 @@ import org.w3c.dom.NodeList;
 
 public class VTGraphicsLinkServerWriter implements Runnable
 {
-  //private static final int CODEC_PADDING_SIZE = VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII.CUSTOM_CODEC_PADDING_SIZE;
   private static final int IMAGE_OUTPUT_BUFFER_SIZE = VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES;
   private volatile boolean stopped;
   private boolean needRefresh;
@@ -76,7 +75,6 @@ public class VTGraphicsLinkServerWriter implements Runnable
   private ImageWriteParam jpgWriterParam;
   private ImageOutputStream jpgImageOutputStream;
   private PngEncoder pngEncoder;
-  // private long startTime, endTime, total, number;
   
   public VTGraphicsLinkServerWriter(VTGraphicsLinkServerSession session)
   {
@@ -274,12 +272,8 @@ public class VTGraphicsLinkServerWriter implements Runnable
   
   public void sendImageRefresh() throws IOException
   {
-    //System.out.println("sendImageRefresh");
-    //long startTime = System.nanoTime();
-    //long pixels = 0;
     needRefresh = false;
     List<VTRectangle> blockAreas = VTImageDataUtils.splitBlockArea(imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea, 16, 16);
-    //System.out.println("blocks_before:" + blockAreas.size());
     blockAreas = VTImageDataUtils.mergeNeighbourAreas(blockAreas);
     VTRectangle maxBlockArea = null;
     int maxBlockAreaSize = 0;
@@ -291,7 +285,6 @@ public class VTGraphicsLinkServerWriter implements Runnable
         maxBlockAreaSize = blockArea.width * blockArea.height;
       }
     }
-    //System.out.println("blocks_after:" + blockAreas.size());
     connection.getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_IMAGE_STANDARD_REFRESH_FRAME);
     if (imageCoding == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_JPG)
     {
@@ -360,14 +353,10 @@ public class VTGraphicsLinkServerWriter implements Runnable
       }
       connection.getGraphicsDirectImageDataOutputStream().flush();
     }
-    //long endTime = System.nanoTime();
-    //System.out.println("image encoding time: " + (endTime - startTime) / 1000);
   }
   
   public void sendImageDifference() throws IOException
   {
-    //long startTime = System.nanoTime();
-    //long pixels = 0;
     needRefresh = false;
     List<VTRectangle> blockAreas = null;
     if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)
@@ -382,7 +371,6 @@ public class VTGraphicsLinkServerWriter implements Runnable
     {
       blockAreas = VTImageDataUtils.compareBlockArea(lastImageBufferInt, previousImageBufferInt, 0, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea, 16, 16);
     }
-    //System.out.println("blocks_before:" + blockAreas.size());
     blockAreas = VTImageDataUtils.mergeNeighbourAreas(blockAreas);
     VTRectangle maxBlockArea = null;
     int maxBlockAreaSize = 0;
@@ -394,7 +382,6 @@ public class VTGraphicsLinkServerWriter implements Runnable
         maxBlockAreaSize = blockArea.width * blockArea.height;
       }
     }
-    //System.out.println("blocks_after:" + blockAreas.size());
     connection.getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_IMAGE_STANDARD_DIFFERENTIAL_FRAME);
     if (imageCoding == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_JPG)
     {
@@ -459,17 +446,11 @@ public class VTGraphicsLinkServerWriter implements Runnable
       }
       connection.getGraphicsDirectImageDataOutputStream().flush();
     }
-    //long endTime = System.nanoTime();
-    //System.out.println("image encoding time: " + (endTime - startTime) / 1000);
   }
   
   public void sendCustomDifference() throws IOException
   {
-    // System.out.println("sendCustomDifference");
     needRefresh = false;
-    // long startTime = System.currentTimeMillis();
-    // System.out.println("VT_GRAPHICS_LINK_GRAPHICS_DIFFERENTIAL_FRAME_CUSTOM");
-    //imageOutputBuffer.reset();
     connection.getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_IMAGE_CUSTOM_DIFFERENTIAL_FRAME);
     if (imageCoding == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_GZD)
     {
@@ -487,7 +468,6 @@ public class VTGraphicsLinkServerWriter implements Runnable
       {
         vtCustomCodec.encodeFrame24(connection.getGraphicsHeavyImageDataOutputStream(), previousImageBufferInt, lastImageBufferInt, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
       }
-      //imageOutputBuffer.writeTo(connection.getGraphicsFastImageDataOutputStream());
       connection.getGraphicsHeavyImageDataOutputStream().flush();
     }
     else
@@ -506,23 +486,13 @@ public class VTGraphicsLinkServerWriter implements Runnable
       {
         vtCustomCodec.encodeFrame24(connection.getGraphicsFastImageDataOutputStream(), previousImageBufferInt, lastImageBufferInt, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
       }
-      //imageOutputBuffer.writeTo(connection.getGraphicsHeavyImageDataOutputStream());
       connection.getGraphicsFastImageDataOutputStream().flush();
     }
-    // long endTime = System.currentTimeMillis();
-    // System.out.println("custom encoding time: " + (endTime - startTime));
-    // total += endTime - startTime;
-    // number++;
-    // System.out.println("time:[" + (total / number) + "]");
   }
   
   public void sendCustomRefresh() throws IOException
   {
-    //System.out.println("sendCustomRefresh");
     needRefresh = false;
-    // long startTime = System.currentTimeMillis();
-    //System.out.println("VT_GRAPHICS_LINK_GRAPHICS_INDEPENDENT_FRAME_CUSTOM");
-    //imageOutputBuffer.reset();
     connection.getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_IMAGE_CUSTOM_REFRESH_FRAME);
     if (imageCoding == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_GZD)
     {
@@ -544,7 +514,6 @@ public class VTGraphicsLinkServerWriter implements Runnable
       {
         vtCustomCodec.encodeFrame24(connection.getGraphicsHeavyImageDataOutputStream(), previousImageBufferInt, lastImageBufferInt, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
       }
-      //imageOutputBuffer.writeTo(connection.getGraphicsFastImageDataOutputStream());
       connection.getGraphicsHeavyImageDataOutputStream().flush();
     }
     else
@@ -567,11 +536,8 @@ public class VTGraphicsLinkServerWriter implements Runnable
       {
         vtCustomCodec.encodeFrame24(connection.getGraphicsFastImageDataOutputStream(), previousImageBufferInt, lastImageBufferInt, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
       }
-      //imageOutputBuffer.writeTo(connection.getGraphicsHeavyImageDataOutputStream());
       connection.getGraphicsFastImageDataOutputStream().flush();
     }
-    // long endTime = System.currentTimeMillis();
-    // System.out.println("custom encoding time: " + (endTime - startTime));
   }
   
   public void sendRefreshNotNeeded() throws IOException
@@ -590,13 +556,7 @@ public class VTGraphicsLinkServerWriter implements Runnable
   
   public void finishClipboardContentsTransfer()
   {
-    /*
-     * try { connection.resetClipboardStreams(); } catch (Throwable e) { }
-     * session.getSession().getClipboardTransferTask().setInputStream(
-     * connection.getGraphicsClipboardDataInputStream());
-     * session.getSession().getClipboardTransferTask().setOutputStream(
-     * connection.getGraphicsClipboardDataOutputStream());
-     */
+    
   }
   
 //  private IIOMetadata setJpegGrayscale(IIOMetadata metadata)
@@ -950,7 +910,6 @@ public class VTGraphicsLinkServerWriter implements Runnable
                 && (lastImageCoding != VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_ZSD || lastImageCoding != VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_GZD))
                 //&& imageCoding == lastImageCoding)
                 {
-                  // startTime = System.currentTimeMillis();
                   captureArea.width = Math.min(lastWidth, captureArea.width + CUSTOM_CODEC_PADDING_SIZE);
                   captureArea.height = Math.min(lastHeight, captureArea.width + CUSTOM_CODEC_PADDING_SIZE);
                   boolean different = false;
@@ -1068,12 +1027,10 @@ public class VTGraphicsLinkServerWriter implements Runnable
       catch (Throwable e)
       {
         //e.printStackTrace();
-        // e.printStackTrace(VTConsole.getSystemOut());
         stopped = true;
         break;
       }
     }
-    // sendSessionEnding();
     synchronized (session)
     {
       session.notify();

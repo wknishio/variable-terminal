@@ -48,7 +48,6 @@ public class VTGraphicsLinkServerReader implements Runnable
   public void dispose()
   {
     stopped = true;
-    // failed = false;
     if (controlProvider != null)
     {
       controlProvider.dispose();
@@ -92,7 +91,6 @@ public class VTGraphicsLinkServerReader implements Runnable
   public void run()
   {
     lastEvent = new VTAWTControlEvent();
-    /* if (!readOnly) { */
     session.getSession().getClipboardTransferTask().setInputStream(connection.getGraphicsClipboardDataInputStream());
     session.getSession().getClipboardTransferTask().setOutputStream(connection.getGraphicsClipboardDataOutputStream());
     while (!stopped)
@@ -160,23 +158,13 @@ public class VTGraphicsLinkServerReader implements Runnable
           case VTSystem.VT_GRAPHICS_LINK_KEYBOARD_LOCK_KEY_STATE_ON:
           {
             lastEvent.keyCode = connection.getGraphicsControlDataInputStream().readInt();
-            // if
-            // (!controlProvider.getLockingKeyState(lastEvent.keyCode))
-            // {
             controlProvider.setLockingKeyState(lastEvent.keyCode, true);
-            // }
-            // controlProvider.keyRelease(lastEvent.keyCode);
             break;
           }
           case VTSystem.VT_GRAPHICS_LINK_KEYBOARD_LOCK_KEY_STATE_OFF:
           {
             lastEvent.keyCode = connection.getGraphicsControlDataInputStream().readInt();
-            // if
-            // (controlProvider.getLockingKeyState(lastEvent.keyCode))
-            // {
             controlProvider.setLockingKeyState(lastEvent.keyCode, false);
-            // }
-            // controlProvider.keyRelease(lastEvent.keyCode);
             break;
           }
           case VTSystem.VT_GRAPHICS_LINK_ANY_INPUT_RELEASE_ALL_PRESSED_KEYS:
@@ -342,9 +330,6 @@ public class VTGraphicsLinkServerReader implements Runnable
             area.width = width;
             area.height = height;
             writer.setCaptureArea(area, captureScale);
-            // System.out.println("VT_GRAPHICS_LINK_GRAPHICS_CAPTURE_AREA_CHANGE:
-            // " + area.x + " " + area.y + " " + area.width + " " +
-            // area.height);
             break;
           }
           case VTSystem.VT_GRAPHICS_LINK_IMAGE_SELECT_DEVICE_DEFAULT:
@@ -484,7 +469,6 @@ public class VTGraphicsLinkServerReader implements Runnable
       catch (IOException e)
       {
         // e.printStackTrace();
-        // e.printStackTrace(VTConsole.getSystemOut());
         stopped = true;
         break;
       }
@@ -493,11 +477,6 @@ public class VTGraphicsLinkServerReader implements Runnable
         // e.printStackTrace();
         stopped = true;
         break;
-        // e.printStackTrace(VTConsole.getSystemOut());
-        // e.printStackTrace(VTTerminal.getSystemOut());
-        // Non-supported key found!
-        // System.out.println("KeyCode: " + lastEvent.keyCode);
-        // e.printStackTrace();
       }
     }
     releaseAllPressedKeys();
