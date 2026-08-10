@@ -207,7 +207,6 @@ public class VTShellAdapter
             }
             else
             {
-//              commandList = Arrays.asList(parsed);
               commandList = new ArrayList<String>();
               commandList.addAll(Arrays.asList(new String[] {"cmd", "/c"}));
               commandList.addAll(Arrays.asList(parsed));
@@ -221,7 +220,6 @@ public class VTShellAdapter
           }
           else
           {
-//            commandList = Arrays.asList(parsed);
             commandList = new ArrayList<String>();
             commandList.addAll(Arrays.asList(new String[] {"cmd", "/c"}));
             commandList.addAll(Arrays.asList(parsed));
@@ -229,7 +227,6 @@ public class VTShellAdapter
         }
         else
         {
-//          commandList = Arrays.asList(parsed);
           commandList = new ArrayList<String>();
           commandList.addAll(Arrays.asList(new String[] {"cmd", "/c"}));
           commandList.addAll(Arrays.asList(parsed));
@@ -245,7 +242,6 @@ public class VTShellAdapter
         }
         else
         {
-//          commandList = Arrays.asList(parsed);
           commandList = new ArrayList<String>();
           commandList.addAll(Arrays.asList(new String[] {"sh", "-i", "-c"}));
           commandList.addAll(Arrays.asList(parsed));
