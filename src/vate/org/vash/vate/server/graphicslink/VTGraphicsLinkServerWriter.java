@@ -275,14 +275,14 @@ public class VTGraphicsLinkServerWriter implements Runnable
     needRefresh = false;
     List<VTRectangle> blockAreas = VTImageDataUtils.splitBlockArea(imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea, 16, 16);
     blockAreas = VTImageDataUtils.mergeNeighbourAreas(blockAreas);
-    VTRectangle maxBlockArea = null;
-    int maxBlockAreaSize = 0;
+    VTRectangle blockMaxArea = null;
+    int blockMaxAreaSize = 0;
     for (VTRectangle blockArea : blockAreas)
     {
-      if (blockArea.width * blockArea.height > maxBlockAreaSize)
+      if (blockArea.width * blockArea.height > blockMaxAreaSize)
       {
-        maxBlockArea = blockArea;
-        maxBlockAreaSize = blockArea.width * blockArea.height;
+        blockMaxArea = blockArea;
+        blockMaxAreaSize = blockArea.width * blockArea.height;
       }
     }
     connection.getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_IMAGE_STANDARD_REFRESH_FRAME);
@@ -312,8 +312,8 @@ public class VTGraphicsLinkServerWriter implements Runnable
       connection.getGraphicsControlDataOutputStream().writeInt(imageDataBuffer.getWidth());
       connection.getGraphicsControlDataOutputStream().writeInt(imageDataBuffer.getHeight());
       connection.getGraphicsControlDataOutputStream().writeInt(blockAreas.size());
-      connection.getGraphicsControlDataOutputStream().writeInt(maxBlockArea.width);
-      connection.getGraphicsControlDataOutputStream().writeInt(maxBlockArea.height);
+      connection.getGraphicsControlDataOutputStream().writeInt(blockMaxArea.width);
+      connection.getGraphicsControlDataOutputStream().writeInt(blockMaxArea.height);
       connection.getGraphicsControlDataOutputStream().flush();
       for (VTRectangle blockArea : blockAreas)
       {
@@ -337,8 +337,8 @@ public class VTGraphicsLinkServerWriter implements Runnable
       connection.getGraphicsControlDataOutputStream().writeInt(imageDataBuffer.getWidth());
       connection.getGraphicsControlDataOutputStream().writeInt(imageDataBuffer.getHeight());
       connection.getGraphicsControlDataOutputStream().writeInt(blockAreas.size());
-      connection.getGraphicsControlDataOutputStream().writeInt(maxBlockArea.width);
-      connection.getGraphicsControlDataOutputStream().writeInt(maxBlockArea.height);
+      connection.getGraphicsControlDataOutputStream().writeInt(blockMaxArea.width);
+      connection.getGraphicsControlDataOutputStream().writeInt(blockMaxArea.height);
       connection.getGraphicsControlDataOutputStream().flush();
       for (VTRectangle blockArea : blockAreas)
       {
@@ -372,14 +372,14 @@ public class VTGraphicsLinkServerWriter implements Runnable
       blockAreas = VTImageDataUtils.compareBlockArea(lastImageBufferInt, previousImageBufferInt, 0, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea, 16, 16);
     }
     blockAreas = VTImageDataUtils.mergeNeighbourAreas(blockAreas);
-    VTRectangle maxBlockArea = null;
-    int maxBlockAreaSize = 0;
+    VTRectangle blockMaxArea = null;
+    int blockMaxAreaSize = 0;
     for (VTRectangle blockArea : blockAreas)
     {
-      if (blockArea.width * blockArea.height > maxBlockAreaSize)
+      if (blockArea.width * blockArea.height > blockMaxAreaSize)
       {
-        maxBlockArea = blockArea;
-        maxBlockAreaSize = blockArea.width * blockArea.height;
+        blockMaxArea = blockArea;
+        blockMaxAreaSize = blockArea.width * blockArea.height;
       }
     }
     connection.getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_IMAGE_STANDARD_DIFFERENTIAL_FRAME);
@@ -407,8 +407,8 @@ public class VTGraphicsLinkServerWriter implements Runnable
       }
       connection.getGraphicsControlDataOutputStream().writeInt(lastColors);
       connection.getGraphicsControlDataOutputStream().writeInt(blockAreas.size());
-      connection.getGraphicsControlDataOutputStream().writeInt(maxBlockArea.width);
-      connection.getGraphicsControlDataOutputStream().writeInt(maxBlockArea.height);
+      connection.getGraphicsControlDataOutputStream().writeInt(blockMaxArea.width);
+      connection.getGraphicsControlDataOutputStream().writeInt(blockMaxArea.height);
       connection.getGraphicsControlDataOutputStream().flush();
       for (VTRectangle blockArea : blockAreas)
       {
@@ -430,8 +430,8 @@ public class VTGraphicsLinkServerWriter implements Runnable
       connection.getGraphicsControlDataOutputStream().writeInt(imageDataBuffer.getType());
       connection.getGraphicsControlDataOutputStream().writeInt(lastColors);
       connection.getGraphicsControlDataOutputStream().writeInt(blockAreas.size());
-      connection.getGraphicsControlDataOutputStream().writeInt(maxBlockArea.width);
-      connection.getGraphicsControlDataOutputStream().writeInt(maxBlockArea.height);
+      connection.getGraphicsControlDataOutputStream().writeInt(blockMaxArea.width);
+      connection.getGraphicsControlDataOutputStream().writeInt(blockMaxArea.height);
       connection.getGraphicsControlDataOutputStream().flush();
       for (VTRectangle blockArea : blockAreas)
       {

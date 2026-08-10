@@ -634,8 +634,8 @@ public class VTServerConnection
     commandReader = new VTLittleEndianInputStream(shellDataInputStream);
     resultWriter = new VTLittleEndianOutputStream(shellDataOutputStream);
     
-    fileTransferControlDataInputStream = new VTLittleEndianInputStream(fileTransferControlInputStream);
-    fileTransferControlDataOutputStream = new VTLittleEndianOutputStream(fileTransferControlOutputStream);
+    fileTransferControlDataInputStream = new VTLittleEndianInputStream(VTCompressorSelector.createBufferedLz4InputStream(fileTransferControlInputStream));
+    fileTransferControlDataOutputStream = new VTLittleEndianOutputStream(VTCompressorSelector.createBufferedLz4OutputStream(fileTransferControlOutputStream));
     
     graphicsControlDataInputStream = new VTLittleEndianInputStream(VTCompressorSelector.createBufferedLz4InputStream(graphicsControlInputStream));
     graphicsControlDataOutputStream = new VTLittleEndianOutputStream(VTCompressorSelector.createBufferedLz4OutputStream(graphicsControlOutputStream));
@@ -924,6 +924,8 @@ public class VTServerConnection
     fileTransferDataOutputStream.open();
     fileTransferControlOutputStream.open();
     fileTransferControlInputStream.ready();
+    fileTransferControlDataInputStream.setInputStream(VTCompressorSelector.createBufferedLz4InputStream(fileTransferControlInputStream));
+    fileTransferControlDataOutputStream.setOutputStream(VTCompressorSelector.createBufferedLz4OutputStream(fileTransferControlOutputStream));
   }
   
   public void closeFileTransferStreams() throws IOException
@@ -958,11 +960,11 @@ public class VTServerConnection
   
   public int getAvailableInputChannel()
   {
-    return this.availableInputChannel;
+    return availableInputChannel++;
   }
   
   public int getAvailableOutputChannel()
   {
-    return this.availableOutputChannel;
+    return availableOutputChannel++;
   }
 }

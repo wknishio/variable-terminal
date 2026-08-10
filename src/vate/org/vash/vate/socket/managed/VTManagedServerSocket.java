@@ -153,10 +153,15 @@ public class VTManagedServerSocket
   
   private class VTManagedSocketServerSessionListener implements VTServerSessionListener
   {
-    public void sessionStarted(VTServerSession session)
+    public void sessionCreated(VTServerSession session)
     {
       VTManagedSocket socket = new VTManagedSocket(new VTManagedServerConnection(session), session.getConnection().getAvailableInputChannel(), session.getConnection().getAvailableOutputChannel());
       sessions.put(session, socket);
+    }
+    
+    public void sessionStarted(VTServerSession session)
+    {
+      VTManagedSocket socket = sessions.get(session);
       if (socketListener != null)
       {
         try

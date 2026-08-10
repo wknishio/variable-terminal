@@ -310,23 +310,23 @@ public class VTGraphicsLinkClientReader implements Runnable
             {
               writer.notifyAsynchronousRepainter();
             }
-            int count = connection.getGraphicsControlDataInputStream().readInt();
-            int maxWidth = connection.getGraphicsControlDataInputStream().readInt();
-            int maxHeight = connection.getGraphicsControlDataInputStream().readInt();
-            nextImageDataBuffer = VTImageIO.createImage(0, 0, maxWidth, maxHeight, (currentImageReader == jpgImageReader ? (colors > 16 ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_BYTE_GRAY) : type), colors, recyclableNextDataBuffer);
+            int blockCount = connection.getGraphicsControlDataInputStream().readInt();
+            int blockMaxWidth = connection.getGraphicsControlDataInputStream().readInt();
+            int blockMaxHeight = connection.getGraphicsControlDataInputStream().readInt();
+            nextImageDataBuffer = VTImageIO.createImage(0, 0, blockMaxWidth, blockMaxHeight, (currentImageReader == jpgImageReader ? (colors > 16 ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_BYTE_GRAY) : type), colors, recyclableNextDataBuffer);
             recyclableNextDataBuffer = nextImageDataBuffer.getRaster().getDataBuffer();
             
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < blockCount; i++)
             {
-              int size = connection.getGraphicsDirectImageDataInputStream().readInt();
-              int x = connection.getGraphicsDirectImageDataInputStream().readInt();
-              int y = connection.getGraphicsDirectImageDataInputStream().readInt();
-              int w = connection.getGraphicsDirectImageDataInputStream().readInt();
-              int h = connection.getGraphicsDirectImageDataInputStream().readInt();
-              nextImageDataBuffer = VTImageIO.createImage(0, 0, w, h, (currentImageReader == jpgImageReader ? (colors > 16 ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_BYTE_GRAY) : type), colors, recyclableNextDataBuffer);
-              limitedInputStream.size(size);
-              incrementalImageReader.setOffsetX(x);
-              incrementalImageReader.setOffsetY(y);
+              int blockSize = connection.getGraphicsDirectImageDataInputStream().readInt();
+              int blockX = connection.getGraphicsDirectImageDataInputStream().readInt();
+              int blockY = connection.getGraphicsDirectImageDataInputStream().readInt();
+              int blockWidth = connection.getGraphicsDirectImageDataInputStream().readInt();
+              int blockHeight = connection.getGraphicsDirectImageDataInputStream().readInt();
+              nextImageDataBuffer = VTImageIO.createImage(0, 0, blockWidth, blockHeight, (currentImageReader == jpgImageReader ? (colors > 16 ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_BYTE_GRAY) : type), colors, recyclableNextDataBuffer);
+              limitedInputStream.size(blockSize);
+              incrementalImageReader.setOffsetX(blockX);
+              incrementalImageReader.setOffsetY(blockY);
               ImageReadParam imageReadParam = currentImageReader.getDefaultReadParam();
               imageReadParam.setDestination(nextImageDataBuffer);
               currentImageReader.setInput(imageInputStream, true, false);
@@ -371,23 +371,23 @@ public class VTGraphicsLinkClientReader implements Runnable
             }
             int type = connection.getGraphicsControlDataInputStream().readInt();
             int colors = connection.getGraphicsControlDataInputStream().readInt();
-            int count = connection.getGraphicsControlDataInputStream().readInt();
-            int maxWidth = connection.getGraphicsControlDataInputStream().readInt();
-            int maxHeight = connection.getGraphicsControlDataInputStream().readInt();
-            nextImageDataBuffer = VTImageIO.createImage(0, 0, maxWidth, maxHeight, (currentImageReader == jpgImageReader ? (colors > 16 ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_BYTE_GRAY) : type), colors, recyclableNextDataBuffer);
+            int blockCount = connection.getGraphicsControlDataInputStream().readInt();
+            int blockMaxWidth = connection.getGraphicsControlDataInputStream().readInt();
+            int blockMaxHeight = connection.getGraphicsControlDataInputStream().readInt();
+            nextImageDataBuffer = VTImageIO.createImage(0, 0, blockMaxWidth, blockMaxHeight, (currentImageReader == jpgImageReader ? (colors > 16 ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_BYTE_GRAY) : type), colors, recyclableNextDataBuffer);
             recyclableNextDataBuffer = nextImageDataBuffer.getRaster().getDataBuffer();
             
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < blockCount; i++)
             {
-              int size = connection.getGraphicsDirectImageDataInputStream().readInt();
-              int x = connection.getGraphicsDirectImageDataInputStream().readInt();
-              int y = connection.getGraphicsDirectImageDataInputStream().readInt();
-              int w = connection.getGraphicsDirectImageDataInputStream().readInt();
-              int h = connection.getGraphicsDirectImageDataInputStream().readInt();
-              nextImageDataBuffer = VTImageIO.createImage(0, 0, w, h, (currentImageReader == jpgImageReader ? (colors > 16 ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_BYTE_GRAY) : type), colors, recyclableNextDataBuffer);
-              limitedInputStream.size(size);
-              incrementalImageReader.setOffsetX(x);
-              incrementalImageReader.setOffsetY(y);
+              int blockSize = connection.getGraphicsDirectImageDataInputStream().readInt();
+              int blockX = connection.getGraphicsDirectImageDataInputStream().readInt();
+              int blockY = connection.getGraphicsDirectImageDataInputStream().readInt();
+              int blockWidth = connection.getGraphicsDirectImageDataInputStream().readInt();
+              int blockHeight = connection.getGraphicsDirectImageDataInputStream().readInt();
+              nextImageDataBuffer = VTImageIO.createImage(0, 0, blockWidth, blockHeight, (currentImageReader == jpgImageReader ? (colors > 16 ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_BYTE_GRAY) : type), colors, recyclableNextDataBuffer);
+              limitedInputStream.size(blockSize);
+              incrementalImageReader.setOffsetX(blockX);
+              incrementalImageReader.setOffsetY(blockY);
               ImageReadParam imageReadParam = currentImageReader.getDefaultReadParam();
               imageReadParam.setDestination(nextImageDataBuffer);
               currentImageReader.setInput(imageInputStream, true, false);
@@ -440,11 +440,10 @@ public class VTGraphicsLinkClientReader implements Runnable
               currentImageGraphics = null;
             }
             int coding = connection.getGraphicsControlDataInputStream().read();
-            int type, colors, width, height;
-            type = connection.getGraphicsControlDataInputStream().readInt();
-            colors = connection.getGraphicsControlDataInputStream().readInt();
-            width = connection.getGraphicsControlDataInputStream().readInt();
-            height = connection.getGraphicsControlDataInputStream().readInt();
+            int type = connection.getGraphicsControlDataInputStream().readInt();
+            int colors = connection.getGraphicsControlDataInputStream().readInt();
+            int width = connection.getGraphicsControlDataInputStream().readInt();
+            int height = connection.getGraphicsControlDataInputStream().readInt();
             currentImageDataBuffer = VTImageIO.createImage(CUSTOM_CODEC_PADDING_SIZE, CUSTOM_CODEC_PADDING_SIZE, width, height, type, colors, recyclableCurrentDataBuffer);
             recyclableCurrentDataBuffer = currentImageDataBuffer.getRaster().getDataBuffer();
             
