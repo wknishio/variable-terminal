@@ -76,6 +76,7 @@ public class VTServerConnection
   
   private VTMultiplexedInputStream pingClientInputStream;
   private VTMultiplexedInputStream pingServerInputStream;
+  private VTMultiplexedInputStream tunnelControlInputStream;
   private VTMultiplexedInputStream shellInputStream;
   private VTMultiplexedInputStream fileTransferControlInputStream;
   private VTMultiplexedInputStream fileTransferDataInputStream;
@@ -85,10 +86,10 @@ public class VTServerConnection
   private VTMultiplexedInputStream graphicsHeavyImageInputStream;
   private VTMultiplexedInputStream graphicsClipboardInputStream;
   private VTMultiplexedInputStream audioDataInputStream;
-  private VTMultiplexedInputStream tunnelControlInputStream;
   
   private VTMultiplexedOutputStream pingClientOutputStream;
   private VTMultiplexedOutputStream pingServerOutputStream;
+  private VTMultiplexedOutputStream tunnelControlOutputStream;
   private VTMultiplexedOutputStream shellOutputStream;
   private VTMultiplexedOutputStream fileTransferControlOutputStream;
   private VTMultiplexedOutputStream fileTransferDataOutputStream;
@@ -98,7 +99,6 @@ public class VTServerConnection
   private VTMultiplexedOutputStream graphicsHeavyImageOutputStream;
   private VTMultiplexedOutputStream graphicsClipboardOutputStream;
   private VTMultiplexedOutputStream audioDataOutputStream;
-  private VTMultiplexedOutputStream tunnelControlOutputStream;
   
   private VTLittleEndianInputStream authenticationReader;
   private VTLittleEndianOutputStream authenticationWriter;
@@ -240,9 +240,9 @@ public class VTServerConnection
     return pingServerInputStream;
   }
   
-  public InputStream getShellInputStream()
+  public InputStream getTunnelControlDataInputStream()
   {
-    return shellInputStream;
+    return tunnelControlDataInputStream;
   }
   
   public InputStream getFileTransferDataInputStream()
@@ -260,11 +260,6 @@ public class VTServerConnection
     return audioDataInputStream;
   }
   
-  public InputStream getTunnelControlDataInputStream()
-  {
-    return tunnelControlDataInputStream;
-  }
-  
   public OutputStream getPingClientOutputStream()
   {
     return pingClientOutputStream;
@@ -275,14 +270,9 @@ public class VTServerConnection
     return pingServerOutputStream;
   }
   
-  public OutputStream getShellOutputStream()
+  public OutputStream getTunnelControlDataOutputStream()
   {
-    return shellOutputStream;
-  }
-  
-  public OutputStream getShellDataOutputStream()
-  {
-    return shellDataOutputStream;
+    return tunnelControlDataOutputStream;
   }
   
   public OutputStream getFileTransferDataOutputStream()
@@ -298,11 +288,6 @@ public class VTServerConnection
   public OutputStream getAudioDataOutputStream()
   {
     return audioDataOutputStream;
-  }
-  
-  public OutputStream getTunnelControlDataOutputStream()
-  {
-    return tunnelControlDataOutputStream;
   }
   
   public VTLittleEndianInputStream getCommandReader()
@@ -631,11 +616,11 @@ public class VTServerConnection
     availableInputChannel = inputChannel;
     availableOutputChannel = outputChannel;
     
-    shellDataInputStream = VTCompressorSelector.createBufferedLz4InputStream(shellInputStream);
-    shellDataOutputStream = VTCompressorSelector.createBufferedLz4OutputStream(shellOutputStream);
-    
     tunnelControlDataInputStream = VTCompressorSelector.createBufferedLz4InputStream(tunnelControlInputStream);
     tunnelControlDataOutputStream = VTCompressorSelector.createBufferedLz4OutputStream(tunnelControlOutputStream);
+    
+    shellDataInputStream = VTCompressorSelector.createBufferedLz4InputStream(shellInputStream);
+    shellDataOutputStream = VTCompressorSelector.createBufferedLz4OutputStream(shellOutputStream);
     
     commandReader = new VTLittleEndianInputStream(shellDataInputStream);
     resultWriter = new VTLittleEndianOutputStream(shellDataOutputStream);

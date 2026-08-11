@@ -562,7 +562,7 @@ public class VTServerRuntimeExecutor extends VTTask
             
             if (process_output && outputRedirect == null)
             {
-              outputRedirect = session.getConnection().getShellDataOutputStream();
+              outputRedirect = session.getConnection().getShellWriter();
             }
             
             String processCommand = CommandLineTokenizerMKII.parseCommandParameter(command, parameterIndex, false);

@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.vash.vate.VTSystem;
+import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
 
 public class VTRuntimeProcessDataRedirector implements Runnable
 {
@@ -14,6 +15,7 @@ public class VTRuntimeProcessDataRedirector implements Runnable
   private final byte[] inputBuffer = new byte[inputBufferSize];
   private InputStream in;
   private OutputStream out;
+  private VTLittleEndianOutputStream lout;
   
   public VTRuntimeProcessDataRedirector(InputStream in, OutputStream out, boolean close)
   {
@@ -21,6 +23,10 @@ public class VTRuntimeProcessDataRedirector implements Runnable
     this.out = out;
     this.close = close;
     this.running = true;
+    if (out instanceof VTLittleEndianOutputStream)
+    {
+      lout = (VTLittleEndianOutputStream) out;
+    }
   }
   
 //  public void finalize()
@@ -82,15 +88,32 @@ public class VTRuntimeProcessDataRedirector implements Runnable
         {
           if (out != null)
           {
-            try
+            if (lout != null)
             {
-              out.write(inputBuffer, 0, readBytes);
-              out.flush();
+              try
+              {
+                lout.writeData(inputBuffer, 0, readBytes);
+                lout.flush();
+              }
+              catch (Throwable e)
+              {
+                lout = null;
+                out = null;
+              }
             }
-            catch (Throwable e)
+            else
             {
-              out = null;
+              try
+              {
+                out.write(inputBuffer, 0, readBytes);
+                out.flush();
+              }
+              catch (Throwable e)
+              {
+                out = null;
+              }
             }
+            
           }
         }
         else

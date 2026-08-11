@@ -86,7 +86,6 @@ public class VTServerSessionHandler implements Runnable
       connection.startConnection();
       session.initialize();
       session.setUser(authenticator.getUser());
-      session.startSession();
       trafficMonitorConnection = new VTTrafficMonitorConnection(connection.getMultiplexedConnectionInputStream(), connection.getMultiplexedConnectionOutputStream());
       if (session.getServer().getTrafficMonitorService() != null)
       {
@@ -114,6 +113,7 @@ public class VTServerSessionHandler implements Runnable
       }
       session.negotiateShell();
       session.startShell();
+      session.startSession();
       session.startSessionThreads();
       try
       {

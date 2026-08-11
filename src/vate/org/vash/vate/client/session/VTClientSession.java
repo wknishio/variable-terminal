@@ -3,7 +3,6 @@ package org.vash.vate.client.session;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
@@ -28,7 +27,6 @@ public class VTClientSession
   private long sessionLocalNanoDelay;
   private long sessionRemoteNanoDelay;
   private String shellEncoding;
-  // private File workingDirectory;
   private VTClient client;
   private VTClientConnection connection;
   private VTClientRemoteConsoleReader serverReader;
@@ -36,9 +34,7 @@ public class VTClientSession
   private VTFileTransferClient fileTransferClient;
   private VTGraphicsLinkClient graphicsClient;
   private VTClipboardTransferTask clipboardTransferTask;
-  // private VTClientZipFileOperation zipFileOperation;
   private VTTunnelConnectionHandler tunnelsHandler;
-  // private VTTunnelConnectionHandler socksTunnelsHandler;
   private VTNanoPingService pingServiceClient;
   private VTNanoPingService pingServiceServer;
   private Collection<Closeable> sessionCloseables;
@@ -54,17 +50,13 @@ public class VTClientSession
   
   public void initialize()
   {
-    // this.runningAudio = false;
     this.shellEncoding = null;
     this.serverReader = new VTClientRemoteConsoleReader(this);
     this.clientWriter = new VTClientRemoteConsoleWriter(this);
     this.fileTransferClient = new VTFileTransferClient(this);
     this.graphicsClient = new VTGraphicsLinkClient(this);
     this.clipboardTransferTask = new VTClipboardTransferTask(executorService);
-    // this.zipFileOperation = new VTClientZipFileOperation(this);
     this.tunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(executorService, sessionCloseables, connection.getSecureRandom()));
-    // this.socksTunnelsHandler = new VTTunnelConnectionHandler(new
-    // VTTunnelConnection(executor), executor);
     this.pingServiceClient = new VTNanoPingService(client.getPingIntervalMilliseconds(), 0, false, executorService);
     this.pingServiceClient.addListener(new VTNanoPingListener()
     {
@@ -83,6 +75,16 @@ public class VTClientSession
     });
     clientWriter.setCommandInputStream(client.getCommandInputStream());
     serverReader.setCommandOutputStream(client.getCommandOutputStream());
+    serverReader.setStopped(false);
+    clientWriter.setStopped(false);
+    tunnelsHandler.getConnection().setControlInputStream(connection.getTunnelControlDataInputStream());
+    tunnelsHandler.getConnection().setControlOutputStream(connection.getTunnelControlDataOutputStream());
+    tunnelsHandler.getConnection().setDataInputStream(connection.getMultiplexedConnectionInputStream());
+    tunnelsHandler.getConnection().setDataOutputStream(connection.getMultiplexedConnectionOutputStream());
+    pingServiceClient.setInputStream(connection.getPingClientInputStream());
+    pingServiceClient.setOutputStream(connection.getPingClientOutputStream());
+    pingServiceServer.setInputStream(connection.getPingServerInputStream());
+    pingServiceServer.setOutputStream(connection.getPingServerOutputStream());
   }
   
   public ExecutorService getExecutorService()
@@ -119,12 +121,6 @@ public class VTClientSession
   {
     return sessionRemoteNanoDelay;
   }
-  
-  /*
-   * public File getWorkingDirectory() { return workingDirectory; } public void
-   * setWorkingDirectory(File workingDirectory) { this.workingDirectory =
-   * workingDirectory; }
-   */
   
   public VTClient getClient()
   {
@@ -166,16 +162,6 @@ public class VTClientSession
     return shellEncoding;
   }
   
-  // public void setZipFileOperation(VTClientZipFileOperation zipFileOperation)
-  // {
-  // .zipFileOperation = zipFileOperation;
-  // }
-  
-  // public VTClientZipFileOperation getZipFileOperation()
-  // {
-  // return zipFileOperation;
-  // }
-  
   public void ping()
   {
     pingServiceClient.ping();
@@ -207,11 +193,6 @@ public class VTClientSession
     return tunnelsHandler.getConnection().createRemoteSocketFactory(tunnelsHandler.getConnection().getResponseChannel(type));
   }
   
-  // public VTTunnelConnectionHandler getSOCKSTunnelsHandler()
-  // {
-  // return socksTunnelsHandler;
-  // }
-  
   public void setCommandInputStream(InputStream in, String charsetName)
   {
     clientWriter.setCommandInputStream(in, charsetName);
@@ -219,10 +200,7 @@ public class VTClientSession
   
   public boolean isStopped()
   {
-    //return serverReader.isStopped() || clientWriter.isStopped() || !connection.isConnected();
     return serverReader.isStopped() || !connection.isConnected();
-    // return serverReader.isStopped() || clientWriter.isStopped() ||
-    // !connection.isConnected();
   }
   
   public void stopTasks()
@@ -239,24 +217,11 @@ public class VTClientSession
     pingServiceServer.ping();
   }
   
-  public void startSession() throws UnsupportedEncodingException
+  public void startSession() throws IOException
   {
-    // runningAudio = false;
-    serverReader.setStopped(false);
-    clientWriter.setStopped(false);
-    tunnelsHandler.getConnection().setControlInputStream(connection.getTunnelControlDataInputStream());
-    tunnelsHandler.getConnection().setControlOutputStream(connection.getTunnelControlDataOutputStream());
-    tunnelsHandler.getConnection().setDataInputStream(connection.getMultiplexedConnectionInputStream());
-    tunnelsHandler.getConnection().setDataOutputStream(connection.getMultiplexedConnectionOutputStream());
-    // socksTunnelsHandler.getConnection().setControlInputStream(connection.getSocksControlInputStream());
-    // socksTunnelsHandler.getConnection().setControlOutputStream(connection.getSocksControlOutputStream());
-    // socksTunnelsHandler.getConnection().setDataInputStream(connection.getMultiplexedConnectionInputStream());
-    // socksTunnelsHandler.getConnection().setDataOutputStream(connection.getMultiplexedConnectionOutputStream());
-    pingServiceClient.setInputStream(connection.getPingClientInputStream());
-    pingServiceClient.setOutputStream(connection.getPingClientOutputStream());
-    pingServiceServer.setInputStream(connection.getPingServerInputStream());
-    pingServiceServer.setOutputStream(connection.getPingServerOutputStream());
-    // tunnelHandler.getConnection().start();
+    connection.getCommandWriter().writeLong(connection.getSecureRandom().nextLong());
+    connection.getCommandWriter().flush();
+    connection.getResultReader().readLong();
   }
   
   public void startSessionThreads()
@@ -271,10 +236,6 @@ public class VTClientSession
   
   public void waitSession()
   {
-    /*
-     * while (!isStopped()) { try { Thread.sleep(1); } catch (Throwable e) {
-     * return; } }
-     */
     synchronized (this)
     {
       while (!isStopped())
@@ -291,20 +252,9 @@ public class VTClientSession
     }
   }
   
-  @SuppressWarnings("unchecked")
   public void tryStopSessionThreads()
   {
-    // VTTerminal.println("\nSession over!");
     stopTasks();
-//    synchronized (this)
-//    {
-//      notifyAll();
-//    }
-    // if (writerThread != null && writerThread.isAlive())
-    // {
-    // System.out.println("interrupting writerThread...");
-    // writerThread.interrupt();
-    // }
     try
     {
       for (Closeable closeable : sessionCloseables)
@@ -327,44 +277,22 @@ public class VTClientSession
     if (clipboardTransferTask.aliveThread())
     {
       clipboardTransferTask.interruptThread();
-      // clipboardTransferThread.stop();
     }
-    // if (zipFileOperation.aliveThread())
-    // {
-    // zipFileOperation.interruptThread();
-    // zipFileOperation.stopThread();
-    // }
     tunnelsHandler.getConnection().close();
-    // socksTunnelsHandler.getConnection().close();
   }
   
   public void waitThreads()
   {
-    /*
-     * while (readerThread.isAlive() || writerThread.isAlive() ||
-     * fileTransferThread.isAlive() || graphicsThread.isAlive()) { try {
-     * Thread.sleep(1); } catch (Throwable e) { return; } }
-     */
-    //sessionResources.clear();
     try
     {
       serverReader.joinThread();
-      //System.out.println("serverReader.joinThread()");
       clientWriter.joinThread();
-      //System.out.println("clientWriter.joinThread()");
       fileTransferClient.joinThread();
-      //System.out.println("fileTransferClient.joinThread()");
       graphicsClient.joinThread();
-      //System.out.println("graphicsClient.joinThread()");
       clipboardTransferTask.joinThread();
-      //System.out.println("clipboardTransferTask.joinThread()");
-      // zipFileOperation.joinThread();
       tunnelsHandler.joinThread();
-      //System.out.println("tunnelsHandler.joinThread()");
-      // socksTunnelsHandler.joinThread();
       pingServiceClient.joinThread();
       pingServiceServer.joinThread();
-      //System.out.println("pingService.joinThread()");
     }
     catch (Throwable e)
     {
