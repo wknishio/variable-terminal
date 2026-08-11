@@ -155,8 +155,7 @@ public class VTManagedClientSocket
   {
     public void sessionCreated(VTClientSession session)
     {
-      VTManagedSocket socket = new VTManagedSocket(new VTManagedClientConnection(session), session.getConnection().getAvailableInputChannel(), session.getConnection().getAvailableOutputChannel());
-      sessions.put(session, socket);
+      sessions.put(session, new VTManagedSocket(new VTManagedClientConnection(session), session.getConnection().getAvailableInputChannel(), session.getConnection().getAvailableOutputChannel()));
     }
     
     public void sessionStarted(VTClientSession session)

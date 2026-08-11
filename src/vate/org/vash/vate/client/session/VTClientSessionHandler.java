@@ -77,15 +77,14 @@ public class VTClientSessionHandler implements Runnable
     {
       connection.startConnection();
       session.initialize();
-      session.negotiateShell();
       session.startSession();
-      authenticated = true;
-      started = true;
       trafficMonitorConnection = new VTTrafficMonitorConnection(connection.getMultiplexedConnectionInputStream(), connection.getMultiplexedConnectionOutputStream());
       if (session.getClient().getTrafficMonitorService() != null)
       {
         session.getClient().getTrafficMonitorService().addMonitorConnection(trafficMonitorConnection);
       }
+      authenticated = true;
+      started = true;
       try
       {
         for (VTClientSessionListener listener : listeners)
@@ -104,6 +103,7 @@ public class VTClientSessionHandler implements Runnable
       {
         
       }
+      session.negotiateShell();
       session.startSessionThreads();
       try
       {

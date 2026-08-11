@@ -155,8 +155,7 @@ public class VTManagedServerSocket
   {
     public void sessionCreated(VTServerSession session)
     {
-      VTManagedSocket socket = new VTManagedSocket(new VTManagedServerConnection(session), session.getConnection().getAvailableInputChannel(), session.getConnection().getAvailableOutputChannel());
-      sessions.put(session, socket);
+      sessions.put(session, new VTManagedSocket(new VTManagedServerConnection(session), session.getConnection().getAvailableInputChannel(), session.getConnection().getAvailableOutputChannel()));
     }
     
     public void sessionStarted(VTServerSession session)

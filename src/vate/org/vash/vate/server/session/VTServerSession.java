@@ -504,8 +504,8 @@ public class VTServerSession
     shellOutputWriter.setStopped(false);
     // shellErrorWriter.setStopped(false);
     shellExitListener.setStopped(false);
-    tunnelsHandler.getConnection().setControlInputStream(connection.getTunnelControlInputStream());
-    tunnelsHandler.getConnection().setControlOutputStream(connection.getTunnelControlOutputStream());
+    tunnelsHandler.getConnection().setControlInputStream(connection.getTunnelControlDataInputStream());
+    tunnelsHandler.getConnection().setControlOutputStream(connection.getTunnelControlDataOutputStream());
     tunnelsHandler.getConnection().setDataInputStream(connection.getMultiplexedConnectionInputStream());
     tunnelsHandler.getConnection().setDataOutputStream(connection.getMultiplexedConnectionOutputStream());
     // socksTunnelsHandler.getConnection().setControlOutputStream(connection.getSocksControlOutputStream());
