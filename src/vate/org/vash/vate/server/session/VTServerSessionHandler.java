@@ -56,13 +56,13 @@ public class VTServerSessionHandler implements Runnable
       connection.setAuthenticationStreams();
       if (authenticator.tryAuthentication())
       {
-        connection.setConnectionStreams(authenticator.getNegotiatedCredential(), authenticator.getAuthenticatedCredential());
+        connection.setConnectionStreams(authenticator.getFirstAuthenticatedCredential(), authenticator.getSecondAuthenticatedCredential());
         VTMainConsole.print("\rVT>Session with client accepted!\nVT>");
         processSession();
       }
       else
       {
-        connection.setConnectionStreams(authenticator.getNegotiatedCredential(), authenticator.getAuthenticatedCredential());
+        connection.setConnectionStreams(authenticator.getFirstAuthenticatedCredential(), authenticator.getSecondAuthenticatedCredential());
         VTMainConsole.print("\rVT>Session with client rejected!\nVT>");
         connection.closeConnection();
       }

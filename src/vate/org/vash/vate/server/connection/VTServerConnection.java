@@ -56,8 +56,8 @@ public class VTServerConnection
   private int availableInputChannel;
   private int availableOutputChannel;
   private byte[] encryptionKey;
-  private byte[] negotiatedCredential;
-  private byte[] authenticatedCredential;
+  private byte[] firstAuthenticatedCredential;
+  private byte[] secondAuthenticatedCredential;
   private final byte[] localNonce = new byte[VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES];
   private final byte[] remoteNonce = new byte[VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES];
   private final byte[] randomData = new byte[VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES];
@@ -194,14 +194,14 @@ public class VTServerConnection
     return remoteNonce;
   }
   
-  public byte[] getNegotiatedCredential()
+  public byte[] getFirstAuthenticatedCredential()
   {
-    return negotiatedCredential;
+    return firstAuthenticatedCredential;
   }
   
-  public byte[] getAuthenticatedCredential()
+  public byte[] getSecondAuthenticatedCredential()
   {
-    return authenticatedCredential;
+    return secondAuthenticatedCredential;
   }
   
   public void setEncryptionType(int encryptionType)
@@ -532,12 +532,12 @@ public class VTServerConnection
     nonceWriter.setOutputStream(authenticationWriter.getOutputStream());
   }
   
-  public void setConnectionStreams(byte[] negotiatedCredential, byte[] authenticatedCredential) throws IOException
+  public void setConnectionStreams(byte[] firstAuthenticatedCredential, byte[] secondAuthenticatedCredential) throws IOException
   {
-    this.negotiatedCredential = negotiatedCredential;
-    this.authenticatedCredential = authenticatedCredential;
+    this.firstAuthenticatedCredential = firstAuthenticatedCredential;
+    this.secondAuthenticatedCredential = secondAuthenticatedCredential;
     exchangeNonces(true);
-    cryptoEngine.initializeServerEngine(encryptionType, remoteNonce, localNonce, encryptionKey, negotiatedCredential, authenticatedCredential);
+    cryptoEngine.initializeServerEngine(encryptionType, remoteNonce, localNonce, encryptionKey, firstAuthenticatedCredential, secondAuthenticatedCredential);
     connectionInputStream = new BufferedInputStream(cryptoEngine.getDecryptedInputStream(connectionSocketInputStream, VTSystem.VT_CONNECTION_INPUT_BUFFER_SIZE_BYTES), VTSystem.VT_CONNECTION_INPUT_BUFFER_SIZE_BYTES);
     connectionOutputStream = new BufferedOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream, VTSystem.VT_CONNECTION_OUTPUT_BUFFER_SIZE_BYTES), VTSystem.VT_CONNECTION_OUTPUT_BUFFER_SIZE_BYTES);
   }
@@ -548,32 +548,32 @@ public class VTServerConnection
     blake3Digest.update(remoteNonce);
     blake3Digest.update(localNonce);
     blake3Digest.update(encryptionKey);
-    blake3Digest.update(negotiatedCredential);
-    blake3Digest.update(authenticatedCredential);
+    blake3Digest.update(firstAuthenticatedCredential);
+    blake3Digest.update(secondAuthenticatedCredential);
     long inputFirstSeed = blake3Digest.digestLong();
     
     blake3Digest.reset();
     blake3Digest.update(remoteNonce);
     blake3Digest.update(localNonce);
     blake3Digest.update(encryptionKey);
-    blake3Digest.update(authenticatedCredential);
-    blake3Digest.update(negotiatedCredential);
+    blake3Digest.update(secondAuthenticatedCredential);
+    blake3Digest.update(firstAuthenticatedCredential);
     long inputSecondSeed = blake3Digest.digestLong();
     
     blake3Digest.reset();
     blake3Digest.update(localNonce);
     blake3Digest.update(remoteNonce);
     blake3Digest.update(encryptionKey);
-    blake3Digest.update(negotiatedCredential);
-    blake3Digest.update(authenticatedCredential);
+    blake3Digest.update(firstAuthenticatedCredential);
+    blake3Digest.update(secondAuthenticatedCredential);
     long outputFirstSeed = blake3Digest.digestLong();
     
     blake3Digest.reset();
     blake3Digest.update(localNonce);
     blake3Digest.update(remoteNonce);
     blake3Digest.update(encryptionKey);
-    blake3Digest.update(authenticatedCredential);
-    blake3Digest.update(negotiatedCredential);
+    blake3Digest.update(secondAuthenticatedCredential);
+    blake3Digest.update(firstAuthenticatedCredential);
     long outputSecondSeed = blake3Digest.digestLong();
     
     int inputChannel = 0;
