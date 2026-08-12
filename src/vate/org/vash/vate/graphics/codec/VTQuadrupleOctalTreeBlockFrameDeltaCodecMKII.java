@@ -210,7 +210,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     newPixelData[position] = (((newPixelData[position - 1 - width] >> 1) + ((newPixelData[position - width] + newPixelData[position - 1]) >> 2)) ^ in.readInt());
   }
   
-  private final void encodeBlock4Tree8(final VTLittleEndianOutputStream out, final byte[] oldPixelData, final byte[] newPixelData) throws IOException
+  private final void encodeBlock4Tree8(final VTLittleEndianOutputStream out, final byte[] newPixelData) throws IOException
   {
     d4 = 0;
     c4 = 1;
@@ -257,7 +257,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     }
   }
   
-  private final void encodeBlock3Tree8(final VTLittleEndianOutputStream out, final byte[] oldPixelData, final byte[] newPixelData) throws IOException
+  private final void encodeBlock3Tree8(final VTLittleEndianOutputStream out, final byte[] newPixelData) throws IOException
   {
     d3 = 0;
     c3 = 1;
@@ -265,35 +265,35 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     switch ((x1 + macroblockStepX - limitX) >> 3)
     {
       default:
-        encodeBlock4Tree8(out, oldPixelData, newPixelData);
+        encodeBlock4Tree8(out, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 1:
-        encodeBlock4Tree8(out, oldPixelData, newPixelData);
+        encodeBlock4Tree8(out, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 2:
-        encodeBlock4Tree8(out, oldPixelData, newPixelData);
+        encodeBlock4Tree8(out, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 3:
-        encodeBlock4Tree8(out, oldPixelData, newPixelData);
+        encodeBlock4Tree8(out, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 4:
-        encodeBlock4Tree8(out, oldPixelData, newPixelData);
+        encodeBlock4Tree8(out, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 5:
-        encodeBlock4Tree8(out, oldPixelData, newPixelData);
+        encodeBlock4Tree8(out, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 6:
-        encodeBlock4Tree8(out, oldPixelData, newPixelData);
+        encodeBlock4Tree8(out, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 7:
-        encodeBlock4Tree8(out, oldPixelData, newPixelData);
+        encodeBlock4Tree8(out, newPixelData);
     }
     x1 = s3;
     if (d3 != 0)
@@ -305,7 +305,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     }
   }
   
-  private final void encodeBlock2Tree8(final VTLittleEndianOutputStream out, final byte[] oldPixelData, final byte[] newPixelData) throws IOException
+  private final void encodeBlock2Tree8(final VTLittleEndianOutputStream out, final byte[] newPixelData) throws IOException
   {
     d2 = 0;
     c2 = 1;
@@ -313,35 +313,35 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     switch (y1 + microblockStepY <= limitY ? 8 : r2)
     {
       default:
-        encodeBlock3Tree8(out, oldPixelData, newPixelData);
+        encodeBlock3Tree8(out, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 1:
-        encodeBlock3Tree8(out, oldPixelData, newPixelData);
+        encodeBlock3Tree8(out, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 2:
-        encodeBlock3Tree8(out, oldPixelData, newPixelData);
+        encodeBlock3Tree8(out, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 3:
-        encodeBlock3Tree8(out, oldPixelData, newPixelData);
+        encodeBlock3Tree8(out, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 4:
-        encodeBlock3Tree8(out, oldPixelData, newPixelData);
+        encodeBlock3Tree8(out, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 5:
-        encodeBlock3Tree8(out, oldPixelData, newPixelData);
+        encodeBlock3Tree8(out, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 6:
-        encodeBlock3Tree8(out, oldPixelData, newPixelData);
+        encodeBlock3Tree8(out, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 7:
-        encodeBlock3Tree8(out, oldPixelData, newPixelData);
+        encodeBlock3Tree8(out, newPixelData);
     }
     y1 = s2;
     if (d2 != 0)
@@ -354,7 +354,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     }
   }
   
-  private final void encodeBlock1Tree8(final VTLittleEndianOutputStream out, final byte[] oldPixelData, final byte[] newPixelData) throws IOException
+  private final void encodeBlock1Tree8(final VTLittleEndianOutputStream out, final byte[] newPixelData) throws IOException
   {
     d1 = 0;
     c1 = 1;
@@ -362,35 +362,35 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     switch (y1 + macroblockStepY <= limitY ? 8 : r1)
     {
       default:
-        encodeBlock2Tree8(out, oldPixelData, newPixelData);
+        encodeBlock2Tree8(out, newPixelData);
         c1 <<= 1;
         y1 += microblockStepY;
       case 1:
-        encodeBlock2Tree8(out, oldPixelData, newPixelData);
+        encodeBlock2Tree8(out, newPixelData);
         c1 <<= 1;
         y1 += microblockStepY;
       case 2:
-        encodeBlock2Tree8(out, oldPixelData, newPixelData);
+        encodeBlock2Tree8(out, newPixelData);
         c1 <<= 1;
         y1 += microblockStepY;
       case 3:
-        encodeBlock2Tree8(out, oldPixelData, newPixelData);
+        encodeBlock2Tree8(out, newPixelData);
         c1 <<= 1;
         y1 += microblockStepY;
       case 4:
-        encodeBlock2Tree8(out, oldPixelData, newPixelData);
+        encodeBlock2Tree8(out, newPixelData);
         c1 <<= 1;
         y1 += microblockStepY;
       case 5:
-        encodeBlock2Tree8(out, oldPixelData, newPixelData);
+        encodeBlock2Tree8(out, newPixelData);
         c1 <<= 1;
         y1 += microblockStepY;
       case 6:
-        encodeBlock2Tree8(out, oldPixelData, newPixelData);
+        encodeBlock2Tree8(out, newPixelData);
         c1 <<= 1;
         y1 += microblockStepY;
       case 7:
-        encodeBlock2Tree8(out, oldPixelData, newPixelData);
+        encodeBlock2Tree8(out, newPixelData);
     }
     y1 = s1;
     out.write(d1);
@@ -406,7 +406,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     }
   }
   
-  private final void encodeBlock0Tree8(final VTLittleEndianOutputStream out, final byte[] oldPixelData, final byte[] newPixelData) throws IOException
+  private final void encodeBlock0Tree8(final VTLittleEndianOutputStream out, final byte[] newPixelData) throws IOException
   {
     // For each block1
     m1 = 0;
@@ -414,7 +414,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     {
       if (blockBitSet.get(m1++))
       {
-        encodeBlock1Tree8(out, oldPixelData, newPixelData);
+        encodeBlock1Tree8(out, newPixelData);
       }
       else
       {
@@ -433,7 +433,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     }
   }
   
-  private final void decodeBlock4Tree8(final VTLittleEndianInputStream in, final byte[] oldPixelData, final byte[] newPixelData) throws IOException
+  private final void decodeBlock4Tree8(final VTLittleEndianInputStream in, final byte[] newPixelData) throws IOException
   {
     if ((d3 & c3) == 0)
     {
@@ -479,7 +479,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     // x1 = s4;
   }
   
-  private final void decodeBlock3Tree8(final VTLittleEndianInputStream in, final byte[] oldPixelData, final byte[] newPixelData) throws IOException
+  private final void decodeBlock3Tree8(final VTLittleEndianInputStream in, final byte[] newPixelData) throws IOException
   {
     if ((d2 & c2) == 0)
     {
@@ -491,40 +491,40 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     switch ((x1 + macroblockStepX - limitX) >> 3)
     {
       default:
-        decodeBlock4Tree8(in, oldPixelData, newPixelData);
+        decodeBlock4Tree8(in, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 1:
-        decodeBlock4Tree8(in, oldPixelData, newPixelData);
+        decodeBlock4Tree8(in, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 2:
-        decodeBlock4Tree8(in, oldPixelData, newPixelData);
+        decodeBlock4Tree8(in, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 3:
-        decodeBlock4Tree8(in, oldPixelData, newPixelData);
+        decodeBlock4Tree8(in, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 4:
-        decodeBlock4Tree8(in, oldPixelData, newPixelData);
+        decodeBlock4Tree8(in, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 5:
-        decodeBlock4Tree8(in, oldPixelData, newPixelData);
+        decodeBlock4Tree8(in, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 6:
-        decodeBlock4Tree8(in, oldPixelData, newPixelData);
+        decodeBlock4Tree8(in, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 7:
-        decodeBlock4Tree8(in, oldPixelData, newPixelData);
+        decodeBlock4Tree8(in, newPixelData);
     }
     x1 = s3;
   }
   
-  private final void decodeBlock2Tree8(final VTLittleEndianInputStream in, final byte[] oldPixelData, final byte[] newPixelData) throws IOException
+  private final void decodeBlock2Tree8(final VTLittleEndianInputStream in, final byte[] newPixelData) throws IOException
   {
     if ((d1 & c1) == 0)
     {
@@ -536,40 +536,40 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     switch (y1 + microblockStepY <= limitY ? 8 : r2)
     {
       default:
-        decodeBlock3Tree8(in, oldPixelData, newPixelData);
+        decodeBlock3Tree8(in, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 1:
-        decodeBlock3Tree8(in, oldPixelData, newPixelData);
+        decodeBlock3Tree8(in, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 2:
-        decodeBlock3Tree8(in, oldPixelData, newPixelData);
+        decodeBlock3Tree8(in, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 3:
-        decodeBlock3Tree8(in, oldPixelData, newPixelData);
+        decodeBlock3Tree8(in, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 4:
-        decodeBlock3Tree8(in, oldPixelData, newPixelData);
+        decodeBlock3Tree8(in, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 5:
-        decodeBlock3Tree8(in, oldPixelData, newPixelData);
+        decodeBlock3Tree8(in, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 6:
-        decodeBlock3Tree8(in, oldPixelData, newPixelData);
+        decodeBlock3Tree8(in, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 7:
-        decodeBlock3Tree8(in, oldPixelData, newPixelData);
+        decodeBlock3Tree8(in, newPixelData);
     }
     y1 = s2;
   }
   
-  private final void decodeBlock1Tree8(final VTLittleEndianInputStream in, final byte[] oldPixelData, final byte[] newPixelData) throws IOException
+  private final void decodeBlock1Tree8(final VTLittleEndianInputStream in, final byte[] newPixelData) throws IOException
   {
     d1 = in.readUnsignedByte();
     c1 = 1;
@@ -596,46 +596,46 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
       switch (y1 + macroblockStepY <= limitY ? 8 : r1)
       {
         default:
-          decodeBlock2Tree8(lpin, oldPixelData, newPixelData);
+          decodeBlock2Tree8(lpin, newPixelData);
           c1 <<= 1;
           y1 += microblockStepY;
         case 1:
-          decodeBlock2Tree8(lpin, oldPixelData, newPixelData);
+          decodeBlock2Tree8(lpin, newPixelData);
           c1 <<= 1;
           y1 += microblockStepY;
         case 2:
-          decodeBlock2Tree8(lpin, oldPixelData, newPixelData);
+          decodeBlock2Tree8(lpin, newPixelData);
           c1 <<= 1;
           y1 += microblockStepY;
         case 3:
-          decodeBlock2Tree8(lpin, oldPixelData, newPixelData);
+          decodeBlock2Tree8(lpin, newPixelData);
           c1 <<= 1;
           y1 += microblockStepY;
         case 4:
-          decodeBlock2Tree8(lpin, oldPixelData, newPixelData);
+          decodeBlock2Tree8(lpin, newPixelData);
           c1 <<= 1;
           y1 += microblockStepY;
         case 5:
-          decodeBlock2Tree8(lpin, oldPixelData, newPixelData);
+          decodeBlock2Tree8(lpin, newPixelData);
           c1 <<= 1;
           y1 += microblockStepY;
         case 6:
-          decodeBlock2Tree8(lpin, oldPixelData, newPixelData);
+          decodeBlock2Tree8(lpin, newPixelData);
           c1 <<= 1;
           y1 += microblockStepY;
         case 7:
-          decodeBlock2Tree8(lpin, oldPixelData, newPixelData);
+          decodeBlock2Tree8(lpin, newPixelData);
       }
       y1 = s1;
     }
   }
   
-  private final void decodeBlock0Tree8(final VTLittleEndianInputStream in, final byte[] oldPixelData, final byte[] newPixelData) throws IOException
+  private final void decodeBlock0Tree8(final VTLittleEndianInputStream in, final byte[] newPixelData) throws IOException
   {
     // For each block1
     for (;;)
     {
-      decodeBlock1Tree8(in, oldPixelData, newPixelData);
+      decodeBlock1Tree8(in, newPixelData);
       // Iterate block1 X and detect X axis out-of-bounds!
       x1 += macroblockStepX;
       if (x1 >= limitX)
@@ -651,7 +651,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     }
   }
   
-  private final void encodeBlock4Tree15(final VTLittleEndianOutputStream out, final short[] oldPixelData, final short[] newPixelData) throws IOException
+  private final void encodeBlock4Tree15(final VTLittleEndianOutputStream out, final short[] newPixelData) throws IOException
   {
     d4 = 0;
     c4 = 1;
@@ -698,7 +698,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     }
   }
   
-  private final void encodeBlock3Tree15(final VTLittleEndianOutputStream out, final short[] oldPixelData, final short[] newPixelData) throws IOException
+  private final void encodeBlock3Tree15(final VTLittleEndianOutputStream out, final short[] newPixelData) throws IOException
   {
     d3 = 0;
     c3 = 1;
@@ -706,35 +706,35 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     switch ((x1 + macroblockStepX - limitX) >> 3)
     {
       default:
-        encodeBlock4Tree15(out, oldPixelData, newPixelData);
+        encodeBlock4Tree15(out, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 1:
-        encodeBlock4Tree15(out, oldPixelData, newPixelData);
+        encodeBlock4Tree15(out, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 2:
-        encodeBlock4Tree15(out, oldPixelData, newPixelData);
+        encodeBlock4Tree15(out, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 3:
-        encodeBlock4Tree15(out, oldPixelData, newPixelData);
+        encodeBlock4Tree15(out, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 4:
-        encodeBlock4Tree15(out, oldPixelData, newPixelData);
+        encodeBlock4Tree15(out, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 5:
-        encodeBlock4Tree15(out, oldPixelData, newPixelData);
+        encodeBlock4Tree15(out, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 6:
-        encodeBlock4Tree15(out, oldPixelData, newPixelData);
+        encodeBlock4Tree15(out, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 7:
-        encodeBlock4Tree15(out, oldPixelData, newPixelData);
+        encodeBlock4Tree15(out, newPixelData);
     }
     x1 = s3;
     if (d3 != 0)
@@ -746,7 +746,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     }
   }
   
-  private final void encodeBlock2Tree15(final VTLittleEndianOutputStream out, final short[] oldPixelData, final short[] newPixelData) throws IOException
+  private final void encodeBlock2Tree15(final VTLittleEndianOutputStream out, final short[] newPixelData) throws IOException
   {
     d2 = 0;
     c2 = 1;
@@ -754,35 +754,35 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     switch (y1 + microblockStepY <= limitY ? 8 : r2)
     {
       default:
-        encodeBlock3Tree15(out, oldPixelData, newPixelData);
+        encodeBlock3Tree15(out, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 1:
-        encodeBlock3Tree15(out, oldPixelData, newPixelData);
+        encodeBlock3Tree15(out, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 2:
-        encodeBlock3Tree15(out, oldPixelData, newPixelData);
+        encodeBlock3Tree15(out, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 3:
-        encodeBlock3Tree15(out, oldPixelData, newPixelData);
+        encodeBlock3Tree15(out, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 4:
-        encodeBlock3Tree15(out, oldPixelData, newPixelData);
+        encodeBlock3Tree15(out, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 5:
-        encodeBlock3Tree15(out, oldPixelData, newPixelData);
+        encodeBlock3Tree15(out, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 6:
-        encodeBlock3Tree15(out, oldPixelData, newPixelData);
+        encodeBlock3Tree15(out, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 7:
-        encodeBlock3Tree15(out, oldPixelData, newPixelData);
+        encodeBlock3Tree15(out, newPixelData);
     }
     y1 = s2;
     if (d2 != 0)
@@ -795,7 +795,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     }
   }
   
-  private final void encodeBlock1Tree15(final VTLittleEndianOutputStream out, final short[] oldPixelData, final short[] newPixelData) throws IOException
+  private final void encodeBlock1Tree15(final VTLittleEndianOutputStream out, final short[] newPixelData) throws IOException
   {
     d1 = 0;
     c1 = 1;
@@ -803,35 +803,35 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     switch (y1 + macroblockStepY <= limitY ? 8 : r1)
     {
       default:
-        encodeBlock2Tree15(out, oldPixelData, newPixelData);
+        encodeBlock2Tree15(out, newPixelData);
         c1 <<= 1;
         y1 += microblockStepY;
       case 1:
-        encodeBlock2Tree15(out, oldPixelData, newPixelData);
+        encodeBlock2Tree15(out, newPixelData);
         c1 <<= 1;
         y1 += microblockStepY;
       case 2:
-        encodeBlock2Tree15(out, oldPixelData, newPixelData);
+        encodeBlock2Tree15(out, newPixelData);
         c1 <<= 1;
         y1 += microblockStepY;
       case 3:
-        encodeBlock2Tree15(out, oldPixelData, newPixelData);
+        encodeBlock2Tree15(out, newPixelData);
         c1 <<= 1;
         y1 += microblockStepY;
       case 4:
-        encodeBlock2Tree15(out, oldPixelData, newPixelData);
+        encodeBlock2Tree15(out, newPixelData);
         c1 <<= 1;
         y1 += microblockStepY;
       case 5:
-        encodeBlock2Tree15(out, oldPixelData, newPixelData);
+        encodeBlock2Tree15(out, newPixelData);
         c1 <<= 1;
         y1 += microblockStepY;
       case 6:
-        encodeBlock2Tree15(out, oldPixelData, newPixelData);
+        encodeBlock2Tree15(out, newPixelData);
         c1 <<= 1;
         y1 += microblockStepY;
       case 7:
-        encodeBlock2Tree15(out, oldPixelData, newPixelData);
+        encodeBlock2Tree15(out, newPixelData);
     }
     y1 = s1;
     out.write(d1);
@@ -847,7 +847,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     }
   }
   
-  private final void encodeBlock0Tree15(final VTLittleEndianOutputStream out, final short[] oldPixelData, final short[] newPixelData) throws IOException
+  private final void encodeBlock0Tree15(final VTLittleEndianOutputStream out, final short[] newPixelData) throws IOException
   {
     // For each block1
     m1 = 0;
@@ -855,7 +855,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     {
       if (blockBitSet.get(m1++))
       {
-        encodeBlock1Tree15(out, oldPixelData, newPixelData);
+        encodeBlock1Tree15(out, newPixelData);
       }
       else
       {
@@ -874,7 +874,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     }
   }
   
-  private final void decodeBlock4Tree15(final VTLittleEndianInputStream in, final short[] oldPixelData, final short[] newPixelData) throws IOException
+  private final void decodeBlock4Tree15(final VTLittleEndianInputStream in, final short[] newPixelData) throws IOException
   {
     if ((d3 & c3) == 0)
     {
@@ -920,7 +920,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     // x1 = s4;
   }
   
-  private final void decodeBlock3Tree15(final VTLittleEndianInputStream in, final short[] oldPixelData, final short[] newPixelData) throws IOException
+  private final void decodeBlock3Tree15(final VTLittleEndianInputStream in, final short[] newPixelData) throws IOException
   {
     if ((d2 & c2) == 0)
     {
@@ -932,40 +932,40 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     switch ((x1 + macroblockStepX - limitX) >> 3)
     {
       default:
-        decodeBlock4Tree15(in, oldPixelData, newPixelData);
+        decodeBlock4Tree15(in, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 1:
-        decodeBlock4Tree15(in, oldPixelData, newPixelData);
+        decodeBlock4Tree15(in, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 2:
-        decodeBlock4Tree15(in, oldPixelData, newPixelData);
+        decodeBlock4Tree15(in, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 3:
-        decodeBlock4Tree15(in, oldPixelData, newPixelData);
+        decodeBlock4Tree15(in, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 4:
-        decodeBlock4Tree15(in, oldPixelData, newPixelData);
+        decodeBlock4Tree15(in, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 5:
-        decodeBlock4Tree15(in, oldPixelData, newPixelData);
+        decodeBlock4Tree15(in, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 6:
-        decodeBlock4Tree15(in, oldPixelData, newPixelData);
+        decodeBlock4Tree15(in, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 7:
-        decodeBlock4Tree15(in, oldPixelData, newPixelData);
+        decodeBlock4Tree15(in, newPixelData);
     }
     x1 = s3;
   }
   
-  private final void decodeBlock2Tree15(final VTLittleEndianInputStream in, final short[] oldPixelData, final short[] newPixelData) throws IOException
+  private final void decodeBlock2Tree15(final VTLittleEndianInputStream in, final short[] newPixelData) throws IOException
   {
     if ((d1 & c1) == 0)
     {
@@ -977,40 +977,40 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     switch (y1 + microblockStepY <= limitY ? 8 : r2)
     {
       default:
-        decodeBlock3Tree15(in, oldPixelData, newPixelData);
+        decodeBlock3Tree15(in, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 1:
-        decodeBlock3Tree15(in, oldPixelData, newPixelData);
+        decodeBlock3Tree15(in, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 2:
-        decodeBlock3Tree15(in, oldPixelData, newPixelData);
+        decodeBlock3Tree15(in, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 3:
-        decodeBlock3Tree15(in, oldPixelData, newPixelData);
+        decodeBlock3Tree15(in, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 4:
-        decodeBlock3Tree15(in, oldPixelData, newPixelData);
+        decodeBlock3Tree15(in, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 5:
-        decodeBlock3Tree15(in, oldPixelData, newPixelData);
+        decodeBlock3Tree15(in, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 6:
-        decodeBlock3Tree15(in, oldPixelData, newPixelData);
+        decodeBlock3Tree15(in, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 7:
-        decodeBlock3Tree15(in, oldPixelData, newPixelData);
+        decodeBlock3Tree15(in, newPixelData);
     }
     y1 = s2;
   }
   
-  private final void decodeBlock1Tree15(final VTLittleEndianInputStream in, final short[] oldPixelData, final short[] newPixelData) throws IOException
+  private final void decodeBlock1Tree15(final VTLittleEndianInputStream in, final short[] newPixelData) throws IOException
   {
     d1 = in.readUnsignedByte();
     c1 = 1;
@@ -1037,46 +1037,46 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
       switch (y1 + macroblockStepY <= limitY ? 8 : r1)
       {
         default:
-          decodeBlock2Tree15(lpin, oldPixelData, newPixelData);
+          decodeBlock2Tree15(lpin, newPixelData);
           c1 <<= 1;
           y1 += microblockStepY;
         case 1:
-          decodeBlock2Tree15(lpin, oldPixelData, newPixelData);
+          decodeBlock2Tree15(lpin, newPixelData);
           c1 <<= 1;
           y1 += microblockStepY;
         case 2:
-          decodeBlock2Tree15(lpin, oldPixelData, newPixelData);
+          decodeBlock2Tree15(lpin, newPixelData);
           c1 <<= 1;
           y1 += microblockStepY;
         case 3:
-          decodeBlock2Tree15(lpin, oldPixelData, newPixelData);
+          decodeBlock2Tree15(lpin, newPixelData);
           c1 <<= 1;
           y1 += microblockStepY;
         case 4:
-          decodeBlock2Tree15(lpin, oldPixelData, newPixelData);
+          decodeBlock2Tree15(lpin, newPixelData);
           c1 <<= 1;
           y1 += microblockStepY;
         case 5:
-          decodeBlock2Tree15(lpin, oldPixelData, newPixelData);
+          decodeBlock2Tree15(lpin, newPixelData);
           c1 <<= 1;
           y1 += microblockStepY;
         case 6:
-          decodeBlock2Tree15(lpin, oldPixelData, newPixelData);
+          decodeBlock2Tree15(lpin, newPixelData);
           c1 <<= 1;
           y1 += microblockStepY;
         case 7:
-          decodeBlock2Tree15(lpin, oldPixelData, newPixelData);
+          decodeBlock2Tree15(lpin, newPixelData);
       }
       y1 = s1;
     }
   }
   
-  private final void decodeBlock0Tree15(final VTLittleEndianInputStream in, final short[] oldPixelData, final short[] newPixelData) throws IOException
+  private final void decodeBlock0Tree15(final VTLittleEndianInputStream in, final short[] newPixelData) throws IOException
   {
     // For each block1
     for (;;)
     {
-      decodeBlock1Tree15(in, oldPixelData, newPixelData);
+      decodeBlock1Tree15(in, newPixelData);
       // Iterate block1 X and detect X axis out-of-bounds!
       x1 += macroblockStepX;
       if (x1 >= limitX)
@@ -1092,7 +1092,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     }
   }
   
-  private final void encodeBlock4Tree24(final VTLittleEndianOutputStream out, final int[] oldPixelData, final int[] newPixelData) throws IOException
+  private final void encodeBlock4Tree24(final VTLittleEndianOutputStream out, final int[] newPixelData) throws IOException
   {
     d4 = 0;
     c4 = 1;
@@ -1139,7 +1139,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     }
   }
   
-  private final void encodeBlock3Tree24(final VTLittleEndianOutputStream out, final int[] oldPixelData, final int[] newPixelData) throws IOException
+  private final void encodeBlock3Tree24(final VTLittleEndianOutputStream out, final int[] newPixelData) throws IOException
   {
     d3 = 0;
     c3 = 1;
@@ -1147,35 +1147,35 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     switch ((x1 + macroblockStepX - limitX) >> 3)
     {
       default:
-        encodeBlock4Tree24(out, oldPixelData, newPixelData);
+        encodeBlock4Tree24(out, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 1:
-        encodeBlock4Tree24(out, oldPixelData, newPixelData);
+        encodeBlock4Tree24(out, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 2:
-        encodeBlock4Tree24(out, oldPixelData, newPixelData);
+        encodeBlock4Tree24(out, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 3:
-        encodeBlock4Tree24(out, oldPixelData, newPixelData);
+        encodeBlock4Tree24(out, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 4:
-        encodeBlock4Tree24(out, oldPixelData, newPixelData);
+        encodeBlock4Tree24(out, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 5:
-        encodeBlock4Tree24(out, oldPixelData, newPixelData);
+        encodeBlock4Tree24(out, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 6:
-        encodeBlock4Tree24(out, oldPixelData, newPixelData);
+        encodeBlock4Tree24(out, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 7:
-        encodeBlock4Tree24(out, oldPixelData, newPixelData);
+        encodeBlock4Tree24(out, newPixelData);
     }
     x1 = s3;
     if (d3 != 0)
@@ -1187,7 +1187,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     }
   }
   
-  private final void encodeBlock2Tree24(final VTLittleEndianOutputStream out, final int[] oldPixelData, final int[] newPixelData) throws IOException
+  private final void encodeBlock2Tree24(final VTLittleEndianOutputStream out, final int[] newPixelData) throws IOException
   {
     d2 = 0;
     c2 = 1;
@@ -1195,35 +1195,35 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     switch (y1 + microblockStepY <= limitY ? 8 : r2)
     {
       default:
-        encodeBlock3Tree24(out, oldPixelData, newPixelData);
+        encodeBlock3Tree24(out, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 1:
-        encodeBlock3Tree24(out, oldPixelData, newPixelData);
+        encodeBlock3Tree24(out, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 2:
-        encodeBlock3Tree24(out, oldPixelData, newPixelData);
+        encodeBlock3Tree24(out, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 3:
-        encodeBlock3Tree24(out, oldPixelData, newPixelData);
+        encodeBlock3Tree24(out, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 4:
-        encodeBlock3Tree24(out, oldPixelData, newPixelData);
+        encodeBlock3Tree24(out, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 5:
-        encodeBlock3Tree24(out, oldPixelData, newPixelData);
+        encodeBlock3Tree24(out, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 6:
-        encodeBlock3Tree24(out, oldPixelData, newPixelData);
+        encodeBlock3Tree24(out, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 7:
-        encodeBlock3Tree24(out, oldPixelData, newPixelData);
+        encodeBlock3Tree24(out, newPixelData);
     }
     y1 = s2;
     if (d2 != 0)
@@ -1236,7 +1236,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     }
   }
   
-  private final void encodeBlock1Tree24(final VTLittleEndianOutputStream out, final int[] oldPixelData, final int[] newPixelData) throws IOException
+  private final void encodeBlock1Tree24(final VTLittleEndianOutputStream out, final int[] newPixelData) throws IOException
   {
     d1 = 0;
     c1 = 1;
@@ -1244,35 +1244,35 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     switch (y1 + macroblockStepY <= limitY ? 8 : r1)
     {
       default:
-        encodeBlock2Tree24(out, oldPixelData, newPixelData);
+        encodeBlock2Tree24(out, newPixelData);
         c1 <<= 1;
         y1 += microblockStepY;
       case 1:
-        encodeBlock2Tree24(out, oldPixelData, newPixelData);
+        encodeBlock2Tree24(out, newPixelData);
         c1 <<= 1;
         y1 += microblockStepY;
       case 2:
-        encodeBlock2Tree24(out, oldPixelData, newPixelData);
+        encodeBlock2Tree24(out, newPixelData);
         c1 <<= 1;
         y1 += microblockStepY;
       case 3:
-        encodeBlock2Tree24(out, oldPixelData, newPixelData);
+        encodeBlock2Tree24(out, newPixelData);
         c1 <<= 1;
         y1 += microblockStepY;
       case 4:
-        encodeBlock2Tree24(out, oldPixelData, newPixelData);
+        encodeBlock2Tree24(out, newPixelData);
         c1 <<= 1;
         y1 += microblockStepY;
       case 5:
-        encodeBlock2Tree24(out, oldPixelData, newPixelData);
+        encodeBlock2Tree24(out, newPixelData);
         c1 <<= 1;
         y1 += microblockStepY;
       case 6:
-        encodeBlock2Tree24(out, oldPixelData, newPixelData);
+        encodeBlock2Tree24(out, newPixelData);
         c1 <<= 1;
         y1 += microblockStepY;
       case 7:
-        encodeBlock2Tree24(out, oldPixelData, newPixelData);
+        encodeBlock2Tree24(out, newPixelData);
     }
     y1 = s1;
     out.write(d1);
@@ -1288,7 +1288,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     }
   }
   
-  private final void encodeBlock0Tree24(final VTLittleEndianOutputStream out, final int[] oldPixelData, final int[] newPixelData) throws IOException
+  private final void encodeBlock0Tree24(final VTLittleEndianOutputStream out, final int[] newPixelData) throws IOException
   {
     // For each block1
     m1 = 0;
@@ -1296,7 +1296,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     {
       if (blockBitSet.get(m1++))
       {
-        encodeBlock1Tree24(out, oldPixelData, newPixelData);
+        encodeBlock1Tree24(out, newPixelData);
       }
       else
       {
@@ -1315,7 +1315,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     }
   }
   
-  private final void decodeBlock4Tree24(final VTLittleEndianInputStream in, final int[] oldPixelData, final int[] newPixelData) throws IOException
+  private final void decodeBlock4Tree24(final VTLittleEndianInputStream in, final int[] newPixelData) throws IOException
   {
     if ((d3 & c3) == 0)
     {
@@ -1361,7 +1361,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     // x1 = s4;
   }
   
-  private final void decodeBlock3Tree24(final VTLittleEndianInputStream in, final int[] oldPixelData, final int[] newPixelData) throws IOException
+  private final void decodeBlock3Tree24(final VTLittleEndianInputStream in, final int[] newPixelData) throws IOException
   {
     if ((d2 & c2) == 0)
     {
@@ -1373,40 +1373,40 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     switch ((x1 + macroblockStepX - limitX) >> 3)
     {
       default:
-        decodeBlock4Tree24(in, oldPixelData, newPixelData);
+        decodeBlock4Tree24(in, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 1:
-        decodeBlock4Tree24(in, oldPixelData, newPixelData);
+        decodeBlock4Tree24(in, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 2:
-        decodeBlock4Tree24(in, oldPixelData, newPixelData);
+        decodeBlock4Tree24(in, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 3:
-        decodeBlock4Tree24(in, oldPixelData, newPixelData);
+        decodeBlock4Tree24(in, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 4:
-        decodeBlock4Tree24(in, oldPixelData, newPixelData);
+        decodeBlock4Tree24(in, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 5:
-        decodeBlock4Tree24(in, oldPixelData, newPixelData);
+        decodeBlock4Tree24(in, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 6:
-        decodeBlock4Tree24(in, oldPixelData, newPixelData);
+        decodeBlock4Tree24(in, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 7:
-        decodeBlock4Tree24(in, oldPixelData, newPixelData);
+        decodeBlock4Tree24(in, newPixelData);
     }
     x1 = s3;
   }
   
-  private final void decodeBlock2Tree24(final VTLittleEndianInputStream in, final int[] oldPixelData, final int[] newPixelData) throws IOException
+  private final void decodeBlock2Tree24(final VTLittleEndianInputStream in, final int[] newPixelData) throws IOException
   {
     if ((d1 & c1) == 0)
     {
@@ -1418,40 +1418,40 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     switch (y1 + microblockStepY <= limitY ? 8 : r2)
     {
       default:
-        decodeBlock3Tree24(in, oldPixelData, newPixelData);
+        decodeBlock3Tree24(in, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 1:
-        decodeBlock3Tree24(in, oldPixelData, newPixelData);
+        decodeBlock3Tree24(in, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 2:
-        decodeBlock3Tree24(in, oldPixelData, newPixelData);
+        decodeBlock3Tree24(in, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 3:
-        decodeBlock3Tree24(in, oldPixelData, newPixelData);
+        decodeBlock3Tree24(in, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 4:
-        decodeBlock3Tree24(in, oldPixelData, newPixelData);
+        decodeBlock3Tree24(in, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 5:
-        decodeBlock3Tree24(in, oldPixelData, newPixelData);
+        decodeBlock3Tree24(in, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 6:
-        decodeBlock3Tree24(in, oldPixelData, newPixelData);
+        decodeBlock3Tree24(in, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 7:
-        decodeBlock3Tree24(in, oldPixelData, newPixelData);
+        decodeBlock3Tree24(in, newPixelData);
     }
     y1 = s2;
   }
   
-  private final void decodeBlock1Tree24(final VTLittleEndianInputStream in, final int[] oldPixelData, final int[] newPixelData) throws IOException
+  private final void decodeBlock1Tree24(final VTLittleEndianInputStream in, final int[] newPixelData) throws IOException
   {
     d1 = in.readUnsignedByte();
     c1 = 1;
@@ -1478,46 +1478,46 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
       switch (y1 + macroblockStepY <= limitY ? 8 : r1)
       {
         default:
-          decodeBlock2Tree24(lpin, oldPixelData, newPixelData);
+          decodeBlock2Tree24(lpin, newPixelData);
           c1 <<= 1;
           y1 += microblockStepY;
         case 1:
-          decodeBlock2Tree24(lpin, oldPixelData, newPixelData);
+          decodeBlock2Tree24(lpin, newPixelData);
           c1 <<= 1;
           y1 += microblockStepY;
         case 2:
-          decodeBlock2Tree24(lpin, oldPixelData, newPixelData);
+          decodeBlock2Tree24(lpin, newPixelData);
           c1 <<= 1;
           y1 += microblockStepY;
         case 3:
-          decodeBlock2Tree24(lpin, oldPixelData, newPixelData);
+          decodeBlock2Tree24(lpin, newPixelData);
           c1 <<= 1;
           y1 += microblockStepY;
         case 4:
-          decodeBlock2Tree24(lpin, oldPixelData, newPixelData);
+          decodeBlock2Tree24(lpin, newPixelData);
           c1 <<= 1;
           y1 += microblockStepY;
         case 5:
-          decodeBlock2Tree24(lpin, oldPixelData, newPixelData);
+          decodeBlock2Tree24(lpin, newPixelData);
           c1 <<= 1;
           y1 += microblockStepY;
         case 6:
-          decodeBlock2Tree24(lpin, oldPixelData, newPixelData);
+          decodeBlock2Tree24(lpin, newPixelData);
           c1 <<= 1;
           y1 += microblockStepY;
         case 7:
-          decodeBlock2Tree24(lpin, oldPixelData, newPixelData);
+          decodeBlock2Tree24(lpin, newPixelData);
       }
       y1 = s1;
     }
   }
   
-  private final void decodeBlock0Tree24(final VTLittleEndianInputStream in, final int[] oldPixelData, final int[] newPixelData) throws IOException
+  private final void decodeBlock0Tree24(final VTLittleEndianInputStream in, final int[] newPixelData) throws IOException
   {
     // For each block1
     for (;;)
     {
-      decodeBlock1Tree24(in, oldPixelData, newPixelData);
+      decodeBlock1Tree24(in, newPixelData);
       // Iterate block1 X and detect X axis out-of-bounds!
       x1 += macroblockStepX;
       if (x1 >= limitX)
@@ -1533,7 +1533,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     }
   }
   
-  private final void encodeBlock4Tree30(final VTLittleEndianOutputStream out, final int[] oldPixelData, final int[] newPixelData) throws IOException
+  private final void encodeBlock4Tree30(final VTLittleEndianOutputStream out, final int[] newPixelData) throws IOException
   {
     d4 = 0;
     c4 = 1;
@@ -1580,7 +1580,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     }
   }
   
-  private final void encodeBlock3Tree30(final VTLittleEndianOutputStream out, final int[] oldPixelData, final int[] newPixelData) throws IOException
+  private final void encodeBlock3Tree30(final VTLittleEndianOutputStream out, final int[] newPixelData) throws IOException
   {
     d3 = 0;
     c3 = 1;
@@ -1588,35 +1588,35 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     switch ((x1 + macroblockStepX - limitX) >> 3)
     {
       default:
-        encodeBlock4Tree30(out, oldPixelData, newPixelData);
+        encodeBlock4Tree30(out, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 1:
-        encodeBlock4Tree30(out, oldPixelData, newPixelData);
+        encodeBlock4Tree30(out, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 2:
-        encodeBlock4Tree30(out, oldPixelData, newPixelData);
+        encodeBlock4Tree30(out, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 3:
-        encodeBlock4Tree30(out, oldPixelData, newPixelData);
+        encodeBlock4Tree30(out, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 4:
-        encodeBlock4Tree30(out, oldPixelData, newPixelData);
+        encodeBlock4Tree30(out, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 5:
-        encodeBlock4Tree30(out, oldPixelData, newPixelData);
+        encodeBlock4Tree30(out, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 6:
-        encodeBlock4Tree30(out, oldPixelData, newPixelData);
+        encodeBlock4Tree30(out, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 7:
-        encodeBlock4Tree30(out, oldPixelData, newPixelData);
+        encodeBlock4Tree30(out, newPixelData);
     }
     x1 = s3;
     if (d3 != 0)
@@ -1628,7 +1628,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     }
   }
   
-  private final void encodeBlock2Tree30(final VTLittleEndianOutputStream out, final int[] oldPixelData, final int[] newPixelData) throws IOException
+  private final void encodeBlock2Tree30(final VTLittleEndianOutputStream out, final int[] newPixelData) throws IOException
   {
     d2 = 0;
     c2 = 1;
@@ -1636,35 +1636,35 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     switch (y1 + microblockStepY <= limitY ? 8 : r2)
     {
       default:
-        encodeBlock3Tree30(out, oldPixelData, newPixelData);
+        encodeBlock3Tree30(out, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 1:
-        encodeBlock3Tree30(out, oldPixelData, newPixelData);
+        encodeBlock3Tree30(out, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 2:
-        encodeBlock3Tree30(out, oldPixelData, newPixelData);
+        encodeBlock3Tree30(out, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 3:
-        encodeBlock3Tree30(out, oldPixelData, newPixelData);
+        encodeBlock3Tree30(out, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 4:
-        encodeBlock3Tree30(out, oldPixelData, newPixelData);
+        encodeBlock3Tree30(out, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 5:
-        encodeBlock3Tree30(out, oldPixelData, newPixelData);
+        encodeBlock3Tree30(out, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 6:
-        encodeBlock3Tree30(out, oldPixelData, newPixelData);
+        encodeBlock3Tree30(out, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 7:
-        encodeBlock3Tree30(out, oldPixelData, newPixelData);
+        encodeBlock3Tree30(out, newPixelData);
     }
     y1 = s2;
     if (d2 != 0)
@@ -1677,7 +1677,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     }
   }
   
-  private final void encodeBlock1Tree30(final VTLittleEndianOutputStream out, final int[] oldPixelData, final int[] newPixelData) throws IOException
+  private final void encodeBlock1Tree30(final VTLittleEndianOutputStream out, final int[] newPixelData) throws IOException
   {
     d1 = 0;
     c1 = 1;
@@ -1685,35 +1685,35 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     switch (y1 + macroblockStepY <= limitY ? 8 : r1)
     {
       default:
-        encodeBlock2Tree30(out, oldPixelData, newPixelData);
+        encodeBlock2Tree30(out, newPixelData);
         c1 <<= 1;
         y1 += microblockStepY;
       case 1:
-        encodeBlock2Tree30(out, oldPixelData, newPixelData);
+        encodeBlock2Tree30(out, newPixelData);
         c1 <<= 1;
         y1 += microblockStepY;
       case 2:
-        encodeBlock2Tree30(out, oldPixelData, newPixelData);
+        encodeBlock2Tree30(out, newPixelData);
         c1 <<= 1;
         y1 += microblockStepY;
       case 3:
-        encodeBlock2Tree30(out, oldPixelData, newPixelData);
+        encodeBlock2Tree30(out, newPixelData);
         c1 <<= 1;
         y1 += microblockStepY;
       case 4:
-        encodeBlock2Tree30(out, oldPixelData, newPixelData);
+        encodeBlock2Tree30(out, newPixelData);
         c1 <<= 1;
         y1 += microblockStepY;
       case 5:
-        encodeBlock2Tree30(out, oldPixelData, newPixelData);
+        encodeBlock2Tree30(out, newPixelData);
         c1 <<= 1;
         y1 += microblockStepY;
       case 6:
-        encodeBlock2Tree30(out, oldPixelData, newPixelData);
+        encodeBlock2Tree30(out, newPixelData);
         c1 <<= 1;
         y1 += microblockStepY;
       case 7:
-        encodeBlock2Tree30(out, oldPixelData, newPixelData);
+        encodeBlock2Tree30(out, newPixelData);
     }
     y1 = s1;
     out.write(d1);
@@ -1729,7 +1729,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     }
   }
   
-  private final void encodeBlock0Tree30(final VTLittleEndianOutputStream out, final int[] oldPixelData, final int[] newPixelData) throws IOException
+  private final void encodeBlock0Tree30(final VTLittleEndianOutputStream out, final int[] newPixelData) throws IOException
   {
     // For each block1
     m1 = 0;
@@ -1737,7 +1737,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     {
       if (blockBitSet.get(m1++))
       {
-        encodeBlock1Tree30(out, oldPixelData, newPixelData);
+        encodeBlock1Tree30(out, newPixelData);
       }
       else
       {
@@ -1756,7 +1756,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     }
   }
   
-  private final void decodeBlock4Tree30(final VTLittleEndianInputStream in, final int[] oldPixelData, final int[] newPixelData) throws IOException
+  private final void decodeBlock4Tree30(final VTLittleEndianInputStream in, final int[] newPixelData) throws IOException
   {
     if ((d3 & c3) == 0)
     {
@@ -1802,7 +1802,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     // x1 = s4;
   }
   
-  private final void decodeBlock3Tree30(final VTLittleEndianInputStream in, final int[] oldPixelData, final int[] newPixelData) throws IOException
+  private final void decodeBlock3Tree30(final VTLittleEndianInputStream in, final int[] newPixelData) throws IOException
   {
     if ((d2 & c2) == 0)
     {
@@ -1814,40 +1814,40 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     switch ((x1 + macroblockStepX - limitX) >> 3)
     {
       default:
-        decodeBlock4Tree30(in, oldPixelData, newPixelData);
+        decodeBlock4Tree30(in, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 1:
-        decodeBlock4Tree30(in, oldPixelData, newPixelData);
+        decodeBlock4Tree30(in, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 2:
-        decodeBlock4Tree30(in, oldPixelData, newPixelData);
+        decodeBlock4Tree30(in, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 3:
-        decodeBlock4Tree30(in, oldPixelData, newPixelData);
+        decodeBlock4Tree30(in, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 4:
-        decodeBlock4Tree30(in, oldPixelData, newPixelData);
+        decodeBlock4Tree30(in, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 5:
-        decodeBlock4Tree30(in, oldPixelData, newPixelData);
+        decodeBlock4Tree30(in, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 6:
-        decodeBlock4Tree30(in, oldPixelData, newPixelData);
+        decodeBlock4Tree30(in, newPixelData);
         c3 <<= 1;
         x1 += microblockStepX;
       case 7:
-        decodeBlock4Tree30(in, oldPixelData, newPixelData);
+        decodeBlock4Tree30(in, newPixelData);
     }
     x1 = s3;
   }
   
-  private final void decodeBlock2Tree30(final VTLittleEndianInputStream in, final int[] oldPixelData, final int[] newPixelData) throws IOException
+  private final void decodeBlock2Tree30(final VTLittleEndianInputStream in, final int[] newPixelData) throws IOException
   {
     if ((d1 & c1) == 0)
     {
@@ -1859,40 +1859,40 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     switch (y1 + microblockStepY <= limitY ? 8 : r2)
     {
       default:
-        decodeBlock3Tree30(in, oldPixelData, newPixelData);
+        decodeBlock3Tree30(in, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 1:
-        decodeBlock3Tree30(in, oldPixelData, newPixelData);
+        decodeBlock3Tree30(in, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 2:
-        decodeBlock3Tree30(in, oldPixelData, newPixelData);
+        decodeBlock3Tree30(in, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 3:
-        decodeBlock3Tree30(in, oldPixelData, newPixelData);
+        decodeBlock3Tree30(in, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 4:
-        decodeBlock3Tree30(in, oldPixelData, newPixelData);
+        decodeBlock3Tree30(in, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 5:
-        decodeBlock3Tree30(in, oldPixelData, newPixelData);
+        decodeBlock3Tree30(in, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 6:
-        decodeBlock3Tree30(in, oldPixelData, newPixelData);
+        decodeBlock3Tree30(in, newPixelData);
         c2 <<= 1;
         y1 += pixelStepY;
       case 7:
-        decodeBlock3Tree30(in, oldPixelData, newPixelData);
+        decodeBlock3Tree30(in, newPixelData);
     }
     y1 = s2;
   }
   
-  private final void decodeBlock1Tree30(final VTLittleEndianInputStream in, final int[] oldPixelData, final int[] newPixelData) throws IOException
+  private final void decodeBlock1Tree30(final VTLittleEndianInputStream in, final int[] newPixelData) throws IOException
   {
     d1 = in.readUnsignedByte();
     c1 = 1;
@@ -1919,46 +1919,46 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
       switch (y1 + macroblockStepY <= limitY ? 8 : r1)
       {
         default:
-          decodeBlock2Tree30(lpin, oldPixelData, newPixelData);
+          decodeBlock2Tree30(lpin, newPixelData);
           c1 <<= 1;
           y1 += microblockStepY;
         case 1:
-          decodeBlock2Tree30(lpin, oldPixelData, newPixelData);
+          decodeBlock2Tree30(lpin, newPixelData);
           c1 <<= 1;
           y1 += microblockStepY;
         case 2:
-          decodeBlock2Tree30(lpin, oldPixelData, newPixelData);
+          decodeBlock2Tree30(lpin, newPixelData);
           c1 <<= 1;
           y1 += microblockStepY;
         case 3:
-          decodeBlock2Tree30(lpin, oldPixelData, newPixelData);
+          decodeBlock2Tree30(lpin, newPixelData);
           c1 <<= 1;
           y1 += microblockStepY;
         case 4:
-          decodeBlock2Tree30(lpin, oldPixelData, newPixelData);
+          decodeBlock2Tree30(lpin, newPixelData);
           c1 <<= 1;
           y1 += microblockStepY;
         case 5:
-          decodeBlock2Tree30(lpin, oldPixelData, newPixelData);
+          decodeBlock2Tree30(lpin, newPixelData);
           c1 <<= 1;
           y1 += microblockStepY;
         case 6:
-          decodeBlock2Tree30(lpin, oldPixelData, newPixelData);
+          decodeBlock2Tree30(lpin, newPixelData);
           c1 <<= 1;
           y1 += microblockStepY;
         case 7:
-          decodeBlock2Tree30(lpin, oldPixelData, newPixelData);
+          decodeBlock2Tree30(lpin, newPixelData);
       }
       y1 = s1;
     }
   }
   
-  private final void decodeBlock0Tree30(final VTLittleEndianInputStream in, final int[] oldPixelData, final int[] newPixelData) throws IOException
+  private final void decodeBlock0Tree30(final VTLittleEndianInputStream in, final int[] newPixelData) throws IOException
   {
     // For each block1
     for (;;)
     {
-      decodeBlock1Tree30(in, oldPixelData, newPixelData);
+      decodeBlock1Tree30(in, newPixelData);
       // Iterate block1 X and detect X axis out-of-bounds!
       x1 += macroblockStepX;
       if (x1 >= limitX)
@@ -2010,7 +2010,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     lout.writeInt(limitX);
     lout.writeInt(limitY);
     // lout.writeInt(areaX);
-    encodeBlock0Tree8(lout, oldPixelData, newPixelData);
+    encodeBlock0Tree8(lout, newPixelData);
     lout.flush();
     VTImageDataUtils.copyArea(newPixelData, oldPixelData, 0, frameWidth + CUSTOM_CODEC_PADDING_SIZE, frameHeight + CUSTOM_CODEC_PADDING_SIZE, transferArea);
     //block1BitSet.clear();
@@ -2039,7 +2039,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     limitY = lin.readInt();
     r1 = 8 - (((int) Math.ceil((((double) limitY) / microblockStepY))) & 7);
     r2 = 8 - (((limitY) / pixelStepY) & 7);
-    decodeBlock0Tree8(lin, oldPixelData, newPixelData);
+    decodeBlock0Tree8(lin, newPixelData);
     //VTImageDataUtils.copyArea(newPixelData, oldPixelData, 0, width, height, transferArea);
   }
   
@@ -2078,7 +2078,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     lout.writeInt(offset);
     lout.writeInt(limitX);
     lout.writeInt(limitY);
-    encodeBlock0Tree15(lout, oldPixelData, newPixelData);
+    encodeBlock0Tree15(lout, newPixelData);
     lout.flush();
     VTImageDataUtils.copyArea(newPixelData, oldPixelData, 0, frameWidth + CUSTOM_CODEC_PADDING_SIZE, frameHeight + CUSTOM_CODEC_PADDING_SIZE, transferArea);
     //block1BitSet.clear();
@@ -2107,7 +2107,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     limitY = lin.readInt();
     r1 = 8 - (((int) Math.ceil((((double) limitY) / microblockStepY))) & 7);
     r2 = 8 - (((limitY) / pixelStepY) & 7);
-    decodeBlock0Tree15(lin, oldPixelData, newPixelData);
+    decodeBlock0Tree15(lin, newPixelData);
     //VTImageDataUtils.copyArea(newPixelData, oldPixelData, 0, width, height, transferArea);
   }
   
@@ -2146,7 +2146,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     lout.writeInt(offset);
     lout.writeInt(limitX);
     lout.writeInt(limitY);
-    encodeBlock0Tree24(lout, oldPixelData, newPixelData);
+    encodeBlock0Tree24(lout, newPixelData);
     lout.flush();
     VTImageDataUtils.copyArea(newPixelData, oldPixelData, 0, frameWidth + CUSTOM_CODEC_PADDING_SIZE, frameHeight + CUSTOM_CODEC_PADDING_SIZE, transferArea);
     //block1BitSet.clear();
@@ -2175,7 +2175,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     limitY = lin.readInt();
     r1 = 8 - (((int) Math.ceil((((double) limitY) / microblockStepY))) & 7);
     r2 = 8 - (((limitY) / pixelStepY) & 7);
-    decodeBlock0Tree24(lin, oldPixelData, newPixelData);
+    decodeBlock0Tree24(lin, newPixelData);
     //VTImageDataUtils.copyArea(newPixelData, oldPixelData, 0, width, height, transferArea);
   }
   
@@ -2214,7 +2214,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     lout.writeInt(offset);
     lout.writeInt(limitX);
     lout.writeInt(limitY);
-    encodeBlock0Tree30(lout, oldPixelData, newPixelData);
+    encodeBlock0Tree30(lout, newPixelData);
     lout.flush();
     VTImageDataUtils.copyArea(newPixelData, oldPixelData, 0, frameWidth + CUSTOM_CODEC_PADDING_SIZE, frameHeight + CUSTOM_CODEC_PADDING_SIZE, transferArea);
     //block1BitSet.clear();
@@ -2243,7 +2243,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     limitY = lin.readInt();
     r1 = 8 - (((int) Math.ceil((((double) limitY) / microblockStepY))) & 7);
     r2 = 8 - (((limitY) / pixelStepY) & 7);
-    decodeBlock0Tree30(lin, oldPixelData, newPixelData);
+    decodeBlock0Tree30(lin, newPixelData);
     //VTImageDataUtils.copyArea(newPixelData, oldPixelData, 0, width, height, transferArea);
   }
 }
