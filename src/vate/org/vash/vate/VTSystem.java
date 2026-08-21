@@ -232,7 +232,7 @@ public class VTSystem
   
   public static final int VT_AUDIO_CODEC_SPEEX = 1;
   public static final int VT_AUDIO_CODEC_OPUS = 2;
-  public static final int VT_AUDIO_CODEC_DEFAULT = VT_AUDIO_CODEC_OPUS;
+  public static final int VT_AUDIO_CODEC_DEFAULT = VT_AUDIO_CODEC_SPEEX;
   
   public static final int VT_AUDIO_CODEC_FRAME_MILLISECONDS = 20;
   public static final int VT_AUDIO_LINE_CAPTURE_BUFFER_MILLISECONDS = 320;

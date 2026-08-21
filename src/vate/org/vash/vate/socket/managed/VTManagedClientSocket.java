@@ -39,14 +39,6 @@ public class VTManagedClientSocket
     {
       this.session = session;
       this.connection = session.getConnection();
-      try
-      {
-        connection.getConnectionSocket().setSoLinger(true, 0);
-      }
-      catch (Throwable t)
-      {
-        
-      }
       this.pingListener = new VTManagedSocketPingListener(session.getExecutorService(), this);
       this.session.addPingListener(pingListener);
     }

@@ -462,6 +462,8 @@ public final class VTMultiplexingOutputStream
     {
       synchronized (dataPacketBuffer)
       {
+        dataPacketBuffer.reset();
+        dataContentBuffer.reset();
         contentOutputStream.write(buffer, offset, length);
         contentOutputStream.flush();
         long hash = XXH3.hash64(dataContentBuffer.buf(), dataContentBuffer.count());
@@ -476,8 +478,6 @@ public final class VTMultiplexingOutputStream
         dataOutputStream.write(dataPacketBuffer.buf(), 0, dataPacketBuffer.count());
         dataOutputStream.flush();
         transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES + dataContentBuffer.count());
-        dataPacketBuffer.reset();
-        dataContentBuffer.reset();
       }
     }
     
@@ -485,6 +485,7 @@ public final class VTMultiplexingOutputStream
     {
       synchronized (controlPacketBuffer)
       {
+        controlPacketBuffer.reset();
         long hash = -2L;
         long start = firstSequencer.nextLong() ^ secondSequencer.nextLong() ^ hash;
         long end = thirdSequencer.nextLong() ^ fourthSequencer.nextLong() ^ hash;
@@ -496,7 +497,6 @@ public final class VTMultiplexingOutputStream
         controlOutputStream.write(controlPacketBuffer.buf(), 0, controlPacketBuffer.count());
         controlOutputStream.flush();
         transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
-        controlPacketBuffer.reset();
       }
     }
     
@@ -504,6 +504,7 @@ public final class VTMultiplexingOutputStream
     {
       synchronized (controlPacketBuffer)
       {
+        controlPacketBuffer.reset();
         long hash = -3L;
         long start = firstSequencer.nextLong() ^ secondSequencer.nextLong() ^ hash;
         long end = thirdSequencer.nextLong() ^ fourthSequencer.nextLong() ^ hash;
@@ -515,7 +516,6 @@ public final class VTMultiplexingOutputStream
         controlOutputStream.write(controlPacketBuffer.buf(), 0, controlPacketBuffer.count());
         controlOutputStream.flush();
         transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
-        controlPacketBuffer.reset();
       }
     }
   }
