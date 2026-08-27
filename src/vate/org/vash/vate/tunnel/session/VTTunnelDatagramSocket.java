@@ -23,12 +23,12 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
 {
   private VTLittleEndianInputStream tunnelInputStream;
   private VTLittleEndianOutputStream tunnelOutputStream;
-  private VTByteArrayInputStream tunnelInputPacket = new VTByteArrayInputStream(new byte[65536]);
-  private VTByteArrayOutputStream tunnelOutputPacket = new VTByteArrayOutputStream(new byte[65536]);
+  private VTByteArrayInputStream tunnelInputPacket = new VTByteArrayInputStream(new byte[65535]);
+  private VTByteArrayOutputStream tunnelOutputPacket = new VTByteArrayOutputStream(new byte[65535]);
   private VTLittleEndianInputStream tunnelPacketInputStream = new VTLittleEndianInputStream(tunnelInputPacket);
   private VTLittleEndianOutputStream tunnelPacketOutputStream = new VTLittleEndianOutputStream(tunnelOutputPacket);
-  private DatagramPacket datagramInputPacket = new DatagramPacket(new byte[65536], 65536);
-  private DatagramPacket datagramOutputPacket = new DatagramPacket(new byte[65536], 65536);
+  private DatagramPacket datagramInputPacket = new DatagramPacket(new byte[65535], 65535);
+  private DatagramPacket datagramOutputPacket = new DatagramPacket(new byte[65535], 65535);
   private final Socket tunnelSocket;
   private final ExecutorService executorService;
   private final DatagramSocket remoteSocket;
