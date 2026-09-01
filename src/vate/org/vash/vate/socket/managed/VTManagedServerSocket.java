@@ -153,7 +153,7 @@ public class VTManagedServerSocket
     public void sessionStarted(VTServerSession session)
     {
       VTManagedSocket socket = sessions.get(session);
-      if (socketListener != null)
+      if (socketListener != null && socket != null)
       {
         try
         {

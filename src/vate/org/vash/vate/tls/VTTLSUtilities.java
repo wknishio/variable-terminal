@@ -93,6 +93,8 @@ public class VTTLSUtilities
     try
     {
       System.setProperty("sun.security.ssl.allowLegacyHelloMessages", "true");
+      System.setProperty("jdk.http.auth.proxying.disabledSchemes", "");
+      System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
       //System.setProperty("sun.security.ssl.allowUnsafeRenegotiation", "true");
       TrustManager[] trustAnything = new TrustManager[]
       { new OverlyOptimisticTrustManager() };
@@ -155,7 +157,7 @@ public class VTTLSUtilities
 //    X500Name subjectName = new X500Name("CN=" + UUID.randomUUID());
 //    BigInteger serial = BigInteger.valueOf(new SecureRandom().nextLong());
 //    Date notBefore = new Date(System.currentTimeMillis() - (1000L * 60 * 60 * 24 * 30)); // 30 days ago
-//    Date notAfter = new Date(System.currentTimeMillis() + (1000L * 60 * 60 * 24 * 365 * 10)); // 10 years from now
+//    Date notAfter = new Date(System.currentTimeMillis() + (1000L * 60 * 60 * 24 * 30)); // 30 days from now
 //    
 //    String signatureAlgorithm = "SHA512WITHRSA";
 //    
