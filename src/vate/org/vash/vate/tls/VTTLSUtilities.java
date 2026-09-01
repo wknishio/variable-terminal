@@ -95,6 +95,10 @@ public class VTTLSUtilities
       System.setProperty("sun.security.ssl.allowLegacyHelloMessages", "true");
       System.setProperty("jdk.http.auth.proxying.disabledSchemes", "");
       System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
+      System.setProperty("jdk.tls.disabledAlgorithms", "");
+      System.setProperty("jdk.certpath.disabledAlgorithms", "");
+      System.setProperty("jsse.enableSNIExtension", "false");
+      
       //System.setProperty("sun.security.ssl.allowUnsafeRenegotiation", "true");
       TrustManager[] trustAnything = new TrustManager[]
       { new OverlyOptimisticTrustManager() };
@@ -121,6 +125,20 @@ public class VTTLSUtilities
       return false;
     }
     return true;
+  }
+  
+  public static boolean supportsAtLeastJDK6()
+  {
+    try
+    {
+      SSLContext.class.getDeclaredMethod("setDefault", SSLContext.class);
+      return true;
+    }
+    catch (Throwable ei)
+    {
+      
+    }
+    return false;
   }
   
   public static SSLContext createOptimisticTLSClientContext() throws Throwable
@@ -159,7 +177,7 @@ public class VTTLSUtilities
 //    Date notBefore = new Date(System.currentTimeMillis() - (1000L * 60 * 60 * 24 * 30)); // 30 days ago
 //    Date notAfter = new Date(System.currentTimeMillis() + (1000L * 60 * 60 * 24 * 30)); // 30 days from now
 //    
-//    String signatureAlgorithm = "SHA512WITHRSA";
+//    String signatureAlgorithm = "SHA1WITHRSA";
 //    
 //    DefaultSignatureAlgorithmIdentifierFinder sigAlgFinder = new DefaultSignatureAlgorithmIdentifierFinder();
 //    AlgorithmIdentifier sigAlgId = sigAlgFinder.find(signatureAlgorithm);
