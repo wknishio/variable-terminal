@@ -841,15 +841,17 @@ public class VTManagedClientSocket
   
 //  public static void main(String[] args)
 //  {
+//    VTTLSUtilities.disableHttpsTLSVerifications();
 //    VTManagedClientSocket managed = new VTManagedClientSocket(null);
 //    managed.start();
 //    try
 //    {
 //      VTManagedSocket socket = managed.connect();
 //      System.out.println("client.socket.connected()");
+//      System.out.println("client.socket.tls():"+ VTTLSUtilities.verifyCustomTLSNegotiation(socket, "", 0, null, new SecureRandom(), true));
 //      java.io.BufferedWriter writer = new java.io.BufferedWriter(new java.io.OutputStreamWriter(socket.getOutputStream()));
 //      java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(socket.getInputStream()));
-//      VTRemotePipedSocketFactory remoteSocketFactory = socket.getConnection().getRemotePipedSocketFactory();
+//      VTRemotePipedSocketFactory remoteSocketFactory = socket.getConnection().createRemotePipedSocketFactory(0);
 //      
 //      int i = 5;
 //      while (socket.isConnected())
@@ -861,7 +863,7 @@ public class VTManagedClientSocket
 //        writer.flush();
 //        String serverUUID = reader.readLine();
 //        System.out.println("client.socketRemote():" + serverUUID);
-//        Socket pipeClient = remoteSocketFactory.requestPipe(clientUUID, 0);
+//        Socket pipeClient = remoteSocketFactory.requestPipe(clientUUID);
 //        Socket pipeServer = remoteSocketFactory.respondPipe(serverUUID);
 //        System.out.println("client.writing()");
 //        pipeClient.getOutputStream().write(1);
