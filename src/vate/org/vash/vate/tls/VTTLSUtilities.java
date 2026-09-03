@@ -1,8 +1,6 @@
 package org.vash.vate.tls;
 
 import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.net.Socket;
@@ -11,11 +9,11 @@ import java.security.KeyPairGenerator;
 import java.security.KeyStore;
 import java.security.Principal;
 import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.security.spec.ECGenParameterSpec;
 import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
@@ -41,7 +39,6 @@ import org.vash.vate.org.bouncycastle.asn1.x509.GeneralName;
 import org.vash.vate.org.bouncycastle.asn1.x509.GeneralNames;
 import org.vash.vate.org.bouncycastle.cert.X509v3CertificateBuilder;
 import org.vash.vate.org.bouncycastle.cert.bc.BcX509v3CertificateBuilder;
-import org.vash.vate.org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.vash.vate.org.bouncycastle.crypto.params.AsymmetricKeyParameter;
 import org.vash.vate.org.bouncycastle.crypto.util.PrivateKeyFactory;
 import org.vash.vate.org.bouncycastle.crypto.util.PublicKeyFactory;
@@ -49,7 +46,6 @@ import org.vash.vate.org.bouncycastle.operator.ContentSigner;
 import org.vash.vate.org.bouncycastle.operator.DefaultDigestAlgorithmIdentifierFinder;
 import org.vash.vate.org.bouncycastle.operator.DefaultSignatureAlgorithmIdentifierFinder;
 import org.vash.vate.org.bouncycastle.operator.bc.BcRSAContentSignerBuilder;
-import org.vash.vate.org.infinispan.server.resp.commands.string.XXH3;
 import org.vash.vate.reflection.VTReflectionUtils;
 
 public class VTTLSUtilities
@@ -125,7 +121,7 @@ public class VTTLSUtilities
     }
   }
   
-  public static void allowUnsafeCipherSuites()
+  public static void allowUnsafeTLSSettings()
   {
     try
     {
@@ -145,6 +141,14 @@ public class VTTLSUtilities
     }
     try
     {
+      java.security.Security.setProperty("jdk.crypto.disabledAlgorithms", "");
+    }
+    catch (Throwable e)
+    {
+      
+    }
+    try
+    {
       java.security.Security.setProperty("jdk.security.legacyAlgorithms", "");
     }
     catch (Throwable e)
@@ -153,7 +157,7 @@ public class VTTLSUtilities
     }
     try
     {
-      java.security.Security.setProperty("jdk.crypto.disabledAlgorithms", "");
+      java.security.Security.setProperty("jdk.tls.legacyAlgorithms", "");
     }
     catch (Throwable e)
     {
@@ -165,36 +169,29 @@ public class VTTLSUtilities
   {
     try
     {
-      System.setProperty("sun.security.ssl.allowLegacyHelloMessages", "true");
       System.setProperty("jdk.http.auth.proxying.disabledSchemes", "");
       System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
-      //System.setProperty("jdk.tls.disabledAlgorithms", "");
-      //System.setProperty("jdk.certpath.disabledAlgorithms", "");
       //System.setProperty("jsse.enableSNIExtension", "false");
-      
+      //System.setProperty("sun.security.ssl.allowLegacyHelloMessages", "true");
       //System.setProperty("sun.security.ssl.allowUnsafeRenegotiation", "true");
-      TrustManager[] trustAnything = new TrustManager[]
-      { new OverlyOptimisticTrustManager() };
-      //KeyManager[] manageNothing = new KeyManager[] { new OverlyOptimisticKeyManager() };
-      SSLContext unverifiedTLS = SSLContext.getInstance("TLS");
-      unverifiedTLS.init(null, trustAnything, new java.security.SecureRandom());
-      HttpsURLConnection.setDefaultSSLSocketFactory(unverifiedTLS.getSocketFactory());
+      
+      TrustManager[] trustAnything = new TrustManager[] {new OverlyOptimisticTrustManager()};
+      SSLContext unsafeTLSContext = SSLContext.getInstance("TLS");
+      unsafeTLSContext.init(null, trustAnything, new SecureRandom());
+      HttpsURLConnection.setDefaultSSLSocketFactory(unsafeTLSContext.getSocketFactory());
       HttpsURLConnection.setDefaultHostnameVerifier(new OverlyOptimisticHostnameVerifier());
       try
       {
         Method setDefaultMethod = SSLContext.class.getDeclaredMethod("setDefault", SSLContext.class);
-        setDefaultMethod.invoke(null, unverifiedTLS);
-        // SSLContext.setDefault(unverifiedSSL);
+        setDefaultMethod.invoke(null, unsafeTLSContext);
       }
       catch (Throwable ei)
       {
-        //ei.printStackTrace();
-        // return false;
+        
       }
     }
     catch (Throwable e)
     {
-      //e.printStackTrace();
       return false;
     }
     return true;
@@ -205,77 +202,116 @@ public class VTTLSUtilities
     return VTReflectionUtils.getJavaVersion() >= 6;
   }
   
+  public static boolean supportsAtLeastJDK7()
+  {
+    return VTReflectionUtils.getJavaVersion() >= 7;
+  }
+  
   public static boolean supportsAtLeastJDK8()
   {
     return VTReflectionUtils.getJavaVersion() >= 8;
   }
   
-  public static KeyPair generateKeyPair(String algorithm, int keySizeBits) throws Throwable
+  public static KeyPair createKeyPair(String algorithm, int keySizeBits, String parameterSpec) throws Throwable
   {
-    KeyPairGenerator keyGen = KeyPairGenerator.getInstance(algorithm);
-    if (supportsAtLeastJDK6())
+    KeyPairGenerator keyGen = null;
+    if (keySizeBits <= 1024)
     {
-      keyGen.initialize(keySizeBits);
+      keySizeBits = 1024;
+    }
+    if (!supportsAtLeastJDK6())
+    {
+      //JDK 5 capabilities
+      if (algorithm.equalsIgnoreCase("DSA"))
+      {
+        keyGen = KeyPairGenerator.getInstance(algorithm);
+        keyGen.initialize(Math.min(keySizeBits, 1024));
+      }
+      else
+      {
+        keyGen = KeyPairGenerator.getInstance("RSA");
+        keyGen.initialize(Math.min(keySizeBits, 2048));
+      }
+    }
+    else if (!supportsAtLeastJDK7())
+    {
+      //JDK 6 capabilities
+      if (algorithm.equalsIgnoreCase("DSA"))
+      {
+        keyGen = KeyPairGenerator.getInstance(algorithm);
+        keyGen.initialize(Math.min(keySizeBits, 1024));
+      }
+      else
+      {
+        keyGen = KeyPairGenerator.getInstance("RSA");
+        keyGen.initialize(Math.min(keySizeBits, 4096));
+      }
+    }
+    else if (!supportsAtLeastJDK8())
+    {
+      //JDK 7 capabilities
+      if (algorithm.equalsIgnoreCase("EC"))
+      {
+        keyGen = KeyPairGenerator.getInstance(algorithm);
+        ECGenParameterSpec ecSpec = new ECGenParameterSpec(parameterSpec);
+        keyGen.initialize(ecSpec);
+      }
+      else if (algorithm.equalsIgnoreCase("DSA"))
+      {
+        keyGen = KeyPairGenerator.getInstance(algorithm);
+        keyGen.initialize(Math.min(keySizeBits, 1024));
+      }
+      else
+      {
+        keyGen = KeyPairGenerator.getInstance("RSA");
+        keyGen.initialize(Math.min(keySizeBits, 4096));
+      }
     }
     else
     {
-      keyGen.initialize(2048);
+      //JDK 8+ capabilities
+      if (algorithm.equalsIgnoreCase("EC"))
+      {
+        keyGen = KeyPairGenerator.getInstance(algorithm);
+        ECGenParameterSpec ecSpec = new ECGenParameterSpec(parameterSpec);
+        keyGen.initialize(ecSpec);
+      }
+      else if (algorithm.equalsIgnoreCase("DSA"))
+      {
+        keyGen = KeyPairGenerator.getInstance(algorithm);
+        keyGen.initialize(Math.min(keySizeBits, 2048));
+      }
+      else
+      {
+        keyGen = KeyPairGenerator.getInstance("RSA");
+        keyGen.initialize(Math.min(keySizeBits, 4096));
+      }
     }
     KeyPair keyPair = keyGen.generateKeyPair();
     return keyPair;
   }
   
-  public static SSLContext createOptimisticTLSClientContext() throws Throwable
-  {
-    TrustManager[] trustAnything = new TrustManager[]
-    { new OverlyOptimisticTrustManager() };
-    SSLContext unverifiedTLS = SSLContext.getInstance("TLS");
-    unverifiedTLS.init(null, trustAnything, new SecureRandom());
-    return unverifiedTLS;
-  }
-  
-  public static SSLContext createUnsafeTLSServerContext(KeyPair keyPair, Random random) throws Throwable
-  {
-    PrivateKey privateKey = keyPair.getPrivate();
-    PublicKey publicKey = keyPair.getPublic();
-    Certificate certificate = CertificateFactory.getInstance("X.509").generateCertificate(new ByteArrayInputStream(createSelfSignedTLSCertificateData(publicKey.getEncoded(), privateKey.getEncoded(), random)));
-    KeyStore keyStore = KeyStore.getInstance("PKCS12");
-    keyStore.load(null, "password".toCharArray());
-    //keyStore.setCertificateEntry("server", certificate);
-    keyStore.setKeyEntry("server", privateKey, "password".toCharArray(), new Certificate[] {certificate});
-    //TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-    //trustManagerFactory.init(keyStore);
-    KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-    keyManagerFactory.init(keyStore, "password".toCharArray());
-    SSLContext sslContext = SSLContext.getInstance("TLS");
-    sslContext.init(keyManagerFactory.getKeyManagers(), null, new SecureRandom());
-    return sslContext;
-  }
-  
-  private static byte[] createSelfSignedTLSCertificateData(byte[] publicKey, byte[] privateKey, Random random) throws Throwable
+  public static byte[] createSelfSignedTLSCertificateEncodedData(KeyPair keyPair, Random random) throws Throwable
   {
     String commonName = UUID.randomUUID().toString();
     
-    AsymmetricKeyParameter publicKeyParameter = PublicKeyFactory.createKey(publicKey);
-    AsymmetricKeyParameter privateKeyParameter = PrivateKeyFactory.createKey(privateKey);
-    
-    AsymmetricCipherKeyPair keyPair = new AsymmetricCipherKeyPair(publicKeyParameter, privateKeyParameter);
+    AsymmetricKeyParameter publicKey = PublicKeyFactory.createKey(keyPair.getPublic().getEncoded());
+    AsymmetricKeyParameter privateKey = PrivateKeyFactory.createKey(keyPair.getPrivate().getEncoded());
     
     X500Name dnName = new X500NameBuilder(BCStyle.INSTANCE).addRDN(BCStyle.CN, commonName).addRDN(BCStyle.O, UUID.randomUUID().toString()).addRDN(BCStyle.C, "US").build();
     
     long now = System.currentTimeMillis();
-    Date validityStartDate = new Date(now - (30L * 24 * 60 * 60 * 1000));
-    Date validityEndDate = new Date(now + (30L * 24 * 60 * 60 * 1000));
+    Date validityStartDate = new Date(now - (90L * 24 * 60 * 60 * 1000));
+    Date validityEndDate = new Date(now + (90L * 24 * 60 * 60 * 1000));
     
-    BigInteger serialNumber = BigInteger.valueOf(random.nextLong());
-    X509v3CertificateBuilder certBuilder = new BcX509v3CertificateBuilder(dnName, serialNumber, validityStartDate, validityEndDate, dnName, keyPair.getPublic());
+    BigInteger serialNumber = new BigInteger(128, random);
+    X509v3CertificateBuilder certBuilder = new BcX509v3CertificateBuilder(dnName, serialNumber, validityStartDate, validityEndDate, dnName, publicKey);
     
     certBuilder.addExtension(Extension.basicConstraints, true, new BasicConstraints(false));
     
     GeneralNames subjectAltNames = new GeneralNames(new GeneralName[]
     {
       new GeneralName(GeneralName.dNSName, commonName),
-      //new GeneralName(GeneralName.iPAddress, "127.0.0.1")
     });
     
     certBuilder.addExtension(Extension.subjectAlternativeName, false, subjectAltNames);
@@ -283,55 +319,55 @@ public class VTTLSUtilities
     AlgorithmIdentifier sigAlgId = new DefaultSignatureAlgorithmIdentifierFinder().find("SHA256withRSA");
     AlgorithmIdentifier digAlgId = new DefaultDigestAlgorithmIdentifierFinder().find(sigAlgId);
     
-    ContentSigner signer = new BcRSAContentSignerBuilder(sigAlgId, digAlgId).build(keyPair.getPrivate());
+    ContentSigner signer = new BcRSAContentSignerBuilder(sigAlgId, digAlgId).build(privateKey);
     
     return certBuilder.build(signer).getEncoded();
   }
   
-  public static boolean verifyCustomTLSNegotiation(Socket socket, String host, int port, KeyPair keyPair, Random random, boolean client)
+  public static SSLContext createUnsafeTLSContext() throws Throwable
+  {
+    TrustManager[] trustAnything = new TrustManager[] {new OverlyOptimisticTrustManager()};
+    SSLContext unsafeTLSContext = SSLContext.getInstance("TLS");
+    unsafeTLSContext.init(null, trustAnything, new SecureRandom());
+    return unsafeTLSContext;
+  }
+  
+  public static SSLContext createUnsafeTLSContext(PrivateKey privateKey, byte[] certificateData) throws Throwable
+  {
+    TrustManager[] trustAnything = new TrustManager[] {new OverlyOptimisticTrustManager()};
+    KeyManager[] keyManagers = null;
+    if (privateKey != null && certificateData != null)
+    {
+      Certificate certificate = CertificateFactory.getInstance("X.509").generateCertificate(new ByteArrayInputStream(certificateData));
+      KeyStore keyStore = KeyStore.getInstance("PKCS12");
+      keyStore.load(null, "password".toCharArray());
+      keyStore.setKeyEntry("entry", privateKey, "password".toCharArray(), new Certificate[] {certificate});
+      KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+      keyManagerFactory.init(keyStore, "password".toCharArray());
+      keyManagers = keyManagerFactory.getKeyManagers();
+    }
+    SSLContext unsafeTLSContext = SSLContext.getInstance("TLS");
+    unsafeTLSContext.init(keyManagers, trustAnything, new SecureRandom());
+    return unsafeTLSContext;
+  }
+  
+  public static SSLSocket createUnsafeTLSSocket(Socket socket, String host, int port, PrivateKey privateKey, byte[] certificateData)
   {
     try
     {
-      byte[] uuid = UUID.randomUUID().toString().getBytes();
-      byte[] padding = null;
-      byte[] data = null;
-      padding = new byte[(int)(XXH3.hash64(uuid) & 0x0FFF)];
-      random.nextBytes(padding);
-      data = new byte[uuid.length + padding.length];
-      System.arraycopy(uuid, 0, data, 0, uuid.length);
-      System.arraycopy(padding, 0, data, uuid.length, padding.length);
       SSLSocketFactory factory = null;
-      if (client)
+      factory = createUnsafeTLSContext(privateKey, certificateData).getSocketFactory();
+      SSLSocket tlsSocket = (SSLSocket) factory.createSocket(socket, host, port, false);
+      if (supportsAtLeastJDK7() && !supportsAtLeastJDK8())
       {
-        factory = createOptimisticTLSClientContext().getSocketFactory();
+        tlsSocket.setEnabledProtocols(new String[] {"TLSv1", "TLSv1.1", "TLSv1.2"});
       }
-      else
-      {
-        factory = createUnsafeTLSServerContext(keyPair, random).getSocketFactory();
-      }
-      SSLSocket tls = (SSLSocket) factory.createSocket(socket, host, port, false);
-      tls.setUseClientMode(client);
-      DataOutputStream output = new DataOutputStream(tls.getOutputStream());
-      DataInputStream input = new DataInputStream(tls.getInputStream());
-      output.write(data);
-      output.flush();
-      input.readFully(uuid);
-      padding = new byte[(int)(XXH3.hash64(uuid) & 0x0FFF)];
-      input.readFully(padding);
-      return true;
+      return tlsSocket;
     }
     catch (Throwable t)
     {
-      //t.printStackTrace();
-      try
-      {
-        socket.close();
-      }
-      catch (Throwable e)
-      {
-        
-      }
+      
     }
-    return false;
+    return null;
   }
 }

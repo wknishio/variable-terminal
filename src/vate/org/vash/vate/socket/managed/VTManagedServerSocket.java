@@ -833,15 +833,12 @@ public class VTManagedServerSocket
   
 //  public static void main(String[] args)
 //  {
-//    VTTLSUtilities.disableHttpsTLSVerifications();
 //    VTManagedServerSocket managed = new VTManagedServerSocket(null);
 //    managed.start();
 //    try
 //    {
-//      KeyPair keyPair = VTTLSUtilities.generateKeyPair("RSA", 2048);
 //      VTManagedSocket socket = managed.connect();
 //      System.out.println("server.socket.connected()");
-//      System.out.println("server.socket.tls():" + VTTLSUtilities.verifyCustomTLSNegotiation(socket, "", 0, keyPair, new SecureRandom(), false));
 //      java.io.BufferedWriter writer = new java.io.BufferedWriter(new java.io.OutputStreamWriter(socket.getOutputStream()));
 //      java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(socket.getInputStream()));
 //      VTRemotePipedSocketFactory remoteSocketFactory = socket.getConnection().createRemotePipedSocketFactory(0);
