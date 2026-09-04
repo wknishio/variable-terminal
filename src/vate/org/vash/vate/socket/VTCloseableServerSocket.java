@@ -1,4 +1,4 @@
-package org.vash.vate.tunnel.session;
+package org.vash.vate.socket;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -8,11 +8,11 @@ import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.SocketException;
 
-public class VTTunnelCloseableServerSocket extends ServerSocket implements Closeable
+public class VTCloseableServerSocket extends ServerSocket implements Closeable
 {
   private final ServerSocket serverSocket;
   
-  public VTTunnelCloseableServerSocket(ServerSocket serverSocket) throws IOException
+  public VTCloseableServerSocket(ServerSocket serverSocket) throws IOException
   {
     this.serverSocket = serverSocket;
   }

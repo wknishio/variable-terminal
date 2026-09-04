@@ -43,7 +43,8 @@ public class VTServerConnector implements Runnable
   private Collection<VTServerConnectionHandler> connectionHandlers;
   private VTNATSinglePortMappingManagerMKII portMappingManager;
   private VTServerConnectorNATPortMappingResultNotify natNotify = new VTServerConnectorNATPortMappingResultNotify();
-  private Collection<VTServerSessionListener> listeners = new ConcurrentLinkedQueue<VTServerSessionListener>();
+  private Collection<VTServerSessionListener> sessionListeners = new ConcurrentLinkedQueue<VTServerSessionListener>();
+  private Collection<VTServerConnectionListener> connectionListeners = new ConcurrentLinkedQueue<VTServerConnectionListener>();
   private final SecureRandom secureRandom;
   private final VTProxy proxy;
   
@@ -262,7 +263,8 @@ public class VTServerConnector implements Runnable
   
   public boolean registerConnectionHandler(VTServerConnectionHandler handler)
   {
-    handler.setSessionListeners(listeners);
+    handler.setSessionListeners(sessionListeners);
+    handler.setConnectionListeners(connectionListeners);
     return connectionHandlers.add(handler);
   }
   
@@ -681,12 +683,22 @@ public class VTServerConnector implements Runnable
   
   public void addSessionListener(VTServerSessionListener listener)
   {
-    listeners.add(listener);
+    sessionListeners.add(listener);
   }
   
   public void removeSessionListener(VTServerSessionListener listener)
   {
-    listeners.remove(listener);
+    sessionListeners.remove(listener);
+  }
+  
+  public void addConnectionListener(VTServerConnectionListener listener)
+  {
+    connectionListeners.add(listener);
+  }
+  
+  public void removeConnectionListener(VTServerConnectionListener listener)
+  {
+    connectionListeners.remove(listener);
   }
   
   public String getSessionShell()

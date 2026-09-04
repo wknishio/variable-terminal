@@ -12,16 +12,13 @@ public class VTClientConnectionHandler implements Runnable
   private VTClient client;
   private VTClientConnection connection;
   private VTClientSessionHandler handler;
-  // private VTClientAuthenticator authenticator;
-  // private VTClientSession session;
+  private Collection<VTClientConnectionListener> connectionListeners;
   
   public VTClientConnectionHandler(VTClient client, VTClientConnection connection)
   {
     this.client = client;
     this.connection = connection;
     this.handler = new VTClientSessionHandler(client, connection);
-    // this.session = new VTClientSession(client, connection);
-    // this.authenticator = new VTClientAuthenticator(session);
   }
   
   public VTClientConnection getConnection()
@@ -38,26 +35,63 @@ public class VTClientConnectionHandler implements Runnable
   {
     try
     {
+      for (VTClientConnectionListener listener : connectionListeners)
+      {
+        try
+        {
+          listener.connectionStarted(connection);
+        }
+        catch (Throwable t)
+        {
+          
+        }
+      }
+    }
+    catch (Throwable t)
+    {
+      
+    }
+    try
+    {
       handler.getAuthenticator().startTimeoutThread();
-      //VTConsole.print("\nVT>Verifying connection with server...");
       connection.verifyConnection();
       handler.run();
     }
     catch (Throwable e)
     {
-      // e.printStackTrace();
       VTMainConsole.print("\nVT>Session with server rejected!");
-      // connection.setSkipLine(true);
       connection.closeConnection();
     }
     handler.getAuthenticator().stopTimeoutThread();
     client.disableInputMenuBar();
-//    System.runFinalization();
+    try
+    {
+      for (VTClientConnectionListener listener : connectionListeners)
+      {
+        try
+        {
+          listener.connectionFinished(connection);
+        }
+        catch (Throwable t)
+        {
+          
+        }
+      }
+    }
+    catch (Throwable t)
+    {
+      
+    }
     System.gc();
   }
   
   public void setSessionListeners(Collection<VTClientSessionListener> listeners)
   {
     handler.setSessionListeners(listeners);
+  }
+  
+  public void setConnectionListeners(Collection<VTClientConnectionListener> listeners)
+  {
+    this.connectionListeners = listeners;
   }
 }

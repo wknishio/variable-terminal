@@ -51,7 +51,8 @@ public class VTClientConnector implements Runnable
   private VTNATSinglePortMappingManagerMKII portMappingManager;
   private VTConnectionRetryTimeoutTask connectionRetryTimeoutTask = new VTConnectionRetryTimeoutTask();
   private VTClientConnectorNATPortMappingResultNotify natNotify = new VTClientConnectorNATPortMappingResultNotify();
-  private Collection<VTClientSessionListener> listeners = new ConcurrentLinkedQueue<VTClientSessionListener>();
+  private Collection<VTClientSessionListener> sessionListeners = new ConcurrentLinkedQueue<VTClientSessionListener>();
+  private Collection<VTClientConnectionListener> connectionListeners = new ConcurrentLinkedQueue<VTClientConnectionListener>();
   private final SecureRandom secureRandom;
   private final VTProxy proxy;
   
@@ -1491,14 +1492,26 @@ public class VTClientConnector implements Runnable
   
   public void addSessionListener(VTClientSessionListener listener)
   {
-    listeners.add(listener);
-    handler.setSessionListeners(listeners);
+    sessionListeners.add(listener);
+    handler.setSessionListeners(sessionListeners);
   }
   
   public void removeSessionListener(VTClientSessionListener listener)
   {
-    listeners.remove(listener);
-    handler.setSessionListeners(listeners);
+    sessionListeners.remove(listener);
+    handler.setSessionListeners(sessionListeners);
+  }
+  
+  public void addConnectionListener(VTClientConnectionListener listener)
+  {
+    connectionListeners.add(listener);
+    handler.setConnectionListeners(connectionListeners);
+  }
+  
+  public void removeConnectionListener(VTClientConnectionListener listener)
+  {
+    connectionListeners.remove(listener);
+    handler.setConnectionListeners(connectionListeners);
   }
   
   // public String getSessionLines()

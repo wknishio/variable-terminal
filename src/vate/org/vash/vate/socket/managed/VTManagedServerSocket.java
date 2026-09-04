@@ -839,6 +839,11 @@ public class VTManagedServerSocket
 //    {
 //      VTManagedSocket socket = managed.connect();
 //      System.out.println("server.socket.connected()");
+//      SSLSocket ssl = VTTLSUtilities.createUnsafeTLSSocket(socket, "", 1, VTSystem.VT_TLS_KEY_PAIR.getPrivate(), VTSystem.VT_TLS_CERTIFICATE_DATA);
+//      ssl.setUseClientMode(false);
+//      ssl.getOutputStream().write(1);
+//      ssl.getOutputStream().flush();
+//      ssl.getInputStream().read();
 //      java.io.BufferedWriter writer = new java.io.BufferedWriter(new java.io.OutputStreamWriter(socket.getOutputStream()));
 //      java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(socket.getInputStream()));
 //      VTRemotePipedSocketFactory remoteSocketFactory = socket.getConnection().createRemotePipedSocketFactory(0);

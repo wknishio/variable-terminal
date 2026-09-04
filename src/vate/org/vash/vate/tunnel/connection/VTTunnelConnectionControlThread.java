@@ -12,11 +12,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.vash.vate.VTSystem;
 import org.vash.vate.proxy.client.VTProxy;
 import org.vash.vate.proxy.client.VTProxy.VTProxyType;
+import org.vash.vate.socket.VTCloseableServerSocket;
+import org.vash.vate.socket.VTCloseableSocket;
 import org.vash.vate.stream.multiplex.VTMultiplexingInputStream.VTMultiplexedInputStream;
 import org.vash.vate.stream.multiplex.VTMultiplexingOutputStream.VTMultiplexedOutputStream;
 import org.vash.vate.tunnel.channel.VTTunnelChannel;
-import org.vash.vate.tunnel.session.VTTunnelCloseableServerSocket;
-import org.vash.vate.tunnel.session.VTTunnelCloseableSocket;
 import org.vash.vate.tunnel.session.VTTunnelDatagramSocket;
 import org.vash.vate.tunnel.session.VTTunnelFTPSessionHandler;
 import org.vash.vate.tunnel.session.VTTunnelPipedSocket;
@@ -32,7 +32,7 @@ public class VTTunnelConnectionControlThread implements Runnable
   private static final String SESSION_SEPARATOR = "\f";
   private static final char SESSION_MARK = '\b';
   private final byte[] packet = new byte[VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES];
-  private final Map<String, VTTunnelCloseableServerSocket> serverSockets = new ConcurrentHashMap<String, VTTunnelCloseableServerSocket>();
+  private final Map<String, VTCloseableServerSocket> serverSockets = new ConcurrentHashMap<String, VTCloseableServerSocket>();
   
   public VTTunnelConnectionControlThread(VTTunnelConnection connection)
   {
@@ -200,7 +200,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                           session.setSocketInputStream(socketInputStream);
                           session.setSocketOutputStream(socketOutputStream);
                           
-                          session.getTunnelInputStream().setOutputStream(session.getSocketOutputStream(), new VTTunnelCloseableSocket(session.getSocket()));
+                          session.getTunnelInputStream().setOutputStream(session.getSocketOutputStream(), new VTCloseableSocket(session.getSocket()));
                           session.getTunnelOutputStream().open();
                           // response message sent with ok
                           connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelType + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + remoteSocket.getInetAddress().getHostAddress() + SESSION_SEPARATOR + remoteSocket.getPort()).getBytes("UTF-8"));
@@ -666,7 +666,7 @@ public class VTTunnelConnectionControlThread implements Runnable
   
   private Socket accept(String bind, String host, int port, int connectTimeout, int dataTimeout)
   {
-    VTTunnelCloseableServerSocket serverSocket = null;
+    VTCloseableServerSocket serverSocket = null;
     Socket connectionSocket = null;
     boolean bound = false;
     try
@@ -687,7 +687,7 @@ public class VTTunnelConnectionControlThread implements Runnable
       
       if (serverSocket == null)
       {
-        serverSocket = new VTTunnelCloseableServerSocket(new ServerSocket());
+        serverSocket = new VTCloseableServerSocket(new ServerSocket());
         serverSocket.bind(new InetSocketAddress(host, port));
         connection.getCloseables().add(serverSocket);
       }
@@ -744,12 +744,12 @@ public class VTTunnelConnectionControlThread implements Runnable
     return connectionSocket;
   }
   
-  private VTTunnelCloseableServerSocket bind(String bind, String host, int port)
+  private VTCloseableServerSocket bind(String bind, String host, int port)
   {
     try
     {
-      VTTunnelCloseableServerSocket serverSocket = null;
-      serverSocket = new VTTunnelCloseableServerSocket(new ServerSocket());
+      VTCloseableServerSocket serverSocket = null;
+      serverSocket = new VTCloseableServerSocket(new ServerSocket());
       serverSocket.bind(new InetSocketAddress(host, port));
       connection.getCloseables().add(serverSocket);
       serverSockets.put(bind, serverSocket);
@@ -766,7 +766,7 @@ public class VTTunnelConnectionControlThread implements Runnable
   {
     try
     {
-      VTTunnelCloseableServerSocket serverSocket = null;
+      VTCloseableServerSocket serverSocket = null;
       serverSocket = serverSockets.remove(bind);
       if (serverSocket != null)
       {

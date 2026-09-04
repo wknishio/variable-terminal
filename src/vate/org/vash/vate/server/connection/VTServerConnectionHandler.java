@@ -9,23 +9,17 @@ import org.vash.vate.server.session.VTServerSessionListener;
 
 public class VTServerConnectionHandler implements Runnable
 {
-  // private VTServer server;
   private VTServerConnector connector;
   private VTServerConnection connection;
-  // private VTServerAuthenticator authenticator;
   private VTServerSessionHandler handler;
-  // private List<VTServerSessionListener> listeners;
-  // private VTServerSession session;
+  private Collection<VTServerConnectionListener> connectionListeners;
   
   public VTServerConnectionHandler(VTServer server, VTServerConnector connector, VTServerConnection connection)
   {
-    // this.server = server;
     this.connector = connector;
     this.connection = connection;
     this.handler = new VTServerSessionHandler(server, connection);
     this.connector.registerConnectionHandler(this);
-    // this.session = new VTServerSession(server, connection);
-    // this.authenticator = new VTServerAuthenticator(server, connection);
   }
   
   public VTServerConnection getConnection()
@@ -43,25 +37,63 @@ public class VTServerConnectionHandler implements Runnable
     Thread.currentThread().setName(getClass().getSimpleName());
     try
     {
+      for (VTServerConnectionListener listener : connectionListeners)
+      {
+        try
+        {
+          listener.connectionStarted(connection);
+        }
+        catch (Throwable t)
+        {
+          
+        }
+      }
+    }
+    catch (Throwable t)
+    {
+      
+    }
+    try
+    {
       handler.getAuthenticator().startTimeoutThread();
-      //VTConsole.print("\rVT>Verifying connection with client...\nVT>");
       connection.verifyConnection();
       handler.run();
     }
     catch (Throwable e)
     {
-      // e.printStackTrace();
       VTMainConsole.print("\rVT>Session with client rejected!\nVT>");
       connection.closeConnection();
     }
     handler.getAuthenticator().stopTimeoutThread();
+    try
+    {
+      for (VTServerConnectionListener listener : connectionListeners)
+      {
+        try
+        {
+          listener.connectionFinished(connection);
+        }
+        catch (Throwable t)
+        {
+          
+        }
+      }
+    }
+    catch (Throwable t)
+    {
+      
+    }
     connector.unregisterConnectionHandler(this);
-//  System.runFinalization();
     System.gc();
   }
   
   public void setSessionListeners(Collection<VTServerSessionListener> listeners)
   {
     handler.setSessionListeners(listeners);
+  }
+  
+  public void setConnectionListeners(Collection<VTServerConnectionListener> listeners)
+  {
+    this.connectionListeners = listeners;
   }
 }

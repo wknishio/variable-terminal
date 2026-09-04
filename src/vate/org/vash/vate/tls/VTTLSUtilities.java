@@ -46,6 +46,8 @@ import org.vash.vate.org.bouncycastle.operator.ContentSigner;
 import org.vash.vate.org.bouncycastle.operator.DefaultDigestAlgorithmIdentifierFinder;
 import org.vash.vate.org.bouncycastle.operator.DefaultSignatureAlgorithmIdentifierFinder;
 import org.vash.vate.org.bouncycastle.operator.bc.BcRSAContentSignerBuilder;
+import org.vash.vate.org.bouncycastle.util.encoders.Base32;
+import org.vash.vate.org.bouncycastle.util.encoders.Base64;
 import org.vash.vate.reflection.VTReflectionUtils;
 
 public class VTTLSUtilities
@@ -127,7 +129,7 @@ public class VTTLSUtilities
     {
       java.security.Security.setProperty("jdk.certpath.disabledAlgorithms", "");
     }
-    catch (Throwable e)
+    catch (Throwable t)
     {
       
     }
@@ -135,7 +137,7 @@ public class VTTLSUtilities
     {
       java.security.Security.setProperty("jdk.tls.disabledAlgorithms", "");
     }
-    catch (Throwable e)
+    catch (Throwable t)
     {
       
     }
@@ -143,7 +145,7 @@ public class VTTLSUtilities
     {
       java.security.Security.setProperty("jdk.crypto.disabledAlgorithms", "");
     }
-    catch (Throwable e)
+    catch (Throwable t)
     {
       
     }
@@ -151,7 +153,7 @@ public class VTTLSUtilities
     {
       java.security.Security.setProperty("jdk.security.legacyAlgorithms", "");
     }
-    catch (Throwable e)
+    catch (Throwable t)
     {
       
     }
@@ -159,7 +161,7 @@ public class VTTLSUtilities
     {
       java.security.Security.setProperty("jdk.tls.legacyAlgorithms", "");
     }
-    catch (Throwable e)
+    catch (Throwable t)
     {
       
     }
@@ -212,143 +214,180 @@ public class VTTLSUtilities
     return VTReflectionUtils.getJavaVersion() >= 8;
   }
   
-  public static KeyPair createKeyPair(String algorithm, int keySizeBits, String parameterSpec) throws Throwable
+  public static KeyPair createKeyPair(String algorithm, int keySizeBits, String parameterSpec)
   {
-    KeyPairGenerator keyGen = null;
-    if (keySizeBits <= 1024)
+    try
     {
-      keySizeBits = 1024;
-    }
-    if (!supportsAtLeastJDK6())
-    {
-      //JDK 5 capabilities
-      if (algorithm.equalsIgnoreCase("DSA"))
+      KeyPairGenerator keyGen = null;
+      if (keySizeBits <= 1024)
       {
-        keyGen = KeyPairGenerator.getInstance(algorithm);
-        keyGen.initialize(Math.min(keySizeBits, 1024));
+        keySizeBits = 1024;
+      }
+      if (!supportsAtLeastJDK6())
+      {
+        //JDK 5 capabilities
+        if (algorithm.equalsIgnoreCase("DSA"))
+        {
+          keyGen = KeyPairGenerator.getInstance(algorithm);
+          keyGen.initialize(Math.min(keySizeBits, 1024));
+        }
+        else
+        {
+          keyGen = KeyPairGenerator.getInstance("RSA");
+          keyGen.initialize(Math.min(keySizeBits, 2048));
+        }
+      }
+      else if (!supportsAtLeastJDK7())
+      {
+        //JDK 6 capabilities
+        if (algorithm.equalsIgnoreCase("DSA"))
+        {
+          keyGen = KeyPairGenerator.getInstance(algorithm);
+          keyGen.initialize(Math.min(keySizeBits, 1024));
+        }
+        else
+        {
+          keyGen = KeyPairGenerator.getInstance("RSA");
+          keyGen.initialize(Math.min(keySizeBits, 4096));
+        }
+      }
+      else if (!supportsAtLeastJDK8())
+      {
+        //JDK 7 capabilities
+        if (algorithm.equalsIgnoreCase("EC"))
+        {
+          keyGen = KeyPairGenerator.getInstance(algorithm);
+          ECGenParameterSpec ecSpec = new ECGenParameterSpec(parameterSpec);
+          keyGen.initialize(ecSpec);
+        }
+        else if (algorithm.equalsIgnoreCase("DSA"))
+        {
+          keyGen = KeyPairGenerator.getInstance(algorithm);
+          keyGen.initialize(Math.min(keySizeBits, 1024));
+        }
+        else
+        {
+          keyGen = KeyPairGenerator.getInstance("RSA");
+          keyGen.initialize(Math.min(keySizeBits, 4096));
+        }
       }
       else
       {
-        keyGen = KeyPairGenerator.getInstance("RSA");
-        keyGen.initialize(Math.min(keySizeBits, 2048));
+        //JDK 8+ capabilities
+        if (algorithm.equalsIgnoreCase("EC"))
+        {
+          keyGen = KeyPairGenerator.getInstance(algorithm);
+          ECGenParameterSpec ecSpec = new ECGenParameterSpec(parameterSpec);
+          keyGen.initialize(ecSpec);
+        }
+        else if (algorithm.equalsIgnoreCase("DSA"))
+        {
+          keyGen = KeyPairGenerator.getInstance(algorithm);
+          keyGen.initialize(Math.min(keySizeBits, 2048));
+        }
+        else
+        {
+          keyGen = KeyPairGenerator.getInstance("RSA");
+          keyGen.initialize(Math.min(keySizeBits, 4096));
+        }
       }
+      KeyPair keyPair = keyGen.generateKeyPair();
+      return keyPair;
     }
-    else if (!supportsAtLeastJDK7())
+    catch (Throwable t)
     {
-      //JDK 6 capabilities
-      if (algorithm.equalsIgnoreCase("DSA"))
-      {
-        keyGen = KeyPairGenerator.getInstance(algorithm);
-        keyGen.initialize(Math.min(keySizeBits, 1024));
-      }
-      else
-      {
-        keyGen = KeyPairGenerator.getInstance("RSA");
-        keyGen.initialize(Math.min(keySizeBits, 4096));
-      }
+      //t.printStackTrace();
     }
-    else if (!supportsAtLeastJDK8())
-    {
-      //JDK 7 capabilities
-      if (algorithm.equalsIgnoreCase("EC"))
-      {
-        keyGen = KeyPairGenerator.getInstance(algorithm);
-        ECGenParameterSpec ecSpec = new ECGenParameterSpec(parameterSpec);
-        keyGen.initialize(ecSpec);
-      }
-      else if (algorithm.equalsIgnoreCase("DSA"))
-      {
-        keyGen = KeyPairGenerator.getInstance(algorithm);
-        keyGen.initialize(Math.min(keySizeBits, 1024));
-      }
-      else
-      {
-        keyGen = KeyPairGenerator.getInstance("RSA");
-        keyGen.initialize(Math.min(keySizeBits, 4096));
-      }
-    }
-    else
-    {
-      //JDK 8+ capabilities
-      if (algorithm.equalsIgnoreCase("EC"))
-      {
-        keyGen = KeyPairGenerator.getInstance(algorithm);
-        ECGenParameterSpec ecSpec = new ECGenParameterSpec(parameterSpec);
-        keyGen.initialize(ecSpec);
-      }
-      else if (algorithm.equalsIgnoreCase("DSA"))
-      {
-        keyGen = KeyPairGenerator.getInstance(algorithm);
-        keyGen.initialize(Math.min(keySizeBits, 2048));
-      }
-      else
-      {
-        keyGen = KeyPairGenerator.getInstance("RSA");
-        keyGen.initialize(Math.min(keySizeBits, 4096));
-      }
-    }
-    KeyPair keyPair = keyGen.generateKeyPair();
-    return keyPair;
+    return null;
   }
   
-  public static byte[] createSelfSignedTLSCertificateEncodedData(KeyPair keyPair, Random random) throws Throwable
+  public static byte[] createSelfSignedTLSCertificateEncodedData(KeyPair keyPair, Random random)
   {
-    String commonName = UUID.randomUUID().toString();
-    
-    AsymmetricKeyParameter publicKey = PublicKeyFactory.createKey(keyPair.getPublic().getEncoded());
-    AsymmetricKeyParameter privateKey = PrivateKeyFactory.createKey(keyPair.getPrivate().getEncoded());
-    
-    X500Name dnName = new X500NameBuilder(BCStyle.INSTANCE).addRDN(BCStyle.CN, commonName).addRDN(BCStyle.O, UUID.randomUUID().toString()).addRDN(BCStyle.C, "US").build();
-    
-    long now = System.currentTimeMillis();
-    Date validityStartDate = new Date(now - (90L * 24 * 60 * 60 * 1000));
-    Date validityEndDate = new Date(now + (90L * 24 * 60 * 60 * 1000));
-    
-    BigInteger serialNumber = new BigInteger(128, random);
-    X509v3CertificateBuilder certBuilder = new BcX509v3CertificateBuilder(dnName, serialNumber, validityStartDate, validityEndDate, dnName, publicKey);
-    
-    certBuilder.addExtension(Extension.basicConstraints, true, new BasicConstraints(false));
-    
-    GeneralNames subjectAltNames = new GeneralNames(new GeneralName[]
+    try
     {
-      new GeneralName(GeneralName.dNSName, commonName),
-    });
-    
-    certBuilder.addExtension(Extension.subjectAlternativeName, false, subjectAltNames);
-    
-    AlgorithmIdentifier sigAlgId = new DefaultSignatureAlgorithmIdentifierFinder().find("SHA256withRSA");
-    AlgorithmIdentifier digAlgId = new DefaultDigestAlgorithmIdentifierFinder().find(sigAlgId);
-    
-    ContentSigner signer = new BcRSAContentSignerBuilder(sigAlgId, digAlgId).build(privateKey);
-    
-    return certBuilder.build(signer).getEncoded();
+      AsymmetricKeyParameter publicKey = PublicKeyFactory.createKey(keyPair.getPublic().getEncoded());
+      AsymmetricKeyParameter privateKey = PrivateKeyFactory.createKey(keyPair.getPrivate().getEncoded());
+      
+      String uuid = UUID.randomUUID().toString();
+      String commonName = Base64.toBase64String(uuid.getBytes());
+      String dnsName = Base32.toBase32String(uuid.replaceFirst("-", "").getBytes());
+      
+      X500Name dnName = new X500NameBuilder(BCStyle.INSTANCE).addRDN(BCStyle.CN, commonName).build();
+      
+      long now = System.currentTimeMillis();
+      Date validityStartDate = new Date(now - (30L * 24 * 60 * 60 * 1000));
+      Date validityEndDate = new Date(now + (90L * 24 * 60 * 60 * 1000));
+      
+      BigInteger serialNumber = new BigInteger(128, random);
+      
+      X509v3CertificateBuilder certBuilder = new BcX509v3CertificateBuilder(dnName, serialNumber, validityStartDate, validityEndDate, dnName, publicKey);
+      certBuilder.addExtension(Extension.basicConstraints, true, new BasicConstraints(false));
+      
+      GeneralNames subjectAltNames = new GeneralNames(new GeneralName[] {new GeneralName(GeneralName.dNSName, dnsName)});
+      certBuilder.addExtension(Extension.subjectAlternativeName, false, subjectAltNames);
+      
+//      int usages = KeyUsage.digitalSignature | KeyUsage.keyEncipherment;
+//      certBuilder.addExtension(Extension.keyUsage, false, new KeyUsage(usages));
+//      
+//      KeyPurposeId[] purposes = new KeyPurposeId[] {KeyPurposeId.id_kp_serverAuth, KeyPurposeId.id_kp_clientAuth};
+//      ExtendedKeyUsage extendedKeyUsage = new ExtendedKeyUsage(purposes);
+//      certBuilder.addExtension(Extension.extendedKeyUsage, false, extendedKeyUsage);
+      
+      AlgorithmIdentifier sigAlgId = new DefaultSignatureAlgorithmIdentifierFinder().find("SHA256withRSA");
+      AlgorithmIdentifier digAlgId = new DefaultDigestAlgorithmIdentifierFinder().find(sigAlgId);
+      
+      ContentSigner signer = new BcRSAContentSignerBuilder(sigAlgId, digAlgId).build(privateKey);
+      
+      return certBuilder.build(signer).getEncoded();
+    }
+    catch (Throwable t)
+    {
+      //t.printStackTrace();
+    }
+    return null;
   }
   
-  public static SSLContext createUnsafeTLSContext() throws Throwable
+  public static SSLContext createUnsafeTLSContext()
   {
-    TrustManager[] trustAnything = new TrustManager[] {new OverlyOptimisticTrustManager()};
-    SSLContext unsafeTLSContext = SSLContext.getInstance("TLS");
-    unsafeTLSContext.init(null, trustAnything, new SecureRandom());
-    return unsafeTLSContext;
+    try
+    {
+      TrustManager[] trustAnything = new TrustManager[] {new OverlyOptimisticTrustManager()};
+      SSLContext unsafeTLSContext = SSLContext.getInstance("TLS");
+      unsafeTLSContext.init(null, trustAnything, new SecureRandom());
+      return unsafeTLSContext;
+    }
+    catch (Throwable t)
+    {
+      //t.printStackTrace();
+    }
+    return null;
   }
   
   public static SSLContext createUnsafeTLSContext(PrivateKey privateKey, byte[] certificateData) throws Throwable
   {
-    TrustManager[] trustAnything = new TrustManager[] {new OverlyOptimisticTrustManager()};
-    KeyManager[] keyManagers = null;
-    if (privateKey != null && certificateData != null)
+    try
     {
-      Certificate certificate = CertificateFactory.getInstance("X.509").generateCertificate(new ByteArrayInputStream(certificateData));
-      KeyStore keyStore = KeyStore.getInstance("PKCS12");
-      keyStore.load(null, "password".toCharArray());
-      keyStore.setKeyEntry("entry", privateKey, "password".toCharArray(), new Certificate[] {certificate});
-      KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-      keyManagerFactory.init(keyStore, "password".toCharArray());
-      keyManagers = keyManagerFactory.getKeyManagers();
+      TrustManager[] trustAnything = new TrustManager[] {new OverlyOptimisticTrustManager()};
+      KeyManager[] keyManagers = null;
+      if (privateKey != null && certificateData != null)
+      {
+        Certificate certificate = CertificateFactory.getInstance("X.509").generateCertificate(new ByteArrayInputStream(certificateData));
+        KeyStore keyStore = KeyStore.getInstance("PKCS12");
+        keyStore.load(null, "password".toCharArray());
+        keyStore.setKeyEntry("entry", privateKey, "password".toCharArray(), new Certificate[] {certificate});
+        KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+        keyManagerFactory.init(keyStore, "password".toCharArray());
+        keyManagers = keyManagerFactory.getKeyManagers();
+      }
+      SSLContext unsafeTLSContext = SSLContext.getInstance("TLS");
+      unsafeTLSContext.init(keyManagers, trustAnything, new SecureRandom());
+      return unsafeTLSContext;
     }
-    SSLContext unsafeTLSContext = SSLContext.getInstance("TLS");
-    unsafeTLSContext.init(keyManagers, trustAnything, new SecureRandom());
-    return unsafeTLSContext;
+    catch (Throwable t)
+    {
+      //t.printStackTrace();
+    }
+    return null;
   }
   
   public static SSLSocket createUnsafeTLSSocket(Socket socket, String host, int port, PrivateKey privateKey, byte[] certificateData)
@@ -366,7 +405,7 @@ public class VTTLSUtilities
     }
     catch (Throwable t)
     {
-      
+      //t.printStackTrace();
     }
     return null;
   }

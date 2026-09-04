@@ -7,9 +7,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import org.vash.vate.proxy.client.VTProxy.VTProxyType;
+import org.vash.vate.socket.VTCloseableSocket;
 import org.vash.vate.stream.multiplex.VTMultiplexingInputStream.VTMultiplexedInputStream;
 import org.vash.vate.stream.multiplex.VTMultiplexingOutputStream.VTMultiplexedOutputStream;
-import org.vash.vate.tunnel.session.VTTunnelCloseableSocket;
 import org.vash.vate.tunnel.session.VTTunnelSession;
 import org.vash.vate.tunnel.session.VTTunnelSessionHandler;
 
@@ -190,7 +190,7 @@ public class VTTunnelChannelBindSocketListener implements Runnable
             final int inputNumber = input.number();
             final int outputNumber = output.number();
             
-            input.setOutputStream(session.getSocketOutputStream(), new VTTunnelCloseableSocket(acceptedSocket));
+            input.setOutputStream(session.getSocketOutputStream(), new VTCloseableSocket(acceptedSocket));
             output.open();
             
             session.setTunnelInputStream(input);
