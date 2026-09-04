@@ -213,7 +213,8 @@ public class VTSystem
     VT_ERA_DATEFORMAT = new SimpleDateFormat("G", Locale.ENGLISH);
     VT_YEAR_CALENDAR = Calendar.getInstance();
     
-    VT_TLS_KEY_PAIR = VTTLSUtilities.createKeyPair("RSA", 1024, null);
+    //VTTLSUtilities.allowUnsafeTLSSettings();
+    VT_TLS_KEY_PAIR = VTTLSUtilities.createKeyPair("RSA", 2048, null);
     VT_TLS_CERTIFICATE_DATA = VTTLSUtilities.createSelfSignedTLSCertificateEncodedData(VT_TLS_KEY_PAIR, new SecureRandom());
   }
   
