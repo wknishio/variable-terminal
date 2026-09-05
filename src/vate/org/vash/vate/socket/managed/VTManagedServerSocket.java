@@ -13,6 +13,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import org.vash.vate.proxy.client.VTProxy;
 import org.vash.vate.server.VTServer;
 import org.vash.vate.server.connection.VTServerConnection;
+import org.vash.vate.server.connection.VTServerConnectionListener;
 import org.vash.vate.server.session.VTServerSession;
 import org.vash.vate.server.session.VTServerSessionListener;
 import org.vash.vate.socket.remote.VTRemotePipedSocketFactory;
@@ -26,8 +27,9 @@ public class VTManagedServerSocket
   private final VTServer vtserver;
   private final BlockingQueue<VTManagedSocket> queue = new LinkedBlockingQueue<VTManagedSocket>();
   private final ConcurrentMap<VTServerSession, VTManagedSocket> sessions = new ConcurrentHashMap<VTServerSession, VTManagedSocket>();
+  private final VTManagedServerSocketListener serverListener = new VTManagedServerSocketListener();
   private Thread acceptThread;
-  private VTManagedSocketListener socketListener;
+  private VTManagedSocketListener managedListener;
   
   private class VTManagedServerConnection implements VTManagedConnection
   {
@@ -143,8 +145,18 @@ public class VTManagedServerSocket
     }
   }
   
-  private class VTManagedSocketServerSessionListener implements VTServerSessionListener
+  private class VTManagedServerSocketListener implements VTServerConnectionListener, VTServerSessionListener
   {
+    public void connectionStarted(VTServerConnection connection)
+    {
+      
+    }
+    
+    public void connectionFinished(VTServerConnection connection)
+    {
+      
+    }
+    
     public void sessionCreated(VTServerSession session)
     {
       sessions.put(session, new VTManagedSocket(new VTManagedServerConnection(session), session.getConnection().getAvailableInputChannel(), session.getConnection().getAvailableOutputChannel()));
@@ -153,11 +165,11 @@ public class VTManagedServerSocket
     public void sessionStarted(VTServerSession session)
     {
       VTManagedSocket socket = sessions.get(session);
-      if (socketListener != null && socket != null)
+      if (managedListener != null && socket != null)
       {
         try
         {
-          socketListener.connected(socket);
+          managedListener.connected(socket);
         }
         catch (Throwable t)
         {
@@ -173,11 +185,11 @@ public class VTManagedServerSocket
     public void sessionFinished(VTServerSession session)
     {
       VTManagedSocket socket = sessions.remove(session);
-      if (socketListener != null && socket != null)
+      if (managedListener != null && socket != null)
       {
         try
         {
-          socketListener.disconnected(socket);
+          managedListener.disconnected(socket);
         }
         catch (Throwable t)
         {
@@ -191,7 +203,8 @@ public class VTManagedServerSocket
   {
     vtserver = new VTServer(true, proxy);
     vtserver.setDaemon(true);
-    vtserver.addSessionListener(new VTManagedSocketServerSessionListener());
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
     vtserver.setSessionShell("N");
   }
   
@@ -199,7 +212,8 @@ public class VTManagedServerSocket
   {
     vtserver = new VTServer(true, proxy);
     vtserver.setDaemon(true);
-    vtserver.addSessionListener(new VTManagedSocketServerSessionListener());
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
     vtserver.setSessionShell("N");
     vtserver.setAddress(host);
     vtserver.setPort(port);
@@ -209,7 +223,8 @@ public class VTManagedServerSocket
   {
     vtserver = new VTServer(true, proxy);
     vtserver.setDaemon(true);
-    vtserver.addSessionListener(new VTManagedSocketServerSessionListener());
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
     vtserver.setSessionShell("N");
     vtserver.setAddress(host);
     vtserver.setPort(port);
@@ -231,7 +246,8 @@ public class VTManagedServerSocket
   {
     vtserver = new VTServer(true, proxy);
     vtserver.setDaemon(true);
-    vtserver.addSessionListener(new VTManagedSocketServerSessionListener());
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
     vtserver.setSessionShell("N");
     vtserver.setAddress(host);
     vtserver.setPort(port);
@@ -254,7 +270,8 @@ public class VTManagedServerSocket
   {
     vtserver = new VTServer(true, proxy);
     vtserver.setDaemon(true);
-    vtserver.addSessionListener(new VTManagedSocketServerSessionListener());
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
     vtserver.setSessionShell("N");
     vtserver.setAddress(host);
     vtserver.setPort(port);
@@ -265,7 +282,8 @@ public class VTManagedServerSocket
   {
     vtserver = new VTServer(true, proxy);
     vtserver.setDaemon(true);
-    vtserver.addSessionListener(new VTManagedSocketServerSessionListener());
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
     vtserver.setSessionShell("N");
     vtserver.setAddress(host);
     vtserver.setPort(port);
@@ -288,7 +306,8 @@ public class VTManagedServerSocket
   {
     vtserver = new VTServer(true, proxy);
     vtserver.setDaemon(true);
-    vtserver.addSessionListener(new VTManagedSocketServerSessionListener());
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
     vtserver.setSessionShell("N");
     vtserver.setAddress(host);
     vtserver.setPort(port);
@@ -313,7 +332,8 @@ public class VTManagedServerSocket
     vtserver = new VTServer(true, proxy);
     vtserver.setPassive(passive);
     vtserver.setDaemon(true);
-    vtserver.addSessionListener(new VTManagedSocketServerSessionListener());
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
     vtserver.setSessionShell("N");
     vtserver.setAddress(host);
     vtserver.setPort(port);
@@ -324,7 +344,8 @@ public class VTManagedServerSocket
     vtserver = new VTServer(true, proxy);
     vtserver.setPassive(passive);
     vtserver.setDaemon(true);
-    vtserver.addSessionListener(new VTManagedSocketServerSessionListener());
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
     vtserver.setSessionShell("N");
     vtserver.setAddress(host);
     vtserver.setPort(port);
@@ -347,7 +368,8 @@ public class VTManagedServerSocket
     vtserver = new VTServer(true, proxy);
     vtserver.setPassive(passive);
     vtserver.setDaemon(true);
-    vtserver.addSessionListener(new VTManagedSocketServerSessionListener());
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
     vtserver.setSessionShell("N");
     vtserver.setAddress(host);
     vtserver.setPort(port);
@@ -371,7 +393,8 @@ public class VTManagedServerSocket
     vtserver = new VTServer(true, proxy);
     vtserver.setPassive(passive);
     vtserver.setDaemon(true);
-    vtserver.addSessionListener(new VTManagedSocketServerSessionListener());
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
     vtserver.setSessionShell("N");
     vtserver.setAddress(host);
     vtserver.setPort(port);
@@ -383,7 +406,8 @@ public class VTManagedServerSocket
     vtserver = new VTServer(true, proxy);
     vtserver.setPassive(passive);
     vtserver.setDaemon(true);
-    vtserver.addSessionListener(new VTManagedSocketServerSessionListener());
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
     vtserver.setSessionShell("N");
     vtserver.setAddress(host);
     vtserver.setPort(port);
@@ -407,7 +431,8 @@ public class VTManagedServerSocket
     vtserver = new VTServer(true, proxy);
     vtserver.setPassive(passive);
     vtserver.setDaemon(true);
-    vtserver.addSessionListener(new VTManagedSocketServerSessionListener());
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
     vtserver.setSessionShell("N");
     vtserver.setAddress(host);
     vtserver.setPort(port);
@@ -431,7 +456,8 @@ public class VTManagedServerSocket
   {
     vtserver = new VTServer(true, proxy);
     vtserver.setDaemon(true);
-    vtserver.addSessionListener(new VTManagedSocketServerSessionListener());
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
     vtserver.setSessionShell("N");
     vtserver.loadServerSettingsProperties(properties);
   }
@@ -440,7 +466,8 @@ public class VTManagedServerSocket
   {
     vtserver = new VTServer(true, proxy);
     vtserver.setDaemon(true);
-    vtserver.addSessionListener(new VTManagedSocketServerSessionListener());
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
     vtserver.setSessionShell("N");
     vtserver.loadServerSettingsFile(settingsFile);
   }
@@ -449,7 +476,8 @@ public class VTManagedServerSocket
   {
     vtserver = new VTServer(managed, proxy);
     vtserver.setDaemon(true);
-    vtserver.addSessionListener(new VTManagedSocketServerSessionListener());
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
     vtserver.setSessionShell("N");
   }
   
@@ -457,7 +485,8 @@ public class VTManagedServerSocket
   {
     vtserver = new VTServer(managed, proxy);
     vtserver.setDaemon(true);
-    vtserver.addSessionListener(new VTManagedSocketServerSessionListener());
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
     vtserver.setSessionShell("N");
     vtserver.setAddress(host);
     vtserver.setPort(port);
@@ -467,7 +496,8 @@ public class VTManagedServerSocket
   {
     vtserver = new VTServer(managed, proxy);
     vtserver.setDaemon(true);
-    vtserver.addSessionListener(new VTManagedSocketServerSessionListener());
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
     vtserver.setSessionShell("N");
     vtserver.setAddress(host);
     vtserver.setPort(port);
@@ -489,7 +519,8 @@ public class VTManagedServerSocket
   {
     vtserver = new VTServer(managed, proxy);
     vtserver.setDaemon(true);
-    vtserver.addSessionListener(new VTManagedSocketServerSessionListener());
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
     vtserver.setSessionShell("N");
     vtserver.setAddress(host);
     vtserver.setPort(port);
@@ -512,7 +543,8 @@ public class VTManagedServerSocket
   {
     vtserver = new VTServer(managed, proxy);
     vtserver.setDaemon(true);
-    vtserver.addSessionListener(new VTManagedSocketServerSessionListener());
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
     vtserver.setSessionShell("N");
     vtserver.setAddress(host);
     vtserver.setPort(port);
@@ -523,7 +555,8 @@ public class VTManagedServerSocket
   {
     vtserver = new VTServer(managed, proxy);
     vtserver.setDaemon(true);
-    vtserver.addSessionListener(new VTManagedSocketServerSessionListener());
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
     vtserver.setSessionShell("N");
     vtserver.setAddress(host);
     vtserver.setPort(port);
@@ -546,7 +579,8 @@ public class VTManagedServerSocket
   {
     vtserver = new VTServer(managed, proxy);
     vtserver.setDaemon(true);
-    vtserver.addSessionListener(new VTManagedSocketServerSessionListener());
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
     vtserver.setSessionShell("N");
     vtserver.setAddress(host);
     vtserver.setPort(port);
@@ -571,7 +605,8 @@ public class VTManagedServerSocket
     vtserver = new VTServer(managed, proxy);
     vtserver.setPassive(passive);
     vtserver.setDaemon(true);
-    vtserver.addSessionListener(new VTManagedSocketServerSessionListener());
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
     vtserver.setSessionShell("N");
     vtserver.setAddress(host);
     vtserver.setPort(port);
@@ -582,7 +617,8 @@ public class VTManagedServerSocket
     vtserver = new VTServer(managed, proxy);
     vtserver.setPassive(passive);
     vtserver.setDaemon(true);
-    vtserver.addSessionListener(new VTManagedSocketServerSessionListener());
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
     vtserver.setSessionShell("N");
     vtserver.setAddress(host);
     vtserver.setPort(port);
@@ -605,7 +641,8 @@ public class VTManagedServerSocket
     vtserver = new VTServer(managed, proxy);
     vtserver.setPassive(passive);
     vtserver.setDaemon(true);
-    vtserver.addSessionListener(new VTManagedSocketServerSessionListener());
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
     vtserver.setSessionShell("N");
     vtserver.setAddress(host);
     vtserver.setPort(port);
@@ -629,7 +666,8 @@ public class VTManagedServerSocket
     vtserver = new VTServer(managed, proxy);
     vtserver.setPassive(passive);
     vtserver.setDaemon(true);
-    vtserver.addSessionListener(new VTManagedSocketServerSessionListener());
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
     vtserver.setSessionShell("N");
     vtserver.setAddress(host);
     vtserver.setPort(port);
@@ -641,7 +679,8 @@ public class VTManagedServerSocket
     vtserver = new VTServer(managed, proxy);
     vtserver.setPassive(passive);
     vtserver.setDaemon(true);
-    vtserver.addSessionListener(new VTManagedSocketServerSessionListener());
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
     vtserver.setSessionShell("N");
     vtserver.setAddress(host);
     vtserver.setPort(port);
@@ -665,7 +704,8 @@ public class VTManagedServerSocket
     vtserver = new VTServer(managed, proxy);
     vtserver.setPassive(passive);
     vtserver.setDaemon(true);
-    vtserver.addSessionListener(new VTManagedSocketServerSessionListener());
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
     vtserver.setSessionShell("N");
     vtserver.setAddress(host);
     vtserver.setPort(port);
@@ -689,7 +729,8 @@ public class VTManagedServerSocket
   {
     vtserver = new VTServer(managed, proxy);
     vtserver.setDaemon(true);
-    vtserver.addSessionListener(new VTManagedSocketServerSessionListener());
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
     vtserver.setSessionShell("N");
     vtserver.loadServerSettingsProperties(properties);
   }
@@ -698,7 +739,8 @@ public class VTManagedServerSocket
   {
     vtserver = new VTServer(managed, proxy);
     vtserver.setDaemon(true);
-    vtserver.addSessionListener(new VTManagedSocketServerSessionListener());
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
     vtserver.setSessionShell("N");
     vtserver.loadServerSettingsFile(settingsFile);
   }
@@ -809,7 +851,7 @@ public class VTManagedServerSocket
   
   public void setManagedSocketListener(VTManagedSocketListener socketListener)
   {
-    this.socketListener = socketListener;
+    this.managedListener = socketListener;
     if (!vtserver.isRunning())
     {
       start();
@@ -839,11 +881,6 @@ public class VTManagedServerSocket
 //    {
 //      VTManagedSocket socket = managed.connect();
 //      System.out.println("server.socket.connected()");
-//      SSLSocket ssl = VTTLSUtilities.createUnsafeTLSSocket(socket, "", 1, VTSystem.VT_TLS_KEY_PAIR.getPrivate(), VTSystem.VT_TLS_CERTIFICATE_DATA);
-//      ssl.setUseClientMode(false);
-//      ssl.getOutputStream().write(1);
-//      ssl.getOutputStream().flush();
-//      ssl.getInputStream().read();
 //      java.io.BufferedWriter writer = new java.io.BufferedWriter(new java.io.OutputStreamWriter(socket.getOutputStream()));
 //      java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(socket.getInputStream()));
 //      VTRemotePipedSocketFactory remoteSocketFactory = socket.getConnection().createRemotePipedSocketFactory(0);
@@ -875,7 +912,7 @@ public class VTManagedServerSocket
 //    }
 //    catch (Throwable t)
 //    {
-//      t.printStackTrace();
+//      
 //    }
 //    System.out.println("server.socket.disconnected()");
 //  }

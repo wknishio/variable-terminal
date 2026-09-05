@@ -311,5 +311,4 @@ public class VTManagedSocket extends Socket implements Closeable
   {
     connection.setCommandOutputStream(stream);
   }
-
 }
