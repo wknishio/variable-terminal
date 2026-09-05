@@ -32,36 +32,36 @@ public class VTSocksHttpProxyAuthenticatorNone extends ServerAuthenticatorNone
   public ServerAuthenticator startSession(Socket socket) throws IOException
   {
     InputStream socketInputStream = socket.getInputStream();
-    PushbackInputStream in = null;
+    PushbackInputStream input = null;
     if (socketInputStream instanceof PushbackInputStream)
     {
-      in = (PushbackInputStream) socketInputStream;
+      input = (PushbackInputStream) socketInputStream;
     }
     else
     {
-      in = new PushbackInputStream(socketInputStream);
+      input = new PushbackInputStream(socketInputStream);
     }
-    OutputStream out = socket.getOutputStream();
-    int version = in.read();
+    OutputStream output = socket.getOutputStream();
+    int version = input.read();
     //System.out.println("version=" + version);
     if (version == 5)
     {
-      if (!selectSocks5Authentication(in, out, 0))
+      if (!selectSocks5Authentication(input, output, 0))
         return null;
     }
     else if (version == 4)
     {
       // Else it is the request message allready, version 4
-      in.unread(version);
+      input.unread(version);
     }
     else
     {
       //System.out.println("version=" + version);
       if (version != -1)
       {
-        in.unread(version);
+        input.unread(version);
         //fallback to use http proxy instead
-        VTNanoHTTPDProxySession httpProxy = new VTNanoHTTPDProxySession(socket, in, null, null, executorService, true, null, null, bind, connectTimeout, dataTimeout, connect_proxy);
+        VTNanoHTTPDProxySession httpProxy = new VTNanoHTTPDProxySession(socket, input, null, null, executorService, true, null, null, bind, connectTimeout, dataTimeout, connect_proxy);
         try
         {
           httpProxy.run();
@@ -73,6 +73,6 @@ public class VTSocksHttpProxyAuthenticatorNone extends ServerAuthenticatorNone
       }
       return null;
     }
-    return new ServerAuthenticatorNone(in, out);
+    return new ServerAuthenticatorNone(input, output);
   }
 }

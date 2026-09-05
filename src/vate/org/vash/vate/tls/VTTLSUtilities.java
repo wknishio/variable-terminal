@@ -45,6 +45,8 @@ import org.vash.vate.org.bouncycastle.crypto.util.PublicKeyFactory;
 import org.vash.vate.org.bouncycastle.operator.ContentSigner;
 import org.vash.vate.org.bouncycastle.operator.DefaultDigestAlgorithmIdentifierFinder;
 import org.vash.vate.org.bouncycastle.operator.DefaultSignatureAlgorithmIdentifierFinder;
+import org.vash.vate.org.bouncycastle.operator.bc.BcDSAContentSignerBuilder;
+import org.vash.vate.org.bouncycastle.operator.bc.BcECContentSignerBuilder;
 import org.vash.vate.org.bouncycastle.operator.bc.BcRSAContentSignerBuilder;
 import org.vash.vate.org.bouncycastle.util.encoders.Base32;
 import org.vash.vate.org.bouncycastle.util.encoders.Base64;
@@ -305,6 +307,8 @@ public class VTTLSUtilities
   {
     try
     {
+      String keyAlgorithm = keyPair.getPublic().getAlgorithm();
+      
       AsymmetricKeyParameter publicKey = PublicKeyFactory.createKey(keyPair.getPublic().getEncoded());
       AsymmetricKeyParameter privateKey = PrivateKeyFactory.createKey(keyPair.getPrivate().getEncoded());
       
@@ -333,10 +337,45 @@ public class VTTLSUtilities
 //      ExtendedKeyUsage extendedKeyUsage = new ExtendedKeyUsage(purposes);
 //      certBuilder.addExtension(Extension.extendedKeyUsage, false, extendedKeyUsage);
       
-      AlgorithmIdentifier sigAlgId = new DefaultSignatureAlgorithmIdentifierFinder().find("SHA256withRSA");
+      String signatureAlgorithm = null;
+      
+      if (keyAlgorithm.equalsIgnoreCase("EC"))
+      {
+        signatureAlgorithm = "SHA256withECDSA";
+      }
+      else if (keyAlgorithm.equalsIgnoreCase("DSA"))
+      {
+        if (supportsAtLeastJDK7())
+        {
+          signatureAlgorithm = "SHA256withDSA";
+        }
+        else
+        {
+          signatureAlgorithm = "SHA1withDSA";
+        }
+      }
+      else
+      {
+        signatureAlgorithm = "SHA256withRSA";
+      }
+      
+      AlgorithmIdentifier sigAlgId = new DefaultSignatureAlgorithmIdentifierFinder().find(signatureAlgorithm);
       AlgorithmIdentifier digAlgId = new DefaultDigestAlgorithmIdentifierFinder().find(sigAlgId);
       
-      ContentSigner signer = new BcRSAContentSignerBuilder(sigAlgId, digAlgId).build(privateKey);
+      ContentSigner signer = null;
+      
+      if (keyAlgorithm.equalsIgnoreCase("EC"))
+      {
+        signer = new BcECContentSignerBuilder(sigAlgId, digAlgId).build(privateKey);
+      }
+      else if (keyAlgorithm.equalsIgnoreCase("DSA"))
+      {
+        signer = new BcDSAContentSignerBuilder(sigAlgId, digAlgId).build(privateKey);
+      }
+      else
+      {
+        signer = new BcRSAContentSignerBuilder(sigAlgId, digAlgId).build(privateKey);
+      }
       
       return certBuilder.build(signer).getEncoded();
     }
@@ -363,7 +402,35 @@ public class VTTLSUtilities
     return null;
   }
   
-  public static SSLContext createUnsafeTLSContext(PrivateKey privateKey, byte[] certificateData) throws Throwable
+  public static SSLContext createUnsafeTLSContext(String algorithm, int keySizeBits, String parameterSpec)
+  {
+    try
+    {
+      KeyPair keyPair = createKeyPair(algorithm, keySizeBits, parameterSpec);
+      byte[] certificateData = createSelfSignedTLSCertificateEncodedData(keyPair, new SecureRandom());
+      return createUnsafeTLSContext(keyPair, certificateData);
+    }
+    catch (Throwable t)
+    {
+      //t.printStackTrace();
+    }
+    return null;
+  }
+  
+  public static SSLContext createUnsafeTLSContext(KeyPair keyPair, byte[] certificateData)
+  {
+    try
+    {
+      return createUnsafeTLSContext(keyPair.getPrivate(), certificateData);
+    }
+    catch (Throwable t)
+    {
+      //t.printStackTrace();
+    }
+    return null;
+  }
+  
+  public static SSLContext createUnsafeTLSContext(PrivateKey privateKey, byte[] certificateData)
   {
     try
     {
@@ -390,12 +457,23 @@ public class VTTLSUtilities
     return null;
   }
   
-  public static SSLSocket createUnsafeTLSSocket(Socket socket, String host, int port, PrivateKey privateKey, byte[] certificateData)
+  public static SSLSocket createTLSSocket(Socket socket, String host, int port, SSLContext context)
   {
     try
     {
-      SSLSocketFactory factory = null;
-      factory = createUnsafeTLSContext(privateKey, certificateData).getSocketFactory();
+      return createTLSSocket(socket, host, port, context.getSocketFactory());
+    }
+    catch (Throwable t)
+    {
+      //t.printStackTrace();
+    }
+    return null;
+  }
+  
+  public static SSLSocket createTLSSocket(Socket socket, String host, int port, SSLSocketFactory factory)
+  {
+    try
+    {
       SSLSocket tlsSocket = (SSLSocket) factory.createSocket(socket, host, port, false);
       if (supportsAtLeastJDK7() && !supportsAtLeastJDK8())
       {
