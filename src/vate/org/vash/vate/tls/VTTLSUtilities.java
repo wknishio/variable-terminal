@@ -15,7 +15,6 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.spec.ECGenParameterSpec;
 import java.util.Date;
-import java.util.Random;
 import java.util.UUID;
 
 import javax.net.ssl.HostnameVerifier;
@@ -303,18 +302,18 @@ public class VTTLSUtilities
     return null;
   }
   
-  public static byte[] createSelfSignedTLSCertificateEncodedData(KeyPair keyPair, Random random)
+  public static byte[] createSelfSignedTLSCertificateEncodedData(KeyPair keyPair)
   {
     try
     {
       String keyAlgorithm = keyPair.getPublic().getAlgorithm();
       
-      AsymmetricKeyParameter publicKey = PublicKeyFactory.createKey(keyPair.getPublic().getEncoded());
-      AsymmetricKeyParameter privateKey = PrivateKeyFactory.createKey(keyPair.getPrivate().getEncoded());
-      
       String uuid = UUID.randomUUID().toString();
       String commonName = Base64.toBase64String(uuid.getBytes());
       String dnsName = Base32.toBase32String(uuid.replaceFirst("-", "").getBytes());
+      
+      AsymmetricKeyParameter publicKey = PublicKeyFactory.createKey(keyPair.getPublic().getEncoded());
+      AsymmetricKeyParameter privateKey = PrivateKeyFactory.createKey(keyPair.getPrivate().getEncoded());
       
       X500Name dnName = new X500NameBuilder(BCStyle.INSTANCE).addRDN(BCStyle.CN, commonName).build();
       
@@ -322,7 +321,7 @@ public class VTTLSUtilities
       Date validityStartDate = new Date(now - (30L * 24 * 60 * 60 * 1000));
       Date validityEndDate = new Date(now + (90L * 24 * 60 * 60 * 1000));
       
-      BigInteger serialNumber = new BigInteger(128, random);
+      BigInteger serialNumber = new BigInteger(128, new SecureRandom());
       
       X509v3CertificateBuilder certBuilder = new BcX509v3CertificateBuilder(dnName, serialNumber, validityStartDate, validityEndDate, dnName, publicKey);
       certBuilder.addExtension(Extension.basicConstraints, true, new BasicConstraints(false));
@@ -402,34 +401,6 @@ public class VTTLSUtilities
     return null;
   }
   
-  public static SSLContext createUnsafeTLSContext(String algorithm, int keySizeBits, String parameterSpec)
-  {
-    try
-    {
-      KeyPair keyPair = createKeyPair(algorithm, keySizeBits, parameterSpec);
-      byte[] certificateData = createSelfSignedTLSCertificateEncodedData(keyPair, new SecureRandom());
-      return createUnsafeTLSContext(keyPair, certificateData);
-    }
-    catch (Throwable t)
-    {
-      //t.printStackTrace();
-    }
-    return null;
-  }
-  
-  public static SSLContext createUnsafeTLSContext(KeyPair keyPair, byte[] certificateData)
-  {
-    try
-    {
-      return createUnsafeTLSContext(keyPair.getPrivate(), certificateData);
-    }
-    catch (Throwable t)
-    {
-      //t.printStackTrace();
-    }
-    return null;
-  }
-  
   public static SSLContext createUnsafeTLSContext(PrivateKey privateKey, byte[] certificateData)
   {
     try
@@ -457,11 +428,19 @@ public class VTTLSUtilities
     return null;
   }
   
-  public static SSLSocket createTLSSocket(Socket socket, String host, int port, SSLContext context)
+  public static SSLContext createUnsafeTLSContext(String algorithm, int keySizeBits, String parameterSpec)
   {
     try
     {
-      return createTLSSocket(socket, host, port, context.getSocketFactory());
+      KeyPair keyPair = createKeyPair(algorithm, keySizeBits, parameterSpec);
+      if (keyPair != null)
+      {
+        return createUnsafeTLSContext(keyPair.getPrivate(), createSelfSignedTLSCertificateEncodedData(keyPair));
+      }
+      else
+      {
+        return createUnsafeTLSContext();
+      }
     }
     catch (Throwable t)
     {
@@ -470,15 +449,29 @@ public class VTTLSUtilities
     return null;
   }
   
-  public static SSLSocket createTLSSocket(Socket socket, String host, int port, SSLSocketFactory factory)
+  public static SSLSocket createTLSSocket(Socket socket, String host, int port, boolean client, SSLContext context)
+  {
+    try
+    {
+      return createTLSSocket(socket, host, port, client, context.getSocketFactory());
+    }
+    catch (Throwable t)
+    {
+      //t.printStackTrace();
+    }
+    return null;
+  }
+  
+  public static SSLSocket createTLSSocket(Socket socket, String host, int port, boolean client, SSLSocketFactory factory)
   {
     try
     {
       SSLSocket tlsSocket = (SSLSocket) factory.createSocket(socket, host, port, false);
-      if (supportsAtLeastJDK7() && !supportsAtLeastJDK8())
+      if (client && supportsAtLeastJDK7() && !supportsAtLeastJDK8())
       {
         tlsSocket.setEnabledProtocols(new String[] {"TLSv1", "TLSv1.1", "TLSv1.2"});
       }
+      tlsSocket.setUseClientMode(client);
       return tlsSocket;
     }
     catch (Throwable t)

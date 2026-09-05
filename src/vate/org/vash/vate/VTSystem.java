@@ -176,7 +176,7 @@ public class VTSystem
   
   public static final Map<RenderingHints.Key, Object> VT_GRAPHICS_RENDERING_HINTS;
   
-  public static final SSLContext VT_TLS_CONTEXT;
+  public static final SSLContext VT_UNSAFE_TLS_CONTEXT;
   
   private static boolean initialized = false;
   
@@ -212,7 +212,7 @@ public class VTSystem
     VT_YEAR_CALENDAR = Calendar.getInstance();
     
     //VTTLSUtilities.allowUnsafeTLSSettings();
-    VT_TLS_CONTEXT = VTTLSUtilities.createUnsafeTLSContext("RSA", 2048, null);
+    VT_UNSAFE_TLS_CONTEXT = VTTLSUtilities.createUnsafeTLSContext("RSA", 2048, null);
   }
   
   public static void initialize()
