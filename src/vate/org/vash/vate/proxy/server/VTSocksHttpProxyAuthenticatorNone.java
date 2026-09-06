@@ -7,9 +7,12 @@ import java.io.PushbackInputStream;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 
+import org.vash.vate.VTSystem;
 import org.vash.vate.net.sourceforge.jsocks.socks.server.ServerAuthenticator;
 import org.vash.vate.net.sourceforge.jsocks.socks.server.ServerAuthenticatorNone;
 import org.vash.vate.proxy.client.VTProxy;
+import org.vash.vate.socket.VTCloseableSocket;
+import org.vash.vate.tls.VTTLSUtilities;
 
 public class VTSocksHttpProxyAuthenticatorNone extends ServerAuthenticatorNone
 {
@@ -43,11 +46,21 @@ public class VTSocksHttpProxyAuthenticatorNone extends ServerAuthenticatorNone
     }
     OutputStream output = socket.getOutputStream();
     int version = input.read();
-    //System.out.println("version=" + version);
+    if (version == 0x16)
+    {
+      //tls handshake detected
+      input.unread(version);
+      socket = VTTLSUtilities.createTLSSocket(new VTCloseableSocket(socket, input), "", 1, false, true, VTSystem.VT_UNSAFE_TLS_CONTEXT);
+      input = new PushbackInputStream(socket.getInputStream());
+      output = socket.getOutputStream();
+      version = input.read();
+    }
     if (version == 5)
     {
       if (!selectSocks5Authentication(input, output, 0))
+      {
         return null;
+      }
     }
     else if (version == 4)
     {
@@ -56,12 +69,11 @@ public class VTSocksHttpProxyAuthenticatorNone extends ServerAuthenticatorNone
     }
     else
     {
-      //System.out.println("version=" + version);
       if (version != -1)
       {
         input.unread(version);
         //fallback to use http proxy instead
-        VTNanoHTTPDProxySession httpProxy = new VTNanoHTTPDProxySession(socket, input, null, null, executorService, true, null, null, bind, connectTimeout, dataTimeout, connect_proxy);
+        VTNanoHTTPDProxySession httpProxy = new VTNanoHTTPDProxySession(new VTCloseableSocket(socket, input), null, null, executorService, true, null, null, bind, connectTimeout, dataTimeout, connect_proxy);
         try
         {
           httpProxy.run();

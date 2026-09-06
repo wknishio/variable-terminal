@@ -449,11 +449,11 @@ public class VTTLSUtilities
     return null;
   }
   
-  public static SSLSocket createTLSSocket(Socket socket, String host, int port, boolean client, SSLContext context)
+  public static SSLSocket createTLSSocket(Socket socket, String host, int port, boolean client, boolean autoClose, SSLContext context)
   {
     try
     {
-      return createTLSSocket(socket, host, port, client, context.getSocketFactory());
+      return createTLSSocket(socket, host, port, client, autoClose, context.getSocketFactory());
     }
     catch (Throwable t)
     {
@@ -462,11 +462,11 @@ public class VTTLSUtilities
     return null;
   }
   
-  public static SSLSocket createTLSSocket(Socket socket, String host, int port, boolean client, SSLSocketFactory factory)
+  public static SSLSocket createTLSSocket(Socket socket, String host, int port, boolean client, boolean autoClose, SSLSocketFactory factory)
   {
     try
     {
-      SSLSocket tlsSocket = (SSLSocket) factory.createSocket(socket, host, port, false);
+      SSLSocket tlsSocket = (SSLSocket) factory.createSocket(socket, host, port, autoClose);
       if (client && supportsAtLeastJDK7() && !supportsAtLeastJDK8())
       {
         tlsSocket.setEnabledProtocols(new String[] {"TLSv1", "TLSv1.1", "TLSv1.2"});

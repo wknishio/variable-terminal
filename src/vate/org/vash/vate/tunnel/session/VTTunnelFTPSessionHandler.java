@@ -82,6 +82,7 @@ public class VTTunnelFTPSessionHandler extends VTTunnelSessionHandler
       ftpserver = new VTFTPServer(validation, clientFactory, serverFactory, channel.getConnection().getExecutorService());
       ftpserver.setBufferSize(VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES);
       ftpserver.setTimeout(dataTimeout);
+      ftpserver.setSSLContext(VTSystem.VT_UNSAFE_TLS_CONTEXT);
       ftpserver.runConnection(session.getSocket());
     }
     catch (Throwable t)

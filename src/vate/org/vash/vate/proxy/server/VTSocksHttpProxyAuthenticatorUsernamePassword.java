@@ -9,11 +9,14 @@ import java.util.Collection;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 
+import org.vash.vate.VTSystem;
 import org.vash.vate.net.sourceforge.jsocks.socks.server.ServerAuthenticator;
 import org.vash.vate.net.sourceforge.jsocks.socks.server.ServerAuthenticatorNone;
 import org.vash.vate.net.sourceforge.jsocks.socks.server.UserPasswordAuthenticator;
 import org.vash.vate.net.sourceforge.jsocks.socks.server.UserValidation;
 import org.vash.vate.proxy.client.VTProxy;
+import org.vash.vate.socket.VTCloseableSocket;
+import org.vash.vate.tls.VTTLSUtilities;
 
 public class VTSocksHttpProxyAuthenticatorUsernamePassword extends UserPasswordAuthenticator
 {
@@ -36,7 +39,7 @@ public class VTSocksHttpProxyAuthenticatorUsernamePassword extends UserPasswordA
     this.dataTimeout = dataTimeout;
     this.connect_proxy = proxy;
   }
-
+  
   public ServerAuthenticator startSession(Socket socket) throws IOException
   {
     InputStream socketInputStream = socket.getInputStream();
@@ -51,32 +54,41 @@ public class VTSocksHttpProxyAuthenticatorUsernamePassword extends UserPasswordA
     }
     OutputStream output = socket.getOutputStream();
     int version = input.read();
-    //System.out.println("version=" + version);
+    if (version == 0x16)
+    {
+      //tls handshake detected
+      input.unread(version);
+      socket = VTTLSUtilities.createTLSSocket(new VTCloseableSocket(socket, input), "", 1, false, true, VTSystem.VT_UNSAFE_TLS_CONTEXT);
+      input = new PushbackInputStream(socket.getInputStream());
+      output = socket.getOutputStream();
+      version = input.read();
+    }
     if (version != 5)
     {
-      if (version != 4)
+      if (version != -1)
       {
-        if (version != -1)
+        input.unread(version);
+        //fallback to use http proxy instead
+        VTNanoHTTPDProxySession httpProxy = new VTNanoHTTPDProxySession(new VTCloseableSocket(socket, input), nonces, random, executorService, true, validator.getUsernames(), validator.getPasswords(), bind, connectTimeout, dataTimeout, connect_proxy);
+        try
         {
-          input.unread(version);
-          //fallback to use http proxy instead
-          VTNanoHTTPDProxySession httpProxy = new VTNanoHTTPDProxySession(socket, input, nonces, random, executorService, true, validator.getUsernames(), validator.getPasswords(), bind, connectTimeout, dataTimeout, connect_proxy);
-          try
-          {
-            httpProxy.run();
-          }
-          catch (Throwable t)
-          {
-            //t.printStackTrace();
-          }
+          httpProxy.run();
+        }
+        catch (Throwable t)
+        {
+          //t.printStackTrace();
         }
       }
       return null;
     }
     if (!selectSocks5Authentication(input, output, METHOD_ID))
+    {
       return null;
+    }
     if (!doUserPasswordAuthentication(socket, input, output))
+    {
       return null;
+    }
     return new ServerAuthenticatorNone(input, output);
   }
 }

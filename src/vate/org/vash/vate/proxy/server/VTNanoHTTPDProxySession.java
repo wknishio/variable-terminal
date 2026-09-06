@@ -271,10 +271,9 @@ public class VTNanoHTTPDProxySession implements Runnable
     //public boolean keepConnection = false;
   }
   
-  public VTNanoHTTPDProxySession(Socket socket, InputStream inputStream, Collection<String> nonces, Random random, ExecutorService executorService, boolean digestAuthentication, String[] usernames, String[] passwords, String bind, int connectTimeout, int dataTimeout, VTProxy proxy)
+  public VTNanoHTTPDProxySession(Socket socket, Collection<String> nonces, Random random, ExecutorService executorService, boolean digestAuthentication, String[] usernames, String[] passwords, String bind, int connectTimeout, int dataTimeout, VTProxy proxy)
   {
     this.socket = socket;
-    this.inputStream = inputStream;
     this.nonces = nonces;
     this.random = random;
     this.executorService = executorService;
@@ -312,6 +311,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     final Properties headers = new VTConfigurationProperties();
     final Properties files = new VTConfigurationProperties();
     final ByteArrayOutputStream body = new ByteArrayOutputStream();
+    InputStream inputStream = null;
     keepAlive = true;
     while (socket.isConnected() && !socket.isClosed() && keepAlive)
     {
@@ -319,7 +319,10 @@ public class VTNanoHTTPDProxySession implements Runnable
       {
         keepAlive = false;
         proxyRequest = false;
-        if ( inputStream == null) return;
+        if (inputStream == null)
+        {
+          inputStream = socket.getInputStream();
+        }
         // Read the first 16384 bytes.
         // The full header should fit in here.
         // Apache's default header limit is 8KB.
@@ -445,7 +448,7 @@ public class VTNanoHTTPDProxySession implements Runnable
         else
         {
           proxyRequest = true;
-          serveProxy(uri, method, preambles, headers, files, bodyData, usernames, passwords, socket, inputStream, proxy);
+          serveProxy(uri, method, preambles, headers, files, bodyData, usernames, passwords, socket, proxy);
         }
       }
       catch ( InterruptedException ie )
@@ -491,7 +494,7 @@ public class VTNanoHTTPDProxySession implements Runnable
 //    }
 //  }
   
-  public void serveProxy(String uri, String method, Properties preambles, Properties headers, Properties files, byte[] bodyData, String[] usernames, String[] passwords, Socket clientSocket, InputStream clientInput, VTProxy connectProxy) throws IOException, URISyntaxException, InterruptedException
+  public void serveProxy(String uri, String method, Properties preambles, Properties headers, Properties files, byte[] bodyData, String[] usernames, String[] passwords, Socket clientSocket, VTProxy connectProxy) throws IOException, URISyntaxException, InterruptedException
   {
     if (digestAuthentication)
     {
@@ -520,11 +523,11 @@ public class VTNanoHTTPDProxySession implements Runnable
     
     if (method.equalsIgnoreCase("CONNECT"))
     {
-      serveConnectRequest(uri, method, preambles, headers, bodyData, clientSocket, clientInput, connectProxy);
+      serveConnectRequest(uri, method, preambles, headers, bodyData, clientSocket, connectProxy);
     }
     else if (uri.toLowerCase().contains("://"))
     {
-      servePipeRequest(uri, method, preambles, headers, bodyData, clientSocket, clientInput, connectProxy);
+      servePipeRequest(uri, method, preambles, headers, bodyData, clientSocket, connectProxy);
     }
     else
     {
@@ -661,7 +664,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     sendError(resp.status, MIME_PLAINTEXT, resp.headers, "");
   }
   
-  private void serveConnectRequest(String uri, String method, Properties pre, Properties headers, byte[] bodyData, Socket clientSocket, InputStream clientInput, VTProxy connectProxy) throws URISyntaxException, IOException, InterruptedException
+  private void serveConnectRequest(String uri, String method, Properties pre, Properties headers, byte[] bodyData, Socket clientSocket, VTProxy connectProxy) throws URISyntaxException, IOException, InterruptedException
   {
     String host = "";
     int port = 80;
@@ -693,17 +696,17 @@ public class VTNanoHTTPDProxySession implements Runnable
       remoteSocket.setSoTimeout(dataTimeout);
     }
     //remoteSocket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
-    
+    InputStream clientInput = clientSocket.getInputStream();
+    OutputStream clientOutput = clientSocket.getOutputStream();
     InputStream remoteInput = remoteSocket.getInputStream();
     OutputStream remoteOutput = remoteSocket.getOutputStream();
-    OutputStream clientOutput = clientSocket.getOutputStream();
     
     sendResponse(new Response().status, "");
     
     pipeSockets(clientSocket, remoteSocket, clientInput, clientOutput, remoteInput, remoteOutput);
   }
   
-  private void servePipeRequest(String uri, String method, Properties pre, Properties headers, byte[] bodyData, Socket clientSocket, InputStream clientInput, VTProxy connectProxy) throws IOException, URISyntaxException, InterruptedException
+  private void servePipeRequest(String uri, String method, Properties pre, Properties headers, byte[] bodyData, Socket clientSocket, VTProxy connectProxy) throws IOException, URISyntaxException, InterruptedException
   {
     ByteArrayOutputStream requestData = new ByteArrayOutputStream();
     for (Object headerName : headers.keySet().toArray())
@@ -780,9 +783,10 @@ public class VTNanoHTTPDProxySession implements Runnable
     }
     //remoteSocket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
     
+    InputStream clientInput = clientSocket.getInputStream();
+    OutputStream clientOutput = clientSocket.getOutputStream();
     InputStream remoteInput = remoteSocket.getInputStream();
     OutputStream remoteOutput = remoteSocket.getOutputStream();
-    OutputStream clientOutput = clientSocket.getOutputStream();
     
     if (scheme.toLowerCase().startsWith("http"))
     {
@@ -1250,7 +1254,6 @@ public class VTNanoHTTPDProxySession implements Runnable
   private Socket socket;
   private boolean keepAlive;
   private boolean proxyRequest;
-  private InputStream inputStream;
   private boolean digestAuthentication;
   private String[] usernames;
   private String[] passwords;
