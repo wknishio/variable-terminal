@@ -10,6 +10,8 @@ import java.security.SecureRandom;
 import java.util.concurrent.ExecutorService;
 import java.util.zip.Deflater;
 
+import javax.net.ssl.SSLSocket;
+
 import org.vash.vate.VTSystem;
 import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.security.VTArrayComparator;
@@ -26,6 +28,7 @@ import org.vash.vate.stream.multiplex.VTMultiplexingInputStream;
 import org.vash.vate.stream.multiplex.VTMultiplexingOutputStream;
 import org.vash.vate.stream.multiplex.VTMultiplexingInputStream.VTMultiplexedInputStream;
 import org.vash.vate.stream.multiplex.VTMultiplexingOutputStream.VTMultiplexedOutputStream;
+import org.vash.vate.tls.VTTLSUtilities;
 
 public class VTServerConnection
 {
@@ -45,6 +48,8 @@ public class VTServerConnection
   private static final byte[] VT_CLIENT_CHECK_STRING_ZUC = ("/VARIABLE-TERMINAL/CLIENT/ZUC/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_SERVER_CHECK_STRING_LEA = ("/VARIABLE-TERMINAL/SERVER/LEA/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_CLIENT_CHECK_STRING_LEA = ("/VARIABLE-TERMINAL/CLIENT/LEA/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_SERVER_CHECK_STRING_TLS = ("/VARIABLE-TERMINAL/SERVER/TLS/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_CLIENT_CHECK_STRING_TLS = ("/VARIABLE-TERMINAL/CLIENT/TLS/" + MAJOR_MINOR_VERSION).getBytes();
   
   private volatile boolean connected = false;
   private volatile boolean verified = false;
@@ -65,8 +70,8 @@ public class VTServerConnection
   private final VTBlake3MessageDigest blake3Digest;
   private SecureRandom secureRandom;
   private Socket connectionSocket;
-  private InputStream connectionSocketInputStream;
-  private OutputStream connectionSocketOutputStream;
+  private InputStream authenticationInputStream;
+  private OutputStream authenticationOutputStream;
   private InputStream connectionInputStream;
   private OutputStream connectionOutputStream;
   private VTLittleEndianInputStream nonceReader;
@@ -465,10 +470,16 @@ public class VTServerConnection
   
   private void setNonceStreams() throws IOException
   {
-    connectionSocketInputStream = connectionSocket.getInputStream();
-    connectionSocketOutputStream = connectionSocket.getOutputStream();
-    nonceReader = new VTLittleEndianInputStream(connectionSocketInputStream);
-    nonceWriter = new VTLittleEndianOutputStream(connectionSocketOutputStream);
+    if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_TLS)
+    {
+      SSLSocket TLSSocket = VTTLSUtilities.createTLSSocket(connectionSocket, "", 1, false, true, VTSystem.VT_UNSAFE_TLS_CONTEXT);
+      TLSSocket.setNeedClientAuth(true);
+      connectionSocket = TLSSocket;
+    }
+    authenticationInputStream = connectionSocket.getInputStream();
+    authenticationOutputStream = connectionSocket.getOutputStream();
+    nonceReader = new VTLittleEndianInputStream(authenticationInputStream);
+    nonceWriter = new VTLittleEndianOutputStream(authenticationOutputStream);
   }
   
   private void exchangeNonces(boolean update) throws IOException
@@ -517,8 +528,8 @@ public class VTServerConnection
   private void setVerificationStreams() throws IOException
   {
     cryptoEngine.initializeServerEngine(VTSystem.VT_CONNECTION_ENCRYPTION_NONE, remoteNonce, localNonce, encryptionKey);
-    authenticationReader.setInputStream(cryptoEngine.getDecryptedInputStream(connectionSocketInputStream, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES));
-    authenticationWriter.setOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES));
+    authenticationReader.setInputStream(cryptoEngine.getDecryptedInputStream(authenticationInputStream, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES));
+    authenticationWriter.setOutputStream(cryptoEngine.getEncryptedOutputStream(authenticationOutputStream, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES));
     nonceReader.setInputStream(authenticationReader.getInputStream());
     nonceWriter.setOutputStream(authenticationWriter.getOutputStream());
   }
@@ -526,8 +537,8 @@ public class VTServerConnection
   public void setAuthenticationStreams() throws IOException
   {
     cryptoEngine.initializeServerEngine(encryptionType, remoteNonce, localNonce, encryptionKey);
-    authenticationReader.setInputStream(cryptoEngine.getDecryptedInputStream(connectionSocketInputStream, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES));
-    authenticationWriter.setOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES));
+    authenticationReader.setInputStream(cryptoEngine.getDecryptedInputStream(authenticationInputStream, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES));
+    authenticationWriter.setOutputStream(cryptoEngine.getEncryptedOutputStream(authenticationOutputStream, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES));
     nonceReader.setInputStream(authenticationReader.getInputStream());
     nonceWriter.setOutputStream(authenticationWriter.getOutputStream());
   }
@@ -538,8 +549,8 @@ public class VTServerConnection
     this.secondAuthenticatedCredential = secondAuthenticatedCredential;
     exchangeNonces(true);
     cryptoEngine.initializeServerEngine(encryptionType, remoteNonce, localNonce, encryptionKey, firstAuthenticatedCredential, secondAuthenticatedCredential);
-    connectionInputStream = new BufferedInputStream(cryptoEngine.getDecryptedInputStream(connectionSocketInputStream, VTSystem.VT_CONNECTION_INPUT_BUFFER_SIZE_BYTES), VTSystem.VT_CONNECTION_INPUT_BUFFER_SIZE_BYTES);
-    connectionOutputStream = new BufferedOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream, VTSystem.VT_CONNECTION_OUTPUT_BUFFER_SIZE_BYTES), VTSystem.VT_CONNECTION_OUTPUT_BUFFER_SIZE_BYTES);
+    connectionInputStream = new BufferedInputStream(cryptoEngine.getDecryptedInputStream(connectionSocket.getInputStream(), VTSystem.VT_CONNECTION_INPUT_BUFFER_SIZE_BYTES), VTSystem.VT_CONNECTION_INPUT_BUFFER_SIZE_BYTES);
+    connectionOutputStream = new BufferedOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocket.getOutputStream(), VTSystem.VT_CONNECTION_OUTPUT_BUFFER_SIZE_BYTES), VTSystem.VT_CONNECTION_OUTPUT_BUFFER_SIZE_BYTES);
   }
   
   private void setMultiplexedStreams() throws IOException
@@ -700,6 +711,7 @@ public class VTServerConnection
 //    byte[] digestedClientRABBIT = computeSecurityDigest(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_RABBIT);
     byte[] digestedClientZUC = computeSecurityDigest(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_ZUC);
     byte[] digestedClientLEA = computeSecurityDigest(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_LEA);
+    byte[] digestedClientTLS = computeSecurityDigest(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_TLS);
     
     byte[] digestedClient = exchangeCheckString(localNonce, remoteNonce, encryptionKey, localCheckString);
    
@@ -736,6 +748,11 @@ public class VTServerConnection
     if (VTArrayComparator.arrayEquals(digestedClient, digestedClientLEA))
     {
       return VTSystem.VT_CONNECTION_ENCRYPTION_LEA;
+    }
+    
+    if (VTArrayComparator.arrayEquals(digestedClient, digestedClientTLS))
+    {
+      return VTSystem.VT_CONNECTION_ENCRYPTION_TLS;
     }
     
     return -1;
@@ -821,6 +838,16 @@ public class VTServerConnection
         return;
       }
     }
+    else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_TLS)
+    {
+      remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_SERVER_CHECK_STRING_TLS);
+      if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_NONE)
+      {
+        setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_TLS);
+        verified = true;
+        return;
+      }
+    }
     if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_SALSA)
     {
       setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_SALSA);
@@ -854,6 +881,12 @@ public class VTServerConnection
     if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_LEA)
     {
       setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_LEA);
+      verified = true;
+      return;
+    }
+    if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_TLS)
+    {
+      setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_TLS);
       verified = true;
       return;
     }

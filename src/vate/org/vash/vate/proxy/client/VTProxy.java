@@ -22,7 +22,7 @@ public class VTProxy
   private String proxyUser;
   private String proxyPassword;
   private VTProxy proxyNext;
-  //private Socket proxyConnection;
+  private boolean proxyTLS = false;
   
   public VTProxy(VTProxyType proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword)
   {
@@ -31,6 +31,16 @@ public class VTProxy
     this.proxyPort = proxyPort;
     this.proxyUser = proxyUser;
     this.proxyPassword = proxyPassword;
+  }
+  
+  public VTProxy(VTProxyType proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword, boolean proxyTLS)
+  {
+    this.proxyType = proxyType;
+    this.proxyHost = proxyHost;
+    this.proxyPort = proxyPort;
+    this.proxyUser = proxyUser;
+    this.proxyPassword = proxyPassword;
+    this.proxyTLS = proxyTLS;
   }
   
   public VTProxy(VTProxyType proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword, VTProxy proxyNext)
@@ -43,6 +53,17 @@ public class VTProxy
     this.proxyNext = proxyNext;
   }
   
+  public VTProxy(VTProxyType proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword, VTProxy proxyNext, boolean proxyTLS)
+  {
+    this.proxyType = proxyType;
+    this.proxyHost = proxyHost;
+    this.proxyPort = proxyPort;
+    this.proxyUser = proxyUser;
+    this.proxyPassword = proxyPassword;
+    this.proxyNext = proxyNext;
+    this.proxyTLS = proxyTLS;
+  }
+  
   public void setProxy(VTProxyType proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword)
   {
     this.proxyType = proxyType;
@@ -50,6 +71,16 @@ public class VTProxy
     this.proxyPort = proxyPort;
     this.proxyUser = proxyUser;
     this.proxyPassword = proxyPassword;
+  }
+  
+  public void setProxy(VTProxyType proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword, boolean proxyTLS)
+  {
+    this.proxyType = proxyType;
+    this.proxyHost = proxyHost;
+    this.proxyPort = proxyPort;
+    this.proxyUser = proxyUser;
+    this.proxyPassword = proxyPassword;
+    this.proxyTLS = proxyTLS;
   }
   
   public void setProxy(VTProxyType proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword, VTProxy proxyNext)
@@ -62,25 +93,16 @@ public class VTProxy
     this.proxyNext = proxyNext;
   }
   
-//  public VTProxy(Proxy.Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword, Socket proxyConnection)
-//  {
-//    this.proxyType = proxyType;
-//    this.proxyHost = proxyHost;
-//    this.proxyPort = proxyPort;
-//    this.proxyUser = proxyUser;
-//    this.proxyPassword = proxyPassword;
-//    this.proxyConnection = proxyConnection;
-//  }
-  
-//  public void setProxy(Proxy.Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword, Socket proxyConnection)
-//  {
-//    this.proxyType = proxyType;
-//    this.proxyHost = proxyHost;
-//    this.proxyPort = proxyPort;
-//    this.proxyUser = proxyUser;
-//    this.proxyPassword = proxyPassword;
-//    this.proxyConnection = proxyConnection;
-//  }
+  public void setProxy(VTProxyType proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword, VTProxy proxyNext, boolean proxyTLS)
+  {
+    this.proxyType = proxyType;
+    this.proxyHost = proxyHost;
+    this.proxyPort = proxyPort;
+    this.proxyUser = proxyUser;
+    this.proxyPassword = proxyPassword;
+    this.proxyNext = proxyNext;
+    this.proxyTLS = proxyTLS;
+  }
   
   public VTProxyType getProxyType()
   {
@@ -112,10 +134,10 @@ public class VTProxy
     return proxyNext;
   }
   
-  //public Socket getProxyConnection()
-  //{
-    //return proxyConnection;
-  //}
+  public boolean getProxyTLS()
+  {
+    return proxyTLS;
+  }
   
   public void setProxyType(VTProxyType proxyType)
   {
@@ -147,10 +169,10 @@ public class VTProxy
     this.proxyNext = proxyNext;
   }
   
-  //public void setProxyConnection(Socket proxyConnection)
-  //{
-    //this.proxyConnection = proxyConnection;
-  //}
+  public void setProxyTLS(boolean proxyTLS)
+  {
+    this.proxyTLS = proxyTLS;
+  }
   
   public static Socket next(Socket currentSocket, String bind, int timeout, VTProxy proxy) throws IOException
   {
@@ -170,7 +192,6 @@ public class VTProxy
       }
       return currentSocket;
     }
-    //VTProxy parentProxy = null;
     currentSocket = nextSocket(currentSocket, bind, timeout, proxy);
     return currentSocket;
   }
@@ -328,40 +349,4 @@ public class VTProxy
     //connectionSocket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
     return connectionSocket;
   }
-  
-//  public static Socket connect(String host, int port, Socket proxyConnection, VTProxy proxy) throws IOException
-//  {
-//    return connect(host, port, proxyConnection, proxy.getProxyType(), proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword());
-//  }
-//  
-//  public static Socket connect(String host, int port, Socket proxyConnection, Proxy.Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException
-//  {
-//    if (host == null || host.length() == 0 || host.equals("*"))
-//    {
-//      host = "";
-//    }
-//    else
-//    {
-//      
-//    }
-//    InetSocketAddress socketAddress = null;
-//    
-//    if (proxyType == null || proxyType != Proxy.Type.DIRECT)
-//    {
-//      socketAddress = InetSocketAddress.createUnresolved(host, port);
-//    }
-//    else
-//    {
-//      socketAddress = new InetSocketAddress(host, port);
-//    }
-//    
-//    VTProxy proxy = new VTProxy(proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);
-//    
-//    Socket socket = next(proxyConnection, proxy);
-//    
-//    socket.connect(socketAddress);
-//    socket.setTcpNoDelay(true);
-//    socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
-//    return socket;
-//  }
 }

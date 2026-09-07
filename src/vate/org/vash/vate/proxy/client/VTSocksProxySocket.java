@@ -50,6 +50,7 @@ public class VTSocksProxySocket extends VTProxySocket
       catch (Throwable t)
       {
         //t.printStackTrace();
+        proxySocket = null;
       }
       
       if (proxySocket != null)
@@ -69,6 +70,7 @@ public class VTSocksProxySocket extends VTProxySocket
       catch (Throwable t)
       {
         //t.printStackTrace();
+        proxySocket = null;
       }
       
       if (proxySocket == null)
@@ -122,6 +124,7 @@ public class VTSocksProxySocket extends VTProxySocket
       catch (Throwable t)
       {
         //t.printStackTrace();
+        proxySocket = null;
       }
       
       if (proxySocket == null)

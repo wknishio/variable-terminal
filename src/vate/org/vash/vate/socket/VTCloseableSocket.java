@@ -11,17 +11,27 @@ public class VTCloseableSocket extends Socket implements Closeable
 {
   private final Socket socket;
   private final InputStream input;
+  private final OutputStream output;
   
   public VTCloseableSocket(Socket socket)
   {
     this.socket = socket;
     this.input = null;
+    this.output = null;
   }
   
   public VTCloseableSocket(Socket socket, InputStream input)
   {
     this.socket = socket;
     this.input = input;
+    this.output = null;
+  }
+  
+  public VTCloseableSocket(Socket socket, InputStream input, OutputStream output)
+  {
+    this.socket = socket;
+    this.input = input;
+    this.output = output;
   }
   
   public InputStream getInputStream() throws IOException
@@ -35,6 +45,10 @@ public class VTCloseableSocket extends Socket implements Closeable
   
   public OutputStream getOutputStream() throws IOException
   {
+    if (output != null)
+    {
+      return output;
+    }
     return socket.getOutputStream();
   }
   

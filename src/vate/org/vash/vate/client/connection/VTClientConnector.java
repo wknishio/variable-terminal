@@ -243,7 +243,7 @@ public class VTClientConnector implements Runnable
   
   public boolean isSkipConfiguration()
   {
-    return this.skipConfiguration;
+    return skipConfiguration;
   }
   
   public VTClient getClient()
@@ -629,6 +629,10 @@ public class VTClientConnector implements Runnable
       {
         connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_LEA);
       }
+      else if (encryptionType.toUpperCase().startsWith("T"))
+      {
+        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_TLS);
+      }
       else
       {
         connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_NONE);
@@ -715,6 +719,10 @@ public class VTClientConnector implements Runnable
       {
         connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_LEA);
       }
+      else if (encryptionType.toUpperCase().startsWith("T"))
+      {
+        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_TLS);
+      }
       else
       {
         connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_NONE);
@@ -771,7 +779,11 @@ public class VTClientConnector implements Runnable
   {
     retry = true;
     dialog = false;
-    // dialogLine = false;
+    if (skipConfiguration)
+    {
+      skipConfiguration = false;
+      return true;
+    }
     if (VTMainConsole.isDaemon())
     {
       synchronized (this)
@@ -788,15 +800,6 @@ public class VTClientConnector implements Runnable
       return true;
     }
     startConnectionRetryTimeoutThread();
-    if (skipConfiguration)
-    {
-      skipConfiguration = false;
-      return true;
-    }
-    else
-    {
-      
-    }
     try
     {
       VTMainConsole.print("\nVT>Retry connection with server?(Y/N, default:Y):");
@@ -808,6 +811,7 @@ public class VTClientConnector implements Runnable
       }
       else if (skipConfiguration)
       {
+        skipConfiguration = false;
         return true;
       }
       if (line.toUpperCase().startsWith("N"))
@@ -815,34 +819,17 @@ public class VTClientConnector implements Runnable
         VTRuntimeExit.exit(0);
         return false;
       }
-//      if (client.getInputMenuBar() != null)
-//      {
-//        client.getInputMenuBar().setEnabledDialogMenu(true);
-//      }
+      dialog = true;
       if (client.hasConnectionDialog())
       {
-        // dialogLine = true;
-        dialog = true;
-        // retry = false;
         client.openConnectionDialog();
       }
       if (skipConfiguration)
       {
-        // System.out.println("skipConfiguration");
         skipConfiguration = false;
         return true;
       }
-      if (dialog)
-      {
-        VTMainConsole.print("VT>Repeat current connection settings?(Y/N, default:Y):");
-        dialog = false;
-      }
-      else
-      {
-        VTMainConsole.print("\nVT>Repeat current connection settings?(Y/N, default:Y):");
-      }
-      // dialog = false;
-      // dialogLine = false;
+      VTMainConsole.print("VT>Repeat current connection settings?(Y/N, default:Y):");
       line = VTMainConsole.readLine(true);
       if (line == null)
       {
@@ -851,6 +838,7 @@ public class VTClientConnector implements Runnable
       }
       else if (skipConfiguration)
       {
+        skipConfiguration = false;
         return true;
       }
       if (!line.toUpperCase().startsWith("N"))
@@ -864,6 +852,7 @@ public class VTClientConnector implements Runnable
         }
         else if (skipConfiguration)
         {
+          skipConfiguration = false;
           return true;
         }
         if (!line.toUpperCase().startsWith("N"))
@@ -882,6 +871,7 @@ public class VTClientConnector implements Runnable
           }
           else if (skipConfiguration)
           {
+            skipConfiguration = false;
             return true;
           }
           client.setUser(user);
@@ -894,6 +884,7 @@ public class VTClientConnector implements Runnable
           }
           else if (skipConfiguration)
           {
+            skipConfiguration = false;
             return true;
           }
           client.setPassword(password);
@@ -913,6 +904,7 @@ public class VTClientConnector implements Runnable
           }
           else if (skipConfiguration)
           {
+            skipConfiguration = false;
             return true;
           }
           else if (line.length() > 0)
@@ -935,6 +927,7 @@ public class VTClientConnector implements Runnable
       }
       else if (skipConfiguration)
       {
+        skipConfiguration = false;
         return true;
       }
       if (line.toUpperCase().startsWith("P"))
@@ -949,6 +942,7 @@ public class VTClientConnector implements Runnable
         }
         else if (skipConfiguration)
         {
+          skipConfiguration = false;
           return true;
         }
         hostAddress = line;
@@ -961,6 +955,7 @@ public class VTClientConnector implements Runnable
         }
         else if (skipConfiguration)
         {
+          skipConfiguration = false;
           return true;
         }
         if (line.length() > 0)
@@ -990,6 +985,7 @@ public class VTClientConnector implements Runnable
         }
         else if (skipConfiguration)
         {
+          skipConfiguration = false;
           return true;
         }
         if (line.toUpperCase().startsWith("Y"))
@@ -1002,6 +998,7 @@ public class VTClientConnector implements Runnable
           }
           else if (skipConfiguration)
           {
+            skipConfiguration = false;
             return true;
           }
           if (line.length() > 0)
@@ -1037,6 +1034,7 @@ public class VTClientConnector implements Runnable
         }
         else if (skipConfiguration)
         {
+          skipConfiguration = false;
           return true;
         }
         hostAddress = line;
@@ -1049,6 +1047,7 @@ public class VTClientConnector implements Runnable
         }
         else if (skipConfiguration)
         {
+          skipConfiguration = false;
           return true;
         }
         if (line.length() > 0)
@@ -1079,6 +1078,7 @@ public class VTClientConnector implements Runnable
         }
         else if (skipConfiguration)
         {
+          skipConfiguration = false;
           return true;
         }
         if (line.toUpperCase().startsWith("Y"))
@@ -1091,6 +1091,7 @@ public class VTClientConnector implements Runnable
           }
           else if (skipConfiguration)
           {
+            skipConfiguration = false;
             return true;
           }
           if (line.toUpperCase().startsWith("D"))
@@ -1119,6 +1120,7 @@ public class VTClientConnector implements Runnable
             }
             else if (skipConfiguration)
             {
+              skipConfiguration = false;
               return true;
             }
             proxyAddress = line;
@@ -1133,6 +1135,7 @@ public class VTClientConnector implements Runnable
             }
             else if (skipConfiguration)
             {
+              skipConfiguration = false;
               return true;
             }
             if (line.length() > 0)
@@ -1165,6 +1168,7 @@ public class VTClientConnector implements Runnable
             }
             else if (skipConfiguration)
             {
+              skipConfiguration = false;
               return true;
             }
             if (line.length() > 0)
@@ -1197,6 +1201,7 @@ public class VTClientConnector implements Runnable
             }
             else if (skipConfiguration)
             {
+              skipConfiguration = false;
               return true;
             }
             if (line.toUpperCase().startsWith("Y"))
@@ -1210,6 +1215,7 @@ public class VTClientConnector implements Runnable
               }
               else if (skipConfiguration)
               {
+                skipConfiguration = false;
                 return true;
               }
               proxyUser = line;
@@ -1221,6 +1227,7 @@ public class VTClientConnector implements Runnable
               }
               else if (skipConfiguration)
               {
+                skipConfiguration = false;
                 return true;
               }
               proxyPassword = line;
@@ -1252,11 +1259,12 @@ public class VTClientConnector implements Runnable
       }
       else if (skipConfiguration)
       {
+        skipConfiguration = false;
         return true;
       }
       if (line.toUpperCase().startsWith("Y"))
       {
-        VTMainConsole.print("VT>Enter encryption type(SALSA(S)/HC(H)/GRAIN(G)/ZUC(Z)/LEA(L)):");
+        VTMainConsole.print("VT>Enter encryption type(SALSA(S)/HC(H)/GRAIN(G)/ZUC(Z)/LEA(L)/TLS(T)):");
         line = VTMainConsole.readLine(false);
         if (line == null)
         {
@@ -1264,6 +1272,7 @@ public class VTClientConnector implements Runnable
         }
         else if (skipConfiguration)
         {
+          skipConfiguration = false;
           return true;
         }
         encryptionType = "SALSA";
@@ -1287,6 +1296,10 @@ public class VTClientConnector implements Runnable
         {
           encryptionType = "LEA";
         }
+        if (line.toUpperCase().startsWith("T"))
+        {
+          encryptionType = "TLS";
+        }
         VTMainConsole.print("VT>Enter encryption password:");
         line = VTMainConsole.readLine(false);
         if (line == null)
@@ -1295,6 +1308,7 @@ public class VTClientConnector implements Runnable
         }
         else if (skipConfiguration)
         {
+          skipConfiguration = false;
           return true;
         }
         encryptionKey = line.getBytes("UTF-8");
@@ -1313,6 +1327,7 @@ public class VTClientConnector implements Runnable
       }
       else if (skipConfiguration)
       {
+        skipConfiguration = false;
         return true;
       }
       if (line.length() > 0)
@@ -1339,6 +1354,7 @@ public class VTClientConnector implements Runnable
       }
       else if (skipConfiguration)
       {
+        skipConfiguration = false;
         return true;
       }
       if (line.length() > 0)
@@ -1365,6 +1381,7 @@ public class VTClientConnector implements Runnable
       }
       else if (skipConfiguration)
       {
+        skipConfiguration = false;
         return true;
       }
       setSessionShell(shell);
@@ -1376,6 +1393,7 @@ public class VTClientConnector implements Runnable
       }
       else if (skipConfiguration)
       {
+        skipConfiguration = false;
         return true;
       }
       setSessionCommands(commands);
@@ -1388,6 +1406,7 @@ public class VTClientConnector implements Runnable
       }
       else if (skipConfiguration)
       {
+        skipConfiguration = false;
         return true;
       }
       if (!line.toUpperCase().startsWith("N"))
@@ -1406,6 +1425,7 @@ public class VTClientConnector implements Runnable
         }
         else if (skipConfiguration)
         {
+          skipConfiguration = false;
           return true;
         }
         client.setUser(user);
@@ -1418,6 +1438,7 @@ public class VTClientConnector implements Runnable
         }
         else if (skipConfiguration)
         {
+          skipConfiguration = false;
           return true;
         }
         client.setPassword(password);
@@ -1449,24 +1470,26 @@ public class VTClientConnector implements Runnable
       {
         if (establishConnection(connection, hostAddress, hostPort != null && hostPort > 0 ? hostPort : 6060))
         {
+          skipConfiguration = false;
           client.closeConnectionDialog();
           handler.run();
         }
         else
         {
-          
+          skipConfiguration = false;
         }
       }
       else
       {
         if (listenConnection(connection))
         {
+          skipConfiguration = false;
           client.closeConnectionDialog();
           handler.run();
         }
         else
         {
-          
+          skipConfiguration = false;
         }
       }
       if (client.isAgent())
@@ -1480,14 +1503,9 @@ public class VTClientConnector implements Runnable
         {
           stopConnectionRetryTimeoutThread();
         }
-        if (skipConfiguration)
-        {
-          skipConfiguration = false;
-        }
       }
-//      connecting = false;
+      skipConfiguration = false;
     }
-    
   }
   
   public void addSessionListener(VTClientSessionListener listener)
@@ -1513,16 +1531,6 @@ public class VTClientConnector implements Runnable
     connectionListeners.remove(listener);
     handler.setConnectionListeners(connectionListeners);
   }
-  
-  // public String getSessionLines()
-  // {
-  // return sessionLines;
-  // }
-  
-  // public void setSessionLines(String sessionLines)
-  // {
-  // this.sessionLines = sessionLines;
-  // }
   
   public String getSessionShell()
   {

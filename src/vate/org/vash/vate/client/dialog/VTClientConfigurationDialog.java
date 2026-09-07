@@ -428,6 +428,7 @@ public class VTClientConfigurationDialog extends Dialog
     //encryptionTypeChoice.add("RABBIT");
     encryptionTypeChoice.add("ZUC");
     encryptionTypeChoice.add("LEA");
+    encryptionTypeChoice.add("TLS");
     encryptionTypeChoice.select("NONE");
     encryptionTypeChoice.addItemListener(new ItemListener()
     {
@@ -462,6 +463,10 @@ public class VTClientConfigurationDialog extends Dialog
           else if (e.getItem().equals("LEA"))
           {
             setEncryptionType("LEA");
+          }
+          else if (e.getItem().equals("TLS"))
+          {
+            setEncryptionType("TLS");
           }
         }
       }
@@ -1347,6 +1352,10 @@ public class VTClientConfigurationDialog extends Dialog
     else if (encryption.toUpperCase().startsWith("L"))
     {
       encryptionType.setParameter("LEA");
+    }
+    else if (encryption.toUpperCase().startsWith("T"))
+    {
+      encryptionType.setParameter("TLS");
     }
     else
     {

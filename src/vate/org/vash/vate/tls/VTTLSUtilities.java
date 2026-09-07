@@ -53,6 +53,50 @@ import org.vash.vate.reflection.VTReflectionUtils;
 
 public class VTTLSUtilities
 {
+  public static void allowUnsafeTLSSettings()
+  {
+    try
+    {
+      java.security.Security.setProperty("jdk.certpath.disabledAlgorithms", "");
+    }
+    catch (Throwable t)
+    {
+      
+    }
+    try
+    {
+      java.security.Security.setProperty("jdk.tls.disabledAlgorithms", "");
+    }
+    catch (Throwable t)
+    {
+      
+    }
+    try
+    {
+      java.security.Security.setProperty("jdk.crypto.disabledAlgorithms", "");
+    }
+    catch (Throwable t)
+    {
+      
+    }
+    try
+    {
+      java.security.Security.setProperty("jdk.security.legacyAlgorithms", "");
+    }
+    catch (Throwable t)
+    {
+      
+    }
+    try
+    {
+      java.security.Security.setProperty("jdk.tls.legacyAlgorithms", "");
+    }
+    catch (Throwable t)
+    {
+      
+    }
+  }
+  
   private static class OverlyOptimisticHostnameVerifier implements HostnameVerifier
   {
     public boolean verify(String arg0, SSLSession arg1)
@@ -121,50 +165,6 @@ public class VTTLSUtilities
     public String[] getServerAliases(String arg0, Principal[] arg1)
     {
       return new String[] {};
-    }
-  }
-  
-  public static void allowUnsafeTLSSettings()
-  {
-    try
-    {
-      java.security.Security.setProperty("jdk.certpath.disabledAlgorithms", "");
-    }
-    catch (Throwable t)
-    {
-      
-    }
-    try
-    {
-      java.security.Security.setProperty("jdk.tls.disabledAlgorithms", "");
-    }
-    catch (Throwable t)
-    {
-      
-    }
-    try
-    {
-      java.security.Security.setProperty("jdk.crypto.disabledAlgorithms", "");
-    }
-    catch (Throwable t)
-    {
-      
-    }
-    try
-    {
-      java.security.Security.setProperty("jdk.security.legacyAlgorithms", "");
-    }
-    catch (Throwable t)
-    {
-      
-    }
-    try
-    {
-      java.security.Security.setProperty("jdk.tls.legacyAlgorithms", "");
-    }
-    catch (Throwable t)
-    {
-      
     }
   }
   
@@ -469,8 +469,39 @@ public class VTTLSUtilities
       SSLSocket tlsSocket = (SSLSocket) factory.createSocket(socket, host, port, autoClose);
       if (client && supportsAtLeastJDK7() && !supportsAtLeastJDK8())
       {
-        tlsSocket.setEnabledProtocols(new String[] {"TLSv1", "TLSv1.1", "TLSv1.2"});
+        try
+        {
+          tlsSocket.setEnabledProtocols(new String[] {"TLSv1", "TLSv1.1", "TLSv1.2"});
+        }
+        catch (Throwable t)
+        {
+          
+        }
       }
+//      else if (supportsAtLeastJDK8())
+//      {
+//        try
+//        {
+//          List<String> protocols = new ArrayList<String>(Arrays.asList(tlsSocket.getEnabledProtocols()));
+//          if (!protocols.contains("TLSv1"))
+//          {
+//            protocols.add("TLSv1");
+//          }
+//          if (!protocols.contains("TLSv1.1"))
+//          {
+//            protocols.add("TLSv1.1");
+//          }
+//          if (!protocols.contains("TLSv1.2"))
+//          {
+//            protocols.add("TLSv1.2");
+//          }
+//          tlsSocket.setEnabledProtocols(protocols.toArray(new String[] {}));
+//        }
+//        catch (Throwable t)
+//        {
+//          
+//        }
+//      }
       tlsSocket.setUseClientMode(client);
       return tlsSocket;
     }

@@ -11,6 +11,9 @@ import java.net.SocketAddress;
 import java.net.SocketException;
 import java.nio.channels.SocketChannel;
 
+import org.vash.vate.VTSystem;
+import org.vash.vate.tls.VTTLSUtilities;
+
 public abstract class VTProxySocket extends Socket
 {
   protected VTProxy currentProxy;
@@ -42,6 +45,10 @@ public abstract class VTProxySocket extends Socket
       }
       currentSocket.setTcpNoDelay(true);
       currentSocket.setKeepAlive(true);
+      if (currentProxy.getProxyTLS())
+      {
+        currentSocket = VTTLSUtilities.createTLSSocket(currentSocket, currentProxy.getProxyHost(), currentProxy.getProxyPort(), true, true, VTSystem.VT_UNSAFE_TLS_CONTEXT);
+      }
     }
     else if (currentSocket == null || currentSocket.isClosed() || !currentSocket.isConnected())
     {
