@@ -12,6 +12,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
+import org.vash.vate.VTSystem;
 import org.vash.vate.parser.VTArgumentParser;
 import org.vash.vate.parser.VTPropertiesBuilder;
 import org.vash.vate.proxy.server.VTSocksHttpProxyAuthenticatorNone;
@@ -266,6 +267,10 @@ public class VTSocksPlusHttpProxyServerLauncher
     else
     {
       validation = null;
+    }
+    if (socksPlusHttpProxyServer.tls)
+    {
+      VTSystem.initialize();
     }
     if (validation != null)
     {
