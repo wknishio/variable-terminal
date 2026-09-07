@@ -26,6 +26,7 @@ public class VTSocksPlusHttpProxyServerLauncher
   private int port = 1080;
   private String host = null;
   private String bind = null;
+  private boolean tls = false;
   private final Collection<VTCredential> userCredentials = new ConcurrentLinkedQueue<VTCredential>();
   private final ExecutorService executorService;
   
@@ -104,6 +105,18 @@ public class VTSocksPlusHttpProxyServerLauncher
         
       }
     }
+    if (fileProxySettings.getProperty("proxy.tls") != null)
+    {
+      try
+      {
+        String proxyTLS = fileProxySettings.getProperty("proxy.tls").toUpperCase();
+        tls = proxyTLS.startsWith("1") || proxyTLS.startsWith("Y") || proxyTLS.startsWith("T") || proxyTLS.startsWith("ON");
+      }
+      catch (Throwable e)
+      {
+        
+      }
+    }
   }
   
   public void parseParameters(String[] parameters) throws Exception
@@ -124,6 +137,10 @@ public class VTSocksPlusHttpProxyServerLauncher
         {
           
         }
+      }
+      if (parameterName.contains("-T"))
+      {
+        tls = true;
       }
       if (parameterName.contains("-P"))
       {
@@ -252,14 +269,14 @@ public class VTSocksPlusHttpProxyServerLauncher
     }
     if (validation != null)
     {
-      VTSocksProxyServer socksServer = new VTSocksProxyServer(new VTSocksHttpProxyAuthenticatorUsernamePassword(validation, new LinkedHashSet<String>(), new VTSplitMix64Random(secureRandom.nextLong()), socksPlusHttpProxyServer.executorService, socksPlusHttpProxyServer.bind, 0, 0, null), socksPlusHttpProxyServer.executorService, false, false, 0, null);
+      VTSocksProxyServer socksServer = new VTSocksProxyServer(new VTSocksHttpProxyAuthenticatorUsernamePassword(validation, new LinkedHashSet<String>(), new VTSplitMix64Random(secureRandom.nextLong()), socksPlusHttpProxyServer.executorService, socksPlusHttpProxyServer.bind, 0, 0, null), socksPlusHttpProxyServer.executorService, socksPlusHttpProxyServer.tls, false, false, 0, null);
       socksServer.setAcceptTimeout(0);
       socksServer.setIdleTimeout(0);
       socksServer.start(socksPlusHttpProxyServer.port, socksPlusHttpProxyServer.host, socksPlusHttpProxyServer.bind);
     }
     else
     {
-      VTSocksProxyServer socksServer = new VTSocksProxyServer(new VTSocksHttpProxyAuthenticatorNone(socksPlusHttpProxyServer.executorService, socksPlusHttpProxyServer.bind, 0, 0, null), socksPlusHttpProxyServer.executorService, false, false, 0, null);
+      VTSocksProxyServer socksServer = new VTSocksProxyServer(new VTSocksHttpProxyAuthenticatorNone(socksPlusHttpProxyServer.executorService, socksPlusHttpProxyServer.bind, 0, 0, null), socksPlusHttpProxyServer.executorService, socksPlusHttpProxyServer.tls, false, false, 0, null);
       socksServer.setAcceptTimeout(0);
       socksServer.setIdleTimeout(0);
       socksServer.start(socksPlusHttpProxyServer.port, socksPlusHttpProxyServer.host, socksPlusHttpProxyServer.bind);

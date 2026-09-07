@@ -36,6 +36,7 @@ import org.vash.vate.net.sourceforge.jsocks.socks.UDPRelayServer;
 import org.vash.vate.net.sourceforge.jsocks.socks.server.ServerAuthenticator;
 import org.vash.vate.proxy.client.VTProxy;
 import org.vash.vate.socket.remote.VTRemoteSocketFactory;
+import org.vash.vate.tls.VTTLSUtilities;
 
 /**
  * SOCKS4 and SOCKS5 proxy, handles both protocols simultaniously. Implements
@@ -81,6 +82,7 @@ public class VTSocksProxyServer implements Runnable {
 
 	private int BUF_SIZE = DEFAULT_BUF_SIZE;
 	
+	private boolean enforce_tls = false;
 	private boolean disabled_udp_relay = false;
 	private boolean disabled_bind = false;
 	
@@ -114,9 +116,10 @@ public class VTSocksProxyServer implements Runnable {
 	    this.auth = auth;
 	  }
 
-	 public VTSocksProxyServer(ServerAuthenticator auth, ExecutorService executorService, boolean disabled_bind, boolean disabled_udp_relay, int connectTimeout, VTProxy connect_proxy) {
+	 public VTSocksProxyServer(ServerAuthenticator auth, ExecutorService executorService, boolean enforce_tls, boolean disabled_bind, boolean disabled_udp_relay, int connectTimeout, VTProxy connect_proxy) {
 	    this.executorService = executorService;
 	    this.auth = auth;
+	    this.enforce_tls = enforce_tls;
 	    this.disabled_bind = disabled_bind;
 	    this.disabled_udp_relay = disabled_udp_relay;
 	    this.connect_proxy = connect_proxy;
@@ -134,10 +137,11 @@ public class VTSocksProxyServer implements Runnable {
 		mode = START_MODE;
 	}
 	
-	public VTSocksProxyServer(ServerAuthenticator auth, Socket socket, ExecutorService executorService, boolean disabled_bind, boolean disabled_udp_relay, String bind, int connectTimeout, VTProxy connect_proxy) {
+	public VTSocksProxyServer(ServerAuthenticator auth, Socket socket, ExecutorService executorService, boolean enforce_tls, boolean disabled_bind, boolean disabled_udp_relay, String bind, int connectTimeout, VTProxy connect_proxy) {
     this.executorService = executorService;
     this.auth = auth;
     this.sock = socket;
+    this.enforce_tls = enforce_tls;
     this.disabled_bind = disabled_bind;
     this.disabled_udp_relay = disabled_udp_relay;
     this.connect_proxy = connect_proxy;
@@ -352,7 +356,10 @@ public class VTSocksProxyServer implements Runnable {
 	private void startSession() throws IOException {
 		sock.setSoTimeout(idleTimeout);
 	  sock.setKeepAlive(true);
-
+	  if (enforce_tls)
+	  {
+	    sock = VTTLSUtilities.createTLSSocket(sock, "", 1, false, true, VTSystem.VT_UNSAFE_TLS_CONTEXT);
+	  }
 		try {
 			auth = auth.startSession(sock);
 		} catch (IOException ioe) {
