@@ -17,6 +17,8 @@ import org.vash.vate.security.VTArrayComparator;
 import org.vash.vate.security.VTBlake3SecureRandom;
 import org.vash.vate.security.VTBlake3MessageDigest;
 import org.vash.vate.security.VTCryptographicEngine;
+import org.vash.vate.stream.base.VTZ85InputStream;
+import org.vash.vate.stream.base.VTZ85OutputStream;
 import org.vash.vate.stream.compress.VTCompressorSelector;
 import org.vash.vate.stream.endian.VTLittleEndianInputStream;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
@@ -466,6 +468,18 @@ public class VTClientConnection
     return verified;
   }
   
+//  private void nextPrintableBytes(byte[] data)
+//  {
+//    int min = 32;
+//    int max = 126;
+//    int range = (max - min) + 1;
+//    
+//    for (int i = 0; i < data.length; i++)
+//    {
+//      data[i] = (byte) (secureRandom.nextInt(range) + min);
+//    }
+//  }
+  
   private void setNonceStreams() throws IOException
   {
     if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_TLS)
@@ -474,8 +488,8 @@ public class VTClientConnection
       TLSSocket.setNeedClientAuth(true);
       connectionSocket = TLSSocket;
     }
-    authenticationInputStream = connectionSocket.getInputStream();
-    authenticationOutputStream = connectionSocket.getOutputStream();
+    authenticationInputStream = new VTZ85InputStream(connectionSocket.getInputStream());
+    authenticationOutputStream = new VTZ85OutputStream(connectionSocket.getOutputStream());
     nonceReader = new VTLittleEndianInputStream(authenticationInputStream);
     nonceWriter = new VTLittleEndianOutputStream(authenticationOutputStream);
   }
