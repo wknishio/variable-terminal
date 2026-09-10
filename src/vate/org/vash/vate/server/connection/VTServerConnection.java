@@ -478,7 +478,7 @@ public class VTServerConnection
     PushbackInputStream input = new PushbackInputStream(connectionSocket.getInputStream(), 1);
     OutputStream output = connectionSocket.getOutputStream();
     int firstByte = input.read();
-    if ((firstByte & 0x80) != 0 || firstByte == 0x16)
+    if (firstByte == 0x16 || (firstByte & 0x80) != 0)
     {
       hasTLSMark = true;
     }
@@ -508,16 +508,6 @@ public class VTServerConnection
     if (checkTLSMark())
     {
       encryptionType = VTSystem.VT_CONNECTION_ENCRYPTION_TLS;
-    }
-    else
-    {
-      if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_TLS)
-      {
-        encryptionType = VTSystem.VT_CONNECTION_ENCRYPTION_HC;
-      }
-    }
-    if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_TLS)
-    {
       SSLSocket tlsSocket = VTTLSUtilities.createTLSSocket(connectionSocket, "null", 1, false, true, VTSystem.VT_UNSAFE_TLS_CONTEXT);
       tlsSocket.setNeedClientAuth(true);
       tlsSocket.startHandshake();

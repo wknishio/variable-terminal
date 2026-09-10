@@ -443,7 +443,7 @@ public class VTNanoHTTPDProxySession implements Runnable
         if (!method.equalsIgnoreCase("CONNECT") && !uri.toLowerCase().contains("://"))
         {
           //ignore requests not intended for http proxy and disconnect directly
-          return;
+          sendError( HTTP_BAD_REQUEST, "BAD REQUEST: Invalid request." );
         }
         else
         {
