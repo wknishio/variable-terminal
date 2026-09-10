@@ -122,7 +122,14 @@ public class VTCryptographicEngine
     }
     else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_TLS)
     {
-      
+      encryptionStreamCipher = new HC256Engine();
+      decryptionStreamCipher = new HC256Engine();
+      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 32);
+      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, second, first, encryptionKeys), 0, 32);
+      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(32, first, second, encryptionKeys), 0, 32);
+      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(32, second, first, encryptionKeys), 0, 32);
+      encryptionStreamCipher.init(true, encryptionIvParameterSpec);
+      decryptionStreamCipher.init(false, decryptionIvParameterSpec);
     }
     else
     {
@@ -227,7 +234,14 @@ public class VTCryptographicEngine
     }
     else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_TLS)
     {
-      
+      encryptionStreamCipher = new HC256Engine();
+      decryptionStreamCipher = new HC256Engine();
+      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 32);
+      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, second, first, encryptionKeys), 0, 32);
+      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(32, first, second, encryptionKeys), 0, 32);
+      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(32, second, first, encryptionKeys), 0, 32);
+      encryptionStreamCipher.init(true, encryptionIvParameterSpec);
+      decryptionStreamCipher.init(false, decryptionIvParameterSpec);
     }
     else
     {
