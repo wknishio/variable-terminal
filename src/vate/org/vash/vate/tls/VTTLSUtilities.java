@@ -14,6 +14,7 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.spec.ECGenParameterSpec;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
@@ -22,6 +23,7 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLServerSocket;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
@@ -468,22 +470,20 @@ public class VTTLSUtilities
     {
       SSLSocket tlsSocket = (SSLSocket) factory.createSocket(socket, host, port, autoClose);
       tlsSocket.setUseClientMode(client);
-      if (client)
+      if (client && supportsAtLeastJDK7() && !supportsAtLeastJDK8())
       {
-        if (supportsAtLeastJDK7())
+        try
         {
-          if (!supportsAtLeastJDK8())
-          {
-            try
-            {
-              tlsSocket.setEnabledProtocols(new String[] {"TLSv1", "TLSv1.1", "TLSv1.2"});
-            }
-            catch (Throwable t)
-            {
-              
-            }
-          }
+          tlsSocket.setEnabledProtocols(new String[] {"TLSv1", "TLSv1.1", "TLSv1.2"});
         }
+        catch (Throwable t)
+        {
+          
+        }
+      }
+      else
+      {
+        disableSSL(tlsSocket);
       }
       return tlsSocket;
     }
@@ -492,5 +492,47 @@ public class VTTLSUtilities
       //t.printStackTrace();
     }
     return null;
+  }
+  
+  public static void disableSSL(SSLSocket tlsSocket)
+  {
+    String[] currentProtocols = tlsSocket.getEnabledProtocols();
+    ArrayList<String> allowedProtocols = new ArrayList<String>();
+    for (String protocol : currentProtocols)
+    {
+      if (!"SSLv2Hello".equalsIgnoreCase(protocol) && !"SSLv3".equalsIgnoreCase(protocol))
+      {
+        allowedProtocols.add(protocol);
+      }
+    }
+    try
+    {
+      tlsSocket.setEnabledProtocols(allowedProtocols.toArray(new String[] {}));
+    }
+    catch (Throwable t)
+    {
+      
+    }
+  }
+  
+  public static void disableSSL(SSLServerSocket tlsSocket)
+  {
+    String[] currentProtocols = tlsSocket.getEnabledProtocols();
+    ArrayList<String> allowedProtocols = new ArrayList<String>();
+    for (String protocol : currentProtocols)
+    {
+      if (!"SSLv2Hello".equalsIgnoreCase(protocol) && !"SSLv3".equalsIgnoreCase(protocol))
+      {
+        allowedProtocols.add(protocol);
+      }
+    }
+    try
+    {
+      tlsSocket.setEnabledProtocols(allowedProtocols.toArray(new String[] {}));
+    }
+    catch (Throwable t)
+    {
+      
+    }
   }
 }

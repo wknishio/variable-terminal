@@ -12,6 +12,7 @@ import javax.net.ssl.SSLSocketFactory;
 
 import org.vash.vate.com.guichaguri.minimalftp.FTPServer;
 import org.vash.vate.com.guichaguri.minimalftp.handler.FTPConnectionHandler;
+import org.vash.vate.tls.VTTLSUtilities;
 
 public class VTFTPConnectionHandler extends FTPConnectionHandler
 {
@@ -41,6 +42,7 @@ public class VTFTPConnectionHandler extends FTPConnectionHandler
         SSLSocketFactory sslfactory = con.getServer().getSSLContext().getSocketFactory();
         SSLSocket sslsocket = (SSLSocket)sslfactory.createSocket(acceptedSocket, acceptedAddress.getHostName(), acceptedAddress.getPort(), true);
         sslsocket.setUseClientMode(false);
+        VTTLSUtilities.disableSSL(sslsocket);
         return sslsocket;
       }
       else
@@ -53,6 +55,7 @@ public class VTFTPConnectionHandler extends FTPConnectionHandler
       SSLSocketFactory sslfactory = con.getServer().getSSLContext().getSocketFactory();
       SSLSocket sslsocket = (SSLSocket)sslfactory.createSocket(clientFactory.createSocket(activeHost, activePort), activeHost, activePort, true);
       sslsocket.setUseClientMode(false);
+      VTTLSUtilities.disableSSL(sslsocket);
       return sslsocket;
     }
     else
