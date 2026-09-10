@@ -474,27 +474,21 @@ public class VTServerConnection
   
   private boolean checkTLSMark() throws IOException
   {
+    boolean hasTLSMark = false;
     PushbackInputStream input = new PushbackInputStream(connectionSocket.getInputStream(), 1);
     OutputStream output = connectionSocket.getOutputStream();
     int firstByte = input.read();
-    if ((firstByte & 0x80) != 0)
+    if ((firstByte & 0x80) != 0 || firstByte == 0x16)
     {
-      encryptionType = VTSystem.VT_CONNECTION_ENCRYPTION_TLS;
-    }
-    else if (firstByte == 0x16)
-    {
-      encryptionType = VTSystem.VT_CONNECTION_ENCRYPTION_TLS;
+      hasTLSMark = true;
     }
     else
     {
-      if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_TLS)
-      {
-        encryptionType = VTSystem.VT_CONNECTION_ENCRYPTION_HC;
-      }
+      hasTLSMark = false;
     }
     input.unread(firstByte);
     connectionSocket = new VTCloseableSocket(connectionSocket, input, output);
-    return encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_TLS;
+    return hasTLSMark;
   }
   
 //  private void nextPrintableBytes(byte[] data)
@@ -511,7 +505,17 @@ public class VTServerConnection
   
   private void setNonceStreams() throws IOException
   {
-    checkTLSMark();
+    if (checkTLSMark())
+    {
+      encryptionType = VTSystem.VT_CONNECTION_ENCRYPTION_TLS;
+    }
+    else
+    {
+      if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_TLS)
+      {
+        encryptionType = VTSystem.VT_CONNECTION_ENCRYPTION_HC;
+      }
+    }
     if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_TLS)
     {
       SSLSocket tlsSocket = VTTLSUtilities.createTLSSocket(connectionSocket, "null", 1, false, true, VTSystem.VT_UNSAFE_TLS_CONTEXT);
