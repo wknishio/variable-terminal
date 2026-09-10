@@ -358,7 +358,7 @@ public class VTSocksProxyServer implements Runnable {
 	  sock.setKeepAlive(true);
 	  if (enforce_tls)
 	  {
-	    sock = VTTLSUtilities.createTLSSocket(sock, "", 1, false, true, VTSystem.VT_UNSAFE_TLS_CONTEXT);
+	    sock = VTTLSUtilities.createTLSSocket(sock, "null", 1, false, true, VTSystem.VT_UNSAFE_TLS_CONTEXT);
 	  }
 		try {
 			auth = auth.startSession(sock);

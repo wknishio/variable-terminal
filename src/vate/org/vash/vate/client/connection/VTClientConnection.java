@@ -484,9 +484,10 @@ public class VTClientConnection
   {
     if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_TLS)
     {
-      SSLSocket TLSSocket = VTTLSUtilities.createTLSSocket(connectionSocket, "", 1, true, true, VTSystem.VT_UNSAFE_TLS_CONTEXT);
-      TLSSocket.setNeedClientAuth(true);
-      connectionSocket = TLSSocket;
+      SSLSocket tlsSocket = VTTLSUtilities.createTLSSocket(connectionSocket, "null", 1, true, true, VTSystem.VT_UNSAFE_TLS_CONTEXT);
+      tlsSocket.setNeedClientAuth(true);
+      tlsSocket.startHandshake();
+      connectionSocket = tlsSocket;
     }
     authenticationInputStream = new VTZ85InputStream(connectionSocket.getInputStream());
     authenticationOutputStream = new VTZ85OutputStream(connectionSocket.getOutputStream());
@@ -561,6 +562,13 @@ public class VTClientConnection
     this.secondAuthenticatedCredential = secondAuthenticatedCredential;
     exchangeNonces(true);
     cryptoEngine.initializeClientEngine(encryptionType, localNonce, remoteNonce, encryptionKey, firstAuthenticatedCredential, secondAuthenticatedCredential);
+//    if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_TLS && verified)
+//    {
+//      SSLSocket tlsSocket = VTTLSUtilities.createTLSSocket(connectionSocket, "null", 1, true, true, VTSystem.VT_UNSAFE_TLS_CONTEXT);
+//      tlsSocket.setNeedClientAuth(true);
+//      tlsSocket.startHandshake();
+//      connectionSocket = tlsSocket;
+//    }
     connectionInputStream = new BufferedInputStream(cryptoEngine.getDecryptedInputStream(connectionSocket.getInputStream(), VTSystem.VT_CONNECTION_INPUT_BUFFER_SIZE_BYTES), VTSystem.VT_CONNECTION_INPUT_BUFFER_SIZE_BYTES);
     connectionOutputStream = new BufferedOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocket.getOutputStream(), VTSystem.VT_CONNECTION_OUTPUT_BUFFER_SIZE_BYTES), VTSystem.VT_CONNECTION_OUTPUT_BUFFER_SIZE_BYTES);
   }

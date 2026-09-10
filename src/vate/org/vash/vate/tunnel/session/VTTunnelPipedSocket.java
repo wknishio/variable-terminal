@@ -9,6 +9,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.SocketException;
+import java.nio.channels.SocketChannel;
 
 import org.vash.vate.VTSystem;
 import org.vash.vate.stream.pipe.VTPipedInputStream;
@@ -140,26 +141,6 @@ public class VTTunnelPipedSocket extends Socket implements Closeable
     }
   }
   
-  public void setSoTimeout(int timeout) throws SocketException
-  {
-    //super.setSoTimeout(timeout);
-  }
-  
-  public void setTcpNoDelay(boolean on) throws SocketException
-  {
-    //super.setTcpNoDelay(true);
-  }
-  
-  public void setSoLinger(boolean on, int linger) throws SocketException
-  {
-    //super.setSoLinger(on, linger);
-  }
-  
-  public void setKeepAlive(boolean on) throws SocketException
-  {
-    //super.setKeepAlive(false);
-  }
-  
   public void setRemotePort(int port)
   {
     this.port = port;
@@ -191,5 +172,135 @@ public class VTTunnelPipedSocket extends Socket implements Closeable
   public SocketAddress getRemoteSocketAddress()
   {
     return InetSocketAddress.createUnresolved(host, port);
+  }
+  
+  public InetAddress getLocalAddress()
+  {
+    return null;
+  }
+  
+  public int getLocalPort()
+  {
+    return -1;
+  }
+  
+  public SocketAddress getLocalSocketAddress()
+  {
+    return null;
+  }
+  
+  public SocketChannel getChannel()
+  {
+    return null;
+  }
+  
+  public void setTcpNoDelay(boolean on) throws SocketException
+  {
+    
+  }
+  
+  public boolean getTcpNoDelay() throws SocketException
+  {
+    return false;
+  }
+  
+  public void setSoLinger(boolean on, int linger) throws SocketException
+  {
+    
+  }
+  
+  public int getSoLinger() throws SocketException
+  {
+    return -1;
+  }
+  
+  public void sendUrgentData (int data) throws IOException
+  {
+    
+  }
+  
+  public void setOOBInline(boolean on) throws SocketException
+  {
+    
+  }
+  
+  public boolean getOOBInline() throws SocketException
+  {
+    return false;
+  }
+  
+  public void setSoTimeout(int timeout) throws SocketException
+  {
+    
+  }
+  
+  public int getSoTimeout() throws SocketException
+  {
+    return -1;
+  }
+  
+  public void setSendBufferSize(int size) throws SocketException
+  {
+    
+  }
+  
+  public int getSendBufferSize() throws SocketException
+  {
+    return -1;
+  }
+  
+  public void setReceiveBufferSize(int size) throws SocketException
+  {
+    
+  }
+  
+  public int getReceiveBufferSize() throws SocketException
+  {
+    return -1;
+  }
+  
+  public void setKeepAlive(boolean on) throws SocketException
+  {
+    
+  }
+  
+  public boolean getKeepAlive() throws SocketException
+  {
+    return false;
+  }
+  
+  public void setTrafficClass(int tc) throws SocketException
+  {
+    
+  }
+  
+  public int getTrafficClass() throws SocketException
+  {
+    return -1;
+  }
+  
+  public void setReuseAddress(boolean on) throws SocketException
+  {
+    
+  }
+  
+  public boolean getReuseAddress() throws SocketException
+  {
+    return false;
+  }
+  
+  public boolean isInputShutdown()
+  {
+    return false;
+  }
+  
+  public boolean isOutputShutdown()
+  {
+    return false;
+  }
+  
+  public void setPerformancePreferences(int connectionTime, int latency, int bandwidth)
+  {
+    
   }
 }

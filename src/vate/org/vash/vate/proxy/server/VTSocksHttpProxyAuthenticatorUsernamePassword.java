@@ -9,6 +9,8 @@ import java.util.Collection;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 
+import javax.net.ssl.SSLSocket;
+
 import org.vash.vate.VTSystem;
 import org.vash.vate.net.sourceforge.jsocks.socks.server.ServerAuthenticator;
 import org.vash.vate.net.sourceforge.jsocks.socks.server.ServerAuthenticatorNone;
@@ -54,13 +56,13 @@ public class VTSocksHttpProxyAuthenticatorUsernamePassword extends UserPasswordA
     }
     OutputStream output = socket.getOutputStream();
     int version = input.read();
-    if (version == 0x16)
+    if ((version == 0x16) || ((version & 0x80) == 0x80))
     {
       //tls handshake detected
       input.unread(version);
-      socket = VTTLSUtilities.createTLSSocket(new VTCloseableSocket(socket, input), "", 1, false, true, VTSystem.VT_UNSAFE_TLS_CONTEXT);
-      input = new PushbackInputStream(socket.getInputStream());
-      output = socket.getOutputStream();
+      SSLSocket tlsSocket = VTTLSUtilities.createTLSSocket(new VTCloseableSocket(socket, input), "null", 1, false, false, VTSystem.VT_UNSAFE_TLS_CONTEXT);
+      input = new PushbackInputStream(tlsSocket.getInputStream());
+      output = tlsSocket.getOutputStream();
       version = input.read();
     }
     if (version != 5)
@@ -69,7 +71,7 @@ public class VTSocksHttpProxyAuthenticatorUsernamePassword extends UserPasswordA
       {
         input.unread(version);
         //fallback to use http proxy instead
-        VTNanoHTTPDProxySession httpProxy = new VTNanoHTTPDProxySession(new VTCloseableSocket(socket, input), nonces, random, executorService, true, validator.getUsernames(), validator.getPasswords(), bind, connectTimeout, dataTimeout, connect_proxy);
+        VTNanoHTTPDProxySession httpProxy = new VTNanoHTTPDProxySession(new VTCloseableSocket(socket, input, output), nonces, random, executorService, true, validator.getUsernames(), validator.getPasswords(), bind, connectTimeout, dataTimeout, connect_proxy);
         try
         {
           httpProxy.run();

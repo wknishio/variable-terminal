@@ -1,5 +1,6 @@
 package org.vash.vate.proxy.client;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -14,7 +15,7 @@ import java.nio.channels.SocketChannel;
 import org.vash.vate.VTSystem;
 import org.vash.vate.tls.VTTLSUtilities;
 
-public abstract class VTProxySocket extends Socket
+public abstract class VTProxySocket extends Socket implements Closeable
 {
   protected VTProxy currentProxy;
   protected Socket currentSocket;
@@ -211,7 +212,7 @@ public abstract class VTProxySocket extends Socket
     return proxySocket.getOOBInline();
   }
   
-  public synchronized void setSoTimeout(int timeout) throws SocketException
+  public void setSoTimeout(int timeout) throws SocketException
   {
     if (proxySocket == null)
     {
@@ -220,7 +221,7 @@ public abstract class VTProxySocket extends Socket
     proxySocket.setSoTimeout(timeout);
   }
   
-  public synchronized int getSoTimeout() throws SocketException
+  public int getSoTimeout() throws SocketException
   {
     if (proxySocket == null)
     {
@@ -229,7 +230,7 @@ public abstract class VTProxySocket extends Socket
     return proxySocket.getSoTimeout();
   }
   
-  public synchronized void setSendBufferSize(int size) throws SocketException
+  public void setSendBufferSize(int size) throws SocketException
   {
     if (proxySocket == null)
     {
@@ -238,7 +239,7 @@ public abstract class VTProxySocket extends Socket
     proxySocket.setSendBufferSize(size);
   }
   
-  public synchronized int getSendBufferSize() throws SocketException
+  public int getSendBufferSize() throws SocketException
   {
     if (proxySocket == null)
     {
@@ -247,7 +248,7 @@ public abstract class VTProxySocket extends Socket
     return proxySocket.getSendBufferSize();
   }
   
-  public synchronized void setReceiveBufferSize(int size) throws SocketException
+  public void setReceiveBufferSize(int size) throws SocketException
   {
     if (proxySocket == null)
     {
@@ -256,7 +257,7 @@ public abstract class VTProxySocket extends Socket
     proxySocket.setReceiveBufferSize(size);
   }
   
-  public synchronized int getReceiveBufferSize() throws SocketException
+  public int getReceiveBufferSize() throws SocketException
   {
     if (proxySocket == null)
     {
@@ -319,7 +320,7 @@ public abstract class VTProxySocket extends Socket
     return proxySocket.getReuseAddress();
   }
   
-  public synchronized void close() throws IOException
+  public void close() throws IOException
   {
     if (proxySocket != null)
     {

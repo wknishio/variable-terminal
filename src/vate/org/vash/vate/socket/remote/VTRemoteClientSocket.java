@@ -1,5 +1,6 @@
 package org.vash.vate.socket.remote;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -12,7 +13,7 @@ import java.nio.channels.SocketChannel;
 
 import org.vash.vate.proxy.client.VTProxy;
 
-public class VTRemoteClientSocket extends Socket
+public class VTRemoteClientSocket extends Socket implements Closeable
 {
   private final VTRemoteSocketFactory remoteSocketFactory;
   private Socket remoteSocket;
@@ -253,7 +254,7 @@ public class VTRemoteClientSocket extends Socket
     return remoteSocket.getOOBInline();
   }
   
-  public synchronized void setSoTimeout(int timeout) throws SocketException
+  public void setSoTimeout(int timeout) throws SocketException
   {
     if (remoteSocket == null)
     {
@@ -262,7 +263,7 @@ public class VTRemoteClientSocket extends Socket
     remoteSocket.setSoTimeout(timeout);
   }
   
-  public synchronized int getSoTimeout() throws SocketException
+  public int getSoTimeout() throws SocketException
   {
     if (remoteSocket == null)
     {
@@ -271,7 +272,7 @@ public class VTRemoteClientSocket extends Socket
     return remoteSocket.getSoTimeout();
   }
   
-  public synchronized void setSendBufferSize(int size) throws SocketException
+  public void setSendBufferSize(int size) throws SocketException
   {
     if (remoteSocket == null)
     {
@@ -280,7 +281,7 @@ public class VTRemoteClientSocket extends Socket
     remoteSocket.setSendBufferSize(size);
   }
   
-  public synchronized int getSendBufferSize() throws SocketException
+  public int getSendBufferSize() throws SocketException
   {
     if (remoteSocket == null)
     {
@@ -289,7 +290,7 @@ public class VTRemoteClientSocket extends Socket
     return remoteSocket.getSendBufferSize();
   }
   
-  public synchronized void setReceiveBufferSize(int size) throws SocketException
+  public void setReceiveBufferSize(int size) throws SocketException
   {
     if (remoteSocket == null)
     {
@@ -298,7 +299,7 @@ public class VTRemoteClientSocket extends Socket
     remoteSocket.setReceiveBufferSize(size);
   }
   
-  public synchronized int getReceiveBufferSize() throws SocketException
+  public int getReceiveBufferSize() throws SocketException
   {
     if (remoteSocket == null)
     {
@@ -361,7 +362,7 @@ public class VTRemoteClientSocket extends Socket
     return remoteSocket.getReuseAddress();
   }
   
-  public synchronized void close() throws IOException
+  public void close() throws IOException
   {
     if (remoteSocket == null)
     {

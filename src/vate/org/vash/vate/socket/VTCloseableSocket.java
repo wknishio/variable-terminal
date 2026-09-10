@@ -4,32 +4,35 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
 import java.net.SocketException;
+import java.nio.channels.SocketChannel;
 
 public class VTCloseableSocket extends Socket implements Closeable
 {
-  private final Socket socket;
+  private final Socket proxySocket;
   private final InputStream input;
   private final OutputStream output;
   
   public VTCloseableSocket(Socket socket)
   {
-    this.socket = socket;
+    this.proxySocket = socket;
     this.input = null;
     this.output = null;
   }
   
   public VTCloseableSocket(Socket socket, InputStream input)
   {
-    this.socket = socket;
+    this.proxySocket = socket;
     this.input = input;
     this.output = null;
   }
   
   public VTCloseableSocket(Socket socket, InputStream input, OutputStream output)
   {
-    this.socket = socket;
+    this.proxySocket = socket;
     this.input = input;
     this.output = output;
   }
@@ -40,7 +43,7 @@ public class VTCloseableSocket extends Socket implements Closeable
     {
       return input;
     }
-    return socket.getInputStream();
+    return proxySocket.getInputStream();
   }
   
   public OutputStream getOutputStream() throws IOException
@@ -49,66 +52,336 @@ public class VTCloseableSocket extends Socket implements Closeable
     {
       return output;
     }
-    return socket.getOutputStream();
+    return proxySocket.getOutputStream();
   }
   
-  public void shutdownInput() throws IOException
+  public InetAddress getInetAddress()
   {
-    socket.shutdownInput();
+    if (proxySocket == null)
+    {
+      return null;
+    }
+    return proxySocket.getInetAddress();
   }
   
-  public void shutdownOutput() throws IOException
+  public InetAddress getLocalAddress()
   {
-    socket.shutdownOutput();
+    if (proxySocket == null)
+    {
+      return null;
+    }
+    return proxySocket.getLocalAddress();
   }
   
-  public boolean isBound()
+  public int getPort()
   {
-    return socket.isBound();
+    if (proxySocket == null)
+    {
+      return -1;
+    }
+    return proxySocket.getPort();
   }
   
-  public boolean isConnected()
+  public int getLocalPort()
   {
-    return socket.isConnected();
+    if (proxySocket == null)
+    {
+      return -1;
+    }
+    return proxySocket.getLocalPort();
   }
   
-  public boolean isClosed()
+  public SocketAddress getRemoteSocketAddress()
   {
-    return socket.isClosed();
+    if (proxySocket == null)
+    {
+      return null;
+    }
+    return proxySocket.getRemoteSocketAddress();
   }
   
-  public void close() throws IOException
+  public SocketAddress getLocalSocketAddress()
   {
-    socket.close();
+    if (proxySocket == null)
+    {
+      return null;
+    }
+    return proxySocket.getLocalSocketAddress();
   }
   
-  public void setSoTimeout(int timeout) throws SocketException
+  public SocketChannel getChannel()
   {
-    socket.setSoTimeout(timeout);
+    if (proxySocket == null)
+    {
+      return null;
+    }
+    return proxySocket.getChannel();
   }
   
   public void setTcpNoDelay(boolean on) throws SocketException
   {
-    socket.setTcpNoDelay(on);
+    if (proxySocket == null)
+    {
+      return;
+    }
+    proxySocket.setTcpNoDelay(on);
+  }
+  
+  public boolean getTcpNoDelay() throws SocketException
+  {
+    if (proxySocket == null)
+    {
+      return false;
+    }
+    return proxySocket.getTcpNoDelay();
   }
   
   public void setSoLinger(boolean on, int linger) throws SocketException
   {
-    socket.setSoLinger(on, linger);
+    if (proxySocket == null)
+    {
+      return;
+    }
+    proxySocket.setSoLinger(on, linger);
+  }
+  
+  public int getSoLinger() throws SocketException
+  {
+    if (proxySocket == null)
+    {
+      return -1;
+    }
+    return proxySocket.getSoLinger();
+  }
+  
+  public void sendUrgentData (int data) throws IOException
+  {
+    if (proxySocket == null)
+    {
+      return;
+    }
+    proxySocket.sendUrgentData(data);
+  }
+  
+  public void setOOBInline(boolean on) throws SocketException
+  {
+    if (proxySocket == null)
+    {
+      return;
+    }
+    proxySocket.setOOBInline(on);
+  }
+  
+  public boolean getOOBInline() throws SocketException
+  {
+    if (proxySocket == null)
+    {
+      return false;
+    }
+    return proxySocket.getOOBInline();
+  }
+  
+  public void setSoTimeout(int timeout) throws SocketException
+  {
+    if (proxySocket == null)
+    {
+      return;
+    }
+    proxySocket.setSoTimeout(timeout);
+  }
+  
+  public int getSoTimeout() throws SocketException
+  {
+    if (proxySocket == null)
+    {
+      return -1;
+    }
+    return proxySocket.getSoTimeout();
+  }
+  
+  public void setSendBufferSize(int size) throws SocketException
+  {
+    if (proxySocket == null)
+    {
+      return;
+    }
+    proxySocket.setSendBufferSize(size);
+  }
+  
+  public int getSendBufferSize() throws SocketException
+  {
+    if (proxySocket == null)
+    {
+      return -1;
+    }
+    return proxySocket.getSendBufferSize();
+  }
+  
+  public void setReceiveBufferSize(int size) throws SocketException
+  {
+    if (proxySocket == null)
+    {
+      return;
+    }
+    proxySocket.setReceiveBufferSize(size);
+  }
+  
+  public int getReceiveBufferSize() throws SocketException
+  {
+    if (proxySocket == null)
+    {
+      return -1;
+    }
+    return proxySocket.getReceiveBufferSize();
   }
   
   public void setKeepAlive(boolean on) throws SocketException
   {
-    socket.setKeepAlive(on);
+    if (proxySocket == null)
+    {
+      return;
+    }
+    proxySocket.setKeepAlive(on);
+  }
+  
+  public boolean getKeepAlive() throws SocketException
+  {
+    if (proxySocket == null)
+    {
+      return false;
+    }
+    return proxySocket.getKeepAlive();
+  }
+  
+  public void setTrafficClass(int tc) throws SocketException
+  {
+    if (proxySocket == null)
+    {
+      return;
+    }
+    proxySocket.setTrafficClass(tc);
+  }
+  
+  public int getTrafficClass() throws SocketException
+  {
+    if (proxySocket == null)
+    {
+      return -1;
+    }
+    return proxySocket.getTrafficClass();
+  }
+  
+  public void setReuseAddress(boolean on) throws SocketException
+  {
+    if (proxySocket == null)
+    {
+      return;
+    }
+    proxySocket.setReuseAddress(on);
+  }
+  
+  public boolean getReuseAddress() throws SocketException
+  {
+    if (proxySocket == null)
+    {
+      return false;
+    }
+    return proxySocket.getReuseAddress();
+  }
+  
+  public void close() throws IOException
+  {
+    if (proxySocket != null)
+    {
+      try
+      {
+        proxySocket.close();
+      }
+      catch (Throwable t)
+      {
+        
+      }
+    }
+  }
+  
+  public void shutdownInput() throws IOException
+  {
+    if (proxySocket == null)
+    {
+      return;
+    }
+    proxySocket.shutdownInput();
+  }
+  
+  public void shutdownOutput() throws IOException
+  {
+    if (proxySocket == null)
+    {
+      return;
+    }
+    proxySocket.shutdownOutput();
+  }
+  
+  public String toString()
+  {
+    if (proxySocket == null)
+    {
+      return null;
+    }
+    return proxySocket.toString();
+  }
+  
+  public boolean isConnected()
+  {
+    if (proxySocket == null)
+    {
+      return false;
+    }
+    return proxySocket.isConnected();
+  }
+  
+  public boolean isBound()
+  {
+    if (proxySocket == null)
+    {
+      return false;
+    }
+    return proxySocket.isBound();
+  }
+  
+  public boolean isClosed()
+  {
+    if (proxySocket == null)
+    {
+      return false;
+    }
+    return proxySocket.isClosed();
   }
   
   public boolean isInputShutdown()
   {
-    return socket.isInputShutdown();
+    if (proxySocket == null)
+    {
+      return false;
+    }
+    return proxySocket.isInputShutdown();
   }
   
   public boolean isOutputShutdown()
   {
-    return socket.isOutputShutdown();
+    if (proxySocket == null)
+    {
+      return false;
+    }
+    return proxySocket.isOutputShutdown();
+  }
+  
+  public void setPerformancePreferences(int connectionTime, int latency, int bandwidth)
+  {
+    if (proxySocket == null)
+    {
+      return;
+    }
+    proxySocket.setPerformancePreferences(connectionTime, latency, bandwidth);
   }
 }
