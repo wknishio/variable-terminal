@@ -1,5 +1,5 @@
-﻿(*) Research dynamic multiplexed channel negotiation
-(*) Instead of enforcing connection, it may be a command in client
+﻿(*) Instead of enforcing connection, it may be a command in client
+(*) Add possibility of creating additional custom commands via plugin
 (*) Create standards for all task commands using class abstraction
 	(*) Must have unique full name
 	(*) Must have unique abbreviated name
@@ -18,4 +18,3 @@
 	(*) Must handle its own resources
 	(*) Should be interruptible
 	(*) Should support multiple command instances of the same command
-(*) Add possibility of creating additional custom commands via plugin

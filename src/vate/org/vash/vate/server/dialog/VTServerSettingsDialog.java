@@ -67,6 +67,7 @@ public class VTServerSettingsDialog extends Dialog
   //private VTServerSettingsDialogParameter proxySecurity;
   private VTConfigurationDialogParameter proxyUser;
   private VTConfigurationDialogParameter proxyPassword;
+  private VTConfigurationDialogParameter authenticationType;
   private VTConfigurationDialogParameter encryptionType;
   private VTConfigurationDialogParameter encryptionPassword;
   
@@ -319,6 +320,8 @@ public class VTServerSettingsDialog extends Dialog
     TextField proxyPasswordField = new TextField(16);
     proxyPasswordField.setEchoChar('*');
     proxyPassword = new VTConfigurationDialogParameter("Proxy Password:", proxyPasswordField, false);
+    Choice authenticationTypeChoice = new Choice();
+    authenticationType = new VTConfigurationDialogParameter("Authentication Type:", authenticationTypeChoice, true);
     Choice encryptionTypeChoice = new Choice();
     encryptionType = new VTConfigurationDialogParameter("Encryption Type:", encryptionTypeChoice, true);
     TextField encryptionPasswordField = new TextField(16);
@@ -413,6 +416,10 @@ public class VTServerSettingsDialog extends Dialog
 //      }
 //    });
     
+    authenticationTypeChoice.add("DEFAULT");
+    authenticationTypeChoice.add("TLS");
+    authenticationTypeChoice.select("DEFAULT");
+    
     encryptionTypeChoice.add("NONE");
     encryptionTypeChoice.add("SALSA");
     encryptionTypeChoice.add("HC");
@@ -420,7 +427,6 @@ public class VTServerSettingsDialog extends Dialog
     //encryptionTypeChoice.add("RABBIT");
     encryptionTypeChoice.add("ZUC");
     encryptionTypeChoice.add("LEA");
-    encryptionTypeChoice.add("TLS");
     encryptionTypeChoice.select("NONE");
     encryptionTypeChoice.addItemListener(new ItemListener()
     {
@@ -455,10 +461,6 @@ public class VTServerSettingsDialog extends Dialog
           else if (e.getItem().equals("LEA"))
           {
             setEncryptionType("LEA");
-          }
-          else if (e.getItem().equals("TLS"))
-          {
-            setEncryptionType("TLS");
           }
         }
       }
@@ -865,7 +867,7 @@ public class VTServerSettingsDialog extends Dialog
     closeButton.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backwardTraversalKeysButton);
     
     Panel centerPanel = new Panel();
-    GridLayout centerLayout = new GridLayout(19, 1);
+    GridLayout centerLayout = new GridLayout(20, 1);
     centerLayout.setHgap(1);
     centerLayout.setVgap(1);
     centerPanel.setLayout(centerLayout);
@@ -891,6 +893,7 @@ public class VTServerSettingsDialog extends Dialog
     centerPanel.add(proxyUser);
     centerPanel.add(proxyPassword);
     
+    centerPanel.add(authenticationType);
     centerPanel.add(encryptionType);
     centerPanel.add(encryptionPassword);
     
@@ -1281,6 +1284,7 @@ public class VTServerSettingsDialog extends Dialog
           // connectionPort.setParameter("");
         }
         natPort.setParameter(connector.getNatPort());
+        setAuthenticationType(connector.getTLSAuthentication());
         setEncryptionType(connector.getEncryptionType());
         encryptionPassword.setParameter(connector.getEncryptionKey());
         setProxyType(connector.getProxyType());
@@ -1319,6 +1323,7 @@ public class VTServerSettingsDialog extends Dialog
           // connectionPort.setParameter("");
         }
         natPort.setParameter(server.getNatPort());
+        setAuthenticationType(server.getTLSAuthentication());
         setEncryptionType(server.getEncryptionType());
         encryptionPassword.setParameter(server.getEncryptionKey());
         setProxyType(server.getProxyType());
@@ -1383,6 +1388,18 @@ public class VTServerSettingsDialog extends Dialog
     }
   }
   
+  private void setAuthenticationType(boolean tls)
+  {
+    if (tls)
+    {
+      authenticationType.setParameter("TLS");
+    }
+    else
+    {
+      authenticationType.setParameter("DEFAULT");
+    }
+  }
+  
   private void setEncryptionType(String encryption)
   {
     if (encryption == null)
@@ -1412,10 +1429,6 @@ public class VTServerSettingsDialog extends Dialog
     else if (encryption.toUpperCase().startsWith("L"))
     {
       encryptionType.setParameter("LEA");
-    }
-    else if (encryption.toUpperCase().startsWith("T"))
-    {
-      encryptionType.setParameter("TLS");
     }
     else
     {
@@ -1518,6 +1531,7 @@ public class VTServerSettingsDialog extends Dialog
         {
           connector.setNatPort(null);
         }
+        connector.setTLSAuthentication(authenticationType.getParameter().startsWith("T"));
         connector.setEncryptionType(encryptionType.getParameter());
         try
         {
@@ -1615,6 +1629,7 @@ public class VTServerSettingsDialog extends Dialog
         {
           server.setNatPort(null);
         }
+        server.setTLSAuthentication(authenticationType.getParameter().startsWith("T"));
         server.setEncryptionType(encryptionType.getParameter());
         try
         {

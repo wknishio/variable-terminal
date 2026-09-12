@@ -28,6 +28,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
       Integer proxyPort = server.getServerConnector().getProxyPort();
       String proxyUser = server.getServerConnector().getProxyUser();
       String proxyPassword = server.getServerConnector().getProxyPassword();
+      boolean tlsAuthentication = server.getServerConnector().getTLSAuthentication();
       String encryptionType = server.getServerConnector().getEncryptionType();
       String encryptionPassword = "";
       Integer sessionsMaximum = server.getServerConnector().getSessionsMaximum();
@@ -97,6 +98,14 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
 //      }
       message.append("\nVT>Proxy user(PU): [" + proxyUser + "]");
       message.append("\nVT>Proxy password(PK): [" + proxyPassword + "]");
+      if (tlsAuthentication)
+      {
+        message.append("\nVT>Authentication type(AT): [TLS]");
+      }
+      else
+      {
+        message.append("\nVT>Authentication type(AT): []");
+      }
       if (encryptionType.toUpperCase().startsWith("S"))
       {
         message.append("\nVT>Encryption type(ET): [SALSA]");
@@ -567,6 +576,44 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
             connector.notify();
           }
           VTMainConsole.print("\rVT>Proxy password(PK) set to: [" + proxyPassword + "]\nVT>");
+        }
+        else
+        {
+          VTMainConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+        }
+      }
+      else if (parsed[1].equalsIgnoreCase("AT"))
+      {
+        if (parsed.length == 2)
+        {
+          boolean tlsAuthentication = server.getServerConnector().getTLSAuthentication();
+          if (tlsAuthentication)
+          {
+            VTMainConsole.print("\rVT>Authentication type(AT): [TLS]\nVT>");
+          }
+          else
+          {
+            VTMainConsole.print("\rVT>Authentication type(AT): []\nVT>");
+          }
+        }
+        else if (parsed.length >= 3)
+        {
+          boolean tlsAuthentication = parsed[2].toUpperCase().startsWith("T");
+          VTServerConnector connector = server.getServerConnector();
+          synchronized (connector)
+          {
+            connector.setTLSAuthentication(tlsAuthentication);
+            connector.interruptConnector();
+            connector.notify();
+          }
+          if (tlsAuthentication)
+          {
+            VTMainConsole.print("\rVT>Authentication type(AT) set to: [TLS]\nVT>");
+          }
+          else
+          {
+            VTMainConsole.print("\rVT>Authentication type(AT) set to: []\nVT>");
+          }
         }
         else
         {

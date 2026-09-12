@@ -339,10 +339,48 @@ public class VTManagedServerSocket
     vtserver.setPort(port);
   }
   
+  public VTManagedServerSocket(String host, int port, boolean passive, boolean tls, VTProxy proxy)
+  {
+    vtserver = new VTServer(true, proxy);
+    vtserver.setPassive(passive);
+    vtserver.setTLSAuthentication(tls);
+    vtserver.setDaemon(true);
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
+    vtserver.setSessionShell("N");
+    vtserver.setAddress(host);
+    vtserver.setPort(port);
+  }
+  
   public VTManagedServerSocket(String host, int port, String type, String key, boolean passive, VTProxy proxy)
   {
     vtserver = new VTServer(true, proxy);
     vtserver.setPassive(passive);
+    vtserver.setDaemon(true);
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
+    vtserver.setSessionShell("N");
+    vtserver.setAddress(host);
+    vtserver.setPort(port);
+    vtserver.setEncryptionType(type);
+    try
+    {
+      if (key != null)
+      {
+        vtserver.setEncryptionKey(key.getBytes("UTF-8"));
+      }
+    }
+    catch (Throwable t)
+    {
+      
+    }
+  }
+  
+  public VTManagedServerSocket(String host, int port, String type, String key, boolean passive, boolean tls, VTProxy proxy)
+  {
+    vtserver = new VTServer(true, proxy);
+    vtserver.setPassive(passive);
+    vtserver.setTLSAuthentication(tls);
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
@@ -388,10 +426,50 @@ public class VTManagedServerSocket
     }
   }
   
+  public VTManagedServerSocket(String host, int port, String type, String key, String user, String password, boolean passive, boolean tls, VTProxy proxy)
+  {
+    vtserver = new VTServer(true, proxy);
+    vtserver.setPassive(passive);
+    vtserver.setTLSAuthentication(tls);
+    vtserver.setDaemon(true);
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
+    vtserver.setSessionShell("N");
+    vtserver.setAddress(host);
+    vtserver.setPort(port);
+    vtserver.setUniqueUserCredential(user, password);
+    vtserver.setEncryptionType(type);
+    try
+    {
+      if (key != null)
+      {
+        vtserver.setEncryptionKey(key.getBytes("UTF-8"));
+      }
+    }
+    catch (Throwable t)
+    {
+      
+    }
+  }
+  
   public VTManagedServerSocket(String host, int port, int natPort, boolean passive, VTProxy proxy)
   {
     vtserver = new VTServer(true, proxy);
     vtserver.setPassive(passive);
+    vtserver.setDaemon(true);
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
+    vtserver.setSessionShell("N");
+    vtserver.setAddress(host);
+    vtserver.setPort(port);
+    vtserver.setNatPort(natPort);
+  }
+  
+  public VTManagedServerSocket(String host, int port, int natPort, boolean passive, boolean tls, VTProxy proxy)
+  {
+    vtserver = new VTServer(true, proxy);
+    vtserver.setPassive(passive);
+    vtserver.setTLSAuthentication(tls);
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
@@ -426,10 +504,63 @@ public class VTManagedServerSocket
     }
   }
   
+  public VTManagedServerSocket(String host, int port, int natPort, String type, String key, boolean passive, boolean tls, VTProxy proxy)
+  {
+    vtserver = new VTServer(true, proxy);
+    vtserver.setPassive(passive);
+    vtserver.setTLSAuthentication(tls);
+    vtserver.setDaemon(true);
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
+    vtserver.setSessionShell("N");
+    vtserver.setAddress(host);
+    vtserver.setPort(port);
+    vtserver.setNatPort(natPort);
+    vtserver.setEncryptionType(type);
+    try
+    {
+      if (key != null)
+      {
+        vtserver.setEncryptionKey(key.getBytes("UTF-8"));
+      }
+    }
+    catch (Throwable t)
+    {
+      
+    }
+  }
+  
   public VTManagedServerSocket(String host, int port, int natPort, String type, String key, String user, String password, boolean passive, VTProxy proxy)
   {
     vtserver = new VTServer(true, proxy);
     vtserver.setPassive(passive);
+    vtserver.setDaemon(true);
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
+    vtserver.setSessionShell("N");
+    vtserver.setAddress(host);
+    vtserver.setPort(port);
+    vtserver.setNatPort(natPort);
+    vtserver.setUniqueUserCredential(user, password);
+    vtserver.setEncryptionType(type);
+    try
+    {
+      if (key != null)
+      {
+        vtserver.setEncryptionKey(key.getBytes("UTF-8"));
+      }
+    }
+    catch (Throwable t)
+    {
+      
+    }
+  }
+  
+  public VTManagedServerSocket(String host, int port, int natPort, String type, String key, String user, String password, boolean passive, boolean tls, VTProxy proxy)
+  {
+    vtserver = new VTServer(true, proxy);
+    vtserver.setPassive(passive);
+    vtserver.setTLSAuthentication(tls);
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
@@ -612,10 +743,48 @@ public class VTManagedServerSocket
     vtserver.setPort(port);
   }
   
+  public VTManagedServerSocket(boolean managed, String host, int port, boolean passive, boolean tls, VTProxy proxy)
+  {
+    vtserver = new VTServer(managed, proxy);
+    vtserver.setPassive(passive);
+    vtserver.setTLSAuthentication(tls);
+    vtserver.setDaemon(true);
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
+    vtserver.setSessionShell("N");
+    vtserver.setAddress(host);
+    vtserver.setPort(port);
+  }
+  
   public VTManagedServerSocket(boolean managed, String host, int port, String type, String key, boolean passive, VTProxy proxy)
   {
     vtserver = new VTServer(managed, proxy);
     vtserver.setPassive(passive);
+    vtserver.setDaemon(true);
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
+    vtserver.setSessionShell("N");
+    vtserver.setAddress(host);
+    vtserver.setPort(port);
+    vtserver.setEncryptionType(type);
+    try
+    {
+      if (key != null)
+      {
+        vtserver.setEncryptionKey(key.getBytes("UTF-8"));
+      }
+    }
+    catch (Throwable t)
+    {
+      
+    }
+  }
+  
+  public VTManagedServerSocket(boolean managed, String host, int port, String type, String key, boolean passive, boolean tls, VTProxy proxy)
+  {
+    vtserver = new VTServer(managed, proxy);
+    vtserver.setPassive(passive);
+    vtserver.setTLSAuthentication(tls);
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
@@ -661,10 +830,50 @@ public class VTManagedServerSocket
     }
   }
   
+  public VTManagedServerSocket(boolean managed, String host, int port, String type, String key, String user, String password, boolean passive, boolean tls, VTProxy proxy)
+  {
+    vtserver = new VTServer(managed, proxy);
+    vtserver.setPassive(passive);
+    vtserver.setTLSAuthentication(tls);
+    vtserver.setDaemon(true);
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
+    vtserver.setSessionShell("N");
+    vtserver.setAddress(host);
+    vtserver.setPort(port);
+    vtserver.setUniqueUserCredential(user, password);
+    vtserver.setEncryptionType(type);
+    try
+    {
+      if (key != null)
+      {
+        vtserver.setEncryptionKey(key.getBytes("UTF-8"));
+      }
+    }
+    catch (Throwable t)
+    {
+      
+    }
+  }
+  
   public VTManagedServerSocket(boolean managed, String host, int port, int natPort, boolean passive, VTProxy proxy)
   {
     vtserver = new VTServer(managed, proxy);
     vtserver.setPassive(passive);
+    vtserver.setDaemon(true);
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
+    vtserver.setSessionShell("N");
+    vtserver.setAddress(host);
+    vtserver.setPort(port);
+    vtserver.setNatPort(natPort);
+  }
+  
+  public VTManagedServerSocket(boolean managed, String host, int port, int natPort, boolean passive, boolean tls, VTProxy proxy)
+  {
+    vtserver = new VTServer(managed, proxy);
+    vtserver.setPassive(passive);
+    vtserver.setTLSAuthentication(tls);
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
@@ -699,10 +908,63 @@ public class VTManagedServerSocket
     }
   }
   
+  public VTManagedServerSocket(boolean managed, String host, int port, int natPort, String type, String key, boolean passive, boolean tls, VTProxy proxy)
+  {
+    vtserver = new VTServer(managed, proxy);
+    vtserver.setPassive(passive);
+    vtserver.setTLSAuthentication(tls);
+    vtserver.setDaemon(true);
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
+    vtserver.setSessionShell("N");
+    vtserver.setAddress(host);
+    vtserver.setPort(port);
+    vtserver.setNatPort(natPort);
+    vtserver.setEncryptionType(type);
+    try
+    {
+      if (key != null)
+      {
+        vtserver.setEncryptionKey(key.getBytes("UTF-8"));
+      }
+    }
+    catch (Throwable t)
+    {
+      
+    }
+  }
+  
   public VTManagedServerSocket(boolean managed, String host, int port, int natPort, String type, String key, String user, String password, boolean passive, VTProxy proxy)
   {
     vtserver = new VTServer(managed, proxy);
     vtserver.setPassive(passive);
+    vtserver.setDaemon(true);
+    vtserver.addSessionListener(serverListener);
+    vtserver.addConnectionListener(serverListener);
+    vtserver.setSessionShell("N");
+    vtserver.setAddress(host);
+    vtserver.setPort(port);
+    vtserver.setNatPort(natPort);
+    vtserver.setUniqueUserCredential(user, password);
+    vtserver.setEncryptionType(type);
+    try
+    {
+      if (key != null)
+      {
+        vtserver.setEncryptionKey(key.getBytes("UTF-8"));
+      }
+    }
+    catch (Throwable t)
+    {
+      
+    }
+  }
+  
+  public VTManagedServerSocket(boolean managed, String host, int port, int natPort, String type, String key, String user, String password, boolean passive, boolean tls, VTProxy proxy)
+  {
+    vtserver = new VTServer(managed, proxy);
+    vtserver.setPassive(passive);
+    vtserver.setTLSAuthentication(tls);
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);

@@ -52,8 +52,8 @@ public class VTServerConnection
   private static final byte[] VT_CLIENT_CHECK_STRING_ZUC = ("/VARIABLE-TERMINAL/CLIENT/ZUC/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_SERVER_CHECK_STRING_LEA = ("/VARIABLE-TERMINAL/SERVER/LEA/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_CLIENT_CHECK_STRING_LEA = ("/VARIABLE-TERMINAL/CLIENT/LEA/" + MAJOR_MINOR_VERSION).getBytes();
-  private static final byte[] VT_SERVER_CHECK_STRING_TLS = ("/VARIABLE-TERMINAL/SERVER/TLS/" + MAJOR_MINOR_VERSION).getBytes();
-  private static final byte[] VT_CLIENT_CHECK_STRING_TLS = ("/VARIABLE-TERMINAL/CLIENT/TLS/" + MAJOR_MINOR_VERSION).getBytes();
+//  private static final byte[] VT_SERVER_CHECK_STRING_TLS = ("/VARIABLE-TERMINAL/SERVER/TLS/" + MAJOR_MINOR_VERSION).getBytes();
+//  private static final byte[] VT_CLIENT_CHECK_STRING_TLS = ("/VARIABLE-TERMINAL/CLIENT/TLS/" + MAJOR_MINOR_VERSION).getBytes();
   
   private volatile boolean connected = false;
   private volatile boolean verified = false;
@@ -61,6 +61,7 @@ public class VTServerConnection
   private volatile boolean quiet = false;
   
   private final boolean managed;
+  private boolean tlsAuthentication;
   private int encryptionType;
   private int availableInputChannel;
   private int availableOutputChannel;
@@ -156,6 +157,11 @@ public class VTServerConnection
     this.blake3Digest = new VTBlake3MessageDigest();
     this.authenticationReader = new VTLittleEndianInputStream(null);
     this.authenticationWriter = new VTLittleEndianOutputStream(null);
+  }
+  
+  public void setTLSAuthentication(boolean tls)
+  {
+    tlsAuthentication = tls;
   }
   
   public boolean isManaged()
@@ -505,9 +511,12 @@ public class VTServerConnection
   
   private void setNonceStreams() throws IOException
   {
-    if (checkTLSMark())
+    if (!tlsAuthentication)
     {
-      encryptionType = VTSystem.VT_CONNECTION_ENCRYPTION_TLS;
+      tlsAuthentication = checkTLSMark();
+    }
+    if (tlsAuthentication)
+    {
       SSLSocket tlsSocket = VTTLSUtilities.createTLSSocket(connectionSocket, "null", 1, false, true, VTSystem.VT_UNSAFE_TLS_CONTEXT);
       tlsSocket.setNeedClientAuth(true);
       tlsSocket.startHandshake();
@@ -589,6 +598,10 @@ public class VTServerConnection
     this.firstAuthenticatedCredential = firstAuthenticatedCredential;
     this.secondAuthenticatedCredential = secondAuthenticatedCredential;
     exchangeNonces(true);
+    if (tlsAuthentication && encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_NONE)
+    {
+      encryptionType = VTSystem.VT_CONNECTION_ENCRYPTION_SALSA;
+    }
     cryptoEngine.initializeServerEngine(encryptionType, remoteNonce, localNonce, encryptionKey, firstAuthenticatedCredential, secondAuthenticatedCredential);
     connectionInputStream = new BufferedInputStream(cryptoEngine.getDecryptedInputStream(connectionSocket.getInputStream(), VTSystem.VT_CONNECTION_INPUT_BUFFER_SIZE_BYTES), VTSystem.VT_CONNECTION_INPUT_BUFFER_SIZE_BYTES);
     connectionOutputStream = new BufferedOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocket.getOutputStream(), VTSystem.VT_CONNECTION_OUTPUT_BUFFER_SIZE_BYTES), VTSystem.VT_CONNECTION_OUTPUT_BUFFER_SIZE_BYTES);
@@ -752,7 +765,7 @@ public class VTServerConnection
 //    byte[] digestedClientRABBIT = computeSecurityDigest(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_RABBIT);
     byte[] digestedClientZUC = computeSecurityDigest(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_ZUC);
     byte[] digestedClientLEA = computeSecurityDigest(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_LEA);
-    byte[] digestedClientTLS = computeSecurityDigest(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_TLS);
+//    byte[] digestedClientTLS = computeSecurityDigest(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_TLS);
     
     byte[] digestedClient = exchangeCheckString(localNonce, remoteNonce, encryptionKey, localCheckString);
    
@@ -791,10 +804,10 @@ public class VTServerConnection
       return VTSystem.VT_CONNECTION_ENCRYPTION_LEA;
     }
     
-    if (VTArrayComparator.arrayEquals(digestedClient, digestedClientTLS))
-    {
-      return VTSystem.VT_CONNECTION_ENCRYPTION_TLS;
-    }
+//    if (VTArrayComparator.arrayEquals(digestedClient, digestedClientTLS))
+//    {
+//      return VTSystem.VT_CONNECTION_ENCRYPTION_TLS;
+//    }
     
     return -1;
   }
@@ -879,16 +892,16 @@ public class VTServerConnection
         return;
       }
     }
-    else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_TLS)
-    {
-      remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_SERVER_CHECK_STRING_TLS);
-      if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_NONE)
-      {
-        setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_TLS);
-        verified = true;
-        return;
-      }
-    }
+//    else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_TLS)
+//    {
+//      remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_SERVER_CHECK_STRING_TLS);
+//      if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_NONE)
+//      {
+//        setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_TLS);
+//        verified = true;
+//        return;
+//      }
+//    }
     if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_SALSA)
     {
       setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_SALSA);
@@ -925,12 +938,12 @@ public class VTServerConnection
       verified = true;
       return;
     }
-    if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_TLS)
-    {
-      setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_TLS);
-      verified = true;
-      return;
-    }
+//    if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_TLS)
+//    {
+//      setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_TLS);
+//      verified = true;
+//      return;
+//    }
     setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_NONE);
     return;
   }

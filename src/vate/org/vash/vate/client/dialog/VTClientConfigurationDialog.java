@@ -67,6 +67,7 @@ public class VTClientConfigurationDialog extends Dialog
   //private VTConfigurationDialogParameter proxySecurity;
   private VTConfigurationDialogParameter proxyUser;
   private VTConfigurationDialogParameter proxyPassword;
+  private VTConfigurationDialogParameter authenticationType;
   private VTConfigurationDialogParameter encryptionType;
   private VTConfigurationDialogParameter encryptionPassword;
   
@@ -317,6 +318,8 @@ public class VTClientConfigurationDialog extends Dialog
     TextField proxyPasswordField = new TextField(16);
     proxyPasswordField.setEchoChar('*');
     proxyPassword = new VTConfigurationDialogParameter("Proxy Password:", proxyPasswordField, false);
+    Choice authenticationTypeChoice = new Choice();
+    authenticationType = new VTConfigurationDialogParameter("Authentication Type:", authenticationTypeChoice, true);
     Choice encryptionTypeChoice = new Choice();
     encryptionType = new VTConfigurationDialogParameter("Encryption Type:", encryptionTypeChoice, true);
     TextField encryptionPasswordField = new TextField(16);
@@ -421,6 +424,23 @@ public class VTClientConfigurationDialog extends Dialog
 //      }
 //    });
     
+    authenticationTypeChoice.add("DEFAULT");
+    authenticationTypeChoice.add("TLS");
+    authenticationTypeChoice.select("DEFAULT");
+    authenticationTypeChoice.addItemListener(new ItemListener()
+    {
+      public void itemStateChanged(ItemEvent e)
+      {
+        if (e.getStateChange() == ItemEvent.SELECTED)
+        {
+          if (e.getItem().equals("DEFAULT"))
+          {
+            
+          }
+        }
+      }
+    });
+    
     encryptionTypeChoice.add("NONE");
     encryptionTypeChoice.add("SALSA");
     encryptionTypeChoice.add("HC");
@@ -428,7 +448,6 @@ public class VTClientConfigurationDialog extends Dialog
     //encryptionTypeChoice.add("RABBIT");
     encryptionTypeChoice.add("ZUC");
     encryptionTypeChoice.add("LEA");
-    encryptionTypeChoice.add("TLS");
     encryptionTypeChoice.select("NONE");
     encryptionTypeChoice.addItemListener(new ItemListener()
     {
@@ -463,10 +482,6 @@ public class VTClientConfigurationDialog extends Dialog
           else if (e.getItem().equals("LEA"))
           {
             setEncryptionType("LEA");
-          }
-          else if (e.getItem().equals("TLS"))
-          {
-            setEncryptionType("TLS");
           }
         }
       }
@@ -822,7 +837,7 @@ public class VTClientConfigurationDialog extends Dialog
     closeButton.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backwardTraversalKeysButton);
     
     Panel centerPanel = new Panel();
-    GridLayout centerLayout = new GridLayout(19, 1);
+    GridLayout centerLayout = new GridLayout(20, 1);
     centerLayout.setHgap(1);
     centerLayout.setVgap(1);
     centerPanel.setLayout(centerLayout);
@@ -848,6 +863,7 @@ public class VTClientConfigurationDialog extends Dialog
     centerPanel.add(proxyUser);
     centerPanel.add(proxyPassword);
     
+    centerPanel.add(authenticationType);
     centerPanel.add(encryptionType);
     centerPanel.add(encryptionPassword);
     
@@ -1237,6 +1253,7 @@ public class VTClientConfigurationDialog extends Dialog
           // connectionPort.setParameter("");
         }
         natPort.setParameter(connector.getNatPort());
+        setAuthenticationType(connector.getTLSAuthentication());
         setEncryptionType(connector.getEncryptionType());
         encryptionPassword.setParameter(connector.getEncryptionKey());
         setProxyType(connector.getProxyType());
@@ -1267,6 +1284,7 @@ public class VTClientConfigurationDialog extends Dialog
           // connectionPort.setParameter("");
         }
         natPort.setParameter(client.getNatPort());
+        setAuthenticationType(client.getTLSAuthentication());
         setEncryptionType(client.getEncryptionType());
         encryptionPassword.setParameter(client.getEncryptionKey());
         setProxyType(client.getProxyType());
@@ -1323,6 +1341,18 @@ public class VTClientConfigurationDialog extends Dialog
     }
   }
   
+  private void setAuthenticationType(boolean tls)
+  {
+    if (tls)
+    {
+      authenticationType.setParameter("TLS");
+    }
+    else
+    {
+      authenticationType.setParameter("DEFAULT");
+    }
+  }
+  
   private void setEncryptionType(String encryption)
   {
     if (encryption == null)
@@ -1352,10 +1382,6 @@ public class VTClientConfigurationDialog extends Dialog
     else if (encryption.toUpperCase().startsWith("L"))
     {
       encryptionType.setParameter("LEA");
-    }
-    else if (encryption.toUpperCase().startsWith("T"))
-    {
-      encryptionType.setParameter("TLS");
     }
     else
     {
@@ -1458,6 +1484,7 @@ public class VTClientConfigurationDialog extends Dialog
         {
           
         }
+        connector.setTLSAuthentication(authenticationType.getParameter().startsWith("T"));
         connector.setEncryptionType(encryptionType.getParameter());
         try
         {
@@ -1547,6 +1574,7 @@ public class VTClientConfigurationDialog extends Dialog
         {
           client.setNatPort(null);
         }
+        client.setTLSAuthentication(authenticationType.getParameter().startsWith("T"));
         client.setEncryptionType(encryptionType.getParameter());
         try
         {

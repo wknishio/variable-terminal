@@ -39,6 +39,7 @@ public class VTClientConnector implements Runnable
   //private boolean useProxyAuthentication;
   private String proxyUser;
   private String proxyPassword;
+  private boolean tlsAuthentication;
   private String encryptionType;
   private byte[] encryptionKey;
   private String sessionCommands;
@@ -403,6 +404,16 @@ public class VTClientConnector implements Runnable
     return encryptionKey;
   }
   
+  public boolean getTLSAuthentication()
+  {
+    return tlsAuthentication;
+  }
+  
+  public void setTLSAuthentication(boolean tls)
+  {
+    tlsAuthentication = tls;
+  }
+  
   public String getSessionCommands()
   {
     return sessionCommands;
@@ -629,15 +640,16 @@ public class VTClientConnector implements Runnable
       {
         connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_LEA);
       }
-      else if (encryptionType.toUpperCase().startsWith("T"))
-      {
-        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_TLS);
-      }
+//      else if (encryptionType.toUpperCase().startsWith("T"))
+//      {
+//        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_TLS);
+//      }
       else
       {
         connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_NONE);
       }
       connection.setEncryptionKey(encryptionKey);
+      connection.setTLSAuthentication(tlsAuthentication);
       try
       {
         VTMainConsole.interruptReadLine();
@@ -719,15 +731,16 @@ public class VTClientConnector implements Runnable
       {
         connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_LEA);
       }
-      else if (encryptionType.toUpperCase().startsWith("T"))
-      {
-        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_TLS);
-      }
+//      else if (encryptionType.toUpperCase().startsWith("T"))
+//      {
+//        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_TLS);
+//      }
       else
       {
         connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_NONE);
       }
       connection.setEncryptionKey(encryptionKey);
+      connection.setTLSAuthentication(tlsAuthentication);
       VTMainConsole.print("\nVT>Connection with server established!");
       return true;
     }
@@ -1251,6 +1264,25 @@ public class VTClientConnector implements Runnable
           proxyType = "NONE";
         }
       }
+      VTMainConsole.print("VT>Use TLS in authentication?(Y/N, default:N):");
+      line = VTMainConsole.readLine(true);
+      if (line == null)
+      {
+        VTRuntimeExit.exit(0);
+      }
+      else if (skipConfiguration)
+      {
+        skipConfiguration = false;
+        return true;
+      }
+      if (line.toUpperCase().startsWith("Y"))
+      {
+        tlsAuthentication = true;
+      }
+      else
+      {
+        tlsAuthentication = false;
+      }
       VTMainConsole.print("VT>Use encryption in connection?(Y/N, default:N):");
       line = VTMainConsole.readLine(true);
       if (line == null)
@@ -1264,7 +1296,7 @@ public class VTClientConnector implements Runnable
       }
       if (line.toUpperCase().startsWith("Y"))
       {
-        VTMainConsole.print("VT>Enter encryption type(SALSA(S)/HC(H)/ZUC(Z)/LEA(L)/TLS(T)):");
+        VTMainConsole.print("VT>Enter encryption type(SALSA(S)/HC(H)/ZUC(Z)/LEA(L)):");
         line = VTMainConsole.readLine(false);
         if (line == null)
         {
@@ -1296,10 +1328,10 @@ public class VTClientConnector implements Runnable
         {
           encryptionType = "LEA";
         }
-        if (line.toUpperCase().startsWith("T"))
-        {
-          encryptionType = "TLS";
-        }
+//        if (line.toUpperCase().startsWith("T"))
+//        {
+//          encryptionType = "TLS";
+//        }
         VTMainConsole.print("VT>Enter encryption password:");
         line = VTMainConsole.readLine(false);
         if (line == null)

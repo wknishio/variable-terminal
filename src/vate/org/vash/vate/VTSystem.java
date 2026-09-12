@@ -71,7 +71,6 @@ public class VTSystem
   public static final int VT_CONNECTION_ENCRYPTION_HC = 2;
   public static final int VT_CONNECTION_ENCRYPTION_ZUC = 3;
   public static final int VT_CONNECTION_ENCRYPTION_LEA = 4;
-  public static final int VT_CONNECTION_ENCRYPTION_TLS = 5;
   
   public static final int VT_FILE_TRANSFER_STATUS_INEXISTENT = 0;
   public static final int VT_FILE_TRANSFER_STATUS_NORMAL = 1;
@@ -163,7 +162,6 @@ public class VTSystem
   public static final String VT_CONNECTION_ENCRYPTION_HC_STRING = "HC";
   public static final String VT_CONNECTION_ENCRYPTION_ZUC_STRING = "ZUC";
   public static final String VT_CONNECTION_ENCRYPTION_LEA_STRING = "LEA";
-  public static final String VT_CONNECTION_ENCRYPTION_TLS_STRING = "TLS";
   
   private static final DateFormat VT_ERA_DATEFORMAT;
   private static final Calendar VT_YEAR_CALENDAR;

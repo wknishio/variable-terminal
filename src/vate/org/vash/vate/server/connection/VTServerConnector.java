@@ -34,6 +34,7 @@ public class VTServerConnector implements Runnable
   //private boolean useProxyAuthentication;
   private String proxyUser;
   private String proxyPassword;
+  private boolean tlsAuthentication;
   private String encryptionType;
   private byte[] encryptionKey;
   private Integer sessionsMaximum;
@@ -244,6 +245,16 @@ public class VTServerConnector implements Runnable
   public void setEncryptionKey(byte[] encryptionKey)
   {
     this.encryptionKey = encryptionKey;
+  }
+  
+  public boolean getTLSAuthentication()
+  {
+    return tlsAuthentication;
+  }
+  
+  public void setTLSAuthentication(boolean tls)
+  {
+    tlsAuthentication = tls;
   }
   
   public Integer getSessionsMaximum()
@@ -500,15 +511,16 @@ public class VTServerConnector implements Runnable
       {
         connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_LEA);
       }
-      else if (encryptionType.toUpperCase().startsWith("T"))
-      {
-        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_TLS);
-      }
+//      else if (encryptionType.toUpperCase().startsWith("T"))
+//      {
+//        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_TLS);
+//      }
       else
       {
         connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_NONE);
       }
       connection.setEncryptionKey(encryptionKey);
+      connection.setTLSAuthentication(tlsAuthentication);
       VTMainConsole.print("\rVT>Connection with client established!\nVT>");
       return true;
     }
@@ -578,15 +590,16 @@ public class VTServerConnector implements Runnable
       {
         connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_LEA);
       }
-      else if (encryptionType.toUpperCase().startsWith("T"))
-      {
-        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_TLS);
-      }
+//      else if (encryptionType.toUpperCase().startsWith("T"))
+//      {
+//        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_TLS);
+//      }
       else
       {
         connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_NONE);
       }
       connection.setEncryptionKey(encryptionKey);
+      connection.setTLSAuthentication(tlsAuthentication);
       VTMainConsole.print("\rVT>Connection with client established!\nVT>");
       return true;
     }

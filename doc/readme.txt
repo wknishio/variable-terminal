@@ -14,24 +14,23 @@ Some of the available features are:
 * Support for SALSA, HC, ZUC, LEA or TLS encryption.
 * Support for UPnP, NAT-PMP and PCP NAT port forwarding.
 * Support for SOCKS and HTTP proxy network connections.
-* Support for LZ4 and ZSTD data compression.
+* Support for optional LZ4 and ZSTD data compression.
 * Multiple simultaneous sessions.
 * Limited native process creation and control.
 * Alternative integrated beanshell remote shell.
 * Both client and server can be run in background
 * Automatic client reconnection after disconnection.
-* Adjustable text font size.
-* Simple text messaging between client and server.
-* File transfer with compression and resume/synchronization.
+* File transfer with data compression and resume/synchronization.
+* Bidirectional SOCKS/HTTP/FTP/TCP network tunnels with data compression.
 * Remote screen capture.
 * Remote desktop view and control.
 * Remote clipboard control.
-* Multiple display support.
+* Remote multi-display support.
 * Audio chat communication between client and server.
+* Simple text messaging between client and server.
 * Network latency verification.
 * Network usage rate limiter.
-* Network tunneling with bidirectional SOCKS/HTTP/FTP/TCP tunnels.
-* Network tunneling with transparent data compression.
+* Adjustable text font size.
 * Remote popup alerts.
 * Remote browser opening.
 * Remote mail client opening.
@@ -127,7 +126,8 @@ these are the available program arguments:
 * -PP: proxy port, default 1080 for SOCKS or default 8080 for HTTP
 * -PU: proxy user, default null
 * -PK: proxy password, default null
-* -ET: encryption type, default none/SALSA(S)/HC(H)/ZUC(Z)/LEA(L)/TLS(T)
+* -AT: authentication type, DEFAULT(D) or TLS(T)
+* -ET: encryption type, default none/SALSA(S)/HC(H)/ZUC(Z)/LEA(L)
 * -EK: encryption password, default null
 * -PL: ping limit, default 60000 milliseconds
 * -PI: ping interval, default 15000 milliseconds

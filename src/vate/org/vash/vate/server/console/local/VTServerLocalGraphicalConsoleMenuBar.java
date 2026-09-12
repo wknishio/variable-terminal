@@ -31,6 +31,7 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
   private Menu settingsMenu;
   private Menu connectionSettingsMenu;
   // private Menu serverAuthenticationSettingsMenu;
+  private Menu authenticationSettingsMenu;
   private Menu proxySettingsMenu;
   private Menu encryptionSettingsMenu;
   private Menu sessionsSettingsMenu;
@@ -66,6 +67,7 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
     connectionSettingsMenu = new Menu("Connection ");
     // serverAuthenticationSettingsMenu = new Menu("Authentication ");
     proxySettingsMenu = new Menu("Proxy ");
+    authenticationSettingsMenu = new Menu("Authentication ");
     encryptionSettingsMenu = new Menu("Encryption ");
     sessionsSettingsMenu = new Menu("Session ");
     pingSettingsMenu = new Menu("Ping ");
@@ -73,6 +75,7 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
     settingsMenu.add(connectionSettingsMenu);
     // serverSettingsMenu.add(serverAuthenticationSettingsMenu);
     settingsMenu.add(proxySettingsMenu);
+    settingsMenu.add(authenticationSettingsMenu);
     settingsMenu.add(encryptionSettingsMenu);
     settingsMenu.add(pingSettingsMenu);
     settingsMenu.add(sessionsSettingsMenu);
@@ -86,6 +89,7 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
     proxySettingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Proxy Authentication", "*VTSETTING PA "));
     proxySettingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Proxy User", "*VTSETTING PU "));
     proxySettingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Proxy Password", "*VTSETTING PK "));
+    authenticationSettingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Authentication Type", "*VTSETTING AT "));
     encryptionSettingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Encryption Type", "*VTSETTING ET "));
     encryptionSettingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Encryption Password", "*VTSETTING EK "));
     sessionsSettingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Session Shell", "*VTSETTING SS "));
