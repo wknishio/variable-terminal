@@ -19,6 +19,7 @@ import org.vash.vate.stream.array.VTByteArrayOutputStream;
 import org.vash.vate.stream.compress.VTCompressorSelector;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
 import org.vash.vate.stream.limit.VTThrottledOutputStream;
+import org.vash.vate.stream.multiplex.VTMultiplexingInputStream.VTMultiplexedInputStream;
 
 public final class VTMultiplexingOutputStream
 {
@@ -279,6 +280,7 @@ public final class VTMultiplexingOutputStream
     private OutputStream dataOutputStream;
     private OutputStream controlOutputStream;
     private OutputStream contentOutputStream;
+    private VTMultiplexedInputStream pair;
     private final Collection<Closeable> propagated;
     private final Random firstSequencer;
     private final Random secondSequencer;
@@ -362,19 +364,19 @@ public final class VTMultiplexingOutputStream
     
     public final boolean closed()
     {
-      return closed;
+      return closed || (pair != null && pair.closed());
     }
     
     public final void write(final byte[] data, final int offset, final int length) throws IOException
     {
-      if (closed)
+      if (closed())
       {
         throw new IOException("OutputStream closed");
       }
       int written = 0;
       int position = offset;
       int remaining = length;
-      while (remaining > 0 && !closed)
+      while (remaining > 0 && !closed())
       {
         written = Math.min(remaining, packetSize);
         writeDataPacket(type, number, data, position, written);
@@ -456,6 +458,11 @@ public final class VTMultiplexingOutputStream
     public final void removePropagated(final Closeable propagated)
     {
       this.propagated.remove(propagated);
+    }
+    
+    public final void setPair(VTMultiplexedInputStream stream)
+    {
+      this.pair = stream;
     }
     
     private final void writeDataPacket(final int type, final int number, final byte[] buffer, final int offset, final int length) throws IOException

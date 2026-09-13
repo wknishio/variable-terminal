@@ -681,6 +681,17 @@ public class VTClientConnection
     clipboardDataInputStream = new VTLittleEndianInputStream(VTCompressorSelector.createBufferedLz4InputStream(graphicsClipboardInputStream));
     clipboardDataOutputStream = new VTLittleEndianOutputStream(VTCompressorSelector.createBufferedLz4OutputStream(graphicsClipboardOutputStream));
     
+    fileTransferControlOutputStream.setPair(fileTransferControlInputStream);
+    fileTransferDataOutputStream.setPair(fileTransferDataInputStream);
+    
+    graphicsControlOutputStream.setPair(graphicsControlInputStream);
+    graphicsDirectImageOutputStream.setPair(graphicsDirectImageInputStream);
+    graphicsFastImageOutputStream.setPair(graphicsFastImageInputStream);
+    graphicsHeavyImageOutputStream.setPair(graphicsHeavyImageInputStream);
+    graphicsClipboardOutputStream.setPair(graphicsClipboardInputStream);
+    
+    audioDataOutputStream.setPair(audioDataInputStream);
+    
     fileTransferControlInputStream.close();
     graphicsControlInputStream.close();
     graphicsClipboardInputStream.close();
