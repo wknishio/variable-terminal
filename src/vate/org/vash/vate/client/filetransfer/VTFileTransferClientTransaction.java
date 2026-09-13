@@ -3,6 +3,7 @@ package org.vash.vate.client.filetransfer;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
@@ -207,38 +208,68 @@ public class VTFileTransferClientTransaction implements Runnable
   
   private boolean checkFileAccess(boolean upload)
   {
-    return (writeLocalFileAccess(upload) && readRemoteFileAccess());
+    return (writeLocalFileAccess(upload) && writeLocalFileSize() && writeLocalFileTime() && readRemoteFileAccess() && readRemoteFileSize() && readRemoteFileTime());
   }
   
-  private boolean checkFileSizes()
+//  private boolean checkFileSizes()
+//  {
+//    return (writeLocalFileSize() && readRemoteFileSize() && localFileSize >= 0);
+//  }
+//  
+//  private boolean checkFileTimes()
+//  {
+//    return (writeLocalFileTime() && readRemoteFileTime());
+//  }
+  
+//  private boolean checkNextFileChunkChecksum(long checksum)
+//  {
+//    localDigest = checksum;
+//    return (writeNextFileChunkChecksum(checksum) && readNextFileChunkChecksum());
+//  }
+//  
+//  private boolean checkNextFileChunkChecksum(byte[] data, int len)
+//  {
+//    localDigest = XXH3.hash64(data, len, digestSeed);
+//    return (writeNextFileChunkChecksum(localDigest) && readNextFileChunkChecksum());
+//  }
+  
+  private List<Long> checkFileChunkChecksums(List<Long> localFileChunkChecksums, boolean download) throws IOException
   {
-    return (writeLocalFileSize() && readRemoteFileSize() && localFileSize >= 0);
+    List<Long> remoteFileChunkChecksums = new LinkedList<Long>();
+    session.getClient().getConnection().getFileTransferControlDataOutputStream().writeInt(localFileChunkChecksums.size());
+    session.getClient().getConnection().getFileTransferControlDataOutputStream().flush();
+    int remoteFileChunkCount = session.getClient().getConnection().getFileTransferControlDataInputStream().readInt();
+    if (download)
+    {
+      for (int i = 0; i < remoteFileChunkCount; i++)
+      {
+        remoteFileChunkChecksums.add(session.getClient().getConnection().getFileTransferControlDataInputStream().readLong());
+      }
+      for (long localFileChecksum : localFileChunkChecksums)
+      {
+        session.getClient().getConnection().getFileTransferControlDataOutputStream().writeLong(localFileChecksum);
+      }
+      session.getClient().getConnection().getFileTransferControlDataOutputStream().flush();
+    }
+    else
+    {
+      for (long localFileChecksum : localFileChunkChecksums)
+      {
+        session.getClient().getConnection().getFileTransferControlDataOutputStream().writeLong(localFileChecksum);
+      }
+      session.getClient().getConnection().getFileTransferControlDataOutputStream().flush();
+      for (int i = 0; i < remoteFileChunkCount; i++)
+      {
+        remoteFileChunkChecksums.add(session.getClient().getConnection().getFileTransferControlDataInputStream().readLong());
+      }
+    }
+    return remoteFileChunkChecksums;
   }
   
-  private boolean checkFileTimes()
-  {
-    return (writeLocalFileTime() && readRemoteFileTime());
-  }
-  
-  private boolean checkNextFileChunkChecksum(long checksum)
-  {
-    localDigest = checksum;
-    return (writeNextFileChunkChecksum(checksum) && readNextFileChunkChecksum());
-  }
-  
-  private boolean checkNextFileChunkChecksum(byte[] data, int len)
-  {
-//    messageDigest.reset();
-//    messageDigest.update(data, offset, len);
-//    localDigest = messageDigest.digestLong();
-    localDigest = XXH3.hash64(data, len, digestSeed);
-    return (writeNextFileChunkChecksum(localDigest) && readNextFileChunkChecksum());
-  }
-  
-  private boolean checkContinueTransfer(boolean ok)
-  {
-    return (writeContinueTransfer(ok) && readContinueTransfer() && ok);
-  }
+//  private boolean checkContinueTransfer(boolean ok)
+//  {
+//    return (writeContinueTransfer(ok) && readContinueTransfer() && ok);
+//  }
   
   private boolean writeLocalFileStatus()
   {
@@ -321,7 +352,7 @@ public class VTFileTransferClientTransaction implements Runnable
       }
       if (!directory)
       {
-        if (upload)
+        if (upload && !resuming)
         {
           fileTransferRandomAccessFile = new RandomAccessFile(fileTransferFile, "r");
         }
@@ -338,7 +369,7 @@ public class VTFileTransferClientTransaction implements Runnable
     try
     {
       session.getClient().getConnection().getFileTransferControlDataOutputStream().write(localFileAccess);
-      session.getClient().getConnection().getFileTransferControlDataOutputStream().flush();
+      //session.getClient().getConnection().getFileTransferControlDataOutputStream().flush();
       return true;
     }
     catch (Throwable e)
@@ -349,6 +380,10 @@ public class VTFileTransferClientTransaction implements Runnable
   
   private boolean writeLocalFileSize()
   {
+    if (directory)
+    {
+      return true;
+    }
     localFileSize = 0;
     try
     {
@@ -361,7 +396,7 @@ public class VTFileTransferClientTransaction implements Runnable
     try
     {
       session.getClient().getConnection().getFileTransferControlDataOutputStream().writeLong(localFileSize);
-      session.getClient().getConnection().getFileTransferControlDataOutputStream().flush();
+      //session.getClient().getConnection().getFileTransferControlDataOutputStream().flush();
       if (localFileSize < 0)
       {
         
@@ -397,20 +432,20 @@ public class VTFileTransferClientTransaction implements Runnable
     }
   }
   
-  private boolean writeContinueTransfer(boolean ok)
-  {
-    try
-    {
-      session.getClient().getConnection().getFileTransferControlDataOutputStream().writeBoolean(ok);
-      session.getClient().getConnection().getFileTransferControlDataOutputStream().flush();
-      return true;
-    }
-    catch (Throwable t)
-    {
-      
-    }
-    return false;
-  }
+//  private boolean writeContinueTransfer(boolean ok)
+//  {
+//    try
+//    {
+//      session.getClient().getConnection().getFileTransferControlDataOutputStream().writeBoolean(ok);
+//      session.getClient().getConnection().getFileTransferControlDataOutputStream().flush();
+//      return true;
+//    }
+//    catch (Throwable t)
+//    {
+//      
+//    }
+//    return false;
+//  }
   
   private boolean writeNextFilePath(String path)
   {
@@ -448,20 +483,20 @@ public class VTFileTransferClientTransaction implements Runnable
     return false;
   }
   
-  private boolean writeNextFileChunkChecksum(long checksum)
-  {
-    try
-    {
-      session.getClient().getConnection().getFileTransferControlDataOutputStream().writeLong(checksum);
-      session.getClient().getConnection().getFileTransferControlDataOutputStream().flush();
-      return true;
-    }
-    catch (Throwable e)
-    {
-      
-    }
-    return false;
-  }
+//  private boolean writeNextFileChunkChecksum(long checksum)
+//  {
+//    try
+//    {
+//      session.getClient().getConnection().getFileTransferControlDataOutputStream().writeLong(checksum);
+//      session.getClient().getConnection().getFileTransferControlDataOutputStream().flush();
+//      return true;
+//    }
+//    catch (Throwable e)
+//    {
+//      
+//    }
+//    return false;
+//  }
   
   private boolean readRemoteFileStatus()
   {
@@ -491,6 +526,10 @@ public class VTFileTransferClientTransaction implements Runnable
   
   private boolean readRemoteFileSize()
   {
+    if (directory)
+    {
+      return true;
+    }
     try
     {
       remoteFileSize = session.getClient().getConnection().getFileTransferControlDataInputStream().readLong();
@@ -519,19 +558,19 @@ public class VTFileTransferClientTransaction implements Runnable
     }
   }
   
-  private boolean readContinueTransfer()
-  {
-    try
-    {
-      boolean ok = session.getClient().getConnection().getFileTransferControlDataInputStream().readBoolean();
-      return ok;
-    }
-    catch (Throwable e)
-    {
-      
-    }
-    return false;
-  }
+//  private boolean readContinueTransfer()
+//  {
+//    try
+//    {
+//      boolean ok = session.getClient().getConnection().getFileTransferControlDataInputStream().readBoolean();
+//      return ok;
+//    }
+//    catch (Throwable e)
+//    {
+//      
+//    }
+//    return false;
+//  }
   
   private String readNextFilePath()
   {
@@ -559,19 +598,19 @@ public class VTFileTransferClientTransaction implements Runnable
     return -1;
   }
   
-  private boolean readNextFileChunkChecksum()
-  {
-    try
-    {
-      remoteDigest = session.getClient().getConnection().getFileTransferControlDataInputStream().readLong();
-      return true;
-    }
-    catch (Throwable e)
-    {
-      
-    }
-    return false;
-  }
+//  private boolean readNextFileChunkChecksum()
+//  {
+//    try
+//    {
+//      remoteDigest = session.getClient().getConnection().getFileTransferControlDataInputStream().readLong();
+//      return true;
+//    }
+//    catch (Throwable e)
+//    {
+//      
+//    }
+//    return false;
+//  }
   
   private boolean tryUpload(String currentPath)
   {
@@ -639,10 +678,10 @@ public class VTFileTransferClientTransaction implements Runnable
           {
             checked = false;
           }
-          localFileSize = 0;
-          remoteFileSize = 0;
+          //localFileSize = 0;
+          //remoteFileSize = 0;
           currentOffset = 0;
-          if (checked && !directory && checkFileTimes() && checkFileSizes())
+          if (checked && !directory)
           {
             if (resuming)
             {
@@ -650,7 +689,7 @@ public class VTFileTransferClientTransaction implements Runnable
             }
             return true;
           }
-          else if (checked && directory && checkFileTimes())
+          else if (checked && directory)
           {
             return true;
           }
@@ -676,7 +715,8 @@ public class VTFileTransferClientTransaction implements Runnable
       {
         fileTransferFileInputStream = new FileInputStream(fileTransferRandomAccessFile.getFD());
       }
-      return checkContinueTransfer(true);
+      //return checkContinueTransfer(true);
+      return true;
     }
     catch (Throwable e)
     {
@@ -688,7 +728,8 @@ public class VTFileTransferClientTransaction implements Runnable
       {
         
       }
-      return checkContinueTransfer(false);
+      //return checkContinueTransfer(false);
+      return false;
     }
   }
   
@@ -714,7 +755,7 @@ public class VTFileTransferClientTransaction implements Runnable
         }
         for (String nextPath : subPaths)
         {
-          ok = checkContinueTransfer(ok);
+          //ok = checkContinueTransfer(ok);
           if (ok)
           {
             if (writeNextFilePath(nextPath))
@@ -731,10 +772,11 @@ public class VTFileTransferClientTransaction implements Runnable
           else
           {
             // continue not ok
+            writeNextFilePath(".");
             return false;
           }
         }
-        ok = checkContinueTransfer(ok);
+        //ok = checkContinueTransfer(ok);
         if (ok)
         {
           // folder ok
@@ -743,6 +785,7 @@ public class VTFileTransferClientTransaction implements Runnable
         else
         {
           // something wrong with last path
+          writeNextFilePath(".");
           return false;
         }
       }
@@ -766,6 +809,13 @@ public class VTFileTransferClientTransaction implements Runnable
     boolean ok = true;
     try
     {
+      List<Long> localFileChunkChecksums = new LinkedList<Long>();
+      List<Long> remoteFileChunkChecksums = new LinkedList<Long>();
+      if (resumable)
+      {
+        localFileChunkChecksums = readLocalFileChunkChecksums();
+        remoteFileChunkChecksums = checkFileChunkChecksums(localFileChunkChecksums, false);
+      }
       while (!stopped && ok && currentOffset < localFileSize)
       {
         neededBytes = (int) Math.min(fileTransferBufferSize, localFileSize - currentOffset);
@@ -788,16 +838,14 @@ public class VTFileTransferClientTransaction implements Runnable
         ok = writeNextFileChunkSize(bufferedBytes);
         if (ok)
         {
-          if (resumable && currentOffset < remoteFileSize)
+          if (resumable && localFileChunkChecksums.size() > 0 && remoteFileChunkChecksums.size() > 0)
           {
-            ok = checkNextFileChunkChecksum(fileTransferBuffer, bufferedBytes);
-            if (ok)
+            localDigest = localFileChunkChecksums.remove(0);
+            remoteDigest = remoteFileChunkChecksums.remove(0);
+            if (localDigest != remoteDigest)
             {
-              if (localDigest != remoteDigest)
-              {
-                fileTransferRemoteOutputStream.write(fileTransferBuffer, 0, bufferedBytes);
-                fileTransferRemoteOutputStream.flush();
-              }
+              fileTransferRemoteOutputStream.write(fileTransferBuffer, 0, bufferedBytes);
+              fileTransferRemoteOutputStream.flush();
             }
           }
           else
@@ -931,10 +979,10 @@ public class VTFileTransferClientTransaction implements Runnable
           {
             checked = false;
           }
-          localFileSize = 0;
-          remoteFileSize = 0;
+          //localFileSize = 0;
+          //remoteFileSize = 0;
           currentOffset = 0;
-          if (checked && !directory && checkFileTimes() && checkFileSizes())
+          if (checked && !directory)
           {
             if (resuming)
             {
@@ -942,7 +990,7 @@ public class VTFileTransferClientTransaction implements Runnable
             }
             return true;
           }
-          else if (checked && directory && checkFileTimes())
+          else if (checked && directory)
           {
             return true;
           }
@@ -968,7 +1016,8 @@ public class VTFileTransferClientTransaction implements Runnable
       {
         fileTransferFileOutputStream = new FileOutputStream(fileTransferRandomAccessFile.getFD());
       }
-      return checkContinueTransfer(true);
+      //return checkContinueTransfer(true);
+      return true;
     }
     catch (Throwable e)
     {
@@ -980,7 +1029,8 @@ public class VTFileTransferClientTransaction implements Runnable
       {
         
       }
-      return checkContinueTransfer(false);
+      //return checkContinueTransfer(false);
+      return false;
     }
   }
   
@@ -1022,13 +1072,13 @@ public class VTFileTransferClientTransaction implements Runnable
         String nextPath = " ";
         while (true)
         {
-          ok = checkContinueTransfer(ok);
+          //ok = checkContinueTransfer(ok);
           if (ok)
           {
             nextPath = readNextFilePath();
             if (nextPath != null)
             {
-              if (!("".equals(nextPath)))
+              if (!("".equals(nextPath)) && !(".".equals(nextPath)))
               {
                 if (deleting)
                 {
@@ -1043,6 +1093,10 @@ public class VTFileTransferClientTransaction implements Runnable
                 {
                   ok = tryDownload(appendToPath(currentPath, nextPath), false);
                 }
+              }
+              else if (".".equals(nextPath))
+              {
+                ok = false;
               }
               else
               {
@@ -1107,13 +1161,15 @@ public class VTFileTransferClientTransaction implements Runnable
   private boolean downloadFileData()
   {
     boolean ok = true;
-    List<Long> localFileChunkChecksums = new LinkedList<Long>();
-    if (resumable)
-    {
-      localFileChunkChecksums = readLocalFileChunkChecksums();
-    }
     try
     {
+      List<Long> localFileChunkChecksums = new LinkedList<Long>();
+      List<Long> remoteFileChunkChecksums = new LinkedList<Long>();
+      if (resumable)
+      {
+        localFileChunkChecksums = readLocalFileChunkChecksums();
+        remoteFileChunkChecksums = checkFileChunkChecksums(localFileChunkChecksums, true);
+      }
       while (!stopped && ok && currentOffset < remoteFileSize)
       {
         neededBytes = readNextFileChunkSize();
@@ -1129,17 +1185,15 @@ public class VTFileTransferClientTransaction implements Runnable
         }
         else
         {
-          if (localFileChunkChecksums.size() > 0)
+          if (resumable && localFileChunkChecksums.size() > 0 && remoteFileChunkChecksums.size() > 0)
           {
-            ok = checkNextFileChunkChecksum(localFileChunkChecksums.remove(0));
-            if (ok)
+            localDigest = localFileChunkChecksums.remove(0);
+            remoteDigest = remoteFileChunkChecksums.remove(0);
+            if (localDigest == remoteDigest)
             {
-              if (localDigest == remoteDigest)
-              {
-                currentOffset += neededBytes;
-                fileTransferRandomAccessFile.seek(currentOffset);
-                continue;
-              }
+              currentOffset += neededBytes;
+              fileTransferRandomAccessFile.seek(currentOffset);
+              continue;
             }
           }
           while (!stopped && ok && neededBytes > 0)
@@ -1342,7 +1396,7 @@ public class VTFileTransferClientTransaction implements Runnable
     }
     currentOffset = 0;
     return checksums;
-  }
+  }  
   
   private static String fileNameFromPath(String path)
   {
