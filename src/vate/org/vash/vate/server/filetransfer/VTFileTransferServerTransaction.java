@@ -840,13 +840,11 @@ public class VTFileTransferServerTransaction implements Runnable
             if (localDigest != remoteDigest)
             {
               fileTransferRemoteOutputStream.write(fileTransferBuffer, 0, bufferedBytes);
-              fileTransferRemoteOutputStream.flush();
             }
           }
           else
           {
             fileTransferRemoteOutputStream.write(fileTransferBuffer, 0, bufferedBytes);
-            fileTransferRemoteOutputStream.flush();
           }
         }
       }
@@ -1209,7 +1207,6 @@ public class VTFileTransferServerTransaction implements Runnable
             }
           }
           fileTransferFileOutputStream.write(fileTransferBuffer, 0, bufferedBytes);
-          fileTransferFileOutputStream.flush();
         }
       }
       fileTransferFileOutputStream.flush();
