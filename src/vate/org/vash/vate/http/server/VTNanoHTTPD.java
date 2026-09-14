@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.PushbackInputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -24,6 +25,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 
+import javax.net.ssl.SSLSocket;
+
 import org.vash.vate.VTSystem;
 import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.org.apache.commons.codec.binary.Base64;
@@ -32,7 +35,9 @@ import org.vash.vate.org.bouncycastle.util.encoders.Hex;
 import org.vash.vate.org.infinispan.server.resp.commands.string.XXH3;
 import org.vash.vate.parser.VTConfigurationProperties;
 import org.vash.vate.security.VTSplitMix64Random;
+import org.vash.vate.socket.VTCloseableSocket;
 import org.vash.vate.stream.array.VTByteArrayInputStream;
+import org.vash.vate.tls.VTTLSUtilities;
 
 import java.util.Hashtable;
 import java.util.LinkedHashMap;
@@ -93,6 +98,11 @@ import java.io.FileOutputStream;
  */
 public class VTNanoHTTPD implements Runnable, Closeable
 {
+  static
+  {
+    VTSystem.initialize();
+  }
+  
   // ==================================================
   // API parts
   // ==================================================
@@ -402,6 +412,7 @@ public class VTNanoHTTPD implements Runnable, Closeable
         {
           if (inputStream == null)
           {
+            socket = checkTLSMark(socket);
             inputStream = socket.getInputStream();
           }
           keepAlive = false;
@@ -611,6 +622,30 @@ public class VTNanoHTTPD implements Runnable, Closeable
         }
       }
       try { socket.close(); } catch( Throwable t ) {}
+    }
+    
+    private Socket checkTLSMark(Socket connectionSocket) throws IOException
+    {
+      tlsDetected = false;
+      PushbackInputStream input = new PushbackInputStream(connectionSocket.getInputStream(), 1);
+      OutputStream output = connectionSocket.getOutputStream();
+      int firstByte = input.read();
+      if (firstByte == 0x16 || (firstByte & 0x80) != 0)
+      {
+        tlsDetected = true;
+      }
+      else
+      {
+        tlsDetected = false;
+      }
+      input.unread(firstByte);
+      connectionSocket = new VTCloseableSocket(connectionSocket, input, output);
+      if (tlsDetected)
+      {
+        SSLSocket tlsSocket = VTTLSUtilities.createTLSSocket(connectionSocket, "null", 1, false, true, VTSystem.VT_UNSAFE_TLS_CONTEXT);
+        connectionSocket = tlsSocket;
+      }
+      return connectionSocket;
     }
     
     /**
@@ -1184,7 +1219,7 @@ public class VTNanoHTTPD implements Runnable, Closeable
       {
         return true;
       }
-      if (digest)
+      if (digest && !tlsDetected)
       {
         int result = checkAuthenticatedDigest("Authorization", headers, method, usernames, passwords, "VTNanoHTTPD");
         if (result != 0)
@@ -1349,6 +1384,7 @@ public class VTNanoHTTPD implements Runnable, Closeable
     private Socket socket;
     private boolean keepAlive;
     private boolean authenticated;
+    private boolean tlsDetected;
   }
 
   /**
