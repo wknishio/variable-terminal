@@ -469,6 +469,7 @@ public class VTTLSUtilities
     try
     {
       SSLSocket tlsSocket = (SSLSocket) factory.createSocket(socket, host, port, autoClose);
+      tlsSocket.setUseClientMode(client);
       if (client && supportsAtLeastJDK7() && !supportsAtLeastJDK8())
       {
         try
@@ -484,7 +485,6 @@ public class VTTLSUtilities
       {
         disableSSL(tlsSocket, client);
       }
-      tlsSocket.setUseClientMode(client);
       return tlsSocket;
     }
     catch (Throwable t)
@@ -496,6 +496,7 @@ public class VTTLSUtilities
   
   public static void disableSSL(SSLSocket tlsSocket, boolean client)
   {
+    tlsSocket.setUseClientMode(client);
     String[] currentProtocols = tlsSocket.getEnabledProtocols();
     ArrayList<String> allowedProtocols = new ArrayList<String>();
     if (client)
@@ -528,15 +529,29 @@ public class VTTLSUtilities
     }
   }
   
-  public static void disableSSL(SSLServerSocket tlsSocket)
+  public static void disableSSL(SSLServerSocket tlsSocket, boolean client)
   {
+    tlsSocket.setUseClientMode(client);
     String[] currentProtocols = tlsSocket.getEnabledProtocols();
     ArrayList<String> allowedProtocols = new ArrayList<String>();
-    for (String protocol : currentProtocols)
+    if (client)
     {
-      if (!"SSLv3".equalsIgnoreCase(protocol))
+      for (String protocol : currentProtocols)
       {
-        allowedProtocols.add(protocol);
+        if (!"SSLv2Hello".equalsIgnoreCase(protocol) && !"SSLv3".equalsIgnoreCase(protocol))
+        {
+          allowedProtocols.add(protocol);
+        }
+      }
+    }
+    else
+    {
+      for (String protocol : currentProtocols)
+      {
+        if (!"SSLv3".equalsIgnoreCase(protocol))
+        {
+          allowedProtocols.add(protocol);
+        }
       }
     }
     try
