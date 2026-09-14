@@ -44,7 +44,7 @@ public final class VTMultiplexingInputStream
   {
     this.input = new VTLittleEndianInputStream(input);
     this.server = server;
-    this.packetContentBuffer = new byte[packetSize * 2];
+    this.packetContentBuffer = new byte[(packetSize - 8) * 2];
     this.bufferSize = bufferSize;
     this.firstSeed = firstSeed;
     this.secondSeed = secondSeed;
