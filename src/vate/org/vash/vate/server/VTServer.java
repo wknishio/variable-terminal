@@ -705,7 +705,7 @@ public class VTServer implements Runnable
       found = true;
       try
       {
-        tlsAuthentication = fileServerSettings.getProperty("vate.server.auhentication.type", encryptionType).toUpperCase().startsWith("T");
+        tlsAuthentication = fileServerSettings.getProperty("vate.server.auhentication.type", "").toUpperCase().startsWith("T");
       }
       catch (Throwable e)
       {
@@ -977,7 +977,7 @@ public class VTServer implements Runnable
       {
         try
         {
-          tlsAuthentication = fileServerSettings.getProperty("vate.server.auhentication.type", encryptionType).toUpperCase().startsWith("T");
+          tlsAuthentication = fileServerSettings.getProperty("vate.server.auhentication.type", "").toUpperCase().startsWith("T");
         }
         catch (Throwable e)
         {
@@ -1219,7 +1219,7 @@ public class VTServer implements Runnable
     {
       try
       {
-        tlsAuthentication = fileServerSettings.getProperty("vate.server.auhentication.type", encryptionType).toUpperCase().startsWith("T");
+        tlsAuthentication = fileServerSettings.getProperty("vate.server.auhentication.type", "").toUpperCase().startsWith("T");
       }
       catch (Throwable e)
       {
