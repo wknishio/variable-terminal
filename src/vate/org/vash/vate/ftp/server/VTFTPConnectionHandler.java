@@ -41,8 +41,8 @@ public class VTFTPConnectionHandler extends FTPConnectionHandler
         InetSocketAddress acceptedAddress = (InetSocketAddress) acceptedSocket.getRemoteSocketAddress();
         SSLSocketFactory sslfactory = con.getServer().getSSLContext().getSocketFactory();
         SSLSocket sslsocket = (SSLSocket)sslfactory.createSocket(acceptedSocket, acceptedAddress.getHostName(), acceptedAddress.getPort(), true);
+        VTTLSUtilities.disableSSL(sslsocket, false);
         sslsocket.setUseClientMode(false);
-        VTTLSUtilities.disableSSL(sslsocket);
         return sslsocket;
       }
       else
@@ -54,8 +54,8 @@ public class VTFTPConnectionHandler extends FTPConnectionHandler
     {
       SSLSocketFactory sslfactory = con.getServer().getSSLContext().getSocketFactory();
       SSLSocket sslsocket = (SSLSocket)sslfactory.createSocket(clientFactory.createSocket(activeHost, activePort), activeHost, activePort, true);
+      VTTLSUtilities.disableSSL(sslsocket, false);
       sslsocket.setUseClientMode(false);
-      VTTLSUtilities.disableSSL(sslsocket);
       return sslsocket;
     }
     else
