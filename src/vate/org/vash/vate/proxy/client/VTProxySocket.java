@@ -65,6 +65,10 @@ public abstract class VTProxySocket extends Socket implements Closeable
       }
       currentSocket.setTcpNoDelay(true);
       currentSocket.setKeepAlive(true);
+      if (currentProxy.getProxyTLS())
+      {
+        currentSocket = VTTLSUtilities.createTLSSocket(currentSocket, currentProxy.getProxyHost(), currentProxy.getProxyPort(), true, true, VTSystem.VT_UNSAFE_TLS_CONTEXT);
+      }
     }
   }
   

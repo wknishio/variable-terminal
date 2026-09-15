@@ -831,7 +831,7 @@ public class VTFileTransferServerTransaction implements Runnable
         while (!stopped && ok && neededBytes > 0)
         {
           readedBytes = fileTransferFileInputStream.read(fileTransferBuffer, bufferedBytes, neededBytes);
-          if (readedBytes >= 0)
+          if (readedBytes > 0)
           {
             neededBytes -= readedBytes;
             currentOffset += readedBytes;
@@ -839,12 +839,16 @@ public class VTFileTransferServerTransaction implements Runnable
           }
           else
           {
-            ok = false;
             break;
           }
         }
         fileTransferRemoteOutputStream.writeData(fileTransferBuffer, 0, bufferedBytes);
         fileTransferRemoteOutputStream.flush();
+        if (bufferedBytes == 0)
+        {
+          localFileSize = currentOffset;
+          break;
+        }
       }
     }
     catch (Throwable t)
@@ -1178,16 +1182,21 @@ public class VTFileTransferServerTransaction implements Runnable
           }
         }
         bufferedBytes = fileTransferRemoteInputStream.readData(fileTransferBuffer);
-        if (bufferedBytes >= 0)
+        if (bufferedBytes > 0)
         {
+          fileTransferFileOutputStream.write(fileTransferBuffer, 0, bufferedBytes);
           currentOffset += bufferedBytes;
+        }
+        else if (bufferedBytes == 0)
+        {
+          remoteFileSize = currentOffset;
+          break;
         }
         else
         {
           ok = false;
           break;
         }
-        fileTransferFileOutputStream.write(fileTransferBuffer, 0, bufferedBytes);
       }
       fileTransferFileOutputStream.flush();
     }
