@@ -839,7 +839,7 @@ public class VTFileTransferServerTransaction implements Runnable
           }
           else
           {
-            localFileSize = currentOffset;
+            ok = false;
             break;
           }
         }
