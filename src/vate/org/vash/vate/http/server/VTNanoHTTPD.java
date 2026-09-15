@@ -227,7 +227,8 @@ public class VTNanoHTTPD implements Runnable, Closeable
   //private final VTXXHash64MessageDigest xxhash64;
   private final long digestSeed;
   private final Random random;
-  private final boolean digest;
+  private final boolean digestAuth;
+  private final boolean tlsAlways;
   private final String[] usernames;
   private final String[] passwords;
   private final ExecutorService executorService = Executors.newCachedThreadPool(new ThreadFactory()
@@ -249,9 +250,10 @@ public class VTNanoHTTPD implements Runnable, Closeable
    * Starts a HTTP server to given port.<p>
    * Throws an IOException if the socket is already in use
    */
-  public VTNanoHTTPD(ServerSocket connector, File wwwroot, boolean authDigest, String[] authUsernames, String[] authPasswords ) throws IOException
+  public VTNanoHTTPD(ServerSocket connector, File wwwroot, boolean authDigest, boolean enforceTLS, String[] authUsernames, String[] authPasswords ) throws IOException
   {
-    digest = authDigest;
+    digestAuth = authDigest;
+    tlsAlways = enforceTLS;
     usernames = authUsernames;
     passwords = authPasswords;
     
@@ -359,7 +361,7 @@ public class VTNanoHTTPD implements Runnable, Closeable
     VTNanoHTTPD server = null;
     try
     {
-      server = new VTNanoHTTPD( new ServerSocket(port), wwwroot, false, null, null);
+      server = new VTNanoHTTPD( new ServerSocket(port), wwwroot, false, false, null, null);
       server.start();
     }
     catch( IOException ioe )
@@ -640,7 +642,7 @@ public class VTNanoHTTPD implements Runnable, Closeable
       }
       input.unread(firstByte);
       connectionSocket = new VTCloseableSocket(connectionSocket, input, output);
-      if (tlsDetected)
+      if (tlsDetected || tlsAlways)
       {
         SSLSocket tlsSocket = VTTLSUtilities.createTLSSocket(connectionSocket, "null", 1, false, true, VTSystem.VT_UNSAFE_TLS_CONTEXT);
         connectionSocket = tlsSocket;
@@ -1219,7 +1221,7 @@ public class VTNanoHTTPD implements Runnable, Closeable
       {
         return true;
       }
-      if (digest && !tlsDetected)
+      if (digestAuth && !tlsDetected && !tlsAlways)
       {
         int result = checkAuthenticatedDigest("Authorization", headers, method, usernames, passwords, "VTNanoHTTPD");
         if (result != 0)
