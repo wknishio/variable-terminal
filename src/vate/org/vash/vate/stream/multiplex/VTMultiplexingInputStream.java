@@ -275,6 +275,7 @@ public final class VTMultiplexingInputStream
       }
       if (length >= 0)
       {
+        transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES + length);
         OutputStream out = stream.getOutputStream();
         try
         {
@@ -285,10 +286,11 @@ public final class VTMultiplexingInputStream
         {
           //e.printStackTrace();
         }
-        transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES + length);
+        
       }
       else
       {
+        transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
         if (length == -2)
         {
           close(type, number);
@@ -302,7 +304,6 @@ public final class VTMultiplexingInputStream
           close();
           return;
         }
-        transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
       }
     }
   }
