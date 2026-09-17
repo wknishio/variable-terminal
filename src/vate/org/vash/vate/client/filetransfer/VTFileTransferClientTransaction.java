@@ -65,11 +65,11 @@ public class VTFileTransferClientTransaction implements Runnable
   private File fileTransferFile;
   private File fileTransferCompletedFile;
   private RandomAccessFile fileTransferRandomAccessFile;
-  private FileInputStream fileTransferChecksumInputStream;
+  private InputStream fileTransferChecksumInputStream;
   private VTLittleEndianInputStream fileTransferRemoteInputStream = new VTLittleEndianInputStream(null);
   private VTLittleEndianOutputStream fileTransferRemoteOutputStream = new VTLittleEndianOutputStream(null);
-  private InputStream fileTransferFileInputStream;
-  private OutputStream fileTransferFileOutputStream;
+  private InputStream fileTransferLocalInputStream;
+  private OutputStream fileTransferLocalOutputStream;
   private VTFileTransferClientSession session;
   //private final Comparator<File> fileSorter = new VTFileTransferSorter();
    
@@ -143,22 +143,22 @@ public class VTFileTransferClientTransaction implements Runnable
           
         }
       }
-      if (fileTransferFileOutputStream != null)
+      if (fileTransferLocalOutputStream != null)
       {
         try
         {
-          fileTransferFileOutputStream.close();
+          fileTransferLocalOutputStream.close();
         }
         catch (Throwable t)
         {
           
         }
       }
-      if (fileTransferFileInputStream != null)
+      if (fileTransferLocalInputStream != null)
       {
         try
         {
-          fileTransferFileInputStream.close();
+          fileTransferLocalInputStream.close();
         }
         catch (Throwable t)
         {
@@ -719,7 +719,7 @@ public class VTFileTransferClientTransaction implements Runnable
     {
       if (!directory)
       {
-        fileTransferFileInputStream = new FileInputStream(fileTransferRandomAccessFile.getFD());
+        fileTransferLocalInputStream = new FileInputStream(fileTransferRandomAccessFile.getFD());
       }
       //return checkContinueTransfer(true);
       return true;
@@ -839,7 +839,7 @@ public class VTFileTransferClientTransaction implements Runnable
         }
         while (!stopped && ok && neededBytes > 0)
         {
-          readedBytes = fileTransferFileInputStream.read(fileTransferBuffer, bufferedBytes, neededBytes);
+          readedBytes = fileTransferLocalInputStream.read(fileTransferBuffer, bufferedBytes, neededBytes);
           if (readedBytes > 0)
           {
             neededBytes -= readedBytes;
@@ -869,17 +869,17 @@ public class VTFileTransferClientTransaction implements Runnable
   
   private void cleanUpload()
   {
-    if (fileTransferFileInputStream != null)
+    if (fileTransferLocalInputStream != null)
     {
       try
       {
-        fileTransferFileInputStream.close();
+        fileTransferLocalInputStream.close();
       }
       catch (Throwable e)
       {
         
       }
-      fileTransferFileInputStream = null;
+      fileTransferLocalInputStream = null;
     }
     if (fileTransferChecksumInputStream != null)
     {
@@ -1017,7 +1017,7 @@ public class VTFileTransferClientTransaction implements Runnable
     {
       if (!directory)
       {
-        fileTransferFileOutputStream = new FileOutputStream(fileTransferRandomAccessFile.getFD());
+        fileTransferLocalOutputStream = new FileOutputStream(fileTransferRandomAccessFile.getFD());
       }
       //return checkContinueTransfer(true);
       return true;
@@ -1192,7 +1192,7 @@ public class VTFileTransferClientTransaction implements Runnable
         bufferedBytes = fileTransferRemoteInputStream.readData(fileTransferBuffer);
         if (bufferedBytes > 0)
         {
-          fileTransferFileOutputStream.write(fileTransferBuffer, 0, bufferedBytes);
+          fileTransferLocalOutputStream.write(fileTransferBuffer, 0, bufferedBytes);
           currentOffset += bufferedBytes;
         }
         else if (bufferedBytes == 0)
@@ -1206,7 +1206,7 @@ public class VTFileTransferClientTransaction implements Runnable
           break;
         }
       }
-      fileTransferFileOutputStream.flush();
+      fileTransferLocalOutputStream.flush();
     }
     catch (Throwable t)
     {
@@ -1217,17 +1217,17 @@ public class VTFileTransferClientTransaction implements Runnable
   
   private void cleanDownload()
   {
-    if (fileTransferFileOutputStream != null)
+    if (fileTransferLocalOutputStream != null)
     {
       try
       {
-        fileTransferFileOutputStream.close();
+        fileTransferLocalOutputStream.close();
       }
       catch (Throwable e)
       {
         
       }
-      fileTransferFileOutputStream = null;
+      fileTransferLocalOutputStream = null;
     }
     if (fileTransferChecksumInputStream != null)
     {
@@ -1259,7 +1259,7 @@ public class VTFileTransferClientTransaction implements Runnable
   {
     try
     {
-      fileTransferFileOutputStream.close();
+      fileTransferLocalOutputStream.close();
     }
     catch (Throwable e1)
     {
