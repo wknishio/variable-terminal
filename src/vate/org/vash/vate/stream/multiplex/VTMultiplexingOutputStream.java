@@ -203,7 +203,7 @@ public final class VTMultiplexingOutputStream
   {
     if (bytesPerSecond > 0)
     {
-      throttler.setRate(bytesPerSecond);
+      throttler.setRate(Math.max(bytesPerSecond, VTSystem.VT_PACKET_TOTAL_SIZE_BYTES << 1));
     }
     else
     {
