@@ -15,7 +15,7 @@ public final class VTInterruptibleInputStream extends InputStream
   
   public VTInterruptibleInputStream(final InputStream source, final ExecutorService executorService)
   {
-    this.in = new VTPipedInputStream(VTSystem.VT_REDUCED_BUFFER_SIZE_BYTES);
+    this.in = new VTPipedInputStream(VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES);
     this.out = new VTPipedOutputStream();
     try
     {
@@ -32,7 +32,7 @@ public final class VTInterruptibleInputStream extends InputStream
   
   public VTInterruptibleInputStream(final InputStream source)
   {
-    this.in = new VTPipedInputStream(VTSystem.VT_REDUCED_BUFFER_SIZE_BYTES);
+    this.in = new VTPipedInputStream(VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES);
     this.out = new VTPipedOutputStream();
     try
     {
