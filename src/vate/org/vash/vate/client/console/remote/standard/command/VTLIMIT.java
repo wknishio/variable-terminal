@@ -19,7 +19,7 @@ public class VTLIMIT extends VTClientStandardRemoteConsoleCommandProcessor
   {
     if (parsed.length == 1)
     {
-      long rate = connection.getRateInBytesPerSecond();
+      long rate = connection.getOutputRateBytesPerSecond();
       if (rate > 0)
       {
         VTMainConsole.print("\rVT>Connection upload rate limit: [" + rate + "] bytes per second\nVT>");
@@ -45,7 +45,7 @@ public class VTLIMIT extends VTClientStandardRemoteConsoleCommandProcessor
         {
           rate = (VTSystem.VT_PACKET_TOTAL_SIZE_BYTES << 1);
         }
-        connection.setRateInBytesPerSecond(rate);
+        connection.setOutputRateBytesPerSecond(rate);
         if (rate > 0)
         {
           VTMainConsole.print("\rVT>Connection upload rate limit set to: [" + rate + "] bytes per second\nVT>");
@@ -83,7 +83,7 @@ public class VTLIMIT extends VTClientStandardRemoteConsoleCommandProcessor
         }
         else
         {
-          connection.setRateInBytesPerSecond(rate);
+          connection.setOutputRateBytesPerSecond(rate);
           if (rate > 0)
           {
             VTMainConsole.print("\rVT>Connection upload rate limit set to: [" + rate + "] bytes per second\nVT>");

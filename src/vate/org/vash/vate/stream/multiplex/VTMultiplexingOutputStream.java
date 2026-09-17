@@ -199,7 +199,7 @@ public final class VTMultiplexingOutputStream
     return packetSize;
   }
   
-  public final void setBytesPerSecond(final long bytesPerSecond)
+  public final void setRateBytesPerSecond(final long bytesPerSecond)
   {
     if (bytesPerSecond > 0)
     {
@@ -211,7 +211,7 @@ public final class VTMultiplexingOutputStream
     }
   }
   
-  public final long getBytesPerSecond()
+  public final long getRateBytesPerSecond()
   {
     long rate = (long) throttler.getRate();
     if (rate == Long.MAX_VALUE)

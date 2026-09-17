@@ -1010,14 +1010,14 @@ public class VTClientConnection
     audioDataInputStream.ready();
   }
   
-  public void setRateInBytesPerSecond(long bytesPerSecond)
+  public void setOutputRateBytesPerSecond(long bytesPerSecond)
   {
-    multiplexedConnectionOutputStream.setBytesPerSecond(bytesPerSecond);
+    multiplexedConnectionOutputStream.setRateBytesPerSecond(bytesPerSecond);
   }
   
-  public long getRateInBytesPerSecond()
+  public long getOutputRateBytesPerSecond()
   {
-    return multiplexedConnectionOutputStream.getBytesPerSecond();
+    return multiplexedConnectionOutputStream.getRateBytesPerSecond();
   }
   
   public int getAvailableInputChannel()

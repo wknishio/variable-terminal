@@ -17,7 +17,7 @@ public class VTLIMIT extends VTServerStandardRemoteConsoleCommandProcessor
   {
     if (parsed.length == 1)
     {
-      long rate = connection.getRateInBytesPerSecond();
+      long rate = connection.getOutputRateBytesPerSecond();
       if (rate > 0)
       {
         connection.getResultWriter().write("\rVT>Connection download rate limit: [" + rate + "] bytes per second\nVT>");
@@ -43,7 +43,7 @@ public class VTLIMIT extends VTServerStandardRemoteConsoleCommandProcessor
         {
           rate = (VTSystem.VT_PACKET_TOTAL_SIZE_BYTES << 1);
         }
-        connection.setRateInBytesPerSecond(rate);
+        connection.setOutputRateBytesPerSecond(rate);
         if (rate > 0)
         {
           connection.getResultWriter().write("\rVT>Connection download rate limit set to: [" + rate + "] bytes per second\nVT>");
@@ -76,7 +76,7 @@ public class VTLIMIT extends VTServerStandardRemoteConsoleCommandProcessor
         }
         if (!parsed[2].toUpperCase().startsWith("U"))
         {
-          connection.setRateInBytesPerSecond(rate);
+          connection.setOutputRateBytesPerSecond(rate);
           if (rate > 0)
           {
             connection.getResultWriter().write("\rVT>Connection download rate limit set to: [" + rate + "] bytes per second\nVT>");

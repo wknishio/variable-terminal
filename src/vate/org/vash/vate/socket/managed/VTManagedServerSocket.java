@@ -86,7 +86,7 @@ public class VTManagedServerSocket
     
     public long getOutputRateBytesPerSecond()
     {
-      long bytesPerSecond = connection.getMultiplexedConnectionOutputStream().getBytesPerSecond();
+      long bytesPerSecond = connection.getMultiplexedConnectionOutputStream().getRateBytesPerSecond();
       if (bytesPerSecond < Long.MAX_VALUE)
       {
         return bytesPerSecond;
@@ -101,11 +101,11 @@ public class VTManagedServerSocket
     {
       if (bytesPerSecond > 0)
       {
-        connection.getMultiplexedConnectionOutputStream().setBytesPerSecond(bytesPerSecond);
+        connection.getMultiplexedConnectionOutputStream().setRateBytesPerSecond(bytesPerSecond);
       }
       else
       {
-        connection.getMultiplexedConnectionOutputStream().setBytesPerSecond(Long.MAX_VALUE);
+        connection.getMultiplexedConnectionOutputStream().setRateBytesPerSecond(Long.MAX_VALUE);
       }
     }
     
