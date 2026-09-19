@@ -302,8 +302,8 @@ public final class VTMultiplexingOutputStream
       this.secondSequencer = new VTSplitMix64Random(secondSequencerSeed);
       this.thirdSequencer = new VTSplitMix64Random(thirdSequencerSeed);
       this.fourthSequencer = new VTSplitMix64Random(fourthSequencerSeed);
-      this.dataContentBuffer = new VTByteArrayOutputStream(VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES);
-      this.dataPacketBuffer = new VTByteArrayOutputStream(VTSystem.VT_PACKET_HEADER_SIZE_BYTES + packetSize);
+      this.dataContentBuffer = new VTByteArrayOutputStream(VTSystem.VT_PACKET_TOTAL_SIZE_BYTES - VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
+      this.dataPacketBuffer = new VTByteArrayOutputStream(VTSystem.VT_PACKET_TOTAL_SIZE_BYTES);
       this.dataPacketStream = new VTLittleEndianOutputStream(dataPacketBuffer);
       this.controlPacketBuffer = new VTByteArrayOutputStream(VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
       this.controlPacketStream = new VTLittleEndianOutputStream(controlPacketBuffer);
