@@ -15,6 +15,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.vash.vate.VTSystem;
+import org.vash.vate.net.openhft.hashing.LongTupleHashFunction;
 import org.vash.vate.org.infinispan.server.resp.commands.string.XXH3;
 import org.vash.vate.security.VTSplitMix64Random;
 import org.vash.vate.stream.array.VTByteArrayInputStream;
@@ -249,32 +250,36 @@ public final class VTMultiplexingInputStream
   private final void readPackets() throws IOException
   {
     VTMultiplexedInputStream stream;
-    long hash;
-    long start;
-    long end;
+    long low;
+    long high;
+    long[] hash = new long[2];
     int type; 
     int number;
     int length;
     
     while (!closed)
     {
-      start = input.readLong();
+      low = input.readLong();
+      high = input.readLong();
       type = input.readByte();
       number = input.readSubInt();
       length = input.readInt();
       input.readFully(packetContentBuffer, 0, length);
-      end = input.readLong();
-      hash = XXH3.hash64(packetContentBuffer, length);
       stream = getInputStream(type, number);
-      if (stream == null
-      || ((stream.getFirstSequencer().nextLong() ^ stream.getSecondSequencer().nextLong() ^ hash) != start)
-      || ((stream.getThirdSequencer().nextLong() ^ stream.getFourthSequencer().nextLong() ^ hash) != end))
+      if (stream == null)
       {
         close();
         return;
       }
       if (length >= 0)
       {
+        stream.messageDigest.hashBytes(packetContentBuffer, 0, length, hash);
+        if (((stream.firstSequencer.nextLong() ^ stream.secondSequencer.nextLong() ^ hash[0]) != low)
+        || ((stream.thirdSequencer.nextLong() ^ stream.fourthSequencer.nextLong() ^ hash[1]) != high))
+        {
+          close();
+          return;
+        }
         transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES + length);
         OutputStream out = stream.getOutputStream();
         try
@@ -290,6 +295,12 @@ public final class VTMultiplexingInputStream
       }
       else
       {
+        if (((stream.firstSequencer.nextLong() ^ stream.secondSequencer.nextLong()) != low)
+        || ((stream.thirdSequencer.nextLong() ^ stream.fourthSequencer.nextLong()) != high))
+        {
+          close();
+          return;
+        }
         transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
         if (length == -2)
         {
@@ -323,7 +334,6 @@ public final class VTMultiplexingInputStream
     private InputStream input;
     private OutputStream directOutputStream;
     private Closeable directCloseable;
-    //private VTByteArrayOutputStream compressedPacketOutputPipe;
     private VTByteArrayInputStream compressedInputPipe;
     private InputStream compressedInputStream;
     private final Collection<Closeable> propagated;
@@ -331,6 +341,7 @@ public final class VTMultiplexingInputStream
     private final Random secondSequencer;
     private final Random thirdSequencer;
     private final Random fourthSequencer;
+    private final LongTupleHashFunction messageDigest;
     
     private VTMultiplexedInputStream(final int type, final int number, final int bufferSize, final long firstSeed, final long secondSeed)
     {
@@ -344,6 +355,7 @@ public final class VTMultiplexingInputStream
       this.secondSequencer = new VTSplitMix64Random(secondSequencerSeed);
       this.thirdSequencer = new VTSplitMix64Random(thirdSequencerSeed);
       this.fourthSequencer = new VTSplitMix64Random(fourthSequencerSeed);
+      this.messageDigest = LongTupleHashFunction.xx128(firstSeed ^ secondSeed);
       this.propagated = new ConcurrentLinkedQueue<Closeable>();
       
       if ((type & VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT) == VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED)
@@ -592,26 +604,6 @@ public final class VTMultiplexingInputStream
     public final long skip(final long count) throws IOException
     {
       return input.skip(count);
-    }
-    
-    private final Random getFirstSequencer()
-    {
-      return firstSequencer;
-    }
-    
-    private final Random getSecondSequencer()
-    {
-      return secondSequencer;
-    }
-    
-    private final Random getThirdSequencer()
-    {
-      return thirdSequencer;
-    }
-    
-    private final Random getFourthSequencer()
-    {
-      return fourthSequencer;
     }
   }
   

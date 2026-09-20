@@ -225,7 +225,7 @@ public class VTNanoHTTPD implements Runnable, Closeable
   
   private final Collection<String> nonces;
   //private final VTXXHash64MessageDigest xxhash64;
-  private final long digestSeed;
+  //private final long digestSeed;
   private final Random random;
   private final boolean digestAuth;
   private final boolean tlsAlways;
@@ -263,12 +263,12 @@ public class VTNanoHTTPD implements Runnable, Closeable
     if (usernames == null || passwords == null || usernames.length == 0 || passwords.length == 0)
     {
       //xxhash64 = null;
-      digestSeed = 0;
+      //digestSeed = 0;
     }
     else
     {
       //xxhash64  = new VTXXHash64MessageDigest(XXHashFactory.safeInstance().newStreamingHash64(random.nextLong()));
-      digestSeed = random.nextLong();
+      //digestSeed = random.nextLong();
     }
     
     //myTcpPort = server.getLocalPort();
@@ -1207,7 +1207,7 @@ public class VTNanoHTTPD implements Runnable, Closeable
       byte[] randomBytes = new byte[VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES];
       random.nextBytes(randomBytes);
       String nonceValue = realm + ":" + Hex.toHexString(randomBytes);
-      nonceValue = XXH3.toHexString(XXH3.hash64(nonceValue.getBytes("ISO-8859-1"), nonceValue.length(), digestSeed));
+      nonceValue = XXH3.toHexString(XXH3.hash64(nonceValue.getBytes("ISO-8859-1"), nonceValue.length()));
       //nonceValue = DigestUtils.sha256Hex(nonceValue.getBytes("ISO-8859-1"));
       
       //VALID_DIGEST_NONCES.put(nOnceValue, currentTime + (1000 * 300));
@@ -1378,7 +1378,7 @@ public class VTNanoHTTPD implements Runnable, Closeable
       Response resp = new Response();
       resp.headers.put(requireHeader, "Digest realm=\"" + realm + "\", "
           +  "qop=\"auth\", nonce=\"" + nonce + "\", opaque=\""
-          + XXH3.toHexString(XXH3.hash64(nonce.getBytes("ISO-8859-1"), nonce.length(), digestSeed)) + "\"" + (stale ? ", stale=\"true\"" : ""));
+          + XXH3.toHexString(XXH3.hash64(nonce.getBytes("ISO-8859-1"), nonce.length())) + "\"" + (stale ? ", stale=\"true\"" : ""));
       resp.status = HTTP_UNAUTHORIZED;
       sendError(resp.status, MIME_PLAINTEXT, resp.headers, "");
     }

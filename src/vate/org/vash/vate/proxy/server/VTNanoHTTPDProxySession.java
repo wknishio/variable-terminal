@@ -288,12 +288,12 @@ public class VTNanoHTTPDProxySession implements Runnable
     if (usernames == null || passwords == null || usernames.length == 0 || passwords.length == 0)
     {
 //      xxhash64 = null;
-      digestSeed = 0;
+      //digestSeed = 0;
     }
     else
     {
 //      xxhash64  = new VTXXHash64MessageDigest(XXHashFactory.safeInstance().newStreamingHash64(random.nextLong()));
-      digestSeed = random.nextLong();
+      //digestSeed = random.nextLong();
     }
     //Thread t = new Thread( this );
     //t.setDaemon( true );
@@ -659,7 +659,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     Response resp = new Response();
     resp.headers.put(requireHeader, "Digest realm=\"" + realm + "\", "
         +  "qop=\"auth\", nonce=\"" + nonce + "\", opaque=\""
-        + XXH3.toHexString(XXH3.hash64(nonce.getBytes("ISO-8859-1"), nonce.length(), digestSeed)) + "\"" + (stale ? ", stale=\"true\"" : ""));
+        + XXH3.toHexString(XXH3.hash64(nonce.getBytes("ISO-8859-1"), nonce.length())) + "\"" + (stale ? ", stale=\"true\"" : ""));
     resp.status = HTTP_PROXY_AUTHENTICATION_REQUIRED;
     sendError(resp.status, MIME_PLAINTEXT, resp.headers, "");
   }
@@ -854,7 +854,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     byte[] randomBytes = new byte[VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES];
     random.nextBytes(randomBytes);
     String nonceValue = realm + ":" + Hex.toHexString(randomBytes);
-    nonceValue = XXH3.toHexString(XXH3.hash64(nonceValue.getBytes("ISO-8859-1"), nonceValue.length(), digestSeed));
+    nonceValue = XXH3.toHexString(XXH3.hash64(nonceValue.getBytes("ISO-8859-1"), nonceValue.length()));
 //    nonceValue = Hex.toHexString(xxhash64.digest(nonceValue.getBytes("ISO-8859-1")));
     //nonceValue = DigestUtils.sha256Hex(nonceValue.getBytes("ISO-8859-1"));
     
@@ -1265,7 +1265,7 @@ public class VTNanoHTTPDProxySession implements Runnable
   private ExecutorService executorService;
   private final Collection<String> nonces;
   //private final VTXXHash64MessageDigest xxhash64;
-  private final long digestSeed;
+  //private final long digestSeed;
   private final Random random;
   //private static final Map<String, Long> VALID_DIGEST_NONCES = new LinkedHashMap<String, Long>();
   

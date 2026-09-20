@@ -14,7 +14,7 @@ import java.util.List;
 import org.vash.vate.VTSystem;
 import org.vash.vate.com.martiansoftware.jsap.CommandLineTokenizerMKII;
 import org.vash.vate.filesystem.VTFileUtils;
-import org.vash.vate.org.infinispan.server.resp.commands.string.XXH3;
+import org.vash.vate.net.openhft.hashing.LongTupleHashFunction;
 import org.vash.vate.security.VTBlake3MessageDigest;
 import org.vash.vate.stream.compress.VTCompressorSelector;
 import org.vash.vate.stream.endian.VTLittleEndianInputStream;
@@ -44,14 +44,16 @@ public class VTFileTransferServerTransaction implements Runnable
   private long remoteFileTime;
   //private byte[] localDigest = new byte[8];
   //private byte[] remoteDigest = new byte[8];
-  private long localDigest = -1;
-  private long remoteDigest = -1;
+  private long localDigestLow = -1;
+  private long remoteDigestLow = -1;
+  private long localDigestHigh = -1;
+  private long remoteDigestHigh = -1;
   private long remoteFileSize;
   private long localFileSize;
   private long maxOffset;
   private long currentOffset;
   private final byte[] fileTransferBuffer = new byte[fileTransferBufferSize];
-//  private final VTXXHash64MessageDigest messageDigest;
+  private LongTupleHashFunction messageDigest;
   private final long digestSeed;
   private String command;
   private String source;
@@ -89,7 +91,7 @@ public class VTFileTransferServerTransaction implements Runnable
     blake3Digest.update(session.getServer().getConnection().getSecondAuthenticatedCredential());
     digestSeed = blake3Digest.digestLong();
     
-    //messageDigest = new VTXXHash64MessageDigest(XXHashFactory.safeInstance().newStreamingHash64(digestSeed));
+    messageDigest = LongTupleHashFunction.xx128(digestSeed);
   }
   
   public boolean isFinished()
@@ -819,9 +821,11 @@ public class VTFileTransferServerTransaction implements Runnable
         bufferedBytes = 0;
         if (resumable && localFileChunkChecksums.size() > 0 && remoteFileChunkChecksums.size() > 0)
         {
-          localDigest = localFileChunkChecksums.remove(0);
-          remoteDigest = remoteFileChunkChecksums.remove(0);
-          if (localDigest == remoteDigest)
+          localDigestLow = localFileChunkChecksums.remove(0);
+          remoteDigestLow = remoteFileChunkChecksums.remove(0);
+          localDigestHigh = localFileChunkChecksums.remove(0);
+          remoteDigestHigh = remoteFileChunkChecksums.remove(0);
+          if ((localDigestLow == remoteDigestLow) && (localDigestHigh == remoteDigestHigh))
           {
             currentOffset += neededBytes;
             fileTransferRandomAccessFile.seek(currentOffset);
@@ -1172,9 +1176,11 @@ public class VTFileTransferServerTransaction implements Runnable
         bufferedBytes = 0;
         if (resumable && localFileChunkChecksums.size() > 0 && remoteFileChunkChecksums.size() > 0)
         {
-          localDigest = localFileChunkChecksums.remove(0);
-          remoteDigest = remoteFileChunkChecksums.remove(0);
-          if (localDigest == remoteDigest)
+          localDigestLow = localFileChunkChecksums.remove(0);
+          remoteDigestLow = remoteFileChunkChecksums.remove(0);
+          localDigestHigh = localFileChunkChecksums.remove(0);
+          remoteDigestHigh = remoteFileChunkChecksums.remove(0);
+          if ((localDigestLow == remoteDigestLow) && (localDigestHigh == remoteDigestHigh))
           {
             currentOffset += neededBytes;
             fileTransferRandomAccessFile.seek(currentOffset);
@@ -1319,6 +1325,7 @@ public class VTFileTransferServerTransaction implements Runnable
   private List<Long> readLocalFileChunkChecksums()
   {
     List<Long> checksums = new LinkedList<Long>();
+    long[] hash = new long[2];
     currentOffset = 0;
     try
     {
@@ -1363,7 +1370,9 @@ public class VTFileTransferServerTransaction implements Runnable
           }
         }
 //        checksums.add(messageDigest.digestLong());
-        checksums.add(XXH3.hash64(fileTransferBuffer, bufferedBytes, digestSeed));
+        messageDigest.hashBytes(fileTransferBuffer, 0, bufferedBytes, hash);
+        checksums.add(hash[0]);
+        checksums.add(hash[1]);
       }
     }
     catch (Throwable e)

@@ -221,23 +221,22 @@ public class VTCompressorSelector
   
   public static OutputStream createDirectLz4OutputStream(OutputStream out)
   {
-    return new LZ4BlockOutputStream(out, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES, LZ4Factory.safeInstance().fastCompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), true);
+    return new LZ4FrameOutputStream(out, BLOCKSIZE.SIZE_256KB, false);
   }
   
   public static InputStream createDirectLz4InputStream(InputStream in)
   {
-    return new LZ4BlockInputStream(in, LZ4Factory.safeInstance().fastDecompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), false);
+    return new LZ4FrameInputStream(in, false);
   }
   
   public static OutputStream createBufferedLz4OutputStream(OutputStream out)
   {
-    //return new VTFlushBufferedOutputStream(new LZ4BlockOutputStream(out, VT.VT_COMPRESSION_BUFFER_SIZE_BYTES, LZ4Factory.safeInstance().fastCompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), true), new VTByteArrayOutputStream(VT.VT_COMPRESSION_BUFFER_SIZE_BYTES));
-    return new BufferedOutputStream(new LZ4BlockOutputStream(out, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES, LZ4Factory.safeInstance().fastCompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), true), VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
+    return new BufferedOutputStream(createDirectLz4OutputStream(out), VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
   }
   
   public static InputStream createBufferedLz4InputStream(InputStream in)
   {
-    return new BufferedInputStream(new LZ4BlockInputStream(in, LZ4Factory.safeInstance().fastDecompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), false), VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
+    return new BufferedInputStream(createDirectLz4InputStream(in), VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
   }
   
   public static OutputStream createBufferedSnappyOutputStream(OutputStream out)

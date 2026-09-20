@@ -215,6 +215,7 @@ Those are the third party libraries used in this software:
 * MinimalFTP by Guilherme Chaguri, for FTP server tunneling
 * BeanShell by Pat Niemeyer for alternative shell
 * XXH3 by Infinispan for xxh3 64 bit hashing
+* XXH3 by Zero-Allocation-Hashing for xxh3 128 bit hashing
 
 ## Additional utilities
 
