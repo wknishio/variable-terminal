@@ -56,7 +56,7 @@ public class VTFileTransferClientTransaction implements Runnable
   private long maxOffset;
   private long currentOffset;
   private final byte[] fileTransferBuffer = new byte[fileTransferBufferSize];
-  private LongTupleHashFunction messageDigest;
+  private LongTupleHashFunction chunkDigest;
   private final long digestSeed;
   private String command;
   private String source;
@@ -95,7 +95,7 @@ public class VTFileTransferClientTransaction implements Runnable
     blake3Digest.update(session.getClient().getConnection().getSecondAuthenticatedCredential());
     digestSeed = blake3Digest.digestLong();
     
-    messageDigest = LongTupleHashFunction.xx128(digestSeed);
+    chunkDigest = LongTupleHashFunction.xx128(digestSeed);
   }
   
   public boolean isFinished()
@@ -1379,7 +1379,7 @@ public class VTFileTransferClientTransaction implements Runnable
           }
         }
 //        checksums.add(messageDigest.digestLong());
-        messageDigest.hashBytes(fileTransferBuffer, 0, bufferedBytes, hash);
+        chunkDigest.hashBytes(fileTransferBuffer, 0, bufferedBytes, hash);
         checksums.add(hash[0]);
         checksums.add(hash[1]);
       }

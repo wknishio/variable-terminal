@@ -32,7 +32,7 @@ public class VTSystem
   public static final int VT_REVISION_VERSION = 2;
   
   public static final int VT_PACKET_HEADER_SIZE_BYTES = 24;
-  public static final int VT_PACKET_DATA_SIZE_BYTES = 1025 * 8;
+  public static final int VT_PACKET_DATA_SIZE_BYTES = 1025 * 16;
   public static final int VT_PACKET_TOTAL_SIZE_BYTES = VT_PACKET_HEADER_SIZE_BYTES + 17 + Math.max(ZstdUtil.maxCompressedLength(VT_PACKET_DATA_SIZE_BYTES), LZ4Utils.maxCompressedLength(VT_PACKET_DATA_SIZE_BYTES));
   
   public static final int VT_CONNECTION_INPUT_BUFFER_SIZE_BYTES = 1024 * 1024 * 4;
@@ -240,7 +240,7 @@ public class VTSystem
   public static final int VT_AUDIO_CODEC_DEFAULT = VT_AUDIO_CODEC_OPUS;
   
   public static final int VT_AUDIO_CODEC_FRAME_MILLISECONDS = 20;
-  public static final int VT_AUDIO_LINE_CAPTURE_BUFFER_MILLISECONDS = 320;
+  public static final int VT_AUDIO_LINE_CAPTURE_BUFFER_MILLISECONDS = 80;
   public static final int VT_AUDIO_LINE_PLAYBACK_BUFFER_MILLISECONDS = 320;
   
   public static final String VT_VERSION = "v" + VTSystem.VT_MAJOR_VERSION + "." + VTSystem.VT_MINOR_VERSION + "." + VTSystem.VT_REVISION_VERSION;

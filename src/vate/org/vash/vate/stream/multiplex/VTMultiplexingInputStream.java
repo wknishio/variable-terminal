@@ -4,6 +4,8 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Random;
@@ -41,11 +43,11 @@ public final class VTMultiplexingInputStream
   private final boolean server;
   private AtomicLong transferredBytes = new AtomicLong(0);
   
-  public VTMultiplexingInputStream(final InputStream input, final boolean server, final int packetSize, final int bufferSize, final long firstSeed, final long secondSeed, final ExecutorService executorService, final boolean startPacketReader)
+  public VTMultiplexingInputStream(final InputStream input, final boolean server, final int packetContentSize, final int packetTotalSize, final int bufferSize, final long firstSeed, final long secondSeed, final ExecutorService executorService, final boolean startPacketReader)
   {
     this.input = new VTLittleEndianInputStream(input);
     this.server = server;
-    this.packetContentBuffer = new byte[(packetSize - 8) * 2];
+    this.packetContentBuffer = new byte[packetTotalSize - VTSystem.VT_PACKET_HEADER_SIZE_BYTES];
     this.bufferSize = bufferSize;
     this.firstSeed = firstSeed;
     this.secondSeed = secondSeed;
@@ -264,6 +266,11 @@ public final class VTMultiplexingInputStream
       type = input.readByte();
       number = input.readSubInt();
       length = input.readInt();
+      if (length > packetContentBuffer.length)
+      {
+        close();
+        return;
+      }
       input.readFully(packetContentBuffer, 0, length);
       stream = getInputStream(type, number);
       if (stream == null)
@@ -273,7 +280,7 @@ public final class VTMultiplexingInputStream
       }
       if (length >= 0)
       {
-        stream.messageDigest.hashBytes(packetContentBuffer, 0, length, hash);
+        stream.contentDigest.hashBytes(packetContentBuffer, 0, length, hash);
         if (((stream.firstSequencer.nextLong() ^ stream.secondSequencer.nextLong() ^ hash[0]) != low)
         || ((stream.thirdSequencer.nextLong() ^ stream.fourthSequencer.nextLong() ^ hash[1]) != high))
         {
@@ -291,7 +298,6 @@ public final class VTMultiplexingInputStream
         {
           //e.printStackTrace();
         }
-        
       }
       else
       {
@@ -319,6 +325,11 @@ public final class VTMultiplexingInputStream
     }
   }
   
+  private static long createSequencerSeed(long first, long second)
+  {
+    return XXH3.hash64(ByteBuffer.allocate(16).order(ByteOrder.LITTLE_ENDIAN).putLong(first).putLong(second).array());
+  }
+  
   public final class VTMultiplexedInputStream extends InputStream
   {
     private volatile boolean closed;
@@ -341,21 +352,21 @@ public final class VTMultiplexingInputStream
     private final Random secondSequencer;
     private final Random thirdSequencer;
     private final Random fourthSequencer;
-    private final LongTupleHashFunction messageDigest;
+    private final LongTupleHashFunction contentDigest;
     
     private VTMultiplexedInputStream(final int type, final int number, final int bufferSize, final long firstSeed, final long secondSeed)
     {
       this.type = type;
       this.number = number;
-      this.firstSequencerSeed = XXH3.hash64(new byte[] {(byte)(number >> 24), (byte)(number >> 16), (byte)(number >> 8), (byte)(number)}, 4, firstSeed);
-      this.secondSequencerSeed = XXH3.hash64(new byte[] {(byte)(number >> 24), (byte)(number >> 16), (byte)(number >> 8), (byte)(number)}, 4, secondSeed);
-      this.thirdSequencerSeed = XXH3.hash64(new byte[] {(byte)(number), (byte)(number >> 8), (byte)(number >> 16), (byte)(number >> 24)}, 4, firstSeed);
-      this.fourthSequencerSeed = XXH3.hash64(new byte[] {(byte)(number), (byte)(number >> 8), (byte)(number >> 16), (byte)(number >> 24)}, 4, secondSeed);
+      this.firstSequencerSeed = createSequencerSeed(number, firstSeed);
+      this.secondSequencerSeed = createSequencerSeed(number, secondSeed);
+      this.thirdSequencerSeed = createSequencerSeed(firstSeed, number);
+      this.fourthSequencerSeed = createSequencerSeed(secondSeed, number);
       this.firstSequencer = new VTSplitMix64Random(firstSequencerSeed);
       this.secondSequencer = new VTSplitMix64Random(secondSequencerSeed);
       this.thirdSequencer = new VTSplitMix64Random(thirdSequencerSeed);
       this.fourthSequencer = new VTSplitMix64Random(fourthSequencerSeed);
-      this.messageDigest = LongTupleHashFunction.xx128(firstSeed ^ secondSeed);
+      this.contentDigest = LongTupleHashFunction.xx128(firstSeed ^ secondSeed);
       this.propagated = new ConcurrentLinkedQueue<Closeable>();
       
       if ((type & VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT) == VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED)

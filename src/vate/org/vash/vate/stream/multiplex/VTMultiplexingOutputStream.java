@@ -3,6 +3,8 @@ package org.vash.vate.stream.multiplex;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Random;
@@ -24,7 +26,8 @@ import org.vash.vate.stream.multiplex.VTMultiplexingInputStream.VTMultiplexedInp
 
 public final class VTMultiplexingOutputStream
 {
-  private final int packetSize;
+  private final int packetContentSize;
+  private final int packetTotalSize;
   private final OutputStream original;
   private final OutputStream throttled;
   private final NanoThrottle throttler;
@@ -37,11 +40,12 @@ public final class VTMultiplexingOutputStream
   private final boolean server;
   private AtomicLong transferredBytes = new AtomicLong(0);
   
-  public VTMultiplexingOutputStream(final OutputStream output, final boolean server, final int packetSize, final int bufferSize, final long firstSeed, final long secondSeed, final ExecutorService executorService)
+  public VTMultiplexingOutputStream(final OutputStream output, final boolean server, final int packetContentSize, final int packetTotalSize, final int bufferSize, final long firstSeed, final long secondSeed, final ExecutorService executorService)
   {
     this.original = output;
     this.server = server;
-    this.packetSize = packetSize;
+    this.packetContentSize = packetContentSize;
+    this.packetTotalSize = packetTotalSize;
     this.firstSeed = firstSeed;
     this.secondSeed = secondSeed;
     this.executorService = executorService;
@@ -139,7 +143,7 @@ public final class VTMultiplexingOutputStream
       stream.setControlOutputStream(original);
       return stream;
     }
-    stream = new VTMultiplexedOutputStream(output, original, type, number, packetSize, firstSeed, secondSeed);
+    stream = new VTMultiplexedOutputStream(output, original, type, number, packetContentSize, firstSeed, secondSeed);
     channelMap.put(number, stream);
     return stream;
   }
@@ -187,7 +191,7 @@ public final class VTMultiplexingOutputStream
       }
       else if (stream == null)
       {
-        stream = new VTMultiplexedOutputStream(output, original, type, number, packetSize, firstSeed, secondSeed);
+        stream = new VTMultiplexedOutputStream(output, original, type, number, packetContentSize, firstSeed, secondSeed);
         channelMap.put(number, stream);
         return stream;
       }
@@ -195,16 +199,11 @@ public final class VTMultiplexingOutputStream
     return stream;
   }
   
-  public final int getPacketSize()
-  {
-    return packetSize;
-  }
-  
   public final void setRateBytesPerSecond(final long bytesPerSecond)
   {
     if (bytesPerSecond > 0)
     {
-      throttler.setRate(Math.max(bytesPerSecond, VTSystem.VT_PACKET_TOTAL_SIZE_BYTES << 1));
+      throttler.setRate(Math.max(bytesPerSecond, packetTotalSize));
     }
     else
     {
@@ -261,6 +260,11 @@ public final class VTMultiplexingOutputStream
     getOutputStream(type, number).close();
   }
   
+  private static long createSequencerSeed(long first, long second)
+  {
+    return XXH3.hash64(ByteBuffer.allocate(16).order(ByteOrder.LITTLE_ENDIAN).putLong(first).putLong(second).array());
+  }
+  
   public final class VTMultiplexedOutputStream extends OutputStream
   {
     private volatile boolean closed;
@@ -287,7 +291,7 @@ public final class VTMultiplexingOutputStream
     private final Random secondSequencer;
     private final Random thirdSequencer;
     private final Random fourthSequencer;
-    private final LongTupleHashFunction messageDigest;
+    private final LongTupleHashFunction contentDigest;
     private final long[] hash = new long[2];
     
     private VTMultiplexedOutputStream(final OutputStream dataOutputStream, final OutputStream controlOutputStream, final int type, final int number, final int packetSize, final long firstSeed, final long secondSeed)
@@ -297,17 +301,17 @@ public final class VTMultiplexingOutputStream
       this.type = type;
       this.number = number;
       this.packetSize = packetSize;
-      this.firstSequencerSeed = XXH3.hash64(new byte[] {(byte)(number >> 24), (byte)(number >> 16), (byte)(number >> 8), (byte)(number)}, 4, firstSeed);
-      this.secondSequencerSeed = XXH3.hash64(new byte[] {(byte)(number >> 24), (byte)(number >> 16), (byte)(number >> 8), (byte)(number)}, 4, secondSeed);
-      this.thirdSequencerSeed = XXH3.hash64(new byte[] {(byte)(number), (byte)(number >> 8), (byte)(number >> 16), (byte)(number >> 24)}, 4, firstSeed);
-      this.fourthSequencerSeed = XXH3.hash64(new byte[] {(byte)(number), (byte)(number >> 8), (byte)(number >> 16), (byte)(number >> 24)}, 4, secondSeed);
+      this.firstSequencerSeed = createSequencerSeed(number, firstSeed);
+      this.secondSequencerSeed = createSequencerSeed(number, secondSeed);
+      this.thirdSequencerSeed = createSequencerSeed(firstSeed, number);
+      this.fourthSequencerSeed = createSequencerSeed(secondSeed, number);
       this.firstSequencer = new VTSplitMix64Random(firstSequencerSeed);
       this.secondSequencer = new VTSplitMix64Random(secondSequencerSeed);
       this.thirdSequencer = new VTSplitMix64Random(thirdSequencerSeed);
       this.fourthSequencer = new VTSplitMix64Random(fourthSequencerSeed);
-      this.messageDigest = LongTupleHashFunction.xx128(firstSeed ^ secondSeed);
-      this.dataContentBuffer = new VTByteArrayOutputStream(VTSystem.VT_PACKET_TOTAL_SIZE_BYTES - VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
-      this.dataPacketBuffer = new VTByteArrayOutputStream(VTSystem.VT_PACKET_TOTAL_SIZE_BYTES);
+      this.contentDigest = LongTupleHashFunction.xx128(firstSeed ^ secondSeed);
+      this.dataContentBuffer = new VTByteArrayOutputStream(packetTotalSize - VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
+      this.dataPacketBuffer = new VTByteArrayOutputStream(packetTotalSize);
       this.dataPacketStream = new VTLittleEndianOutputStream(dataPacketBuffer);
       this.controlPacketBuffer = new VTByteArrayOutputStream(VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
       this.controlPacketStream = new VTLittleEndianOutputStream(controlPacketBuffer);
@@ -477,7 +481,7 @@ public final class VTMultiplexingOutputStream
         dataContentBuffer.reset();
         contentOutputStream.write(buffer, offset, length);
         contentOutputStream.flush();
-        messageDigest.hashBytes(dataContentBuffer.buf(), 0, dataContentBuffer.count(), hash);
+        contentDigest.hashBytes(dataContentBuffer.buf(), 0, dataContentBuffer.count(), hash);
         dataPacketStream.writeLong(firstSequencer.nextLong() ^ secondSequencer.nextLong() ^ hash[0]);
         dataPacketStream.writeLong(thirdSequencer.nextLong() ^ fourthSequencer.nextLong() ^ hash[1]);
         dataPacketStream.writeByte(type);

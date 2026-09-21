@@ -221,18 +221,22 @@ public class VTAudioPlayer
       }
     }
     
-    public final void loopOpus() throws IOException, OpusException
+    public final void loopOpus() throws IOException, OpusException, InterruptedException
     {
       while (running)
       {
         encodedFrameSize = in.readUnsignedShort();
         in.readFully(inputBuffer, 0, encodedFrameSize);
         opus.decode(inputBuffer, 0, encodedFrameSize, outputBuffer, 0, (frameSize), false);
+        if (line.available() < frameSize)
+        {
+          line.flush();
+        }
         line.write(outputBuffer, 0, frameSize);
       }
     }
     
-    public final void loopSpeex() throws IOException
+    public final void loopSpeex() throws IOException, InterruptedException
     {
       while (running)
       {
@@ -240,6 +244,10 @@ public class VTAudioPlayer
         in.readFully(inputBuffer, 0, encodedFrameSize);
         speex.processData(inputBuffer, 0, encodedFrameSize);
         decodedFrameSize = speex.getProcessedData(outputBuffer, 0);
+        if (line.available() < decodedFrameSize)
+        {
+          line.flush();
+        }
         line.write(outputBuffer, 0, decodedFrameSize);
       }
     }

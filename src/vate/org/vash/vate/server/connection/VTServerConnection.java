@@ -644,8 +644,8 @@ public class VTServerConnection
     int inputChannel = 0;
     int outputChannel = 0;
     
-    multiplexedConnectionInputStream = new VTMultiplexingInputStream(connectionInputStream, true, VTSystem.VT_PACKET_DATA_SIZE_BYTES, VTSystem.VT_CHANNEL_BUFFER_SIZE_BYTES, inputFirstSeed, inputSecondSeed, executorService, false);
-    multiplexedConnectionOutputStream = new VTMultiplexingOutputStream(connectionOutputStream, true, VTSystem.VT_PACKET_DATA_SIZE_BYTES, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES, outputFirstSeed, outputSecondSeed, executorService);
+    multiplexedConnectionInputStream = new VTMultiplexingInputStream(connectionInputStream, true, VTSystem.VT_PACKET_DATA_SIZE_BYTES, VTSystem.VT_PACKET_TOTAL_SIZE_BYTES, VTSystem.VT_CHANNEL_BUFFER_SIZE_BYTES, inputFirstSeed, inputSecondSeed, executorService, false);
+    multiplexedConnectionOutputStream = new VTMultiplexingOutputStream(connectionOutputStream, true, VTSystem.VT_PACKET_DATA_SIZE_BYTES, VTSystem.VT_PACKET_TOTAL_SIZE_BYTES, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES, outputFirstSeed, outputSecondSeed, executorService);
     
     pingServerInputStream = multiplexedConnectionInputStream.linkInputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED | VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED, inputChannel++);
     pingServerOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED | VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED, outputChannel++);
