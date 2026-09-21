@@ -27,7 +27,7 @@ import org.vash.vate.parser.VTConfigurationProperties;
 import org.vash.vate.parser.VTPropertiesBuilder;
 import org.vash.vate.proxy.client.VTProxy;
 import org.vash.vate.runtime.VTRuntimeExit;
-import org.vash.vate.security.VTBlake3SecureRandom;
+import org.vash.vate.security.VTBlake3ExtendedSecureRandom;
 import org.vash.vate.security.VTCredential;
 import org.vash.vate.server.connection.VTServerConnectionListener;
 import org.vash.vate.server.connection.VTServerConnector;
@@ -2406,7 +2406,7 @@ public class VTServer implements Runnable
     {
       executorService.execute(trafficMonitorService);
     }
-    serverConnector = new VTServerConnector(this, new VTBlake3SecureRandom(new SecureRandom()), proxy, managed);
+    serverConnector = new VTServerConnector(this, new VTBlake3ExtendedSecureRandom(new SecureRandom()), proxy, managed);
     serverConnector.setPassive(passive);
     serverConnector.setAddress(hostAddress);
     serverConnector.setPort(hostPort);

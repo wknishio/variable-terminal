@@ -8,20 +8,20 @@ import org.vash.vate.org.bouncycastle.crypto.params.Blake3Parameters;
 import org.vash.vate.org.bouncycastle.crypto.prng.DigestRandomGenerator;
 import org.vash.vate.org.bouncycastle.crypto.prng.RandomGenerator;
 
-public class VTBlake3SecureRandom extends SecureRandom
+public class VTBlake3ExtendedSecureRandom extends SecureRandom
 {
   private static final long serialVersionUID = 1L;
   private final VTBlake3RoundsDigest blake3 = new VTBlake3RoundsDigest(64, 16);
   private final RandomGenerator generator = new DigestRandomGenerator(blake3);
   
-  public VTBlake3SecureRandom(Random random)
+  public VTBlake3ExtendedSecureRandom(Random random)
   {
     byte[] secureSeed = new byte[VTSystem.VT_SECURITY_SEED_SIZE_BYTES];
     random.nextBytes(secureSeed);
     setSeed(secureSeed);
   }
   
-  public VTBlake3SecureRandom(final byte[] inSeed)
+  public VTBlake3ExtendedSecureRandom(final byte[] inSeed)
   {
     setSeed(inSeed);
   }

@@ -5,18 +5,18 @@ import java.security.MessageDigest;
 import org.vash.vate.VTSystem;
 import org.vash.vate.org.bouncycastle.crypto.params.Blake3Parameters;
 
-public class VTBlake3MessageDigest extends MessageDigest
+public class VTBlake3ExtendedMessageDigest extends MessageDigest
 {
   // private static final Blake3Digest BLAKE3 = new Blake3Digest();
   private final VTBlake3RoundsDigest blake3 = new VTBlake3RoundsDigest(64, 16);
   
-  public VTBlake3MessageDigest()
+  public VTBlake3ExtendedMessageDigest()
   {
     super("BLAKE3");
     //this.blake3.init(null);
   }
   
-  public VTBlake3MessageDigest(final byte[] seed)
+  public VTBlake3ExtendedMessageDigest(final byte[] seed)
   {
     super("BLAKE3");
     setSeed(seed);

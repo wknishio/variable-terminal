@@ -29,7 +29,7 @@ import org.vash.vate.parser.VTConfigurationProperties;
 import org.vash.vate.parser.VTPropertiesBuilder;
 import org.vash.vate.proxy.client.VTProxy;
 import org.vash.vate.runtime.VTRuntimeExit;
-import org.vash.vate.security.VTBlake3SecureRandom;
+import org.vash.vate.security.VTBlake3ExtendedSecureRandom;
 
 public class VTClient implements Runnable
 {
@@ -2283,7 +2283,7 @@ public class VTClient implements Runnable
     {
       executorService.execute(trafficMonitorService);
     }
-    clientConnector = new VTClientConnector(this, new VTBlake3SecureRandom(new SecureRandom()), proxy, managed);
+    clientConnector = new VTClientConnector(this, new VTBlake3ExtendedSecureRandom(new SecureRandom()), proxy, managed);
     clientConnector.setActive(active);
     clientConnector.setAddress(hostAddress);
     clientConnector.setPort(hostPort);
