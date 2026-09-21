@@ -14,8 +14,8 @@ import javax.net.ssl.SSLSocket;
 import org.vash.vate.VTSystem;
 import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.security.VTArrayComparator;
-import org.vash.vate.security.VTBlake3ExtendedSecureRandom;
-import org.vash.vate.security.VTBlake3ExtendedMessageDigest;
+import org.vash.vate.security.VTBlake3StandardMessageDigest;
+import org.vash.vate.security.VTBlake3StandardSecureRandom;
 import org.vash.vate.security.VTCryptographicEngine;
 import org.vash.vate.stream.base.VTZ85InputStream;
 import org.vash.vate.stream.base.VTZ85OutputStream;
@@ -66,8 +66,8 @@ public class VTClientConnection
   private final byte[] remoteNonce = new byte[VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES];
   private final byte[] randomData = new byte[VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES];
   private final VTCryptographicEngine cryptoEngine;
-  private final VTBlake3ExtendedMessageDigest blake3Digest;
-  private SecureRandom secureRandom;
+  private final VTBlake3StandardMessageDigest blake3Digest;
+  private SecureRandom secureRandom = new VTBlake3StandardSecureRandom();
   private Socket connectionSocket;
   private InputStream authenticationInputStream;
   private OutputStream authenticationOutputStream;
@@ -147,7 +147,7 @@ public class VTClientConnection
     this.managed = managed;
     this.executorService = executorService;
     this.cryptoEngine = new VTCryptographicEngine();
-    this.blake3Digest = new VTBlake3ExtendedMessageDigest();
+    this.blake3Digest = new VTBlake3StandardMessageDigest();
     this.authenticationReader = new VTLittleEndianInputStream(null);
     this.authenticationWriter = new VTLittleEndianOutputStream(null);
   }
@@ -179,7 +179,7 @@ public class VTClientConnection
   
   public void setSecureRandomSeed(byte[] seed)
   {
-    secureRandom = new VTBlake3ExtendedSecureRandom(seed);
+    secureRandom.setSeed(seed);
   }
   
   public VTMultiplexingInputStream getMultiplexedConnectionInputStream()

@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.vash.vate.VTSystem;
 import org.vash.vate.security.VTArrayComparator;
-import org.vash.vate.security.VTBlake3ExtendedMessageDigest;
+import org.vash.vate.security.VTBlake3StandardMessageDigest;
 import org.vash.vate.security.VTCredential;
 import org.vash.vate.server.VTServer;
 import org.vash.vate.server.connection.VTServerConnection;
@@ -23,7 +23,7 @@ public class VTServerAuthenticator
   private byte[] encryptionKey;
   private String user;
   private String password;
-  private final VTBlake3ExtendedMessageDigest blake3Digest;
+  private final VTBlake3StandardMessageDigest blake3Digest;
   private VTServer server;
   private VTServerConnection connection;
   private VTServerAuthenticatorTimeoutTask timeoutTask = new VTServerAuthenticatorTimeoutTask();
@@ -85,7 +85,7 @@ public class VTServerAuthenticator
   {
     this.server = server;
     this.connection = connection;
-    this.blake3Digest = new VTBlake3ExtendedMessageDigest();
+    this.blake3Digest = new VTBlake3StandardMessageDigest();
   }
   
   public void startTimeoutThread()

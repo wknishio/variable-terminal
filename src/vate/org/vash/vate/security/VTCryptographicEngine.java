@@ -15,14 +15,14 @@ import org.vash.vate.org.bouncycastle.crypto.params.ParametersWithIV;
 
 public class VTCryptographicEngine
 {
-  private final VTBlake3ExtendedMessageDigest blake3Digest;
+  private final VTBlake3StandardMessageDigest blake3Digest;
   
   private StreamCipher encryptionStreamCipher;
   private StreamCipher decryptionStreamCipher;
   
   public VTCryptographicEngine()
   {
-    this.blake3Digest = new VTBlake3ExtendedMessageDigest();
+    this.blake3Digest = new VTBlake3StandardMessageDigest();
   }
   
   public void initializeClientEngine(final int encryptionType, final byte[]... encryptionKeys)

@@ -15,7 +15,7 @@ import org.vash.vate.VTSystem;
 import org.vash.vate.com.martiansoftware.jsap.CommandLineTokenizerMKII;
 import org.vash.vate.filesystem.VTFileUtils;
 import org.vash.vate.net.openhft.hashing.LongTupleHashFunction;
-import org.vash.vate.security.VTBlake3ExtendedMessageDigest;
+import org.vash.vate.security.VTBlake3StandardMessageDigest;
 import org.vash.vate.stream.compress.VTCompressorSelector;
 import org.vash.vate.stream.endian.VTLittleEndianInputStream;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
@@ -83,7 +83,7 @@ public class VTFileTransferServerTransaction implements Runnable
     System.arraycopy(remoteNonce, 0, blake3Seed, 0, VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES);
     System.arraycopy(localNonce, 0, blake3Seed, VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES, VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES);
     
-    VTBlake3ExtendedMessageDigest blake3Digest = new VTBlake3ExtendedMessageDigest(blake3Seed);
+    VTBlake3StandardMessageDigest blake3Digest = new VTBlake3StandardMessageDigest(blake3Seed);
     blake3Digest.update(session.getServer().getConnection().getLocalNonce());
     blake3Digest.update(session.getServer().getConnection().getRemoteNonce());
     blake3Digest.update(session.getServer().getConnection().getEncryptionKey());

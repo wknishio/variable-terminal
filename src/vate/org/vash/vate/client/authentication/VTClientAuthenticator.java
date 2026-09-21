@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.vash.vate.VTSystem;
 import org.vash.vate.client.VTClient;
 import org.vash.vate.client.connection.VTClientConnection;
-import org.vash.vate.security.VTBlake3ExtendedMessageDigest;
+import org.vash.vate.security.VTBlake3StandardMessageDigest;
 
 public class VTClientAuthenticator
 {
@@ -19,7 +19,7 @@ public class VTClientAuthenticator
   private byte[] encryptionKey;
   private String user;
   private String password;
-  private final VTBlake3ExtendedMessageDigest blake3Digest;
+  private final VTBlake3StandardMessageDigest blake3Digest;
   private VTClient client;
   private VTClientConnection connection;
   private VTClientAuthenticatorTimeoutTask timeoutTask = new VTClientAuthenticatorTimeoutTask();
@@ -81,7 +81,7 @@ public class VTClientAuthenticator
   {
     this.client = client;
     this.connection = connection;
-    this.blake3Digest = new VTBlake3ExtendedMessageDigest();
+    this.blake3Digest = new VTBlake3StandardMessageDigest();
   }
   
   public void startTimeoutThread()
