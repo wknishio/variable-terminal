@@ -36,7 +36,12 @@ public class VTSocksHttpProxyAuthenticatorNone extends ServerAuthenticatorNone
   
   public ServerAuthenticator startSession(Socket socket) throws IOException
   {
-    boolean digestAuthentication = true;
+    boolean digest = true;
+    boolean tls = socket instanceof SSLSocket;
+    if (tls)
+    {
+      digest = false;
+    }
     InputStream socketInputStream = socket.getInputStream();
     PushbackInputStream input = null;
     if (socketInputStream instanceof PushbackInputStream)
@@ -57,7 +62,7 @@ public class VTSocksHttpProxyAuthenticatorNone extends ServerAuthenticatorNone
       input = new PushbackInputStream(tlsSocket.getInputStream());
       output = tlsSocket.getOutputStream();
       version = input.read();
-      digestAuthentication = false;
+      digest = false;
     }
     if (version == 5)
     {
@@ -77,7 +82,7 @@ public class VTSocksHttpProxyAuthenticatorNone extends ServerAuthenticatorNone
       {
         input.unread(version);
         //fallback to use http proxy instead
-        VTNanoHTTPDProxySession httpProxy = new VTNanoHTTPDProxySession(new VTCloseableSocket(socket, input, output), null, null, executorService, digestAuthentication, null, null, bind, connectTimeout, dataTimeout, connect_proxy);
+        VTNanoHTTPDProxySession httpProxy = new VTNanoHTTPDProxySession(new VTCloseableSocket(socket, input, output), null, null, executorService, digest, null, null, bind, connectTimeout, dataTimeout, connect_proxy);
         try
         {
           httpProxy.run();

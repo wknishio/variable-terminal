@@ -573,6 +573,7 @@ public class VTServerConnection
     System.arraycopy(localNonce, 0, seed, VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES, VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES);
     blake3Digest.setSeed(seed);
     blake3Digest.reset();
+    cryptoEngine.setSeed(seed);
   }
   
   private void setVerificationStreams() throws IOException

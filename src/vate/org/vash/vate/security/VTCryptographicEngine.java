@@ -25,6 +25,11 @@ public class VTCryptographicEngine
     this.blake3Digest = new VTBlake3StandardMessageDigest();
   }
   
+  public void setSeed(byte[] seed)
+  {
+    blake3Digest.setSeed(seed);
+  }
+  
   public void initializeClientEngine(final int encryptionType, final byte[]... encryptionKeys)
   {
     encryptionStreamCipher = null;
