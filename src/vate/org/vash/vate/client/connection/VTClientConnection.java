@@ -69,6 +69,7 @@ public class VTClientConnection
   private final VTBlake3StandardMessageDigest blake3Digest;
   private SecureRandom secureRandom = new VTBlake3StandardSecureRandom();
   private Socket connectionSocket;
+  private SSLSocket tlsSocket;
   private InputStream authenticationInputStream;
   private OutputStream authenticationOutputStream;
   private InputStream connectionInputStream;
@@ -490,7 +491,7 @@ public class VTClientConnection
   {
     if (tlsAuthentication)
     {
-      SSLSocket tlsSocket = VTTLSUtilities.createTLSSocket(connectionSocket, "null", 1, true, true, VTSystem.VT_UNSAFE_TLS_CONTEXT);
+      tlsSocket = VTTLSUtilities.createTLSSocket(connectionSocket, "null", 1, true, true, VTSystem.VT_UNSAFE_TLS_CONTEXT);
       tlsSocket.setNeedClientAuth(true);
       tlsSocket.startHandshake();
       authenticationInputStream = new VTZ85InputStream(tlsSocket.getInputStream());
@@ -572,13 +573,17 @@ public class VTClientConnection
     this.firstAuthenticatedCredential = firstAuthenticatedCredential;
     this.secondAuthenticatedCredential = secondAuthenticatedCredential;
     exchangeNonces(true);
+    cryptoEngine.initializeClientEngine(encryptionType, localNonce, remoteNonce, encryptionKey, firstAuthenticatedCredential, secondAuthenticatedCredential);
     if (tlsAuthentication && encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_NONE)
     {
-      encryptionType = VTSystem.VT_CONNECTION_ENCRYPTION_SALSA;
+      connectionInputStream = new BufferedInputStream(cryptoEngine.getDecryptedInputStream(tlsSocket.getInputStream(), VTSystem.VT_CONNECTION_INPUT_BUFFER_SIZE_BYTES), VTSystem.VT_CONNECTION_INPUT_BUFFER_SIZE_BYTES);
+      connectionOutputStream = new BufferedOutputStream(cryptoEngine.getEncryptedOutputStream(tlsSocket.getOutputStream(), VTSystem.VT_CONNECTION_OUTPUT_BUFFER_SIZE_BYTES), VTSystem.VT_CONNECTION_OUTPUT_BUFFER_SIZE_BYTES);
     }
-    cryptoEngine.initializeClientEngine(encryptionType, localNonce, remoteNonce, encryptionKey, firstAuthenticatedCredential, secondAuthenticatedCredential);
-    connectionInputStream = new BufferedInputStream(cryptoEngine.getDecryptedInputStream(connectionSocket.getInputStream(), VTSystem.VT_CONNECTION_INPUT_BUFFER_SIZE_BYTES), VTSystem.VT_CONNECTION_INPUT_BUFFER_SIZE_BYTES);
-    connectionOutputStream = new BufferedOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocket.getOutputStream(), VTSystem.VT_CONNECTION_OUTPUT_BUFFER_SIZE_BYTES), VTSystem.VT_CONNECTION_OUTPUT_BUFFER_SIZE_BYTES);
+    else
+    {
+      connectionInputStream = new BufferedInputStream(cryptoEngine.getDecryptedInputStream(connectionSocket.getInputStream(), VTSystem.VT_CONNECTION_INPUT_BUFFER_SIZE_BYTES), VTSystem.VT_CONNECTION_INPUT_BUFFER_SIZE_BYTES);
+      connectionOutputStream = new BufferedOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocket.getOutputStream(), VTSystem.VT_CONNECTION_OUTPUT_BUFFER_SIZE_BYTES), VTSystem.VT_CONNECTION_OUTPUT_BUFFER_SIZE_BYTES);
+    }
   }
   
   private void setMultiplexedStreams() throws IOException
