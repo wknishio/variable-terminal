@@ -758,14 +758,6 @@ public class VTFileTransferServerTransaction implements Runnable
     }
     catch (Throwable e)
     {
-      try
-      {
-        fileTransferRemoteOutputStream.close();
-      }
-      catch (Throwable e1)
-      {
-        
-      }
       //return checkContinueTransfer(false);
       return false;
     }
@@ -830,14 +822,6 @@ public class VTFileTransferServerTransaction implements Runnable
     }
     catch (Throwable e)
     {
-      try
-      {
-        fileTransferRemoteOutputStream.close();
-      }
-      catch (Throwable e1)
-      {
-        
-      }
       return false;
     }
   }
@@ -885,12 +869,17 @@ public class VTFileTransferServerTransaction implements Runnable
             break;
           }
         }
-        fileTransferRemoteOutputStream.writeData(fileTransferBuffer, 0, bufferedBytes);
-        fileTransferRemoteOutputStream.flush();
+        session.getServer().getConnection().getFileTransferControlDataOutputStream().writeInt(bufferedBytes);
+        session.getServer().getConnection().getFileTransferControlDataOutputStream().flush();
         if (bufferedBytes == 0)
         {
           localFileSize = currentOffset;
           break;
+        }
+        else
+        {
+          fileTransferRemoteOutputStream.write(fileTransferBuffer, 0, bufferedBytes);
+          fileTransferRemoteOutputStream.flush();
         }
       }
     }
@@ -1058,14 +1047,6 @@ public class VTFileTransferServerTransaction implements Runnable
     }
     catch (Throwable e)
     {
-      try
-      {
-        fileTransferRemoteInputStream.close();
-      }
-      catch (Throwable t)
-      {
-        
-      }
       //return checkContinueTransfer(false);
       return false;
     }
@@ -1185,14 +1166,6 @@ public class VTFileTransferServerTransaction implements Runnable
     }
     catch (Throwable e)
     {
-      try
-      {
-        fileTransferRemoteInputStream.close();
-      }
-      catch (Throwable t)
-      {
-        
-      }
       return false;
     }
   }
@@ -1226,9 +1199,10 @@ public class VTFileTransferServerTransaction implements Runnable
             continue;
           }
         }
-        bufferedBytes = fileTransferRemoteInputStream.readData(fileTransferBuffer);
+        bufferedBytes = session.getServer().getConnection().getFileTransferControlDataInputStream().readInt();
         if (bufferedBytes > 0)
         {
+          fileTransferRemoteInputStream.readFully(fileTransferBuffer, 0, bufferedBytes);
           fileTransferLocalOutputStream.write(fileTransferBuffer, 0, bufferedBytes);
           currentOffset += bufferedBytes;
         }
@@ -1430,11 +1404,10 @@ public class VTFileTransferServerTransaction implements Runnable
   
   private boolean readLocalFileChunkDigest()
   {
-    long digestOffset = currentOffset;
     chunkDigest.reset();
     try
     {
-      int neededBytes = (int) Math.min(fileTransferBufferSize, maxOffset - digestOffset);
+      int neededBytes = (int) Math.min(fileTransferBufferSize, maxOffset - currentOffset);
       int bufferedBytes = 0;
       int readedBytes = 0;
       while (!stopped && neededBytes > 0)
