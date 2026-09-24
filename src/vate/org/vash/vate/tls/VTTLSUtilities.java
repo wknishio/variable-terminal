@@ -16,7 +16,6 @@ import java.security.cert.X509Certificate;
 import java.security.spec.ECGenParameterSpec;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.UUID;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -49,8 +48,6 @@ import org.vash.vate.org.bouncycastle.operator.DefaultSignatureAlgorithmIdentifi
 import org.vash.vate.org.bouncycastle.operator.bc.BcDSAContentSignerBuilder;
 import org.vash.vate.org.bouncycastle.operator.bc.BcECContentSignerBuilder;
 import org.vash.vate.org.bouncycastle.operator.bc.BcRSAContentSignerBuilder;
-import org.vash.vate.org.bouncycastle.util.encoders.Base32;
-import org.vash.vate.org.bouncycastle.util.encoders.Base64;
 import org.vash.vate.reflection.VTReflectionUtils;
 
 public class VTTLSUtilities
@@ -310,9 +307,8 @@ public class VTTLSUtilities
     {
       String keyAlgorithm = keyPair.getPublic().getAlgorithm();
       
-      String uuid = UUID.randomUUID().toString();
-      String commonName = Base64.toBase64String(uuid.getBytes());
-      String dnsName = Base32.toBase32String(uuid.replaceFirst("-", "").getBytes());
+      String commonName = "localhost";
+      String dnsName = "localhost";
       
       AsymmetricKeyParameter publicKey = PublicKeyFactory.createKey(keyPair.getPublic().getEncoded());
       AsymmetricKeyParameter privateKey = PrivateKeyFactory.createKey(keyPair.getPrivate().getEncoded());
@@ -328,15 +324,8 @@ public class VTTLSUtilities
       X509v3CertificateBuilder certBuilder = new BcX509v3CertificateBuilder(dnName, serialNumber, validityStartDate, validityEndDate, dnName, publicKey);
       certBuilder.addExtension(Extension.basicConstraints, true, new BasicConstraints(false));
       
-      GeneralNames subjectAltNames = new GeneralNames(new GeneralName[] {new GeneralName(GeneralName.dNSName, dnsName)});
+      GeneralNames subjectAltNames = new GeneralNames(new GeneralName[] {new GeneralName(GeneralName.dNSName, dnsName), new GeneralName(GeneralName.iPAddress, "127.0.0.1"), new GeneralName(GeneralName.iPAddress, "::1")});
       certBuilder.addExtension(Extension.subjectAlternativeName, false, subjectAltNames);
-      
-//      int usages = KeyUsage.digitalSignature | KeyUsage.keyEncipherment;
-//      certBuilder.addExtension(Extension.keyUsage, false, new KeyUsage(usages));
-//      
-//      KeyPurposeId[] purposes = new KeyPurposeId[] {KeyPurposeId.id_kp_serverAuth, KeyPurposeId.id_kp_clientAuth};
-//      ExtendedKeyUsage extendedKeyUsage = new ExtendedKeyUsage(purposes);
-//      certBuilder.addExtension(Extension.extendedKeyUsage, false, extendedKeyUsage);
       
       String signatureAlgorithm = null;
       

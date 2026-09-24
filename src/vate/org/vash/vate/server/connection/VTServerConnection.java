@@ -600,17 +600,13 @@ public class VTServerConnection
     this.firstAuthenticatedCredential = firstAuthenticatedCredential;
     this.secondAuthenticatedCredential = secondAuthenticatedCredential;
     exchangeNonces(true);
-    cryptoEngine.initializeServerEngine(encryptionType, remoteNonce, localNonce, encryptionKey, firstAuthenticatedCredential, secondAuthenticatedCredential);
     if (tlsAuthentication && encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_NONE)
     {
-      connectionInputStream = new BufferedInputStream(cryptoEngine.getDecryptedInputStream(tlsSocket.getInputStream(), VTSystem.VT_CONNECTION_INPUT_BUFFER_SIZE_BYTES), VTSystem.VT_CONNECTION_INPUT_BUFFER_SIZE_BYTES);
-      connectionOutputStream = new BufferedOutputStream(cryptoEngine.getEncryptedOutputStream(tlsSocket.getOutputStream(), VTSystem.VT_CONNECTION_OUTPUT_BUFFER_SIZE_BYTES), VTSystem.VT_CONNECTION_OUTPUT_BUFFER_SIZE_BYTES);
+      encryptionType = VTSystem.VT_CONNECTION_ENCRYPTION_SALSA;
     }
-    else
-    {
-      connectionInputStream = new BufferedInputStream(cryptoEngine.getDecryptedInputStream(connectionSocket.getInputStream(), VTSystem.VT_CONNECTION_INPUT_BUFFER_SIZE_BYTES), VTSystem.VT_CONNECTION_INPUT_BUFFER_SIZE_BYTES);
-      connectionOutputStream = new BufferedOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocket.getOutputStream(), VTSystem.VT_CONNECTION_OUTPUT_BUFFER_SIZE_BYTES), VTSystem.VT_CONNECTION_OUTPUT_BUFFER_SIZE_BYTES);
-    }
+    cryptoEngine.initializeServerEngine(encryptionType, remoteNonce, localNonce, encryptionKey, firstAuthenticatedCredential, secondAuthenticatedCredential);
+    connectionInputStream = new BufferedInputStream(cryptoEngine.getDecryptedInputStream(connectionSocket.getInputStream(), VTSystem.VT_CONNECTION_INPUT_BUFFER_SIZE_BYTES), VTSystem.VT_CONNECTION_INPUT_BUFFER_SIZE_BYTES);
+    connectionOutputStream = new BufferedOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocket.getOutputStream(), VTSystem.VT_CONNECTION_OUTPUT_BUFFER_SIZE_BYTES), VTSystem.VT_CONNECTION_OUTPUT_BUFFER_SIZE_BYTES);
   }
   
   private void setMultiplexedStreams() throws IOException
