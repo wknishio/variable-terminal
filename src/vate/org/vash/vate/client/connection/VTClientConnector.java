@@ -624,10 +624,10 @@ public class VTClientConnector implements Runnable
       {
         connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_HC);
       }
-//      else if (encryptionType.toUpperCase().startsWith("G"))
-//      {
-//        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_GRAIN);
-//      }
+      else if (encryptionType.toUpperCase().startsWith("G"))
+      {
+        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_GRAIN);
+      }
 //      else if (encryptionType.toUpperCase().startsWith("R"))
 //      {
 //        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_RABBIT);
@@ -715,10 +715,10 @@ public class VTClientConnector implements Runnable
       {
         connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_HC);
       }
-//      else if (encryptionType.toUpperCase().startsWith("G"))
-//      {
-//        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_GRAIN);
-//      }
+      else if (encryptionType.toUpperCase().startsWith("G"))
+      {
+        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_GRAIN);
+      }
 //      else if (encryptionType.toUpperCase().startsWith("R"))
 //      {
 //        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_RABBIT);
@@ -1296,7 +1296,7 @@ public class VTClientConnector implements Runnable
       }
       if (line.toUpperCase().startsWith("Y"))
       {
-        VTMainConsole.print("VT>Enter encryption type(SALSA(S)/HC(H)/ZUC(Z)/LEA(L)):");
+        VTMainConsole.print("VT>Enter encryption type(SALSA(S)/HC(H)/GRAIN(G)/ZUC(Z)/LEA(L)):");
         line = VTMainConsole.readLine(false);
         if (line == null)
         {
@@ -1312,10 +1312,10 @@ public class VTClientConnector implements Runnable
         {
           encryptionType = "HC";
         }
-//        if (line.toUpperCase().startsWith("G"))
-//        {
-//          encryptionType = "GRAIN";
-//        }
+        if (line.toUpperCase().startsWith("G"))
+        {
+          encryptionType = "GRAIN";
+        }
 //        if (line.toUpperCase().startsWith("R"))
 //        {
 //          encryptionType = "RABBIT";
