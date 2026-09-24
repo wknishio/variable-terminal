@@ -1431,9 +1431,9 @@ public class VTFileTransferServerTransaction implements Runnable
   private boolean readLocalFileChunkDigest()
   {
     long digestOffset = currentOffset;
+    chunkDigest.reset();
     try
     {
-      chunkDigest.reset();
       int neededBytes = (int) Math.min(fileTransferBufferSize, maxOffset - digestOffset);
       int bufferedBytes = 0;
       int readedBytes = 0;
@@ -1456,6 +1456,7 @@ public class VTFileTransferServerTransaction implements Runnable
     {
       //e.printStackTrace();
     }
+    localDigest = chunkDigest.digest(32);
     try
     {
       fileTransferRandomAccessFile.seek(currentOffset);
@@ -1464,7 +1465,6 @@ public class VTFileTransferServerTransaction implements Runnable
     {
       
     }
-    localDigest = chunkDigest.digest(32);
     return true;
   }
   
