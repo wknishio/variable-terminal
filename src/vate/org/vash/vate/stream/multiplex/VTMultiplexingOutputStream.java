@@ -377,15 +377,15 @@ public final class VTMultiplexingOutputStream
     
     public final void write(final byte[] data, final int offset, final int length) throws IOException
     {
-      if (closed())
-      {
-        throw new IOException("OutputStream closed");
-      }
       int written = 0;
       int position = offset;
       int remaining = length;
-      while (remaining > 0 && !closed())
+      while (remaining > 0)
       {
+        if (closed())
+        {
+          throw new IOException("OutputStream closed");
+        }
         written = Math.min(remaining, packetSize);
         writeDataPacket(type, number, data, position, written);
         position += written;
