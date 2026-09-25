@@ -66,10 +66,10 @@ public class VTFileTransferServerTransaction implements Runnable
   private File fileTransferCompletedFile;
   private RandomAccessFile fileTransferRandomAccessFile;
   private InputStream fileTransferChecksumInputStream;
-  private VTLittleEndianInputStream fileTransferRemoteInputStream = new VTLittleEndianInputStream(null);
-  private VTLittleEndianOutputStream fileTransferRemoteOutputStream = new VTLittleEndianOutputStream(null);
   private InputStream fileTransferLocalInputStream;
   private OutputStream fileTransferLocalOutputStream;
+  private VTLittleEndianInputStream fileTransferRemoteInputStream = new VTLittleEndianInputStream(null);
+  private VTLittleEndianOutputStream fileTransferRemoteOutputStream = new VTLittleEndianOutputStream(null);
   private VTFileTransferServerSession session;
   //private final Comparator<File> fileSorter = new VTFileTransferSorter();
   
@@ -116,72 +116,7 @@ public class VTFileTransferServerTransaction implements Runnable
     if (stopped && !this.stopped)
     {
       this.stopped = stopped;
-      if (fileTransferRemoteOutputStream != null)
-      {
-        try
-        {
-          fileTransferRemoteOutputStream.close();
-        }
-        catch (Throwable t)
-        {
-          
-        }
-      }
-      if (fileTransferRemoteInputStream != null)
-      {
-        try
-        {
-          fileTransferRemoteInputStream.close();
-        }
-        catch (Throwable t)
-        {
-          
-        }
-      }
-      if (fileTransferLocalOutputStream != null)
-      {
-        try
-        {
-          fileTransferLocalOutputStream.close();
-        }
-        catch (Throwable t)
-        {
-          
-        }
-      }
-      if (fileTransferLocalInputStream != null)
-      {
-        try
-        {
-          fileTransferLocalInputStream.close();
-        }
-        catch (Throwable t)
-        {
-          
-        }
-      }
-      if (fileTransferChecksumInputStream != null)
-      {
-        try
-        {
-          fileTransferChecksumInputStream.close();
-        }
-        catch (Throwable t)
-        {
-          
-        }
-      }
-      if (fileTransferRandomAccessFile != null)
-      {
-        try
-        {
-          fileTransferRandomAccessFile.close();
-        }
-        catch (Throwable t)
-        {
-          
-        }
-      }
+      cleanTransfer();
       session.endSession();
     }
     this.stopped = stopped;
@@ -1502,6 +1437,78 @@ public class VTFileTransferServerTransaction implements Runnable
     return File.separatorChar;
   }
   
+  private void cleanTransfer()
+  {
+    if (fileTransferRandomAccessFile != null)
+    {
+      try
+      {
+        fileTransferRandomAccessFile.close();
+      }
+      catch (Throwable e)
+      {
+        
+      }
+    }
+    fileTransferRandomAccessFile = null;
+    if (fileTransferChecksumInputStream != null)
+    {
+      try
+      {
+        fileTransferChecksumInputStream.close();
+      }
+      catch (Throwable e)
+      {
+        
+      }
+    }
+    fileTransferChecksumInputStream = null;
+    if (fileTransferLocalOutputStream != null)
+    {
+      try
+      {
+        fileTransferLocalOutputStream.close();
+      }
+      catch (Throwable t)
+      {
+        
+      }
+    }
+    if (fileTransferLocalInputStream != null)
+    {
+      try
+      {
+        fileTransferLocalInputStream.close();
+      }
+      catch (Throwable t)
+      {
+        
+      }
+    }
+    if (fileTransferRemoteOutputStream != null)
+    {
+      try
+      {
+        fileTransferRemoteOutputStream.close();
+      }
+      catch (Throwable t)
+      {
+        
+      }
+    }
+    if (fileTransferRemoteInputStream != null)
+    {
+      try
+      {
+        fileTransferRemoteInputStream.close();
+      }
+      catch (Throwable t)
+      {
+        
+      }
+    }
+  }
+  
   public void run()
   {
     try
@@ -1656,30 +1663,7 @@ public class VTFileTransferServerTransaction implements Runnable
     {
       
     }
-    if (fileTransferRandomAccessFile != null)
-    {
-      try
-      {
-        fileTransferRandomAccessFile.close();
-      }
-      catch (Throwable e)
-      {
-        
-      }
-    }
-    fileTransferRandomAccessFile = null;
-    if (fileTransferChecksumInputStream != null)
-    {
-      try
-      {
-        fileTransferChecksumInputStream.close();
-      }
-      catch (Throwable e)
-      {
-        
-      }
-    }
-    fileTransferChecksumInputStream = null;
+    cleanTransfer();
     finished = true;
   }
 }
