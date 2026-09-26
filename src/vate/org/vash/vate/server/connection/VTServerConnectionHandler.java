@@ -94,6 +94,6 @@ public class VTServerConnectionHandler implements Runnable
   
   public void setConnectionListeners(Collection<VTServerConnectionListener> listeners)
   {
-    this.connectionListeners = listeners;
+    connectionListeners = listeners;
   }
 }

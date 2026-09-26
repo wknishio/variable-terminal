@@ -27,6 +27,7 @@ public class VTManagedServerSocket
   private final VTServer vtserver;
   private final BlockingQueue<VTManagedSocket> queue = new LinkedBlockingQueue<VTManagedSocket>();
   private final ConcurrentMap<VTServerSession, VTManagedSocket> sessions = new ConcurrentHashMap<VTServerSession, VTManagedSocket>();
+  private final ConcurrentMap<VTServerConnection, VTServerSession> connections = new ConcurrentHashMap<VTServerConnection, VTServerSession>();
   private final VTManagedServerSocketListener serverListener = new VTManagedServerSocketListener();
   private Thread acceptThread;
   private VTManagedSocketListener managedListener;
@@ -136,12 +137,12 @@ public class VTManagedServerSocket
     
     public void setCommandInputStream(InputStream stream)
     {
-      
+      session.setCommandInputStream(stream);
     }
     
     public void setCommandOutputStream(OutputStream stream)
     {
-      
+      session.setCommandOutputStream(stream);
     }
   }
   
@@ -154,12 +155,40 @@ public class VTManagedServerSocket
     
     public void connectionFinished(VTServerConnection connection)
     {
-      
+      VTServerSession session = connections.remove(connection);
+      if (session != null)
+      {
+        VTManagedSocket socket = sessions.remove(session);
+        if (managedListener != null && socket != null)
+        {
+          try
+          {
+            managedListener.connectionFinished(socket);
+          }
+          catch (Throwable t)
+          {
+            
+          }
+        }
+      }
     }
     
     public void sessionCreated(VTServerSession session)
     {
-      sessions.put(session, new VTManagedSocket(new VTManagedServerConnection(session), session.getConnection().getAvailableInputChannel(), session.getConnection().getAvailableOutputChannel()));
+      VTManagedSocket socket = new VTManagedSocket(new VTManagedServerConnection(session), session.getConnection().getAvailableInputChannel(), session.getConnection().getAvailableOutputChannel());
+      sessions.put(session, socket);
+      connections.put(session.getConnection(), session);
+      if (managedListener != null)
+      {
+        try
+        {
+          managedListener.connectionStarted(socket);
+        }
+        catch (Throwable t)
+        {
+          
+        }
+      }
     }
     
     public void sessionStarted(VTServerSession session)
@@ -169,7 +198,7 @@ public class VTManagedServerSocket
       {
         try
         {
-          managedListener.connected(socket);
+          managedListener.sessionStarted(socket);
         }
         catch (Throwable t)
         {
@@ -184,12 +213,12 @@ public class VTManagedServerSocket
     
     public void sessionFinished(VTServerSession session)
     {
-      VTManagedSocket socket = sessions.remove(session);
+      VTManagedSocket socket = sessions.get(session);
       if (managedListener != null && socket != null)
       {
         try
         {
-          managedListener.disconnected(socket);
+          managedListener.sessionFinished(socket);
         }
         catch (Throwable t)
         {
@@ -1127,12 +1156,12 @@ public class VTManagedServerSocket
   
   public void setCommandInputStream(InputStream stream)
   {
-    
+    vtserver.setCommandInputStream(stream);
   }
   
   public void setCommandOutputStream(OutputStream stream)
   {
-    
+    vtserver.setCommandOutputStream(stream);
   }
   
 //  public static void main(String[] args)

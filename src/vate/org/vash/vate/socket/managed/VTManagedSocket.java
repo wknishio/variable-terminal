@@ -67,6 +67,16 @@ public class VTManagedSocket extends Socket implements Closeable
     return connection;
   }
   
+  public void setCommandInputStream(InputStream stream)
+  {
+    connection.setCommandInputStream(stream);
+  }
+  
+  public void setCommandOutputStream(OutputStream stream)
+  {
+    connection.setCommandOutputStream(stream);
+  }
+  
   public Socket getSocket()
   {
     return connection.getSocket();
@@ -300,15 +310,5 @@ public class VTManagedSocket extends Socket implements Closeable
   public void setOutputRateBytesPerSecond(long bytesPerSecond)
   {
     connection.setOutputRateBytesPerSecond(bytesPerSecond);
-  }
-  
-  public void setCommandInputStream(InputStream stream)
-  {
-    connection.setCommandInputStream(stream);
-  }
-  
-  public void setCommandOutputStream(OutputStream stream)
-  {
-    connection.setCommandOutputStream(stream);
   }
 }

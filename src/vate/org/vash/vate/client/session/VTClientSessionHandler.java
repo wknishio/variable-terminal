@@ -15,7 +15,7 @@ public class VTClientSessionHandler implements Runnable
   private VTClientConnection connection;
   private VTClientSession session;
   private VTClientAuthenticator authenticator;
-  private Collection<VTClientSessionListener> listeners;
+  private Collection<VTClientSessionListener> sessionListeners;
   
   public VTClientSessionHandler(VTClient client, VTClientConnection connection)
   {
@@ -86,7 +86,7 @@ public class VTClientSessionHandler implements Runnable
       started = true;
       try
       {
-        for (VTClientSessionListener listener : listeners)
+        for (VTClientSessionListener listener : sessionListeners)
         {
           try
           {
@@ -107,7 +107,7 @@ public class VTClientSessionHandler implements Runnable
       session.startSessionThreads();
       try
       {
-        for (VTClientSessionListener listener : listeners)
+        for (VTClientSessionListener listener : sessionListeners)
         {
           try
           {
@@ -156,7 +156,7 @@ public class VTClientSessionHandler implements Runnable
     {
       try
       {
-        for (VTClientSessionListener listener : listeners)
+        for (VTClientSessionListener listener : sessionListeners)
         {
           try
           {
@@ -182,6 +182,6 @@ public class VTClientSessionHandler implements Runnable
   
   public void setSessionListeners(Collection<VTClientSessionListener> listeners)
   {
-    this.listeners = listeners;
+    sessionListeners = listeners;
   }
 }

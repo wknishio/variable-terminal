@@ -3,6 +3,7 @@ package org.vash.vate.client.session;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
@@ -73,8 +74,6 @@ public class VTClientSession
         sessionRemoteNanoDelay = nanoDelay;
       }
     });
-    clientWriter.setCommandInputStream(client.getCommandInputStream());
-    serverReader.setCommandOutputStream(client.getCommandOutputStream());
     serverReader.setStopped(false);
     clientWriter.setStopped(false);
     tunnelsHandler.getConnection().setControlInputStream(connection.getTunnelControlDataInputStream());
@@ -85,6 +84,8 @@ public class VTClientSession
     pingServiceClient.setOutputStream(connection.getPingClientOutputStream());
     pingServiceServer.setInputStream(connection.getPingServerInputStream());
     pingServiceServer.setOutputStream(connection.getPingServerOutputStream());
+    setCommandInputStream(client.getCommandInputStream());
+    setCommandOutputStream(client.getCommandOutputStream());
   }
   
   public ExecutorService getExecutorService()
@@ -196,6 +197,16 @@ public class VTClientSession
   public void setCommandInputStream(InputStream in, String charsetName)
   {
     clientWriter.setCommandInputStream(in, charsetName);
+  }
+  
+  public void setCommandInputStream(InputStream stream)
+  {
+    clientWriter.setCommandInputStream(stream);
+  }
+  
+  public void setCommandOutputStream(OutputStream stream)
+  {
+    serverReader.setCommandOutputStream(stream);
   }
   
   public boolean isStopped()

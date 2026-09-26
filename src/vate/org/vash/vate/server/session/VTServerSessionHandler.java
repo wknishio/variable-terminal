@@ -15,7 +15,7 @@ public class VTServerSessionHandler implements Runnable
   private VTServerConnection connection;
   private VTServerSession session;
   private VTServerAuthenticator authenticator;
-  private Collection<VTServerSessionListener> listeners;
+  private Collection<VTServerSessionListener> sessionListeners;
   
   public VTServerSessionHandler(VTServer server, VTServerConnection connection)
   {
@@ -95,7 +95,7 @@ public class VTServerSessionHandler implements Runnable
       started = true;
       try
       {
-        for (VTServerSessionListener listener : listeners)
+        for (VTServerSessionListener listener : sessionListeners)
         {
           try
           {
@@ -117,7 +117,7 @@ public class VTServerSessionHandler implements Runnable
       session.startSessionThreads();
       try
       {
-        for (VTServerSessionListener listener : listeners)
+        for (VTServerSessionListener listener : sessionListeners)
         {
           try
           {
@@ -147,7 +147,7 @@ public class VTServerSessionHandler implements Runnable
     {
       try
       {
-        for (VTServerSessionListener listener : listeners)
+        for (VTServerSessionListener listener : sessionListeners)
         {
           try
           {
@@ -173,6 +173,6 @@ public class VTServerSessionHandler implements Runnable
   
   public void setSessionListeners(Collection<VTServerSessionListener> listeners)
   {
-    this.listeners = listeners;
+    sessionListeners = listeners;
   }
 }

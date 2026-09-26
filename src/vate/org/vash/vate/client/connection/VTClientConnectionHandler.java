@@ -92,6 +92,6 @@ public class VTClientConnectionHandler implements Runnable
   
   public void setConnectionListeners(Collection<VTClientConnectionListener> listeners)
   {
-    this.connectionListeners = listeners;
+    connectionListeners = listeners;
   }
 }

@@ -27,6 +27,7 @@ public class VTManagedClientSocket
   private final VTClient vtclient;
   private final BlockingQueue<VTManagedSocket> queue = new LinkedBlockingQueue<VTManagedSocket>();
   private final ConcurrentMap<VTClientSession, VTManagedSocket> sessions = new ConcurrentHashMap<VTClientSession, VTManagedSocket>();
+  private final ConcurrentMap<VTClientConnection, VTClientSession> connections = new ConcurrentHashMap<VTClientConnection, VTClientSession>();
   private final VTManagedClientSocketListener clientListener = new VTManagedClientSocketListener();
   private Thread acceptThread;
   private VTManagedSocketListener managedListener;
@@ -136,12 +137,12 @@ public class VTManagedClientSocket
     
     public void setCommandInputStream(InputStream stream)
     {
-      vtclient.setCommandInputStream(stream);
+      session.setCommandInputStream(stream);
     }
     
     public void setCommandOutputStream(OutputStream stream)
     {
-      vtclient.setCommandOutputStream(stream);
+      session.setCommandOutputStream(stream);
     }
   }
   
@@ -154,12 +155,40 @@ public class VTManagedClientSocket
     
     public void connectionFinished(VTClientConnection connection)
     {
-      
+      VTClientSession session = connections.remove(connection);
+      if (session != null)
+      {
+        VTManagedSocket socket = sessions.remove(session);
+        if (managedListener != null && socket != null)
+        {
+          try
+          {
+            managedListener.connectionFinished(socket);
+          }
+          catch (Throwable t)
+          {
+            
+          }
+        }
+      }
     }
     
     public void sessionCreated(VTClientSession session)
     {
-      sessions.put(session, new VTManagedSocket(new VTManagedClientConnection(session), session.getConnection().getAvailableInputChannel(), session.getConnection().getAvailableOutputChannel()));
+      VTManagedSocket socket = new VTManagedSocket(new VTManagedClientConnection(session), session.getConnection().getAvailableInputChannel(), session.getConnection().getAvailableOutputChannel());
+      sessions.put(session, socket);
+      connections.put(session.getConnection(), session);
+      if (managedListener != null)
+      {
+        try
+        {
+          managedListener.connectionStarted(socket);
+        }
+        catch (Throwable t)
+        {
+          
+        }
+      }
     }
     
     public void sessionStarted(VTClientSession session)
@@ -169,7 +198,7 @@ public class VTManagedClientSocket
       {
         try
         {
-          managedListener.connected(socket);
+          managedListener.sessionStarted(socket);
         }
         catch (Throwable t)
         {
@@ -184,12 +213,12 @@ public class VTManagedClientSocket
     
     public void sessionFinished(VTClientSession session)
     {
-      VTManagedSocket socket = sessions.remove(session);
+      VTManagedSocket socket = sessions.get(session);
       if (managedListener != null && socket != null)
       {
         try
         {
-          managedListener.disconnected(socket);
+          managedListener.sessionFinished(socket);
         }
         catch (Throwable t)
         {
