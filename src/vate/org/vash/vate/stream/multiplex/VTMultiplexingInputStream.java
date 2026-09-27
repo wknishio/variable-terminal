@@ -262,16 +262,11 @@ public final class VTMultiplexingInputStream
     while (!closed)
     {
       low = input.readLong();
-      high = input.readLong();
       type = input.readByte();
       number = input.readSubInt();
       length = input.readInt();
-      if (length > packetContentBuffer.length)
-      {
-        close();
-        return;
-      }
       input.readFully(packetContentBuffer, 0, length);
+      high = input.readLong();
       stream = getInputStream(type, number);
       if (stream == null)
       {
