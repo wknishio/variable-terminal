@@ -499,18 +499,18 @@ public class VTServerConnector implements Runnable
       {
         connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_GRAIN);
       }
-//      else if (encryptionType.toUpperCase().startsWith("R"))
-//      {
-//        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_RABBIT);
-//      }
+      else if (encryptionType.toUpperCase().startsWith("R"))
+      {
+        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_RABBIT);
+      }
       else if (encryptionType.toUpperCase().startsWith("Z"))
       {
         connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_ZUC);
       }
-      else if (encryptionType.toUpperCase().startsWith("L"))
-      {
-        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_LEA);
-      }
+//      else if (encryptionType.toUpperCase().startsWith("L"))
+//      {
+//        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_LEA);
+//      }
 //      else if (encryptionType.toUpperCase().startsWith("T"))
 //      {
 //        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_TLS);
@@ -578,18 +578,18 @@ public class VTServerConnector implements Runnable
       {
         connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_GRAIN);
       }
-//      else if (encryptionType.toUpperCase().startsWith("R"))
-//      {
-//        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_RABBIT);
-//      }
+      else if (encryptionType.toUpperCase().startsWith("R"))
+      {
+        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_RABBIT);
+      }
       else if (encryptionType.toUpperCase().startsWith("Z"))
       {
         connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_ZUC);
       }
-      else if (encryptionType.toUpperCase().startsWith("L"))
-      {
-        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_LEA);
-      }
+//      else if (encryptionType.toUpperCase().startsWith("L"))
+//      {
+//        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_LEA);
+//      }
 //      else if (encryptionType.toUpperCase().startsWith("T"))
 //      {
 //        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_TLS);
