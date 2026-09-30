@@ -51,11 +51,8 @@ public class VTFileTransferServerTransaction implements Runnable
   private long remoteChecksumLow = -1;
   private long localChecksumHigh = -1;
   private long remoteChecksumHigh = -1;
-//  private byte[] localDigest = new byte[32];
-//  private byte[] remoteDigest = new byte[32];
   private final byte[] fileTransferBuffer = new byte[fileTransferBufferSize];
-  private LongTupleHashFunction chunkChecksum;
-  private VTBlake3StandardMessageDigest chunkDigest;
+  private LongTupleHashFunction chunkDigest;
   private String command;
   private String source;
   private String destination;
@@ -84,16 +81,14 @@ public class VTFileTransferServerTransaction implements Runnable
     System.arraycopy(remoteNonce, 0, blake3Seed, 0, VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES);
     System.arraycopy(localNonce, 0, blake3Seed, VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES, VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES);
     
-    chunkDigest = new VTBlake3StandardMessageDigest(blake3Seed);
-    chunkDigest.update(session.getServer().getConnection().getLocalNonce());
-    chunkDigest.update(session.getServer().getConnection().getRemoteNonce());
-    chunkDigest.update(session.getServer().getConnection().getEncryptionKey());
-    chunkDigest.update(session.getServer().getConnection().getFirstAuthenticatedCredential());
-    chunkDigest.update(session.getServer().getConnection().getSecondAuthenticatedCredential());
-    byte[] digestSeed = chunkDigest.digest(32);
-    chunkDigest.setSeed(digestSeed);
+    VTBlake3StandardMessageDigest blake3Digest = new VTBlake3StandardMessageDigest(blake3Seed);
+    blake3Digest.update(session.getServer().getConnection().getLocalNonce());
+    blake3Digest.update(session.getServer().getConnection().getRemoteNonce());
+    blake3Digest.update(session.getServer().getConnection().getEncryptionKey());
+    blake3Digest.update(session.getServer().getConnection().getFirstAuthenticatedCredential());
+    blake3Digest.update(session.getServer().getConnection().getSecondAuthenticatedCredential());
     
-    chunkChecksum = LongTupleHashFunction.xx128(XXH3.hash64(digestSeed));
+    chunkDigest = LongTupleHashFunction.xx128(XXH3.hash64(blake3Digest.digest(32)));
   }
   
   public boolean isFinished()
@@ -1178,7 +1173,7 @@ public class VTFileTransferServerTransaction implements Runnable
             break;
           }
         }
-        chunkChecksum.hashBytes(fileTransferBuffer, 0, bufferedBytes, hash);
+        chunkDigest.hashBytes(fileTransferBuffer, 0, bufferedBytes, hash);
 //        chunkDigest.update(fileTransferBuffer, 0, bufferedBytes);
         checksums.add(hash[0]);
         checksums.add(hash[1]);
