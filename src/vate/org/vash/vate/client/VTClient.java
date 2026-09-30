@@ -63,7 +63,6 @@ public class VTClient implements Runnable
   private VTAudioSystem audioSystem;
   private VTClientConfigurationDialog connectionDialog;
   private ExecutorService executorService;
-  // private VTTrayIconInterface trayIconInterface;
   private boolean skipConfiguration;
   private boolean retry = false;
   private boolean manual = false;
@@ -200,7 +199,6 @@ public class VTClient implements Runnable
   public void setSkipConfiguration(boolean skipConfiguration)
   {
     this.skipConfiguration = skipConfiguration;
-    // System.out.println("skipConfiguration = " + skipConfiguration);
   }
   
   public void setManual(boolean manual)
@@ -238,8 +236,6 @@ public class VTClient implements Runnable
   {
     this.agent = agent;
   }
-  
-  /* public String getAddress() { return address; } */
   
   public void setAddress(String address)
   {
@@ -333,10 +329,6 @@ public class VTClient implements Runnable
   {
     this.sessionCommands = sessionCommands;
   }
-  
-  /* public MessageDigest getSha256Digester() { return sha256Digester; } */
-  
-  /* public SecureRandom getSecureRandom() { return secureRandom; } */
   
   public Integer getNatPort()
   {
@@ -563,7 +555,6 @@ public class VTClient implements Runnable
       }
       clientSettingsReader = new FileInputStream(clientSettingsFile);
       fileClientSettings = VTPropertiesBuilder.loadProperties(clientSettingsReader, "UTF-8");
-      // rawSecuritySettings.load(securitySettingsReader);
       clientSettingsReader.close();
     }
     catch (Throwable t)
@@ -859,7 +850,6 @@ public class VTClient implements Runnable
       }
       clientSettingsReader = new FileInputStream(clientSettingsFile);
       fileClientSettings = VTPropertiesBuilder.loadProperties(clientSettingsReader, "UTF-8");
-      // rawSecuritySettings.load(securitySettingsReader);
       clientSettingsReader.close();
       
       if (fileClientSettings.getProperty("vate.client.connection.mode") != null)
@@ -2191,15 +2181,6 @@ public class VTClient implements Runnable
       trafficMonitorService.addDownloadMonitorPanel(new VTTrafficMonitorMenu(inputMenuBar.getDownloadMonitorMenu()));
       VTMainConsole.getFrame().setMenuBar(inputMenuBar);
       VTMainConsole.getFrame().pack();
-//      try
-//      {
-//        trayIconInterface = new VTTrayIconInterface();
-//        trayIconInterface.install(VTConsole.getFrame(), "Variable-Terminal - Client");
-//      }
-//      catch (Throwable t)
-//      {
-//        trayIconInterface = null;
-//      }
     }
     else
     {
@@ -2366,30 +2347,6 @@ public class VTClient implements Runnable
   {
     this.sessionShell = sessionShell;
   }
-  
-//  public void enableTrayIcon()
-//  {
-//    if (trayIconInterface != null)
-//    {
-//      trayIconInterface.install(VTConsole.getFrame(), "Variable-Terminal - Client");
-//    }
-//  }
-//
-//  public void disableTrayIcon()
-//  {
-//    if (trayIconInterface != null)
-//    {
-//      trayIconInterface.removeTrayIcon();
-//    }
-//  }
-//
-//  public void displayTrayIconMessage(String caption, String text)
-//  {
-//    if (trayIconInterface != null)
-//    {
-//      trayIconInterface.displayMessage(caption, text);
-//    }
-//  }
   
   public void setPingLimit(int limit)
   {

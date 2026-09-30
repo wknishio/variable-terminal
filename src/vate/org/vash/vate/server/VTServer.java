@@ -14,8 +14,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 
-import javax.sound.sampled.AudioFormat;
-
 import org.vash.vate.VTSystem;
 import org.vash.vate.audio.VTAudioSystem;
 import org.vash.vate.console.VTMainConsole;
@@ -58,16 +56,10 @@ public class VTServer implements Runnable
   private Integer sessionsMaximum;
   private String sessionShell = "";
   private final String vtURL = System.getenv("VT_PATH");
-  // private MessageDigest sha256Digester;
-  //private VTBlake3MessageDigest blake3Digest;
-  // private File userDatabaseFile;
   private File serverSettingsFile;
   private final Collection<VTCredential> userCredentials = new ConcurrentLinkedQueue<VTCredential>();
-  // private Properties fileUserCredentials;
-  // private Properties argumentsServerSettings = new Properties();
   private VTConfigurationProperties fileServerSettings;
   private final Runtime runtime = Runtime.getRuntime();
-  // private Thread consoleThread;
   private InputStream userCredentialsReader;
   private InputStream serverSettingsReader;
   private VTServerConnector serverConnector;
@@ -237,25 +229,25 @@ public class VTServer implements Runnable
     this.skipConfiguration = skipConfiguration;
   }
   
-  public VTAudioSystem getAudioSystem(AudioFormat format)
+  public VTAudioSystem getAudioSystem(float sampleRate)
   {
-    if (format.getSampleRate() == VTAudioSystem.VT_AUDIO_FORMAT_8000.getSampleRate())
+    if (sampleRate == VTAudioSystem.VT_AUDIO_FORMAT_8000.getSampleRate())
     {
       return this.audioSystem[0];
     }
-    if (format.getSampleRate() == VTAudioSystem.VT_AUDIO_FORMAT_16000.getSampleRate())
+    if (sampleRate == VTAudioSystem.VT_AUDIO_FORMAT_16000.getSampleRate())
     {
       return this.audioSystem[1];
     }
-    if (format.getSampleRate() == VTAudioSystem.VT_AUDIO_FORMAT_48000.getSampleRate())
+    if (sampleRate == VTAudioSystem.VT_AUDIO_FORMAT_48000.getSampleRate())
     {
       return this.audioSystem[2];
     }
-    if (format.getSampleRate() == VTAudioSystem.VT_AUDIO_FORMAT_24000.getSampleRate())
+    if (sampleRate == VTAudioSystem.VT_AUDIO_FORMAT_24000.getSampleRate())
     {
       return this.audioSystem[3];
     }
-    if (format.getSampleRate() == VTAudioSystem.VT_AUDIO_FORMAT_32000.getSampleRate())
+    if (sampleRate == VTAudioSystem.VT_AUDIO_FORMAT_32000.getSampleRate())
     {
       return this.audioSystem[4];
     }
@@ -641,7 +633,6 @@ public class VTServer implements Runnable
       }
       serverSettingsReader = new FileInputStream(serverSettingsFile);
       fileServerSettings = VTPropertiesBuilder.loadProperties(serverSettingsReader, "UTF-8");
-      // rawSecuritySettings.load(securitySettingsReader);
       serverSettingsReader.close();
     }
     catch (Throwable t)
@@ -925,7 +916,6 @@ public class VTServer implements Runnable
       }
       serverSettingsReader = new FileInputStream(serverSettingsFile);
       fileServerSettings = VTPropertiesBuilder.loadProperties(serverSettingsReader, "UTF-8");
-      // rawSecuritySettings.load(securitySettingsReader);
       serverSettingsReader.close();
       
       sessionAccounts = fileServerSettings.getProperty("vate.server.session.accounts", null);
@@ -1452,10 +1442,7 @@ public class VTServer implements Runnable
       }
       else
       {
-        // if (inputMenuBar != null)
-        // {
-        // inputMenuBar.setEnabledDialogMenu(true);
-        // }
+        
       }
       
       if (connectionDialog != null)
@@ -1556,15 +1543,7 @@ public class VTServer implements Runnable
         }
         else
         {
-          // VTExit.exit(0);
-          // try
-          // {
-          // addUserCredential("", "");
-          // }
-          // catch (UnsupportedEncodingException e)
-          // {
           
-          // }
         }
       }
       VTMainConsole.print("VT>Enter connection mode(active as A or passive as P, default:P):");
@@ -2057,9 +2036,7 @@ public class VTServer implements Runnable
       }
       catch (NumberFormatException e)
       {
-        //VTConsole.print("VT>Invalid port!\n");
-        //hostPort = null;
-        //proxyPort = null;
+        
       }
       catch (Throwable e)
       {
@@ -2341,15 +2318,6 @@ public class VTServer implements Runnable
         trafficMonitorService.addDownloadMonitorPanel(new VTTrafficMonitorMenu(inputMenuBar.getDownloadMonitorMenu()));
         VTMainConsole.getFrame().setMenuBar(inputMenuBar);
         VTMainConsole.getFrame().pack();
-//        try
-//        {
-//          trayIconInterface = new VTTrayIconInterface();
-//          trayIconInterface.install(VTMainConsole.getFrame(), "Variable-Terminal - Server");
-//        }
-//        catch (Throwable t)
-//        {
-//          trayIconInterface = null;
-//        }
       }
     }
     else

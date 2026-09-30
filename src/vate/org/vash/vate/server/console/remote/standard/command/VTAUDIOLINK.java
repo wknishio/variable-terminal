@@ -135,7 +135,7 @@ public class VTAUDIOLINK extends VTServerStandardRemoteConsoleCommandProcessor
       }
       
       boolean ok = true;
-      VTAudioSystem formatAudioSystem = session.getServer().getAudioSystem(currentAudioFormat);
+      VTAudioSystem formatAudioSystem = session.getServer().getAudioSystem(currentAudioFormat.getSampleRate());
       if (!formatAudioSystem.isRunning())
       {
         ok = formatAudioSystem.initialize(currentAudioFormat);
