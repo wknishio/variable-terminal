@@ -384,6 +384,22 @@ public class VTClientConnection
     return clipboardDataOutputStream;
   }
   
+  private void closeTLSSockets()
+  {
+    if (tlsSocket != null)
+    {
+      try
+      {
+        tlsSocket.close();
+      }
+      catch (Throwable t)
+      {
+        
+      }
+    }
+    tlsSocket = null;
+  }
+  
   public void closeSockets()
   {
     if (closed)
@@ -391,6 +407,7 @@ public class VTClientConnection
       return;
     }
     VTMainConsole.setCommandEcho(true);
+    closeTLSSockets();
     if (connectionSocket != null)
     {
       try
@@ -446,6 +463,7 @@ public class VTClientConnection
         
       }
     }
+    closeTLSSockets();
     closed = true;
   }
   
@@ -491,7 +509,7 @@ public class VTClientConnection
   {
     if (tlsAuthentication)
     {
-      tlsSocket = VTTLSUtilities.createTLSSocket(connectionSocket, "null", 1, true, true, VTSystem.VT_UNSAFE_TLS_CONTEXT);
+      tlsSocket = VTTLSUtilities.createTLSSocket(connectionSocket, "null", 1, true, false, VTSystem.VT_UNSAFE_TLS_CONTEXT);
       tlsSocket.setNeedClientAuth(true);
       tlsSocket.startHandshake();
       authenticationInputStream = new VTZ85InputStream(tlsSocket.getInputStream());
