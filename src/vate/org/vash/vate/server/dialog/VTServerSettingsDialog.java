@@ -48,6 +48,7 @@ import org.vash.vate.VTSystem;
 import org.vash.vate.dialog.VTConfigurationDialogParameter;
 import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.dialog.VTFileDialog;
+import org.vash.vate.graphics.VTGraphicsSystem;
 import org.vash.vate.graphics.font.VTFontManager;
 import org.vash.vate.security.VTCredential;
 import org.vash.vate.server.VTServer;
@@ -147,7 +148,7 @@ public class VTServerSettingsDialog extends Dialog
     {
       if (setIconImageMethod != null)
       {
-        setIconImageMethod.invoke(this, VTSystem.remoteIcon);
+        setIconImageMethod.invoke(this, VTGraphicsSystem.remoteIcon);
       }
     }
     catch (Throwable e)
@@ -416,9 +417,9 @@ public class VTServerSettingsDialog extends Dialog
 //      }
 //    });
     
-    authenticationTypeChoice.add("DEFAULT");
+    authenticationTypeChoice.add("NORMAL");
     authenticationTypeChoice.add("TLS");
-    authenticationTypeChoice.select("DEFAULT");
+    authenticationTypeChoice.select("NORMAL");
     
     encryptionTypeChoice.add("NONE");
     encryptionTypeChoice.add("SALSA");

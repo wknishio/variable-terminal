@@ -26,7 +26,7 @@ public class VTAUDIOLINK extends VTServerStandardRemoteConsoleCommandProcessor
     {
       connection.resetAudioStreams();
       int currentAudioCodec = VTSystem.VT_AUDIO_CODEC_DEFAULT;
-      AudioFormat currentAudioFormat = VTSystem.VT_AUDIO_FORMAT_DEFAULT;
+      AudioFormat currentAudioFormat = VTAudioSystem.VT_AUDIO_FORMAT_DEFAULT;
       Mixer.Info inputMixer = null;
       Mixer.Info outputMixer = null;
       if (parsed.length >= 2)
@@ -100,19 +100,19 @@ public class VTAUDIOLINK extends VTServerStandardRemoteConsoleCommandProcessor
             // detect narrowband or wideband or superwideband or fullband
             if (parsed[i].toUpperCase().contains("N"))
             {
-              currentAudioFormat = VTSystem.VT_AUDIO_FORMAT_8000;
+              currentAudioFormat = VTAudioSystem.VT_AUDIO_FORMAT_8000;
             }
             if (parsed[i].toUpperCase().contains("W"))
             {
-              currentAudioFormat = VTSystem.VT_AUDIO_FORMAT_16000;
+              currentAudioFormat = VTAudioSystem.VT_AUDIO_FORMAT_16000;
             }
             if (parsed[i].toUpperCase().contains("H"))
             {
-              currentAudioFormat = VTSystem.VT_AUDIO_FORMAT_24000;
+              currentAudioFormat = VTAudioSystem.VT_AUDIO_FORMAT_24000;
             }
             if (parsed[i].toUpperCase().contains("F"))
             {
-              currentAudioFormat = VTSystem.VT_AUDIO_FORMAT_48000;
+              currentAudioFormat = VTAudioSystem.VT_AUDIO_FORMAT_48000;
             }
             if (parsed[i].toUpperCase().contains("S"))
             {
@@ -128,9 +128,9 @@ public class VTAUDIOLINK extends VTServerStandardRemoteConsoleCommandProcessor
       
       if (currentAudioCodec == VTSystem.VT_AUDIO_CODEC_SPEEX)
       {
-        if (currentAudioFormat == VTSystem.VT_AUDIO_FORMAT_48000 || currentAudioFormat == VTSystem.VT_AUDIO_FORMAT_24000)
+        if (currentAudioFormat == VTAudioSystem.VT_AUDIO_FORMAT_48000 || currentAudioFormat == VTAudioSystem.VT_AUDIO_FORMAT_24000)
         {
-          currentAudioFormat = VTSystem.VT_AUDIO_FORMAT_32000;
+          currentAudioFormat = VTAudioSystem.VT_AUDIO_FORMAT_32000;
         }
       }
       

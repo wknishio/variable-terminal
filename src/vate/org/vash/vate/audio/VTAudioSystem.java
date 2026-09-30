@@ -11,9 +11,26 @@ import javax.sound.sampled.TargetDataLine;
 
 public class VTAudioSystem
 {
-  // private TargetDataLine targetDataLine;
-  // private SourceDataLine sourceDataLine;
-  // private Thread captureThread;
+  public static final AudioFormat VT_AUDIO_FORMAT_DEFAULT;
+  public static final AudioFormat VT_AUDIO_FORMAT_8000;
+  public static final AudioFormat VT_AUDIO_FORMAT_16000;
+  public static final AudioFormat VT_AUDIO_FORMAT_24000;
+  public static final AudioFormat VT_AUDIO_FORMAT_32000;
+  public static final AudioFormat VT_AUDIO_FORMAT_48000;
+  
+  static
+  {
+    int sampleSizeInBits = 16;
+    int channels = 1;
+    boolean signed = true;
+    boolean bigEndian = false;
+    VT_AUDIO_FORMAT_8000 = new AudioFormat(8000, sampleSizeInBits, channels, signed, bigEndian);
+    VT_AUDIO_FORMAT_16000 = new AudioFormat(16000, sampleSizeInBits, channels, signed, bigEndian);
+    VT_AUDIO_FORMAT_24000 = new AudioFormat(24000, sampleSizeInBits, channels, signed, bigEndian);
+    VT_AUDIO_FORMAT_32000 = new AudioFormat(32000, sampleSizeInBits, channels, signed, bigEndian);
+    VT_AUDIO_FORMAT_48000 = new AudioFormat(48000, sampleSizeInBits, channels, signed, bigEndian);
+    VT_AUDIO_FORMAT_DEFAULT = VT_AUDIO_FORMAT_16000;
+  }
   
   private VTAudioCapturer capture;
   private VTAudioPlayer play;

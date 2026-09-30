@@ -126,7 +126,7 @@ these are the available program arguments:
 * -PP: proxy port, default 1080 for SOCKS or default 8080 for HTTP
 * -PU: proxy user, default null
 * -PK: proxy password, default null
-* -AT: authentication type, DEFAULT(D) or TLS(T)
+* -AT: authentication type, default NORMAL(N) or TLS(T)
 * -ET: encryption type, default none/SALSA(S)/HC(H)/GRAIN(G)/RABBIT(R)/ZUC(Z)
 * -EK: encryption password, default null
 * -PL: ping limit, default 60000 milliseconds

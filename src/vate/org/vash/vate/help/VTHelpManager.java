@@ -36,7 +36,7 @@ public class VTHelpManager
   //("\n-PA: proxy authentication, default disabled(D), enabled(E)") + 
   ("\n-PU: proxy user, default null") + 
   ("\n-PK: proxy password, default null") + 
-  ("\n-AT: authentication type, DEFAULT(D) or TLS(T)") + 
+  ("\n-AT: authentication type, default NORMAL(N) or TLS(T)") + 
   ("\n-ET: encryption type, default none/SALSA(S)/HC(H)/GRAIN(G)/RABBIT(R)/ZUC(Z)") + 
   ("\n-EK: encryption password, default null") + 
   ("\n-PI: ping interval, default " + VTSystem.VT_PING_INTERVAL_MILLISECONDS + " milliseconds") + 

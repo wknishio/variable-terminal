@@ -51,6 +51,7 @@ import org.vash.vate.client.connection.VTClientConnector;
 import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.dialog.VTConfigurationDialogParameter;
 import org.vash.vate.dialog.VTFileDialog;
+import org.vash.vate.graphics.VTGraphicsSystem;
 import org.vash.vate.graphics.font.VTFontManager;
 
 public class VTClientConfigurationDialog extends Dialog
@@ -147,7 +148,7 @@ public class VTClientConfigurationDialog extends Dialog
     {
       if (setIconImageMethod != null)
       {
-        setIconImageMethod.invoke(this, VTSystem.remoteIcon);
+        setIconImageMethod.invoke(this, VTGraphicsSystem.remoteIcon);
       }
     }
     catch (Throwable e)
@@ -424,22 +425,9 @@ public class VTClientConfigurationDialog extends Dialog
 //      }
 //    });
     
-    authenticationTypeChoice.add("DEFAULT");
+    authenticationTypeChoice.add("NORMAL");
     authenticationTypeChoice.add("TLS");
-    authenticationTypeChoice.select("DEFAULT");
-    authenticationTypeChoice.addItemListener(new ItemListener()
-    {
-      public void itemStateChanged(ItemEvent e)
-      {
-        if (e.getStateChange() == ItemEvent.SELECTED)
-        {
-          if (e.getItem().equals("DEFAULT"))
-          {
-            
-          }
-        }
-      }
-    });
+    authenticationTypeChoice.select("NORMAL");
     
     encryptionTypeChoice.add("NONE");
     encryptionTypeChoice.add("SALSA");
@@ -1349,7 +1337,7 @@ public class VTClientConfigurationDialog extends Dialog
     }
     else
     {
-      authenticationType.setParameter("DEFAULT");
+      authenticationType.setParameter("NORMAL");
     }
   }
   

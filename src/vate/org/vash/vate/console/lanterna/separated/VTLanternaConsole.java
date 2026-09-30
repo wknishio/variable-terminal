@@ -74,6 +74,7 @@ import org.vash.vate.console.graphical.listener.VTGraphicalConsoleDropTargetList
 import org.vash.vate.console.graphical.menu.VTGraphicalConsolePopupMenu;
 import org.vash.vate.console.lanterna.separated.VTLanternaTextBoxModified.DefaultTextBoxRenderer;
 import org.vash.vate.console.lanterna.separated.VTLanternaTextBoxModified.Style;
+import org.vash.vate.graphics.VTGraphicsSystem;
 import org.vash.vate.graphics.font.VTFontManager;
 import org.vash.vate.nativeutils.VTMainNativeUtils;
 import org.vash.vate.reflection.VTReflectionUtils;
@@ -683,7 +684,7 @@ public class VTLanternaConsole extends VTConsole
       {
         try
         {
-          frame.setIconImage(VTSystem.remoteIcon);
+          frame.setIconImage(VTGraphicsSystem.remoteIcon);
         }
         catch (Throwable t)
         {
@@ -694,7 +695,7 @@ public class VTLanternaConsole extends VTConsole
       {
         try
         {
-          frame.setIconImage(VTSystem.terminalIcon);
+          frame.setIconImage(VTGraphicsSystem.terminalIcon);
         }
         catch (Throwable t)
         {

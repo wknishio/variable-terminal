@@ -19,6 +19,7 @@ import java.awt.event.WindowListener;
 import java.lang.reflect.Method;
 
 import org.vash.vate.VTSystem;
+import org.vash.vate.graphics.VTGraphicsSystem;
 import org.vash.vate.graphics.font.VTFontManager;
 import org.vash.vate.graphics.image.VTIconDisplay;
 
@@ -51,7 +52,7 @@ public class VTGraphicalStartDialog extends Dialog
     {
       if (setIconImageMethod != null)
       {
-        setIconImageMethod.invoke(this, VTSystem.remoteIcon);
+        setIconImageMethod.invoke(this, VTGraphicsSystem.remoteIcon);
       }
     }
     catch (Throwable e)
@@ -83,7 +84,7 @@ public class VTGraphicalStartDialog extends Dialog
     //System.out.println("fontScaling:" + fontScaling);
     //System.out.println("imageScaling:" + imageScaling);
     //System.out.println("imageSize:" + 16 * imageScaling);
-    display.setImage(VTSystem.remoteIcon, 16 * imageScaling, 16 * imageScaling);
+    display.setImage(VTGraphicsSystem.remoteIcon, 16 * imageScaling, 16 * imageScaling);
     
     final Button client = new Button(" Client ");
     final Button server = new Button(" Server ");

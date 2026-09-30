@@ -15,6 +15,7 @@ import org.vash.vate.VTSystem;
 import org.vash.vate.client.connection.VTClientConnection;
 import org.vash.vate.com.sixlegs.png.iio.*;
 import org.vash.vate.console.VTMainConsole;
+import org.vash.vate.graphics.VTGraphicsSystem;
 import org.vash.vate.graphics.codec.VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII;
 import static org.vash.vate.graphics.codec.VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII.CUSTOM_CODEC_PADDING_SIZE;
 import org.vash.vate.graphics.image.VTImageIO;
@@ -302,7 +303,7 @@ public class VTGraphicsLinkClientReader implements Runnable
             currentImageDataBuffer = VTImageIO.createImage(0, 0, width, height, type, colors, recyclableCurrentDataBuffer);
             recyclableCurrentDataBuffer = currentImageDataBuffer.getRaster().getDataBuffer();
             currentImageGraphics = currentImageDataBuffer.createGraphics();
-            currentImageGraphics.setRenderingHints(VTSystem.VT_GRAPHICS_RENDERING_HINTS);
+            currentImageGraphics.setRenderingHints(VTGraphicsSystem.VT_GRAPHICS_RENDERING_HINTS);
             writer.setRemoteGraphics(currentImageDataBuffer);
             
             boolean synchronous = writer.isSynchronousRefresh();

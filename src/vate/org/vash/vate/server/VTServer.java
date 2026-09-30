@@ -239,23 +239,23 @@ public class VTServer implements Runnable
   
   public VTAudioSystem getAudioSystem(AudioFormat format)
   {
-    if (format.getSampleRate() == VTSystem.VT_AUDIO_FORMAT_8000.getSampleRate())
+    if (format.getSampleRate() == VTAudioSystem.VT_AUDIO_FORMAT_8000.getSampleRate())
     {
       return this.audioSystem[0];
     }
-    if (format.getSampleRate() == VTSystem.VT_AUDIO_FORMAT_16000.getSampleRate())
+    if (format.getSampleRate() == VTAudioSystem.VT_AUDIO_FORMAT_16000.getSampleRate())
     {
       return this.audioSystem[1];
     }
-    if (format.getSampleRate() == VTSystem.VT_AUDIO_FORMAT_48000.getSampleRate())
+    if (format.getSampleRate() == VTAudioSystem.VT_AUDIO_FORMAT_48000.getSampleRate())
     {
       return this.audioSystem[2];
     }
-    if (format.getSampleRate() == VTSystem.VT_AUDIO_FORMAT_24000.getSampleRate())
+    if (format.getSampleRate() == VTAudioSystem.VT_AUDIO_FORMAT_24000.getSampleRate())
     {
       return this.audioSystem[3];
     }
-    if (format.getSampleRate() == VTSystem.VT_AUDIO_FORMAT_32000.getSampleRate())
+    if (format.getSampleRate() == VTAudioSystem.VT_AUDIO_FORMAT_32000.getSampleRate())
     {
       return this.audioSystem[4];
     }

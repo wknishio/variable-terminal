@@ -1,8 +1,5 @@
 package org.vash.vate;
 
-import java.awt.RenderingHints;
-import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;
@@ -10,21 +7,16 @@ import java.nio.charset.CodingErrorAction;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.LinkedHashMap;
 import java.util.Locale;
-import java.util.Map;
 
-import javax.imageio.ImageIO;
 import javax.net.ssl.SSLContext;
-import javax.sound.sampled.AudioFormat;
 
-import org.vash.vate.graphics.font.VTFontManager;
+import org.vash.vate.graphics.VTGraphicsSystem;
 import org.vash.vate.help.VTHelpManager;
 import org.vash.vate.io.airlift.compress.zstd.ZstdUtil;
 import org.vash.vate.net.jpountz.lz4.LZ4Utils;
 import org.vash.vate.tls.VTTLSUtilities;
 
-@SuppressWarnings("deprecation")
 public class VTSystem
 {
   public static final int VT_MAJOR_VERSION = 1;
@@ -166,14 +158,6 @@ public class VTSystem
   
   private static final DateFormat VT_ERA_DATEFORMAT;
   private static final Calendar VT_YEAR_CALENDAR;
-  public static final AudioFormat VT_AUDIO_FORMAT_DEFAULT;
-  public static final AudioFormat VT_AUDIO_FORMAT_8000;
-  public static final AudioFormat VT_AUDIO_FORMAT_16000;
-  public static final AudioFormat VT_AUDIO_FORMAT_24000;
-  public static final AudioFormat VT_AUDIO_FORMAT_32000;
-  public static final AudioFormat VT_AUDIO_FORMAT_48000;
-  
-  public static final Map<RenderingHints.Key, Object> VT_GRAPHICS_RENDERING_HINTS;
   
   public static final SSLContext VT_UNSAFE_TLS_CONTEXT;
   
@@ -184,50 +168,18 @@ public class VTSystem
     if (!initialized)
     {
       initialize();
+      //VTTLSUtilities.allowUnsafeTLSSettings();
     }
-    
-    int sampleSizeInBits = 16;
-    int channels = 1;
-    boolean signed = true;
-    boolean bigEndian = false;
-    VT_AUDIO_FORMAT_8000 = new AudioFormat(8000, sampleSizeInBits, channels, signed, bigEndian);
-    VT_AUDIO_FORMAT_16000 = new AudioFormat(16000, sampleSizeInBits, channels, signed, bigEndian);
-    VT_AUDIO_FORMAT_24000 = new AudioFormat(24000, sampleSizeInBits, channels, signed, bigEndian);
-    VT_AUDIO_FORMAT_32000 = new AudioFormat(32000, sampleSizeInBits, channels, signed, bigEndian);
-    VT_AUDIO_FORMAT_48000 = new AudioFormat(48000, sampleSizeInBits, channels, signed, bigEndian);
-    VT_AUDIO_FORMAT_DEFAULT = VT_AUDIO_FORMAT_16000;
-    
-    VT_GRAPHICS_RENDERING_HINTS = new LinkedHashMap<RenderingHints.Key, Object>();
-    VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
-    VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-    VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_SPEED);
-    VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_DISABLE);
-    VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-    VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
-    VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
-    VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
     
     VT_ERA_DATEFORMAT = new SimpleDateFormat("G", Locale.ENGLISH);
     VT_YEAR_CALENDAR = Calendar.getInstance();
     
-    //VTTLSUtilities.allowUnsafeTLSSettings();
     VT_UNSAFE_TLS_CONTEXT = VTTLSUtilities.createUnsafeTLSContext("RSA", 2048, null);
   }
   
   public static final void initialize()
   {
-    VTFontManager.checkScaling();
-    
-    try
-    {
-      Toolkit.getDefaultToolkit().setDynamicLayout(false);
-    }
-    catch (Throwable t)
-    {
-      
-    }
-    
-    ImageIO.setUseCache(false);
+    VTGraphicsSystem.initialize();
     VTHelpManager.initialize();
     
     initialized = true;
@@ -247,40 +199,6 @@ public class VTSystem
   
   public static final String VT_VERSION = "v" + VTSystem.VT_MAJOR_VERSION + "." + VTSystem.VT_MINOR_VERSION + "." + VTSystem.VT_REVISION_VERSION;
   public static final String VT_YEAR = VT_ERA_DATEFORMAT.format(VT_YEAR_CALENDAR.getTime()) + " " + String.valueOf(VT_YEAR_CALENDAR.get(Calendar.YEAR));
-  
-  public static BufferedImage remoteIcon;
-  public static BufferedImage terminalIcon;
-  public static BufferedImage desktopIcon;
-  
-  static
-  {
-    try
-    {
-      remoteIcon = ImageIO.read(VTSystem.class.getResourceAsStream("/org/vash/vate/console/graphical/resource/remote.png"));
-    }
-    catch (Throwable e)
-    {
-      remoteIcon = null;
-    }
-    
-    try
-    {
-      terminalIcon = ImageIO.read(VTSystem.class.getResourceAsStream("/org/vash/vate/console/graphical/resource/terminal.png"));
-    }
-    catch (Throwable e)
-    {
-      terminalIcon = null;
-    }
-    
-    try
-    {
-      desktopIcon = ImageIO.read(VTSystem.class.getResourceAsStream("/org/vash/vate/console/graphical/resource/desktop.png"));
-    }
-    catch (Throwable e)
-    {
-      desktopIcon = null;
-    }
-  }
   
   public static final CharsetEncoder getFlexibleCharsetEncoder(String charsetName)
   {
