@@ -55,7 +55,7 @@ public class VTFileTransferClientTransaction implements Runnable
   private long localChecksumHigh = -1;
   private long remoteChecksumHigh = -1;
   private final byte[] fileTransferBuffer = new byte[fileTransferBufferSize];
-  private LongTupleHashFunction chunkDigest;
+  private LongTupleHashFunction chunkChecksum;
   private String command;
   private String source;
   private String destination;
@@ -92,7 +92,7 @@ public class VTFileTransferClientTransaction implements Runnable
     blake3Digest.update(session.getClient().getConnection().getFirstAuthenticatedCredential());
     blake3Digest.update(session.getClient().getConnection().getSecondAuthenticatedCredential());
     
-    chunkDigest = LongTupleHashFunction.xx128(XXH3.hash64(blake3Digest.digest(32)));
+    chunkChecksum = LongTupleHashFunction.xx128(XXH3.hash64(blake3Digest.digest(32)));
   }
   
   public boolean isFinished()
@@ -1182,7 +1182,7 @@ public class VTFileTransferClientTransaction implements Runnable
             break;
           }
         }
-        chunkDigest.hashBytes(fileTransferBuffer, 0, bufferedBytes, hash);
+        chunkChecksum.hashBytes(fileTransferBuffer, 0, bufferedBytes, hash);
 //        chunkDigest.update(fileTransferBuffer, 0, bufferedBytes);
         checksums.add(hash[0]);
         checksums.add(hash[1]);
