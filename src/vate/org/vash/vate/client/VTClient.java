@@ -23,7 +23,6 @@ import org.vash.vate.client.dialog.VTClientConfigurationDialog;
 import org.vash.vate.client.session.VTClientSessionListener;
 import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.exception.VTUncaughtExceptionHandler;
-import org.vash.vate.monitor.VTTrafficMonitorMenu;
 import org.vash.vate.monitor.VTTrafficMonitorService;
 import org.vash.vate.parser.VTConfigurationProperties;
 import org.vash.vate.parser.VTPropertiesBuilder;
@@ -2177,8 +2176,8 @@ public class VTClient implements Runnable
       VTMainConsole.setTitle("Variable-Terminal " + VTSystem.VT_VERSION + " - Client - Console");
       connectionDialog = new VTClientConfigurationDialog(VTMainConsole.getFrame(), "Variable-Terminal " + VTSystem.VT_VERSION + " - Client - Connection", true, this);
       inputMenuBar = new VTClientRemoteGraphicalConsoleMenuBar(VTMainConsole.getConsoleInstance(), connectionDialog);
-      trafficMonitorService.addUploadMonitorPanel(new VTTrafficMonitorMenu(inputMenuBar.getUploadMonitorMenu()));
-      trafficMonitorService.addDownloadMonitorPanel(new VTTrafficMonitorMenu(inputMenuBar.getDownloadMonitorMenu()));
+      trafficMonitorService.addUploadMonitorPanel(inputMenuBar.getUploadMonitorMenu());
+      trafficMonitorService.addDownloadMonitorPanel(inputMenuBar.getDownloadMonitorMenu());
       VTMainConsole.getFrame().setMenuBar(inputMenuBar);
       VTMainConsole.getFrame().pack();
     }

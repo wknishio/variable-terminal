@@ -8,9 +8,12 @@ import java.awt.event.ActionListener;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.console.graphical.menu.VTGraphicalConsoleMenuBar;
 import org.vash.vate.console.graphical.menu.VTGraphicalConsoleMenuItem;
+import org.vash.vate.monitor.VTTrafficMonitorAWTMenu;
+import org.vash.vate.monitor.VTTrafficMonitorMenu;
+import org.vash.vate.monitor.VTTrafficMonitorPanel;
 import org.vash.vate.server.dialog.VTServerSettingsDialog;
 
-public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenuBar
+public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenuBar implements VTTrafficMonitorMenu
 {
   private static final long serialVersionUID = 1L;
   
@@ -202,13 +205,13 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
     serverSettingsDialogMenu.setEnabled(enabled);
   }
   
-  public Menu getUploadMonitorMenu()
+  public VTTrafficMonitorPanel getUploadMonitorPanel()
   {
-    return uploadMonitorMenu;
+    return new VTTrafficMonitorAWTMenu(uploadMonitorMenu);
   }
   
-  public Menu getDownloadMonitorMenu()
+  public VTTrafficMonitorPanel getDownloadMonitorPanel()
   {
-    return downloadMonitorMenu;
+    return new VTTrafficMonitorAWTMenu(downloadMonitorMenu);
   }
 }

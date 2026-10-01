@@ -2,11 +2,11 @@ package org.vash.vate.monitor;
 
 import java.awt.Menu;
 
-public class VTTrafficMonitorMenu extends VTTrafficMonitorPanel
+public class VTTrafficMonitorAWTMenu extends VTTrafficMonitorPanel
 {
   private final Menu menu;
   
-  public VTTrafficMonitorMenu(Menu menu)
+  public VTTrafficMonitorAWTMenu(Menu menu)
   {
     this.menu = menu;
   }

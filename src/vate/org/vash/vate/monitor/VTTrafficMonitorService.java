@@ -49,31 +49,55 @@ public class VTTrafficMonitorService extends VTTask implements VTNanoPingListene
   
   public void addMonitorConnection(VTTrafficMonitorConnection connection)
   {
+    if (connection == null)
+    {
+      return;
+    }
     connections.add(connection);
   }
   
   public void removeMonitorConnection(VTTrafficMonitorConnection connection)
   {
+    if (connection == null)
+    {
+      return;
+    }
     connections.remove(connection);
   }
   
   public void addUploadMonitorPanel(VTTrafficMonitorPanel panel)
   {
+    if (panel == null)
+    {
+      return;
+    }
     uploadMonitorPanels.add(panel);
   }
   
   public void removeUploadMonitorPanel(VTTrafficMonitorPanel panel)
   {
+    if (panel == null)
+    {
+      return;
+    }
     uploadMonitorPanels.remove(panel);
   }
   
   public void addDownloadMonitorPanel(VTTrafficMonitorPanel panel)
   {
+    if (panel == null)
+    {
+      return;
+    }
     downloadMonitorPanels.add(panel);
   }
   
   public void removeDownloadMonitorPanel(VTTrafficMonitorPanel panel)
   {
+    if (panel == null)
+    {
+      return;
+    }
     downloadMonitorPanels.remove(panel);
   }
   

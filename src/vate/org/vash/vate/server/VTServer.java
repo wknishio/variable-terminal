@@ -19,7 +19,6 @@ import org.vash.vate.audio.VTAudioSystem;
 import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.exception.VTUncaughtExceptionHandler;
 import org.vash.vate.graphics.message.VTTrayIconInterface;
-import org.vash.vate.monitor.VTTrafficMonitorMenu;
 import org.vash.vate.monitor.VTTrafficMonitorService;
 import org.vash.vate.parser.VTArgumentParser;
 import org.vash.vate.parser.VTConfigurationProperties;
@@ -2314,8 +2313,8 @@ public class VTServer implements Runnable
       {
         connectionDialog = new VTServerSettingsDialog(VTMainConsole.getFrame(), "Variable-Terminal " + VTSystem.VT_VERSION + " - Server - Connection", true, this);
         inputMenuBar = new VTServerLocalGraphicalConsoleMenuBar(VTMainConsole.getConsoleInstance(), connectionDialog);
-        trafficMonitorService.addUploadMonitorPanel(new VTTrafficMonitorMenu(inputMenuBar.getUploadMonitorMenu()));
-        trafficMonitorService.addDownloadMonitorPanel(new VTTrafficMonitorMenu(inputMenuBar.getDownloadMonitorMenu()));
+        trafficMonitorService.addUploadMonitorPanel(inputMenuBar.getUploadMonitorPanel());
+        trafficMonitorService.addDownloadMonitorPanel(inputMenuBar.getDownloadMonitorPanel());
         VTMainConsole.getFrame().setMenuBar(inputMenuBar);
         VTMainConsole.getFrame().pack();
       }

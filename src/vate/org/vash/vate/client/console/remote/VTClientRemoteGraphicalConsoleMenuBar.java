@@ -12,6 +12,8 @@ import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.console.graphical.menu.VTGraphicalConsoleMenuItem;
 import org.vash.vate.dialog.VTFileDialog;
+import org.vash.vate.monitor.VTTrafficMonitorAWTMenu;
+import org.vash.vate.monitor.VTTrafficMonitorPanel;
 import org.vash.vate.console.graphical.menu.VTGraphicalConsoleMenuBar;
 
 public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMenuBar
@@ -477,13 +479,13 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     clientConnectionDialogMenu.setEnabled(enabled);
   }
   
-  public Menu getUploadMonitorMenu()
+  public VTTrafficMonitorPanel getUploadMonitorMenu()
   {
-    return uploadMonitorMenu;
+    return new VTTrafficMonitorAWTMenu(uploadMonitorMenu);
   }
   
-  public Menu getDownloadMonitorMenu()
+  public VTTrafficMonitorPanel getDownloadMonitorMenu()
   {
-    return downloadMonitorMenu;
+    return new VTTrafficMonitorAWTMenu(downloadMonitorMenu);
   }
 }

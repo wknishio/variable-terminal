@@ -6,8 +6,11 @@ import java.awt.MenuBar;
 import java.awt.MenuItem;
 
 import org.vash.vate.client.graphicslink.VTGraphicsLinkClientWriter;
+import org.vash.vate.monitor.VTTrafficMonitorAWTMenu;
+import org.vash.vate.monitor.VTTrafficMonitorMenu;
+import org.vash.vate.monitor.VTTrafficMonitorPanel;
 
-public class VTGraphicsLinkClientOptionsMenuBar extends MenuBar
+public class VTGraphicsLinkClientOptionsMenuBar extends MenuBar implements VTTrafficMonitorMenu
 {
   private static final long serialVersionUID = 1L;
   private VTGraphicsLinkClientOptionsMenuBarViewMenu viewMenu;
@@ -226,13 +229,13 @@ public class VTGraphicsLinkClientOptionsMenuBar extends MenuBar
     keyboardShortcutsMenu.setEnabled(enabled);
   }
   
-  public Menu getUploadMonitorMenu()
+  public VTTrafficMonitorPanel getUploadMonitorPanel()
   {
-    return uploadMonitorMenu;
+    return new VTTrafficMonitorAWTMenu(uploadMonitorMenu);
   }
   
-  public Menu getDownloadMonitorMenu()
+  public VTTrafficMonitorPanel getDownloadMonitorPanel()
   {
-    return downloadMonitorMenu;
+    return new VTTrafficMonitorAWTMenu(downloadMonitorMenu);
   }
 }

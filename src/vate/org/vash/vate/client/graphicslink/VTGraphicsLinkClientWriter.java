@@ -36,7 +36,7 @@ import org.vash.vate.graphics.control.VTAWTControlEvent;
 import org.vash.vate.graphics.control.VTAWTControlProvider;
 import org.vash.vate.graphics.device.VTGraphicalDeviceResolver;
 import org.vash.vate.graphics.font.VTFontManager;
-import org.vash.vate.monitor.VTTrafficMonitorMenu;
+import org.vash.vate.monitor.VTTrafficMonitorPanel;
 
 public class VTGraphicsLinkClientWriter implements Runnable
 {
@@ -1720,8 +1720,8 @@ public class VTGraphicsLinkClientWriter implements Runnable
   public void run()
   {
     createCustomCursor();
-    VTTrafficMonitorMenu uploadMonitorPanel = null;
-    VTTrafficMonitorMenu downloadMonitorPanel = null;
+    VTTrafficMonitorPanel uploadMonitorPanel = null;
+    VTTrafficMonitorPanel downloadMonitorPanel = null;
     try
     {
       if (VTMainConsole.isGraphical())
@@ -1751,8 +1751,8 @@ public class VTGraphicsLinkClientWriter implements Runnable
       menuBar = new VTGraphicsLinkClientOptionsMenuBar(this, frame);
       if (session.getSession().getClient().getTrafficMonitorService() != null)
       {
-        uploadMonitorPanel = new VTTrafficMonitorMenu(menuBar.getUploadMonitorMenu());
-        downloadMonitorPanel = new VTTrafficMonitorMenu(menuBar.getDownloadMonitorMenu());
+        uploadMonitorPanel = menuBar.getUploadMonitorPanel();
+        downloadMonitorPanel = menuBar.getDownloadMonitorPanel();
         session.getSession().getClient().getTrafficMonitorService().addUploadMonitorPanel(uploadMonitorPanel);
         session.getSession().getClient().getTrafficMonitorService().addDownloadMonitorPanel(downloadMonitorPanel);
       }
