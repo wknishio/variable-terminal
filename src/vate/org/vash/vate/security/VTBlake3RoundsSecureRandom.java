@@ -8,21 +8,41 @@ import org.vash.vate.org.bouncycastle.crypto.params.Blake3Parameters;
 import org.vash.vate.org.bouncycastle.crypto.prng.DigestRandomGenerator;
 import org.vash.vate.org.bouncycastle.crypto.prng.RandomGenerator;
 
-public class VTBlake3ExtendedSecureRandom extends SecureRandom
+public class VTBlake3RoundsSecureRandom extends SecureRandom
 {
   private static final long serialVersionUID = 1L;
-  private final VTBlake3RoundsDigest blake3 = new VTBlake3RoundsDigest(64, 16);
-  private final RandomGenerator generator = new DigestRandomGenerator(blake3);
+  private final VTBlake3RoundsDigest blake3;
+  private final RandomGenerator generator;
   
-  public VTBlake3ExtendedSecureRandom(Random random)
+  public VTBlake3RoundsSecureRandom(Random random)
   {
+    blake3 = new VTBlake3RoundsDigest(64, 16);
+    generator = new DigestRandomGenerator(blake3);
     byte[] secureSeed = new byte[VTSystem.VT_SECURITY_SEED_SIZE_BYTES];
     random.nextBytes(secureSeed);
     setSeed(secureSeed);
   }
   
-  public VTBlake3ExtendedSecureRandom(final byte[] inSeed)
+  public VTBlake3RoundsSecureRandom(final byte[] inSeed)
   {
+    blake3 = new VTBlake3RoundsDigest(64, 16);
+    generator = new DigestRandomGenerator(blake3);
+    setSeed(inSeed);
+  }
+  
+  public VTBlake3RoundsSecureRandom(int rounds, Random random)
+  {
+    blake3 = new VTBlake3RoundsDigest(64, rounds);
+    generator = new DigestRandomGenerator(blake3);
+    byte[] secureSeed = new byte[VTSystem.VT_SECURITY_SEED_SIZE_BYTES];
+    random.nextBytes(secureSeed);
+    setSeed(secureSeed);
+  }
+  
+  public VTBlake3RoundsSecureRandom(int rounds, final byte[] inSeed)
+  {
+    blake3 = new VTBlake3RoundsDigest(64, rounds);
+    generator = new DigestRandomGenerator(blake3);
     setSeed(inSeed);
   }
   

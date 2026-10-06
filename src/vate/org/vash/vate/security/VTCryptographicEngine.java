@@ -22,7 +22,7 @@ public class VTCryptographicEngine
   
   public VTCryptographicEngine()
   {
-    this.blake3Digest = new VTBlake3StandardMessageDigest();
+    blake3Digest = new VTBlake3StandardMessageDigest();
   }
   
   public void setSeed(byte[] seed)
