@@ -505,19 +505,15 @@ public class VTFileTransferServerTransaction implements Runnable
           {
             maxOffset = localFileSize;
           }
-          fileChunkSize = (maxOffset >= fileTransferBufferSize ? fileTransferBufferSize : fileTransferBufferSize >> 4);
           if (checked && !directory)
           {
             if (resuming)
             {
               resumable = remoteFileStatus == VTSystem.VT_FILE_TRANSFER_STATUS_NORMAL && remoteFileSize > 0 && localFileSize > 0;
             }
-            return true;
           }
-          else if (checked && directory)
-          {
-            return true;
-          }
+          fileChunkSize = (resumable && maxOffset < fileTransferBufferSize ? fileTransferBufferSize >> 4 : fileTransferBufferSize);
+          return checked;
         }
       }
     }
@@ -806,19 +802,15 @@ public class VTFileTransferServerTransaction implements Runnable
           {
             maxOffset = localFileSize;
           }
-          fileChunkSize = (maxOffset >= fileTransferBufferSize ? fileTransferBufferSize : fileTransferBufferSize >> 4);
           if (checked && !directory)
           {
             if (resuming)
             {
               resumable = localFileStatus == VTSystem.VT_FILE_TRANSFER_STATUS_NORMAL && localFileSize > 0 && remoteFileSize > 0;
             }
-            return true;
           }
-          else if (checked && directory)
-          {
-            return true;
-          }
+          fileChunkSize = (resumable && maxOffset < fileTransferBufferSize ? fileTransferBufferSize >> 4 : fileTransferBufferSize);
+          return checked;
         }
       }
     }
