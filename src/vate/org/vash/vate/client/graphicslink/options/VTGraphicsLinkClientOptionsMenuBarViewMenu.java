@@ -33,7 +33,7 @@ import org.vash.vate.graphics.capture.VTAWTScreenCaptureProvider;
 public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
 {
   private static final long serialVersionUID = 1L;
-  private Menu colorQualityMenu;
+  private Menu colorDepthMenu;
   private Menu refreshModeMenu;
   private Menu drawPointerMenu;
   private Menu drawPointerSizeMenu;
@@ -105,7 +105,7 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
   {
     super("View");
     // this.writer = writer;
-    this.colorQualityMenu = new Menu("Color Quality ");
+    this.colorDepthMenu = new Menu("Color Depth ");
     this.refreshModeMenu = new Menu("Refresh Mode ");
     this.drawPointerMenu = new Menu("Remote Pointer ");
     this.refreshIntervalMenu = new Menu("Refresh Interval ");
@@ -248,19 +248,19 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
     this.drawPointerSizeMenu.add(decreasePointerOption);
     this.drawPointerSizeMenu.add(normalizePointerOption);
     
-    this.colorQualityMenu.add(trueColorOption);
+    this.colorDepthMenu.add(trueColorOption);
     //this.colorQualityMenu.add(ultraColorOption);
-    this.colorQualityMenu.add(vastColorOption);
-    this.colorQualityMenu.add(highColorOption);
-    this.colorQualityMenu.add(extraColorOption);
+    this.colorDepthMenu.add(vastColorOption);
+    this.colorDepthMenu.add(highColorOption);
+    this.colorDepthMenu.add(extraColorOption);
     //this.colorQualityMenu.add(nextColorOption);
-    this.colorQualityMenu.add(mediumColorOption);
-    this.colorQualityMenu.add(simpleColorOption);
+    this.colorDepthMenu.add(mediumColorOption);
+    this.colorDepthMenu.add(simpleColorOption);
     //this.colorQualityMenu.add(fewColorOption);
-    this.colorQualityMenu.add(lowColorOption);
-    this.colorQualityMenu.add(grayColorOption);
+    this.colorDepthMenu.add(lowColorOption);
+    this.colorDepthMenu.add(grayColorOption);
     //this.colorQualityMenu.add(dullColorOption);
-    this.colorQualityMenu.add(worstColorOption);
+    this.colorDepthMenu.add(worstColorOption);
     
     this.refreshModeMenu.add(asynchronousRefreshOption);
     this.refreshModeMenu.add(synchronousRefreshOption);
@@ -322,7 +322,7 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
     this.add(refreshModeMenu);
     this.add(refreshIntervalMenu);
     this.add(refreshClauseMenu);
-    this.add(colorQualityMenu);
+    this.add(colorDepthMenu);
     this.add(captureModeMenu);
     this.add(imageFormatMenu);
     this.add(drawPointerMenu);
