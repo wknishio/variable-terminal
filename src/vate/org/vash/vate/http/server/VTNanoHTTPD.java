@@ -15,6 +15,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.security.SecureRandom;
 import java.util.Collection;
 import java.util.Date;
@@ -24,10 +25,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.net.ssl.SSLSocket;
 
 import org.vash.vate.VTSystem;
+import org.vash.vate.compatibility.VTCharsets;
 import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.org.apache.commons.codec.binary.Base64;
 import org.vash.vate.org.apache.commons.codec.digest.DigestUtils;
@@ -212,8 +216,31 @@ public class VTNanoHTTPD implements Runnable, Closeable
   
   public static final String HTTP_UNAUTHORIZED = "401 Unauthorized";
   public static final String HTTP_PAYLOAD_TOO_LARGE = "413 Payload Too Large";
+  
+  private static final Pattern CHARSET_PATTERN = Pattern.compile("charset\\s*=\\s*\"?([^\\s;\"]+)\"?", Pattern.CASE_INSENSITIVE);
 
-
+  private static String getCharsetNameFromHeader(String contentTypeHeader)
+  {
+    if (contentTypeHeader == null)
+    {
+      return VTCharsets.ISO_8859_1; // RFC default fallback
+    }
+    Matcher matcher = CHARSET_PATTERN.matcher(contentTypeHeader);
+    if (matcher.find())
+    {
+      try
+      {
+        // Group 1 captures the actual charset name inside or outside quotes
+        return Charset.forName(matcher.group(1).trim()).name();
+      }
+      catch (Throwable t)
+      {
+        // Thrown if the charset name is illegal or unsupported by the JVM
+        return VTCharsets.ISO_8859_1;
+      }
+    }
+    return VTCharsets.ISO_8859_1; // Default fallback if no charset is provided
+  }
   /**
    * Common mime types for dynamic content
    */
@@ -522,12 +549,10 @@ public class VTNanoHTTPD implements Runnable, Closeable
           // in data section, too, read it:
           if (method != null && method.equalsIgnoreCase( "POST" ))
           {
-            // Create a BufferedReader for easily reading it as string.
-            ByteArrayInputStream bin = new ByteArrayInputStream(fbuf);
-            BufferedReader in = new BufferedReader( new InputStreamReader(bin, VTSystem.getFlexibleCharsetDecoder("ISO-8859-1")));
-            
             String contentType = "";
             String contentTypeHeader = findProperty(headers, "Content-Type");
+            String contentTypeCharset = getCharsetNameFromHeader(contentTypeHeader);
+            
             StringTokenizer st = null;
             if( contentTypeHeader != null)
             {
@@ -537,6 +562,11 @@ public class VTNanoHTTPD implements Runnable, Closeable
                 contentType = st.nextToken();
               }
             }
+            
+            // Create a BufferedReader for easily reading it as string.
+            ByteArrayInputStream bin = new ByteArrayInputStream(fbuf);
+            BufferedReader in = new BufferedReader( new InputStreamReader(bin, VTSystem.getFlexibleCharsetDecoder(contentTypeCharset)));
+            
             if (contentType.equalsIgnoreCase("multipart/form-data"))
             {
               // Handle multipart/form-data
