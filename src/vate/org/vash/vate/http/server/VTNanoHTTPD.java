@@ -35,6 +35,7 @@ import org.vash.vate.compatibility.VTCharsets;
 import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.org.apache.commons.codec.binary.Base64;
 import org.vash.vate.org.apache.commons.codec.digest.DigestUtils;
+import org.vash.vate.org.apache.commons.io.IOUtils;
 import org.vash.vate.org.bouncycastle.util.encoders.Hex;
 import org.vash.vate.org.infinispan.server.resp.commands.string.XXH3;
 import org.vash.vate.parser.VTConfigurationProperties;
@@ -55,7 +56,6 @@ import java.util.TimeZone;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
-import java.io.FileOutputStream;
 
 /**
  * A simple, tiny, nicely embeddable HTTP 1.0 (partially 1.1) server in Java
@@ -219,7 +219,7 @@ public class VTNanoHTTPD implements Runnable, Closeable
   
   private static final Pattern CHARSET_PATTERN = Pattern.compile("charset\\s*=\\s*\"?([^\\s;\"]+)\"?", Pattern.CASE_INSENSITIVE);
 
-  private static String getCharsetNameFromHeader(String contentTypeHeader)
+  public static String getCharsetNameFromContentTypeHeader(String contentTypeHeader)
   {
     if (contentTypeHeader == null)
     {
@@ -484,7 +484,8 @@ public class VTNanoHTTPD implements Runnable, Closeable
           decodeHeader(hin, preambles, parameters, headers);
           String method = preambles.getProperty("method");
           String uri = preambles.getProperty("uri");
-          String connection = findProperty(headers, "Connection");
+          //String connection = findProperty(headers, "Connection");
+          String connection = headers.getProperty("connection");
           if (connection != null)
           {
             if (connection.toLowerCase().startsWith("keep-alive"))
@@ -497,7 +498,7 @@ public class VTNanoHTTPD implements Runnable, Closeable
             }
           }
           long size = 0x7FFFFFFFFFFFFFFFL;
-          String contentLength = findProperty(headers, "Content-Length");
+          String contentLength = headers.getProperty("content-length");
           if (contentLength != null)
           {
             try
@@ -550,8 +551,8 @@ public class VTNanoHTTPD implements Runnable, Closeable
           if (method != null && method.equalsIgnoreCase( "POST" ))
           {
             String contentType = "";
-            String contentTypeHeader = findProperty(headers, "Content-Type");
-            String contentTypeCharset = getCharsetNameFromHeader(contentTypeHeader);
+            String contentTypeHeader = headers.getProperty("content-type");
+            String contentTypeCharset = getCharsetNameFromContentTypeHeader(contentTypeHeader);
             
             StringTokenizer st = null;
             if( contentTypeHeader != null)
@@ -603,7 +604,18 @@ public class VTNanoHTTPD implements Runnable, Closeable
           }
           if (method != null && method.equalsIgnoreCase( "PUT" ))
           {
-            files.put("content", saveTmpFile( fbuf, 0, body.size()));
+            files.put("put-content", getFileDataInputStream( fbuf, 0, body.size()));
+            files.put("put-content-type", headers.getProperty("content-type"));
+            String value = "";
+            try
+            {
+              value = IOUtils.toString(getFileDataInputStream(fbuf, 0, body.size()), getCharsetNameFromContentTypeHeader(headers.getProperty("content-type")));
+            }
+            catch (Throwable t)
+            {
+              value = "";
+            }
+            parameters.put("put-content", value);
           }
           // Ok, now do the serve()
           if (uri != null)
@@ -756,7 +768,7 @@ public class VTNanoHTTPD implements Runnable, Closeable
      * Decodes the Multipart Body data and put it
      * into java Properties' key - value pairs.
     **/
-    private void decodeMultipartData(String boundary, byte[] fbuf, BufferedReader in, Properties parms, Properties files) throws InterruptedException
+    private void decodeMultipartData(String boundary, byte[] fbuf, BufferedReader in, Properties parameters, Properties files) throws InterruptedException
     {
       try
       {
@@ -832,17 +844,34 @@ public class VTNanoHTTPD implements Runnable, Closeable
                 sendError( HTTP_INTERNALERROR, "SERVER INTERNAL ERROR: Error processing request" );
               }
               int offset = stripMultipartHeaders(fbuf, bpositions[boundarycount-2]);
-              String path = saveTmpFile(fbuf, offset, bpositions[boundarycount-1]-offset-4);
-              files.put(pname, path);
+              //String path = saveTmpFile(fbuf, offset, bpositions[boundarycount-1]-offset-4);
+              files.put(pname, getFileDataInputStream(fbuf, offset, bpositions[boundarycount-1]-offset-4));
+              files.put(pname + "-content-type", item.getProperty("content-type"));
               value = disposition.getProperty("filename");
-              value = value.substring(1,value.length()-1);
+              if (value != null && value.length() > 1)
+              {
+                value = value.substring(1,value.length()-1);
+              }
+              else
+              {
+                value = "";
+              }
+              files.put(pname + "-filename", value);
+              try
+              {
+                value = IOUtils.toString(getFileDataInputStream(fbuf, offset, bpositions[boundarycount-1]-offset-4), getCharsetNameFromContentTypeHeader(item.getProperty("content-type")));
+              }
+              catch (Throwable t)
+              {
+                value = "";
+              }
               do
               {
                 mpline = in.readLine();
               }
               while (mpline != null && mpline.indexOf(boundary) == -1);
             }
-            parms.put(pname, value);
+            parameters.put(pname, value);
           }
         }
       }
@@ -915,26 +944,32 @@ public class VTNanoHTTPD implements Runnable, Closeable
      * to a temporary file.
      * The full path to the saved file is returned.
     **/
-    private String saveTmpFile(byte[] b, int offset, int len)
+    private InputStream getFileDataInputStream(byte[] buf, int offset, int len)
     {
-      String path = "";
+//      String path = "";
+//      if (len > 0)
+//      {
+//        String tmpdir = System.getProperty("java.io.tmpdir");
+//        try
+//        {
+//          File temp = File.createTempFile("NanoHTTPD", "", new File(tmpdir));
+//          OutputStream fstream = new FileOutputStream(temp);
+//          fstream.write(b, offset, len);
+//          fstream.close();
+//          path = temp.getAbsolutePath();
+//        }
+//        catch (Exception e)
+//        { // Catch exception if any
+//          //myErr.println("Error: " + e.getMessage());
+//        }
+//      }
+//      return path;
+      ByteArrayInputStream stream = null;
       if (len > 0)
       {
-        String tmpdir = System.getProperty("java.io.tmpdir");
-        try
-        {
-          File temp = File.createTempFile("NanoHTTPD", "", new File(tmpdir));
-          OutputStream fstream = new FileOutputStream(temp);
-          fstream.write(b, offset, len);
-          fstream.close();
-          path = temp.getAbsolutePath();
-        }
-        catch (Exception e)
-        { // Catch exception if any
-          //myErr.println("Error: " + e.getMessage());
-        }
+        return new ByteArrayInputStream(buf, offset, len);
       }
-      return path;
+      return stream;
     }
     
     /**
@@ -1469,7 +1504,7 @@ public class VTNanoHTTPD implements Runnable, Closeable
    * Serves file from homeDir and its' subdirectories (only).
    * Uses only URI, ignores all headers and HTTP parameters.
    */
-  public Response serveFile( String uri, Properties header, File homeDir, boolean allowDirectoryListing )
+  public Response serveFile( String uri, Properties headers, File homeDir, boolean allowDirectoryListing )
   {
     Response res = null;
     
@@ -1618,7 +1653,7 @@ public class VTNanoHTTPD implements Runnable, Closeable
         // Support (simple) skipping:
         long startFrom = 0;
         long endAt = -1;
-        String range = findProperty(header, "range" );
+        String range = headers.getProperty("range");
         if ( range != null )
         {
           if ( range.startsWith( "bytes=" ))
@@ -1685,7 +1720,7 @@ public class VTNanoHTTPD implements Runnable, Closeable
         }
         else
         {
-          if (etag.equals(findProperty(header, "if-none-match")))
+          if (etag.equals(headers.getProperty("if-none-match")))
           {
             res = new Response( HTTP_NOTMODIFIED, mime, "");
           }
@@ -1746,22 +1781,22 @@ public class VTNanoHTTPD implements Runnable, Closeable
       theMimeTypes.put( st.nextToken(), st.nextToken());
   }
   
-  private static String findProperty(Properties properties, String property)
-  {
-    String data = properties.getProperty(property);
-    if (data == null)
-    {
-      for (Object key : properties.keySet())
-      {
-        if (key.toString().toLowerCase().equals(property.toLowerCase()))
-        {
-          data = properties.getProperty(key.toString());
-          break;
-        }
-      }
-    }
-    return data;
-  }
+//  private static String findProperty(Properties properties, String property)
+//  {
+//    String data = properties.getProperty(property);
+//    if (data == null)
+//    {
+//      for (Object key : properties.keySet())
+//      {
+//        if (key.toString().toLowerCase().equals(property.toLowerCase()))
+//        {
+//          data = properties.getProperty(key.toString());
+//          break;
+//        }
+//      }
+//    }
+//    return data;
+//  }
 
   private static int theBufferSize = 32 * 1024;
 

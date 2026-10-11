@@ -382,7 +382,8 @@ public class VTNanoHTTPDProxySession implements Runnable
         String method = preambles.getProperty("method");
         String uri = preambles.getProperty("uri");
         
-        String connection = findProperty(headers, "Connection");
+        //String connection = findProperty(headers, "Connection");
+        String connection = headers.getProperty("connection");
         if (connection != null)
         {
           if (connection.toLowerCase().startsWith("keep-alive"))
@@ -394,7 +395,8 @@ public class VTNanoHTTPDProxySession implements Runnable
             keepAlive = false;
           }
         }
-        connection = findProperty(headers, "Proxy-Connection");
+        //connection = findProperty(headers, "Proxy-Connection");
+        connection = headers.getProperty("proxy-connection");
         if (connection != null)
         {
           if (connection.toLowerCase().startsWith("keep-alive"))
@@ -1276,22 +1278,22 @@ public class VTNanoHTTPDProxySession implements Runnable
     gmtFrmt.setTimeZone(TimeZone.getTimeZone("GMT"));
   }
   
-  private static String findProperty(Properties properties, String property)
-  {
-    String data = properties.getProperty(property);
-    if (data == null)
-    {
-      for (Object key : properties.keySet())
-      {
-        if (key.toString().toLowerCase().equals(property.toLowerCase()))
-        {
-          data = properties.getProperty(key.toString());
-          break;
-        }
-      }
-    }
-    return data;
-  }
+//  private static String findProperty(Properties properties, String property)
+//  {
+//    String data = properties.getProperty(property);
+//    if (data == null)
+//    {
+//      for (Object key : properties.keySet())
+//      {
+//        if (key.toString().toLowerCase().equals(property.toLowerCase()))
+//        {
+//          data = properties.getProperty(key.toString());
+//          break;
+//        }
+//      }
+//    }
+//    return data;
+//  }
   
   /**
    * The distribution licence
