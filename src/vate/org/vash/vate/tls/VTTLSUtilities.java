@@ -95,7 +95,6 @@ public class VTTLSUtilities
     {
       
     }
-    disableClientHttpsTLSVerifications();
   }
   
   private static class OverlyOptimisticHostnameVerifier implements HostnameVerifier

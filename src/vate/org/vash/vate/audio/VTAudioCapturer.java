@@ -346,8 +346,7 @@ public class VTAudioCapturer
     public final void loopOpus() throws OpusException, IOException
     {
       int offset = 0;
-      int readSize = 0;
-      readSize = Math.max(VTSystem.VT_AUDIO_LINE_CAPTURE_BUFFER_MILLISECONDS / (VTSystem.VT_AUDIO_CODEC_FRAME_MILLISECONDS * 2), line.available() / frameSize) * frameSize;
+      int readSize = Math.max(VTSystem.VT_AUDIO_LINE_CAPTURE_BUFFER_MILLISECONDS / (VTSystem.VT_AUDIO_CODEC_FRAME_MILLISECONDS * 4), line.available() / frameSize) * frameSize;;
       while (running)
       {
         decodedFrameSize = line.read(inputBuffer, 0, readSize);
@@ -393,8 +392,7 @@ public class VTAudioCapturer
     public final void loopSpeex() throws IOException
     {
       int offset = 0;
-      int readSize = 0;
-      readSize = Math.max(VTSystem.VT_AUDIO_LINE_CAPTURE_BUFFER_MILLISECONDS / (VTSystem.VT_AUDIO_CODEC_FRAME_MILLISECONDS * 2), line.available() / frameSize) * frameSize;
+      int readSize = Math.max(VTSystem.VT_AUDIO_LINE_CAPTURE_BUFFER_MILLISECONDS / (VTSystem.VT_AUDIO_CODEC_FRAME_MILLISECONDS * 4), line.available() / frameSize) * frameSize;;
       while (running)
       {
         decodedFrameSize = line.read(inputBuffer, 0, readSize);
