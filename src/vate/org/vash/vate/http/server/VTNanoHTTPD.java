@@ -670,6 +670,13 @@ public class VTNanoHTTPD implements Runnable, Closeable
     
     private Socket checkTLSMark(Socket connectionSocket) throws IOException
     {
+      if (tlsAlways)
+      {
+        tlsDetected = true;
+        SSLSocket tlsSocket = VTTLSUtilities.createTLSSocket(connectionSocket, "null", 1, false, true, VTSystem.VT_UNSAFE_TLS_CONTEXT);
+        connectionSocket = tlsSocket;
+        return connectionSocket;
+      }
       tlsDetected = false;
       PushbackInputStream input = new PushbackInputStream(connectionSocket.getInputStream(), 1);
       OutputStream output = connectionSocket.getOutputStream();
@@ -684,7 +691,7 @@ public class VTNanoHTTPD implements Runnable, Closeable
       }
       input.unread(firstByte);
       connectionSocket = new VTCloseableSocket(connectionSocket, input, output);
-      if (tlsDetected || tlsAlways)
+      if (tlsDetected)
       {
         SSLSocket tlsSocket = VTTLSUtilities.createTLSSocket(connectionSocket, "null", 1, false, true, VTSystem.VT_UNSAFE_TLS_CONTEXT);
         connectionSocket = tlsSocket;
@@ -1286,7 +1293,7 @@ public class VTNanoHTTPD implements Runnable, Closeable
       {
         return true;
       }
-      if (digestAuth && !tlsDetected && !tlsAlways)
+      if (digestAuth && !tlsDetected)
       {
         int result = checkAuthenticatedDigest("Authorization", headers, method, usernames, passwords, "VTNanoHTTPD");
         if (result != 0)
