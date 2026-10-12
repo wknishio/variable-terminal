@@ -17,14 +17,7 @@ public class VTURLInvoker
 {
   static
   {
-    try
-    {
-      VTTLSUtilities.disableHttpsTLSVerifications();
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    VTTLSUtilities.disableClientHttpsTLSVerifications();
   }
   
   public static void close(URLConnection connection, OutputStream connectionOutputStream, InputStream connectionInputStream)

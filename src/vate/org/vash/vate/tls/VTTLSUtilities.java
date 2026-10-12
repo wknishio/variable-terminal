@@ -29,6 +29,7 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import org.vash.vate.VTSystem;
 import org.vash.vate.org.bouncycastle.asn1.x500.X500Name;
 import org.vash.vate.org.bouncycastle.asn1.x500.X500NameBuilder;
 import org.vash.vate.org.bouncycastle.asn1.x500.style.BCStyle;
@@ -94,6 +95,7 @@ public class VTTLSUtilities
     {
       
     }
+    disableClientHttpsTLSVerifications();
   }
   
   private static class OverlyOptimisticHostnameVerifier implements HostnameVerifier
@@ -167,7 +169,7 @@ public class VTTLSUtilities
     }
   }
   
-  public static boolean disableHttpsTLSVerifications()
+  public static boolean disableClientHttpsTLSVerifications()
   {
     try
     {
@@ -177,9 +179,7 @@ public class VTTLSUtilities
       //System.setProperty("sun.security.ssl.allowLegacyHelloMessages", "true");
       //System.setProperty("sun.security.ssl.allowUnsafeRenegotiation", "true");
       
-      TrustManager[] trustAnything = new TrustManager[] {new OverlyOptimisticTrustManager()};
-      SSLContext unsafeTLSContext = SSLContext.getInstance("TLS");
-      unsafeTLSContext.init(null, trustAnything, new SecureRandom());
+      SSLContext unsafeTLSContext = VTSystem.VT_UNSAFE_TLS_CONTEXT;
       HttpsURLConnection.setDefaultSSLSocketFactory(unsafeTLSContext.getSocketFactory());
       HttpsURLConnection.setDefaultHostnameVerifier(new OverlyOptimisticHostnameVerifier());
       try
