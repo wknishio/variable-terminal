@@ -12,6 +12,7 @@ import java.net.SocketAddress;
 import java.net.SocketException;
 import java.nio.channels.SocketChannel;
 
+import org.vash.vate.VTSystem;
 import org.vash.vate.tls.VTTLSUtilities;
 
 public abstract class VTProxySocket extends Socket implements Closeable
@@ -34,6 +35,10 @@ public abstract class VTProxySocket extends Socket implements Closeable
     }
     if (currentProxy != null && currentSocket != null && currentSocket instanceof VTProxySocket)
     {
+      if (currentProxy.getProxyTLS())
+      {
+        VTSystem.getUnsafeTLSContext();
+      }
       InetSocketAddress proxyAddress = InetSocketAddress.createUnresolved(currentProxy.getProxyHost(), currentProxy.getProxyPort());
       if (timeout > 0)
       {
@@ -47,11 +52,15 @@ public abstract class VTProxySocket extends Socket implements Closeable
       currentSocket.setKeepAlive(true);
       if (currentProxy.getProxyTLS())
       {
-        currentSocket = VTTLSUtilities.createTLSSocket(currentSocket, currentProxy.getProxyHost(), currentProxy.getProxyPort(), true, true, VTTLSUtilities.createUnsafeTLSContext());
+        currentSocket = VTTLSUtilities.createTLSSocket(currentSocket, currentProxy.getProxyHost(), currentProxy.getProxyPort(), true, true, VTSystem.getUnsafeTLSContext());
       }
     }
     else if (currentSocket == null || currentSocket.isClosed() || !currentSocket.isConnected())
     {
+      if (currentProxy.getProxyTLS())
+      {
+        VTSystem.getUnsafeTLSContext();
+      }
       InetSocketAddress proxyAddress = new InetSocketAddress(currentProxy.getProxyHost(), currentProxy.getProxyPort());
       currentSocket = new Socket(Proxy.NO_PROXY);
       if (timeout > 0)
@@ -66,7 +75,7 @@ public abstract class VTProxySocket extends Socket implements Closeable
       currentSocket.setKeepAlive(true);
       if (currentProxy.getProxyTLS())
       {
-        currentSocket = VTTLSUtilities.createTLSSocket(currentSocket, currentProxy.getProxyHost(), currentProxy.getProxyPort(), true, true, VTTLSUtilities.createUnsafeTLSContext());
+        currentSocket = VTTLSUtilities.createTLSSocket(currentSocket, currentProxy.getProxyHost(), currentProxy.getProxyPort(), true, true, VTSystem.getUnsafeTLSContext());
       }
     }
   }
