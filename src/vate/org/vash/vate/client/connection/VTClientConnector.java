@@ -412,6 +412,10 @@ public class VTClientConnector implements Runnable
   public void setTLSAuthentication(boolean tls)
   {
     tlsAuthentication = tls;
+    if (tlsAuthentication)
+    {
+      VTSystem.getUnsafeTLSContext();
+    }
   }
   
   public String getSessionCommands()

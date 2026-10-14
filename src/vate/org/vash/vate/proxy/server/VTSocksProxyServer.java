@@ -116,7 +116,7 @@ public class VTSocksProxyServer implements Runnable {
 	    this.auth = auth;
 	  }
 
-	 public VTSocksProxyServer(ServerAuthenticator auth, ExecutorService executorService, boolean enforce_tls, boolean disabled_bind, boolean disabled_udp_relay, int connectTimeout, VTProxy connect_proxy) {
+	 public VTSocksProxyServer(ServerAuthenticator auth, ExecutorService executorService, boolean enforce_tls, boolean disabled_bind, boolean disabled_udp_relay, String bind, int connectTimeout, VTProxy connect_proxy) {
 	    this.executorService = executorService;
 	    this.auth = auth;
 	    this.enforce_tls = enforce_tls;
@@ -125,6 +125,10 @@ public class VTSocksProxyServer implements Runnable {
 	    this.connect_proxy = connect_proxy;
 	    //this.socket_factory = socket_factory;
 	    this.connectTimeout = connectTimeout;
+	    if (enforce_tls)
+	    {
+	      VTSystem.getUnsafeTLSContext();
+	    }
 	  }
 	// Other constructors
 	////////////////////
@@ -150,6 +154,10 @@ public class VTSocksProxyServer implements Runnable {
     this.bind = bind;
     // this.connectionId = connectionId;
     mode = START_MODE;
+    if (enforce_tls)
+    {
+      VTSystem.getUnsafeTLSContext();
+    }
   }
 	
 	public void setDatagramSocketFactory(VTRemoteSocketFactory socketFactory)
@@ -358,7 +366,7 @@ public class VTSocksProxyServer implements Runnable {
 	  sock.setKeepAlive(true);
 	  if (enforce_tls)
 	  {
-	    sock = VTTLSUtilities.createTLSSocket(sock, "null", 1, false, true, VTSystem.VT_UNSAFE_TLS_CONTEXT);
+	    sock = VTTLSUtilities.createTLSSocket(sock, "null", 1, false, true, VTSystem.getUnsafeTLSContext());
 	  }
 		try {
 			auth = auth.startSession(sock);

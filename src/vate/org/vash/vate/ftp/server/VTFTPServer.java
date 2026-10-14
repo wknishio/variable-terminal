@@ -8,7 +8,9 @@ import java.util.concurrent.ExecutorService;
 
 import javax.net.ServerSocketFactory;
 import javax.net.SocketFactory;
+import javax.net.ssl.SSLContext;
 
+import org.vash.vate.VTSystem;
 import org.vash.vate.com.guichaguri.minimalftp.FTPServer;
 import org.vash.vate.com.guichaguri.minimalftp.api.IFTPListener;
 import org.vash.vate.com.guichaguri.minimalftp.api.IUserAuthenticator;
@@ -57,5 +59,23 @@ public class VTFTPServer extends FTPServer
   protected VTFTPConnection createConnection(Socket socket) throws IOException
   {
     return new VTFTPConnection(this, socket, idleTimeout, bufferSize);
+  }
+  
+  public SSLContext getSSLContext()
+  {
+    if (ssl == null)
+    {
+      ssl = VTSystem.getUnsafeTLSContext();
+    }
+    return ssl;
+  }
+  
+  public void setExplicitSSL(boolean explicit)
+  {
+    if (!explicit)
+    {
+      ssl = VTSystem.getUnsafeTLSContext();
+    }
+    super.setExplicitSSL(explicit);
   }
 }

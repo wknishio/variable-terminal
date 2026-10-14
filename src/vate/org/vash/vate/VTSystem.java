@@ -159,7 +159,7 @@ public class VTSystem
   private static final DateFormat VT_ERA_DATEFORMAT;
   private static final Calendar VT_YEAR_CALENDAR;
   
-  public static final SSLContext VT_UNSAFE_TLS_CONTEXT;
+  private static SSLContext VT_UNSAFE_TLS_CONTEXT;
   
   private static boolean initialized = false;
   
@@ -173,8 +173,6 @@ public class VTSystem
     
     VT_ERA_DATEFORMAT = new SimpleDateFormat("G", Locale.ENGLISH);
     VT_YEAR_CALENDAR = Calendar.getInstance();
-    
-    VT_UNSAFE_TLS_CONTEXT = VTTLSUtilities.createUnsafeTLSContext("RSA", 2048, null);
   }
   
   public static final void initialize()
@@ -183,6 +181,15 @@ public class VTSystem
     VTHelpManager.initialize();
     
     initialized = true;
+  }
+  
+  public static final SSLContext getUnsafeTLSContext()
+  {
+    if (VT_UNSAFE_TLS_CONTEXT == null)
+    {
+      VT_UNSAFE_TLS_CONTEXT = VTTLSUtilities.createUnsafeTLSContext("RSA", 2048, null);
+    }
+    return VT_UNSAFE_TLS_CONTEXT;
   }
   
   public static final int VT_ZIP_FILE_COMPRESS = 1;

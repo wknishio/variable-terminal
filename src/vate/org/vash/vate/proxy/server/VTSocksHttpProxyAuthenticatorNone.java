@@ -58,7 +58,7 @@ public class VTSocksHttpProxyAuthenticatorNone extends ServerAuthenticatorNone
     {
       //tls handshake detected
       input.unread(version);
-      SSLSocket tlsSocket = VTTLSUtilities.createTLSSocket(new VTCloseableSocket(socket, input), "null", 1, false, false, VTSystem.VT_UNSAFE_TLS_CONTEXT);
+      SSLSocket tlsSocket = VTTLSUtilities.createTLSSocket(new VTCloseableSocket(socket, input), "null", 1, false, false, VTSystem.getUnsafeTLSContext());
       input = new PushbackInputStream(tlsSocket.getInputStream());
       output = tlsSocket.getOutputStream();
       version = input.read();

@@ -509,7 +509,7 @@ public class VTClientConnection
   {
     if (tlsAuthentication)
     {
-      tlsSocket = VTTLSUtilities.createTLSSocket(connectionSocket, "null", 1, true, false, VTSystem.VT_UNSAFE_TLS_CONTEXT);
+      tlsSocket = VTTLSUtilities.createTLSSocket(connectionSocket, "null", 1, true, false, VTSystem.getUnsafeTLSContext());
       tlsSocket.setNeedClientAuth(true);
       tlsSocket.startHandshake();
       authenticationInputStream = new VTZ85InputStream(tlsSocket.getInputStream());

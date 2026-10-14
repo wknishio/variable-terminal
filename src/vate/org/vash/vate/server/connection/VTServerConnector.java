@@ -255,6 +255,10 @@ public class VTServerConnector implements Runnable
   public void setTLSAuthentication(boolean tls)
   {
     tlsAuthentication = tls;
+    if (tlsAuthentication)
+    {
+      VTSystem.getUnsafeTLSContext();
+    }
   }
   
   public Integer getSessionsMaximum()

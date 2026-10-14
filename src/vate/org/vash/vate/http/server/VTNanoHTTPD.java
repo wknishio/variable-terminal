@@ -301,6 +301,11 @@ public class VTNanoHTTPD implements Runnable, Closeable
     //myTcpPort = server.getLocalPort();
     serverRootDir = wwwroot;
     serverSocket = connector;
+    
+    if (tlsAlways)
+    {
+      VTSystem.getUnsafeTLSContext();
+    }
   }
   
   public void run()
@@ -673,7 +678,7 @@ public class VTNanoHTTPD implements Runnable, Closeable
       if (tlsAlways)
       {
         tlsDetected = true;
-        SSLSocket tlsSocket = VTTLSUtilities.createTLSSocket(connectionSocket, "null", 1, false, true, VTSystem.VT_UNSAFE_TLS_CONTEXT);
+        SSLSocket tlsSocket = VTTLSUtilities.createTLSSocket(connectionSocket, "null", 1, false, true, VTSystem.getUnsafeTLSContext());
         connectionSocket = tlsSocket;
         return connectionSocket;
       }
@@ -693,7 +698,7 @@ public class VTNanoHTTPD implements Runnable, Closeable
       connectionSocket = new VTCloseableSocket(connectionSocket, input, output);
       if (tlsDetected)
       {
-        SSLSocket tlsSocket = VTTLSUtilities.createTLSSocket(connectionSocket, "null", 1, false, true, VTSystem.VT_UNSAFE_TLS_CONTEXT);
+        SSLSocket tlsSocket = VTTLSUtilities.createTLSSocket(connectionSocket, "null", 1, false, true, VTSystem.getUnsafeTLSContext());
         connectionSocket = tlsSocket;
       }
       return connectionSocket;
