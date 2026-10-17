@@ -233,7 +233,7 @@ public class VTProxy
       }
       else if (proxy.getProxyType() == VTProxyType.PLUS)
       {
-        nextSocket = new VTAutoProxySocket(proxy, currentSocket);
+        nextSocket = new VTPlusProxySocket(proxy, currentSocket);
       }
       else
       {

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketAddress;
 
-public class VTAutoProxySocket extends VTProxySocket
+public class VTPlusProxySocket extends VTProxySocket
 {
   private Socket httpProxySocket;
   private Socket socksProxySocket;
@@ -13,7 +13,7 @@ public class VTAutoProxySocket extends VTProxySocket
   
   //private Socket socket;
   
-  public VTAutoProxySocket(VTProxy currentProxy, Socket currentSocket)
+  public VTPlusProxySocket(VTProxy currentProxy, Socket currentSocket)
   {
     super(currentProxy, currentSocket);
     //directSocket = new Socket(Proxy.NO_PROXY);

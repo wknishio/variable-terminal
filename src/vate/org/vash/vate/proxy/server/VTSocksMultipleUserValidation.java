@@ -26,12 +26,12 @@ public class VTSocksMultipleUserValidation implements UserValidation
     }
     return false;
   }
-
+  
   public String[] getUsernames()
   {
     return usernames;
   }
-
+  
   public String[] getPasswords()
   {
     return passwords;
