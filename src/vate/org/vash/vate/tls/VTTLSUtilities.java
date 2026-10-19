@@ -417,6 +417,34 @@ public class VTTLSUtilities
     return null;
   }
   
+  public static SSLContext createUnsafeTLSContext(KeyPair keyPair, byte[] certificateData)
+  {
+    try
+    {
+      PrivateKey privateKey = keyPair.getPrivate();
+      TrustManager[] trustAnything = new TrustManager[] {new OverlyOptimisticTrustManager()};
+      KeyManager[] keyManagers = null;
+      if (privateKey != null && certificateData != null)
+      {
+        Certificate certificate = CertificateFactory.getInstance("X.509").generateCertificate(new ByteArrayInputStream(certificateData));
+        KeyStore keyStore = KeyStore.getInstance("PKCS12");
+        keyStore.load(null, "password".toCharArray());
+        keyStore.setKeyEntry("entry", privateKey, "password".toCharArray(), new Certificate[] {certificate});
+        KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+        keyManagerFactory.init(keyStore, "password".toCharArray());
+        keyManagers = keyManagerFactory.getKeyManagers();
+      }
+      SSLContext unsafeTLSContext = SSLContext.getInstance("TLS");
+      unsafeTLSContext.init(keyManagers, trustAnything, new SecureRandom());
+      return unsafeTLSContext;
+    }
+    catch (Throwable t)
+    {
+      //t.printStackTrace();
+    }
+    return null;
+  }
+  
   public static SSLContext createUnsafeTLSContext(String algorithm, int keySizeBits, String parameterSpec)
   {
     try
