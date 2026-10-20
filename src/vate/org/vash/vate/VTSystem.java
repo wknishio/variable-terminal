@@ -33,7 +33,7 @@ public class VTSystem
   public static final int VT_CHANNEL_BUFFER_SIZE_BYTES = 1024 * 256;
   public static final int VT_STANDARD_BUFFER_SIZE_BYTES = 1024 * 256;
   public static final int VT_COMPRESSION_BUFFER_SIZE_BYTES = 1024 * 256;
-  public static final int VT_FILE_BUFFER_SIZE_BYTES = 1024 * 256;
+  public static final int VT_FILE_BUFFER_SIZE_BYTES = 1024 * 1024;
   
   public static final int VT_SECURITY_DIGEST_SIZE_BYTES = 64;
   public static final int VT_SECURITY_SEED_SIZE_BYTES = VT_SECURITY_DIGEST_SIZE_BYTES << 1;

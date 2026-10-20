@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.channels.Channels;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -191,7 +190,7 @@ public class VTServerScreenshotTask extends VTTask
       {
         screenshotFile = new File(firstFormat.format(clock.getTime()) + "-" + clock.get(GregorianCalendar.YEAR) + "-" + secondFormat.format(clock.getTime()) + ".png");
       }
-      photoOutputStream = new BufferedOutputStream(Channels.newOutputStream(new FileOutputStream(screenshotFile).getChannel()), fileScreenshotBufferSize);
+      photoOutputStream = new BufferedOutputStream(new FileOutputStream(screenshotFile), fileScreenshotBufferSize);
       BufferedImage screenCapture = screenshotProvider.createScreenCapture(0, drawPointer);
       if (useJPG)
       {
