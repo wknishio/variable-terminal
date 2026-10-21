@@ -309,7 +309,7 @@ public final class VTMultiplexingOutputStream
       this.secondSequencer = new VTSplitMix64Random(secondSequencerSeed);
       this.thirdSequencer = new VTSplitMix64Random(thirdSequencerSeed);
       this.fourthSequencer = new VTSplitMix64Random(fourthSequencerSeed);
-      this.contentDigest = LongTupleHashFunction.xx128(firstSeed ^ secondSeed);
+      this.contentDigest = LongTupleHashFunction.xx128(createSequencerSeed(number ^ firstSeed, number ^ secondSeed));
       this.dataContentBuffer = new VTByteArrayOutputStream(packetTotalSize - VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
       this.dataPacketBuffer = new VTByteArrayOutputStream(packetTotalSize);
       this.dataPacketStream = new VTLittleEndianOutputStream(dataPacketBuffer);
