@@ -353,15 +353,15 @@ public final class VTMultiplexingInputStream
     {
       this.type = type;
       this.number = number;
-      this.firstSequencerSeed = createSequencerSeed(number, firstSeed);
-      this.secondSequencerSeed = createSequencerSeed(number, secondSeed);
-      this.thirdSequencerSeed = createSequencerSeed(firstSeed, number);
-      this.fourthSequencerSeed = createSequencerSeed(secondSeed, number);
+      this.firstSequencerSeed = createSequencerSeed(number ^ firstSeed, secondSeed);
+      this.secondSequencerSeed = createSequencerSeed(number ^ secondSeed, firstSeed);
+      this.thirdSequencerSeed = createSequencerSeed(firstSeed, number ^ secondSeed);
+      this.fourthSequencerSeed = createSequencerSeed(secondSeed, number ^ firstSeed);
+      this.contentDigest = LongTupleHashFunction.xx128(createSequencerSeed(number ^ firstSeed, number ^ secondSeed));
       this.firstSequencer = new VTSplitMix64Random(firstSequencerSeed);
       this.secondSequencer = new VTSplitMix64Random(secondSequencerSeed);
       this.thirdSequencer = new VTSplitMix64Random(thirdSequencerSeed);
       this.fourthSequencer = new VTSplitMix64Random(fourthSequencerSeed);
-      this.contentDigest = LongTupleHashFunction.xx128(createSequencerSeed(number ^ firstSeed, number ^ secondSeed));
       this.propagated = new ConcurrentLinkedQueue<Closeable>();
       
       if ((type & VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT) == VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED)
