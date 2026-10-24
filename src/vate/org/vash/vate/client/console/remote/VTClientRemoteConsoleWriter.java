@@ -8,8 +8,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.StringReader;
-import java.nio.ByteBuffer;
-import java.nio.charset.CharsetDecoder;
 
 import org.vash.vate.VTSystem;
 import org.vash.vate.client.connection.VTClientConnection;
@@ -27,7 +25,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
   private VTClientConnection connection;
   private VTClientRemoteConsoleCommandSelector<VTClientRemoteConsoleCommandProcessor> selector;
   private final byte[] buffer = new byte[VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES * 4];
-  private final CharsetDecoder decoder = VTSystem.getStrictCharsetDecoder("UTF-8");
+  //private final CharsetDecoder decoder = VTSystem.getStrictCharsetDecoder("UTF-8");
   private BufferedReader sourceReader;
   private InputStream commandInputStream;
   
@@ -111,11 +109,24 @@ public class VTClientRemoteConsoleWriter extends VTTask
       }
     }
     
+    if (commandInputStream != null && session.getClient().isAgent())
+    {
+      try
+      {
+        connection.getCommandWriter().writeLine("*VTAGENT");
+        connection.getCommandWriter().flush();
+      }
+      catch (Throwable e)
+      {
+        return;
+      }
+    }
+    
     int length = 0;
     String line = null;
-    boolean addCarriageReturn = false;
-    StringBuilder accumulator = new StringBuilder();
-    String command = null;
+    //boolean addCarriageReturn = false;
+    //StringBuilder accumulator = new StringBuilder();
+    //String command = null;
     
     //reading = true;
     while (!isStopped())
@@ -152,65 +163,13 @@ public class VTClientRemoteConsoleWriter extends VTTask
             else
             {
               //pipe bytes from local data inputstream to remote data outputstream
-              line = null;
-              addCarriageReturn = false;
+              //line = null;
+              //addCarriageReturn = false;
               length = commandInputStream.read(buffer, 0, buffer.length);
               if (length > 0)
               {
-                //System.out.println("readed:[" + Arrays.toString(Arrays.copyOfRange(buffer, 0, length)) + "]");
-                if (buffer[length - 1] == '\n' || buffer[length - 1] == '\r')
-                {
-                  try
-                  {
-                    if (length > 1 && buffer[length - 2] == '\r' && buffer[length - 1] == '\n')
-                    {
-                      addCarriageReturn = true;
-                      line = decoder.decode(ByteBuffer.wrap(buffer, 0, length - 2)).toString();
-                    }
-                    else
-                    {
-                      line = decoder.decode(ByteBuffer.wrap(buffer, 0, length - 1)).toString();
-                    }
-                  }
-                  catch (Throwable t)
-                  {
-                    
-                  }
-                  if (line != null)
-                  {
-                    accumulator.append(line);
-                    command = accumulator.toString();
-                    if (command.equalsIgnoreCase("*VTQUIT") || command.toString().equalsIgnoreCase("*VTQT"))
-                    {
-                      setStopped(true);
-                      session.getClient().stop();
-                    }
-                    accumulator.setLength(0);
-                    executeCommand(line, false, addCarriageReturn);
-                  }
-                  else
-                  {
-                    connection.getCommandWriter().writeData(buffer, 0, length);
-                    connection.getCommandWriter().flush();
-                  }
-                }
-                else
-                {
-                  if (accumulator.length() < "*VTQUIT".length())
-                  {
-                    try
-                    {
-                      command = decoder.decode(ByteBuffer.wrap(buffer, 0, length)).toString();
-                      accumulator.append(command);
-                    }
-                    catch (Throwable t)
-                    {
-                      
-                    }
-                  }
-                  connection.getCommandWriter().writeData(buffer, 0, length);
-                  connection.getCommandWriter().flush();
-                }
+                connection.getCommandWriter().writeData(buffer, 0, length);
+                connection.getCommandWriter().flush();
               }
               else if (length < 0)
               {
@@ -377,6 +336,10 @@ public class VTClientRemoteConsoleWriter extends VTTask
     }
     else if (command != null)
     {
+      if (command.equalsIgnoreCase("*VTAGENT"))
+      {
+        return;
+      }
       if (echo)
       {
         VTMainConsole.println(command);

@@ -35,32 +35,49 @@ public class VTServerRemoteConsoleReader extends VTTask
     // int p = 0;
     String utf = "";
     int length = 0;
+    boolean agent = false;
     while (!isStopped())
     {
       try
       {
         utf = null;
         length = connection.getCommandReader().readData(buffer);
-        //System.out.println("readed:[" + Arrays.toString(Arrays.copyOfRange(buffer, 0, length)) + "]");
-        try
+        if (agent)
         {
-          utf = decoder.decode(ByteBuffer.wrap(buffer, 0, length)).toString();
+          session.getShellOutputStream().write(buffer, 0, length);
+          session.getShellOutputStream().flush();
         }
-        catch (Throwable t)
+        else
         {
-          
-        }
-        if (utf != null && utf.length() > 0)
-        {
-          if (utf.endsWith("\n") || utf.endsWith("\r"))
+          try
           {
-            if (utf.endsWith("\r\n"))
+            utf = decoder.decode(ByteBuffer.wrap(buffer, 0, length)).toString();
+          }
+          catch (Throwable t)
+          {
+            
+          }
+          if (utf != null && utf.length() > 0)
+          {
+            if (session.isAgent() && utf.equalsIgnoreCase("*VTAGENT\n"))
             {
-              executeCommand(utf.substring(0, utf.length() - 2), true);
+              agent = true;
+            }
+            else if (utf.endsWith("\n") || utf.endsWith("\r"))
+            {
+              if (utf.endsWith("\r\n"))
+              {
+                executeCommand(utf.substring(0, utf.length() - 2), true);
+              }
+              else
+              {
+                executeCommand(utf.substring(0, utf.length() - 1), false);
+              }
             }
             else
             {
-              executeCommand(utf.substring(0, utf.length() - 1), false);
+              session.getShellOutputStream().write(buffer, 0, length);
+              session.getShellOutputStream().flush();
             }
           }
           else
@@ -68,11 +85,6 @@ public class VTServerRemoteConsoleReader extends VTTask
             session.getShellOutputStream().write(buffer, 0, length);
             session.getShellOutputStream().flush();
           }
-        }
-        else
-        {
-          session.getShellOutputStream().write(buffer, 0, length);
-          session.getShellOutputStream().flush();
         }
       }
       catch (Throwable t)
