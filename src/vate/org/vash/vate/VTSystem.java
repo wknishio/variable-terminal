@@ -198,9 +198,14 @@ public class VTSystem
   {
     if (VT_UNSAFE_TLS_CONTEXT == null)
     {
-      VT_UNSAFE_TLS_CONTEXT = VTTLSUtilities.createUnsafeTLSContext(getUnsafeTLSKeyPair().getPrivate(), VTTLSUtilities.createSelfSignedTLSCertificateEncodedData(getUnsafeTLSKeyPair()));
+      VT_UNSAFE_TLS_CONTEXT = createUnsafeTLSContext();
     }
     return VT_UNSAFE_TLS_CONTEXT;
+  }
+  
+  public static final SSLContext createUnsafeTLSContext()
+  {
+    return VTTLSUtilities.createUnsafeTLSContext(getUnsafeTLSKeyPair(), VTTLSUtilities.createSelfSignedTLSCertificateEncodedData(getUnsafeTLSKeyPair()));
   }
   
   public static final int VT_ZIP_FILE_COMPRESS = 1;

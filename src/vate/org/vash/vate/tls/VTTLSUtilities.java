@@ -314,8 +314,8 @@ public class VTTLSUtilities
       X500Name dnName = new X500NameBuilder(BCStyle.INSTANCE).addRDN(BCStyle.CN, commonName).build();
       
       long now = System.currentTimeMillis();
-      Date validityStartDate = new Date(now - (30L * 24 * 60 * 60 * 1000));
-      Date validityEndDate = new Date(now + (90L * 24 * 60 * 60 * 1000));
+      Date validityStartDate = new Date(now - (60L * 24 * 60 * 60 * 1000));
+      Date validityEndDate = new Date(now + (120L * 24 * 60 * 60 * 1000));
       
       BigInteger serialNumber = new BigInteger(128, new SecureRandom());
       
