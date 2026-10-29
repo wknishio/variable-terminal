@@ -19,20 +19,21 @@ public class VTServerShellExitListener extends VTTask
   {
     synchronized (this)
     {
+      int exitCode = 0;
       try
       {
         if (session.isRestartingShell())
         {
           session.setRestartingShell(false);
-          session.getConnection().getResultWriter().write("\nVT>Remote shell started!\nVT>\n");
+          session.getConnection().getResultWriter().write("\nVT>Remote shell running!\nVT>\n");
           session.getConnection().getResultWriter().flush();
         }
         else
         {
-          session.getConnection().getResultWriter().write("\nVT>Remote shell started!" + "\nVT>Enter *VTHELP or *VTHL to list available commands in client console\nVT>\n");
+          session.getConnection().getResultWriter().write("\nVT>Remote shell running!\nVT>Enter *VTHELP or *VTHL to list available commands in client console\nVT>\n");
           session.getConnection().getResultWriter().flush();
         }
-        session.getShellProcessor().waitFor();
+        exitCode = session.getShellProcessor().waitFor();
       }
       catch (Throwable e)
       {
@@ -41,7 +42,17 @@ public class VTServerShellExitListener extends VTTask
       setStopped(true);
       if (session.isAgent())
       {
-        session.getConnection().closeConnection();
+        try
+        {
+          session.getOutputWriter().joinThread();
+          session.getConnection().getShellWriter().writeInt(0);
+          session.getConnection().getShellWriter().writeInt(exitCode);
+          session.getConnection().getShellWriter().flush();
+        }
+        catch (Throwable e)
+        {
+          
+        }
         return;
       }
       try
@@ -50,14 +61,13 @@ public class VTServerShellExitListener extends VTTask
         {
           session.setStoppingShell(false);
         }
-        session.getConnection().getResultWriter().write("\nVT>Remote shell stopped!\nVT>");
+        session.getConnection().getResultWriter().write("\nVT>Remote shell stopped with exit code " + exitCode + " !\nVT>");
         session.getConnection().getResultWriter().flush();
       }
       catch (IOException e)
       {
         
       }
-      
     }
   }
 }

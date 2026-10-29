@@ -44,8 +44,11 @@ public class VTServerRemoteConsoleReader extends VTTask
         length = connection.getCommandReader().readData(buffer);
         if (agent)
         {
-          session.getShellOutputStream().write(buffer, 0, length);
-          session.getShellOutputStream().flush();
+          if (length > 0)
+          {
+            session.getShellOutputStream().write(buffer, 0, length);
+            session.getShellOutputStream().flush();
+          }
         }
         else
         {
@@ -76,14 +79,20 @@ public class VTServerRemoteConsoleReader extends VTTask
             }
             else
             {
-              session.getShellOutputStream().write(buffer, 0, length);
-              session.getShellOutputStream().flush();
+              if (length > 0)
+              {
+                session.getShellOutputStream().write(buffer, 0, length);
+                session.getShellOutputStream().flush();
+              }
             }
           }
           else
           {
-            session.getShellOutputStream().write(buffer, 0, length);
-            session.getShellOutputStream().flush();
+            if (length > 0)
+            {
+              session.getShellOutputStream().write(buffer, 0, length);
+              session.getShellOutputStream().flush();
+            }
           }
         }
       }

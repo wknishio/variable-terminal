@@ -8,6 +8,7 @@ import org.vash.vate.VTSystem;
 import org.vash.vate.client.connection.VTClientConnection;
 import org.vash.vate.client.session.VTClientSession;
 import org.vash.vate.console.VTMainConsole;
+import org.vash.vate.runtime.VTRuntimeExit;
 import org.vash.vate.task.VTTask;
 
 public class VTClientRemoteConsoleReader extends VTTask
@@ -48,6 +49,12 @@ public class VTClientRemoteConsoleReader extends VTTask
         }
         if (commandOutputStream != null)
         {
+          if (length == 0)
+          {
+            setStopped(true);
+            VTRuntimeExit.exit(connection.getResultReader().readInt());
+            break;
+          }
           try
           {
             commandOutputStream.write(buffer, 0, length);

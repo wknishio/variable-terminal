@@ -234,7 +234,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
   }
   
   public VTManagedServerSocket(String host, int port, VTProxy proxy)
@@ -243,7 +243,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
   }
@@ -254,7 +254,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setEncryptionType(type);
@@ -277,7 +277,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setUniqueUserCredential(user, password);
@@ -301,7 +301,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setNatPort(natPort);
@@ -313,7 +313,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setNatPort(natPort);
@@ -337,7 +337,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setNatPort(natPort);
@@ -363,7 +363,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
   }
@@ -376,7 +376,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
   }
@@ -388,7 +388,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setEncryptionType(type);
@@ -413,7 +413,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setEncryptionType(type);
@@ -437,7 +437,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setUniqueUserCredential(user, password);
@@ -463,7 +463,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setUniqueUserCredential(user, password);
@@ -488,7 +488,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setNatPort(natPort);
@@ -502,7 +502,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setNatPort(natPort);
@@ -515,7 +515,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setNatPort(natPort);
@@ -541,7 +541,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setNatPort(natPort);
@@ -566,7 +566,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setNatPort(natPort);
@@ -593,7 +593,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setNatPort(natPort);
@@ -618,7 +618,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.loadServerSettingsProperties(properties);
   }
   
@@ -628,7 +628,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.loadServerSettingsFile(settingsFile);
   }
   
@@ -638,7 +638,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
   }
   
   public VTManagedServerSocket(boolean managed, String host, int port, VTProxy proxy)
@@ -647,7 +647,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
   }
@@ -658,7 +658,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setEncryptionType(type);
@@ -681,7 +681,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setUniqueUserCredential(user, password);
@@ -705,7 +705,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setNatPort(natPort);
@@ -717,7 +717,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setNatPort(natPort);
@@ -741,7 +741,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setNatPort(natPort);
@@ -767,7 +767,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
   }
@@ -780,7 +780,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
   }
@@ -792,7 +792,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setEncryptionType(type);
@@ -817,7 +817,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setEncryptionType(type);
@@ -841,7 +841,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setUniqueUserCredential(user, password);
@@ -867,7 +867,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setUniqueUserCredential(user, password);
@@ -892,7 +892,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setNatPort(natPort);
@@ -906,7 +906,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setNatPort(natPort);
@@ -919,7 +919,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setNatPort(natPort);
@@ -945,7 +945,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setNatPort(natPort);
@@ -970,7 +970,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setNatPort(natPort);
@@ -997,7 +997,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setNatPort(natPort);
@@ -1022,7 +1022,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.loadServerSettingsProperties(properties);
   }
   
@@ -1032,7 +1032,7 @@ public class VTManagedServerSocket
     vtserver.setDaemon(true);
     vtserver.addSessionListener(serverListener);
     vtserver.addConnectionListener(serverListener);
-    vtserver.setSessionShell("N");
+    vtserver.setSessionShell("B");
     vtserver.loadServerSettingsFile(settingsFile);
   }
   

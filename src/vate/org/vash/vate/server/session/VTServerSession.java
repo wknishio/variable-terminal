@@ -689,6 +689,11 @@ public class VTServerSession
     return shellAdapter.isAgent();
   }
   
+  public int getShellType()
+  {
+    return shellAdapter.getShellProcessor().getShellType();
+  }
+  
   public void negotiateShell() throws IOException
   {
     String clientShell = connection.getCommandReader().readUTF();

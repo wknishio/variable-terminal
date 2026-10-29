@@ -114,8 +114,11 @@ public class VTServerShellOutputWriter extends VTTask
               }
               else
               {
-                connection.getShellWriter().writeData(buffer, 0, length - offset);
-                connection.getShellWriter().flush();
+                if (length - offset > 0)
+                {
+                  connection.getShellWriter().writeData(buffer, 0, length - offset);
+                  connection.getShellWriter().flush();
+                }
               }
             }
             firstCommandFilter = nullCommandFilter;
@@ -123,8 +126,11 @@ public class VTServerShellOutputWriter extends VTTask
           }
           else
           {
-            connection.getShellWriter().writeData(buffer, 0, length - offset);
-            connection.getShellWriter().flush();
+            if (length - offset > 0)
+            {
+              connection.getShellWriter().writeData(buffer, 0, length - offset);
+              connection.getShellWriter().flush();
+            }
           }
         }
         else
@@ -139,6 +145,6 @@ public class VTServerShellOutputWriter extends VTTask
         break;
       }
     }
-    session.getShellProcessor().stopShell();
+    //session.getShellProcessor().stopShell();
   }
 }
