@@ -46,7 +46,7 @@ public class VTServerShellExitListener extends VTTask
         {
           session.getOutputWriter().joinThread();
           session.getConnection().getShellWriter().writeInt(0);
-          session.getConnection().getShellWriter().writeInt(exitCode);
+          session.getConnection().getShellWriter().write(String.valueOf(exitCode));
           session.getConnection().getShellWriter().flush();
         }
         catch (Throwable e)

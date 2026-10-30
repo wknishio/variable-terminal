@@ -47,14 +47,14 @@ public class VTClientRemoteConsoleReader extends VTTask
           setStopped(true);
           break;
         }
+        if (length == 0 && session.getClient().isAgent())
+        {
+          setStopped(true);
+          VTRuntimeExit.exit(Integer.parseInt(connection.getResultReader().readUTF()));
+          break;
+        }
         if (commandOutputStream != null)
         {
-          if (length == 0)
-          {
-            setStopped(true);
-            VTRuntimeExit.exit(connection.getResultReader().readInt());
-            break;
-          }
           try
           {
             commandOutputStream.write(buffer, 0, length);
