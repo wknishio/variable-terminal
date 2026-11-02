@@ -431,11 +431,9 @@ public class VTClientConfigurationDialog extends Dialog
     
     encryptionTypeChoice.add("NONE");
     encryptionTypeChoice.add("SALSA");
-    encryptionTypeChoice.add("HC");
     encryptionTypeChoice.add("GRAIN");
     encryptionTypeChoice.add("RABBIT");
     encryptionTypeChoice.add("ZUC");
-    //encryptionTypeChoice.add("LEA");
     encryptionTypeChoice.select("NONE");
     encryptionTypeChoice.addItemListener(new ItemListener()
     {
@@ -451,10 +449,6 @@ public class VTClientConfigurationDialog extends Dialog
           {
             setEncryptionType("SALSA");
           }
-          else if (e.getItem().equals("HC"))
-          {
-            setEncryptionType("HC");
-          }
           else if (e.getItem().equals("GRAIN"))
           {
             setEncryptionType("GRAIN");
@@ -467,10 +461,6 @@ public class VTClientConfigurationDialog extends Dialog
           {
             setEncryptionType("ZUC");
           }
-//          else if (e.getItem().equals("LEA"))
-//          {
-//            setEncryptionType("LEA");
-//          }
         }
       }
     });
@@ -1351,10 +1341,6 @@ public class VTClientConfigurationDialog extends Dialog
     {
       encryptionType.setParameter("SALSA");
     }
-    else if (encryption.toUpperCase().startsWith("H"))
-    {
-      encryptionType.setParameter("HC");
-    }
     else if (encryption.toUpperCase().startsWith("G"))
     {
       encryptionType.setParameter("GRAIN");
@@ -1367,10 +1353,6 @@ public class VTClientConfigurationDialog extends Dialog
     {
       encryptionType.setParameter("ZUC");
     }
-//    else if (encryption.toUpperCase().startsWith("L"))
-//    {
-//      encryptionType.setParameter("LEA");
-//    }
     else
     {
       encryptionType.setParameter("NONE");

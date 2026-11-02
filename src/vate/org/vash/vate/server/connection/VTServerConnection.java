@@ -42,8 +42,8 @@ public class VTServerConnection
   private static final byte[] VT_CLIENT_CHECK_STRING_NONE = ("/VARIABLE-TERMINAL/CLIENT/NONE/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_SERVER_CHECK_STRING_SALSA = ("/VARIABLE-TERMINAL/SERVER/SALSA/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_CLIENT_CHECK_STRING_SALSA = ("/VARIABLE-TERMINAL/CLIENT/SALSA/" + MAJOR_MINOR_VERSION).getBytes();
-  private static final byte[] VT_SERVER_CHECK_STRING_HC = ("/VARIABLE-TERMINAL/SERVER/HC/" + MAJOR_MINOR_VERSION).getBytes();
-  private static final byte[] VT_CLIENT_CHECK_STRING_HC = ("/VARIABLE-TERMINAL/CLIENT/HC/" + MAJOR_MINOR_VERSION).getBytes();
+//  private static final byte[] VT_SERVER_CHECK_STRING_HC = ("/VARIABLE-TERMINAL/SERVER/HC/" + MAJOR_MINOR_VERSION).getBytes();
+//  private static final byte[] VT_CLIENT_CHECK_STRING_HC = ("/VARIABLE-TERMINAL/CLIENT/HC/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_SERVER_CHECK_STRING_GRAIN = ("/VARIABLE-TERMINAL/SERVER/GRAIN/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_CLIENT_CHECK_STRING_GRAIN = ("/VARIABLE-TERMINAL/CLIENT/GRAIN/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_SERVER_CHECK_STRING_RABBIT = ("/VARIABLE-TERMINAL/SERVER/RABBIT/" + MAJOR_MINOR_VERSION).getBytes();
@@ -790,7 +790,7 @@ public class VTServerConnection
   {
     byte[] digestedClientNONE = computeSecurityDigest(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_NONE);
     byte[] digestedClientSALSA = computeSecurityDigest(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_SALSA);
-    byte[] digestedClientHC = computeSecurityDigest(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_HC);
+//    byte[] digestedClientHC = computeSecurityDigest(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_HC);
     byte[] digestedClientGRAIN = computeSecurityDigest(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_GRAIN);
     byte[] digestedClientRABBIT = computeSecurityDigest(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_RABBIT);
     byte[] digestedClientZUC = computeSecurityDigest(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_ZUC);
@@ -809,10 +809,10 @@ public class VTServerConnection
       return VTSystem.VT_CONNECTION_ENCRYPTION_SALSA;
     }
     
-    if (VTArrayComparator.arrayEquals(digestedClient, digestedClientHC))
-    {
-      return VTSystem.VT_CONNECTION_ENCRYPTION_HC;
-    }
+//    if (VTArrayComparator.arrayEquals(digestedClient, digestedClientHC))
+//    {
+//      return VTSystem.VT_CONNECTION_ENCRYPTION_HC;
+//    }
     
     if (VTArrayComparator.arrayEquals(digestedClient, digestedClientGRAIN))
     {
@@ -872,16 +872,16 @@ public class VTServerConnection
         return;
       }
     }
-    else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_HC)
-    {
-      remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_SERVER_CHECK_STRING_HC);
-      if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_NONE)
-      {
-        setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_HC);
-        verified = true;
-        return;
-      }
-    }
+//    else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_HC)
+//    {
+//      remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_SERVER_CHECK_STRING_HC);
+//      if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_NONE)
+//      {
+//        setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_HC);
+//        verified = true;
+//        return;
+//      }
+//    }
     else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_GRAIN)
     {
       remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_SERVER_CHECK_STRING_GRAIN);
@@ -938,12 +938,12 @@ public class VTServerConnection
       verified = true;
       return;
     }
-    if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_HC)
-    {
-      setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_HC);
-      verified = true;
-      return;
-    }
+//    if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_HC)
+//    {
+//      setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_HC);
+//      verified = true;
+//      return;
+//    }
     if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_GRAIN)
     {
       setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_GRAIN);
