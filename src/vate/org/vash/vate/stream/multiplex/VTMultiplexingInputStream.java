@@ -273,15 +273,15 @@ public final class VTMultiplexingInputStream
         close();
         return;
       }
+      stream.contentDigest.hashBytes(packetContentBuffer, 0, Math.max(length, 0), hash);
+      if (((stream.firstSequencer.nextLong() ^ stream.secondSequencer.nextLong() ^ hash[0]) != low)
+      || ((stream.thirdSequencer.nextLong() ^ stream.fourthSequencer.nextLong() ^ hash[1]) != high))
+      {
+        close();
+        return;
+      }
       if (length >= 0)
       {
-        stream.contentDigest.hashBytes(packetContentBuffer, 0, length, hash);
-        if (((stream.firstSequencer.nextLong() ^ stream.secondSequencer.nextLong() ^ hash[0]) != low)
-        || ((stream.thirdSequencer.nextLong() ^ stream.fourthSequencer.nextLong() ^ hash[1]) != high))
-        {
-          close();
-          return;
-        }
         transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES + length);
         OutputStream out = stream.getOutputStream();
         try
@@ -296,12 +296,6 @@ public final class VTMultiplexingInputStream
       }
       else
       {
-        if (((stream.firstSequencer.nextLong() ^ stream.secondSequencer.nextLong()) != low)
-        || ((stream.thirdSequencer.nextLong() ^ stream.fourthSequencer.nextLong()) != high))
-        {
-          close();
-          return;
-        }
         transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
         if (length == -2)
         {
@@ -330,10 +324,10 @@ public final class VTMultiplexingInputStream
     private volatile boolean closed;
     private volatile Object link = null;
     private final int number;
-    private final long firstSequencerSeed;
-    private final long secondSequencerSeed;
-    private final long thirdSequencerSeed;
-    private final long fourthSequencerSeed;
+    private long firstSequencerSeed;
+    private long secondSequencerSeed;
+    private long thirdSequencerSeed;
+    private long fourthSequencerSeed;
     private volatile int type;
     private final VTPipedInputStream bufferedInputStream;
     private final VTPipedOutputStream bufferedOutputStream;
@@ -499,6 +493,10 @@ public final class VTMultiplexingInputStream
     
     private final void open() throws IOException
     {
+      firstSequencerSeed = createSequencerSeed(number ^ firstSeed, firstSequencerSeed ^ secondSeed);
+      secondSequencerSeed = createSequencerSeed(number ^ secondSeed, secondSequencerSeed ^ firstSeed);
+      thirdSequencerSeed = createSequencerSeed(thirdSequencerSeed ^ firstSeed, number ^ secondSeed);
+      fourthSequencerSeed = createSequencerSeed(fourthSequencerSeed ^ secondSeed, number ^ firstSeed);
       firstSequencer.setSeed(firstSequencerSeed);
       secondSequencer.setSeed(secondSequencerSeed);
       thirdSequencer.setSeed(thirdSequencerSeed);

@@ -270,10 +270,10 @@ public final class VTMultiplexingOutputStream
     private volatile boolean closed;
     private volatile Object link = null;
     private final int number;
-    private final long firstSequencerSeed;
-    private final long secondSequencerSeed;
-    private final long thirdSequencerSeed;
-    private final long fourthSequencerSeed;
+    private long firstSequencerSeed;
+    private long secondSequencerSeed;
+    private long thirdSequencerSeed;
+    private long fourthSequencerSeed;
     private volatile int type;
     private final int packetSize;
     private final byte[] single = new byte[1];
@@ -437,6 +437,10 @@ public final class VTMultiplexingOutputStream
       //throttled.bypass();
       writeOpenPacket(type, number);
       //throttled.restore();
+      firstSequencerSeed = createSequencerSeed(number ^ firstSeed, firstSequencerSeed ^ secondSeed);
+      secondSequencerSeed = createSequencerSeed(number ^ secondSeed, secondSequencerSeed ^ firstSeed);
+      thirdSequencerSeed = createSequencerSeed(thirdSequencerSeed ^ firstSeed, number ^ secondSeed);
+      fourthSequencerSeed = createSequencerSeed(fourthSequencerSeed ^ secondSeed, number ^ firstSeed);
       firstSequencer.setSeed(firstSequencerSeed);
       secondSequencer.setSeed(secondSequencerSeed);
       thirdSequencer.setSeed(thirdSequencerSeed);
@@ -499,11 +503,12 @@ public final class VTMultiplexingOutputStream
       synchronized (controlPacketBuffer)
       {
         controlPacketBuffer.reset();
-        controlPacketStream.writeLong(firstSequencer.nextLong() ^ secondSequencer.nextLong());
+        contentDigest.hashBytes(controlPacketBuffer.buf(), 0, 0, hash);
+        controlPacketStream.writeLong(firstSequencer.nextLong() ^ secondSequencer.nextLong() ^ hash[0]);
         controlPacketStream.writeByte(type);
         controlPacketStream.writeSubInt(number);
         controlPacketStream.writeInt(-2);
-        controlPacketStream.writeLong(thirdSequencer.nextLong() ^ fourthSequencer.nextLong());
+        controlPacketStream.writeLong(thirdSequencer.nextLong() ^ fourthSequencer.nextLong() ^ hash[1]);
         controlOutputStream.write(controlPacketBuffer.buf(), 0, controlPacketBuffer.count());
         controlOutputStream.flush();
         transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
@@ -515,11 +520,12 @@ public final class VTMultiplexingOutputStream
       synchronized (controlPacketBuffer)
       {
         controlPacketBuffer.reset();
-        controlPacketStream.writeLong(firstSequencer.nextLong() ^ secondSequencer.nextLong());
+        contentDigest.hashBytes(controlPacketBuffer.buf(), 0, 0, hash);
+        controlPacketStream.writeLong(firstSequencer.nextLong() ^ secondSequencer.nextLong() ^ hash[0]);
         controlPacketStream.writeByte(type);
         controlPacketStream.writeSubInt(number);
         controlPacketStream.writeInt(-3);
-        controlPacketStream.writeLong(thirdSequencer.nextLong() ^ fourthSequencer.nextLong());
+        controlPacketStream.writeLong(thirdSequencer.nextLong() ^ fourthSequencer.nextLong() ^ hash[1]);
         controlOutputStream.write(controlPacketBuffer.buf(), 0, controlPacketBuffer.count());
         controlOutputStream.flush();
         transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
