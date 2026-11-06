@@ -36,7 +36,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
       String pingInterval = session.getServer().getPingInterval() > 0 ? "" + session.getServer().getPingInterval() : "";
       if (session.getServer().getServerConnector().getEncryptionKey() != null)
       {
-        encryptionPassword = new String(session.getServer().getServerConnector().getEncryptionKey(), "UTF-8");
+        encryptionPassword = session.getServer().getServerConnector().getEncryptionKey();
       }
       message.append("\rVT>List of server connection settings:\nVT>");
       if (session.getServer().getServerConnector().isPassive())
@@ -727,7 +727,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
           String encryptionPassword = "";
           if (session.getServer().getServerConnector().getEncryptionKey() != null)
           {
-            encryptionPassword = new String(session.getServer().getServerConnector().getEncryptionKey(), "UTF-8");
+            encryptionPassword = session.getServer().getServerConnector().getEncryptionKey();
           }
           connection.getResultWriter().write("\rVT>Encryption password(EK): [" + encryptionPassword + "]\nVT>");
           connection.getResultWriter().flush();
@@ -738,7 +738,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
           VTServerConnector connector = session.getServer().getServerConnector();
           synchronized (connector)
           {
-            connector.setEncryptionKey(encryptionPassword.getBytes("UTF-8"));
+            connector.setEncryptionKey(encryptionPassword);
             connector.interruptConnector();
             connector.notify();
           }

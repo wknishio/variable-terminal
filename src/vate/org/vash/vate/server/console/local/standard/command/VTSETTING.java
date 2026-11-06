@@ -37,7 +37,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
       String pingInterval = server.getPingInterval() > 0 ? "" + server.getPingInterval() : "";
       if (server.getServerConnector().getEncryptionKey() != null)
       {
-        encryptionPassword = new String(server.getServerConnector().getEncryptionKey(), "UTF-8");
+        encryptionPassword = server.getServerConnector().getEncryptionKey();
       }
       message.append("\rVT>List of server connection settings:\nVT>");
       
@@ -677,7 +677,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           String encryptionPassword = "";
           if (server.getServerConnector().getEncryptionKey() != null)
           {
-            encryptionPassword = new String(server.getServerConnector().getEncryptionKey(), "UTF-8");
+            encryptionPassword =server.getServerConnector().getEncryptionKey();
           }
           VTMainConsole.print("\rVT>Encryption password(EK): [" + encryptionPassword + "]\nVT>");
         }
@@ -687,7 +687,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           VTServerConnector connector = server.getServerConnector();
           synchronized (connector)
           {
-            connector.setEncryptionKey(encryptionPassword.getBytes("UTF-8"));
+            connector.setEncryptionKey(encryptionPassword);
             connector.interruptConnector();
             connector.notify();
           }

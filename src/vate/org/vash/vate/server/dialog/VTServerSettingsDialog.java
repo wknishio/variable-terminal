@@ -1518,7 +1518,7 @@ public class VTServerSettingsDialog extends Dialog
         connector.setEncryptionType(encryptionType.getParameter());
         try
         {
-          connector.setEncryptionKey(encryptionPassword.getParameter().getBytes("UTF-8"));
+          connector.setEncryptionKey(encryptionPassword.getParameter());
         }
         catch (Throwable e)
         {
@@ -1616,7 +1616,7 @@ public class VTServerSettingsDialog extends Dialog
         server.setEncryptionType(encryptionType.getParameter());
         try
         {
-          server.setEncryptionKey(encryptionPassword.getParameter().getBytes("UTF-8"));
+          server.setEncryptionKey(encryptionPassword.getParameter());
         }
         catch (Throwable e)
         {

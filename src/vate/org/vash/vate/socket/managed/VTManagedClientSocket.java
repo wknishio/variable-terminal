@@ -258,17 +258,7 @@ public class VTManagedClientSocket
     vtclient.setAddress(host);
     vtclient.setPort(port);
     vtclient.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtclient.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtclient.setEncryptionKey(key);
   }
   
   public VTManagedClientSocket(String host, int port, String type, String key, String user, String password, VTProxy proxy)
@@ -283,17 +273,7 @@ public class VTManagedClientSocket
     vtclient.setUser(user);
     vtclient.setPassword(password);
     vtclient.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtclient.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtclient.setEncryptionKey(key);
   }
   
   public VTManagedClientSocket(String host, int port, int natPort, VTProxy proxy)
@@ -319,17 +299,7 @@ public class VTManagedClientSocket
     vtclient.setPort(port);
     vtclient.setNatPort(natPort);
     vtclient.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtclient.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtclient.setEncryptionKey(key);
   }
   
   public VTManagedClientSocket(String host, int port, int natPort, String type, String key, String user, String password, VTProxy proxy)
@@ -345,17 +315,7 @@ public class VTManagedClientSocket
     vtclient.setUser(user);
     vtclient.setPassword(password);
     vtclient.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtclient.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtclient.setEncryptionKey(key);
   }
   
   public VTManagedClientSocket(String host, int port, boolean active, VTProxy proxy)
@@ -394,17 +354,7 @@ public class VTManagedClientSocket
     vtclient.setAddress(host);
     vtclient.setPort(port);
     vtclient.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtclient.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtclient.setEncryptionKey(key);
   }
   
   public VTManagedClientSocket(String host, int port, String type, String key, boolean active, boolean tls, VTProxy proxy)
@@ -419,17 +369,7 @@ public class VTManagedClientSocket
     vtclient.setAddress(host);
     vtclient.setPort(port);
     vtclient.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtclient.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtclient.setEncryptionKey(key);
   }
   
   public VTManagedClientSocket(String host, int port, String type, String key, String user, String password, boolean active, VTProxy proxy)
@@ -445,17 +385,7 @@ public class VTManagedClientSocket
     vtclient.setUser(user);
     vtclient.setPassword(password);
     vtclient.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtclient.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtclient.setEncryptionKey(key);
   }
   
   public VTManagedClientSocket(String host, int port, String type, String key, String user, String password, boolean active, boolean tls, VTProxy proxy)
@@ -472,17 +402,7 @@ public class VTManagedClientSocket
     vtclient.setUser(user);
     vtclient.setPassword(password);
     vtclient.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtclient.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtclient.setEncryptionKey(key);
   }
   
   public VTManagedClientSocket(String host, int port, int natPort, boolean active, VTProxy proxy)
@@ -524,17 +444,7 @@ public class VTManagedClientSocket
     vtclient.setPort(port);
     vtclient.setNatPort(natPort);
     vtclient.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtclient.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtclient.setEncryptionKey(key);
   }
   
   public VTManagedClientSocket(String host, int port, int natPort, String type, String key, boolean active, boolean tls, VTProxy proxy)
@@ -550,17 +460,7 @@ public class VTManagedClientSocket
     vtclient.setPort(port);
     vtclient.setNatPort(natPort);
     vtclient.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtclient.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtclient.setEncryptionKey(key);
   }
   
   public VTManagedClientSocket(String host, int port, int natPort, String type, String key, String user, String password, boolean active, VTProxy proxy)
@@ -577,17 +477,7 @@ public class VTManagedClientSocket
     vtclient.setUser(user);
     vtclient.setPassword(password);
     vtclient.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtclient.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtclient.setEncryptionKey(key);
   }
   
   public VTManagedClientSocket(String host, int port, int natPort, String type, String key, String user, String password, boolean active, boolean tls, VTProxy proxy)
@@ -605,17 +495,7 @@ public class VTManagedClientSocket
     vtclient.setUser(user);
     vtclient.setPassword(password);
     vtclient.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtclient.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtclient.setEncryptionKey(key);
   }
   
   public VTManagedClientSocket(Properties properties, VTProxy proxy)
@@ -668,17 +548,7 @@ public class VTManagedClientSocket
     vtclient.setAddress(host);
     vtclient.setPort(port);
     vtclient.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtclient.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtclient.setEncryptionKey(key);
   }
   
   public VTManagedClientSocket(boolean managed, String host, int port, String type, String key, String user, String password, VTProxy proxy)
@@ -693,17 +563,7 @@ public class VTManagedClientSocket
     vtclient.setUser(user);
     vtclient.setPassword(password);
     vtclient.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtclient.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtclient.setEncryptionKey(key);
   }
   
   public VTManagedClientSocket(boolean managed, String host, int port, int natPort, VTProxy proxy)
@@ -729,17 +589,7 @@ public class VTManagedClientSocket
     vtclient.setPort(port);
     vtclient.setNatPort(natPort);
     vtclient.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtclient.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtclient.setEncryptionKey(key);
   }
   
   public VTManagedClientSocket(boolean managed, String host, int port, int natPort, String type, String key, String user, String password, VTProxy proxy)
@@ -755,17 +605,7 @@ public class VTManagedClientSocket
     vtclient.setUser(user);
     vtclient.setPassword(password);
     vtclient.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtclient.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtclient.setEncryptionKey(key);
   }
   
   public VTManagedClientSocket(boolean managed, String host, int port, boolean active, VTProxy proxy)
@@ -804,17 +644,7 @@ public class VTManagedClientSocket
     vtclient.setAddress(host);
     vtclient.setPort(port);
     vtclient.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtclient.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtclient.setEncryptionKey(key);
   }
   
   public VTManagedClientSocket(boolean managed, String host, int port, String type, String key, boolean active, boolean tls, VTProxy proxy)
@@ -829,17 +659,7 @@ public class VTManagedClientSocket
     vtclient.setAddress(host);
     vtclient.setPort(port);
     vtclient.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtclient.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtclient.setEncryptionKey(key);
   }
   
   public VTManagedClientSocket(boolean managed, String host, int port, String type, String key, String user, String password, boolean active, VTProxy proxy)
@@ -855,17 +675,7 @@ public class VTManagedClientSocket
     vtclient.setUser(user);
     vtclient.setPassword(password);
     vtclient.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtclient.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtclient.setEncryptionKey(key);
   }
   
   public VTManagedClientSocket(boolean managed, String host, int port, String type, String key, String user, String password, boolean active, boolean tls, VTProxy proxy)
@@ -882,17 +692,7 @@ public class VTManagedClientSocket
     vtclient.setUser(user);
     vtclient.setPassword(password);
     vtclient.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtclient.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtclient.setEncryptionKey(key);
   }
   
   public VTManagedClientSocket(boolean managed, String host, int port, int natPort, boolean active, VTProxy proxy)
@@ -934,17 +734,7 @@ public class VTManagedClientSocket
     vtclient.setPort(port);
     vtclient.setNatPort(natPort);
     vtclient.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtclient.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtclient.setEncryptionKey(key);
   }
   
   public VTManagedClientSocket(boolean managed, String host, int port, int natPort, String type, String key, boolean active, boolean tls, VTProxy proxy)
@@ -960,17 +750,7 @@ public class VTManagedClientSocket
     vtclient.setPort(port);
     vtclient.setNatPort(natPort);
     vtclient.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtclient.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtclient.setEncryptionKey(key);
   }
   
   public VTManagedClientSocket(boolean managed, String host, int port, int natPort, String type, String key, String user, String password, boolean active, VTProxy proxy)
@@ -987,17 +767,7 @@ public class VTManagedClientSocket
     vtclient.setUser(user);
     vtclient.setPassword(password);
     vtclient.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtclient.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtclient.setEncryptionKey(key);
   }
   
   public VTManagedClientSocket(boolean managed, String host, int port, int natPort, String type, String key, String user, String password, boolean active, boolean tls, VTProxy proxy)
@@ -1015,17 +785,7 @@ public class VTManagedClientSocket
     vtclient.setUser(user);
     vtclient.setPassword(password);
     vtclient.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtclient.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtclient.setEncryptionKey(key);
   }
   
   public VTManagedClientSocket(boolean managed, Properties properties, VTProxy proxy)

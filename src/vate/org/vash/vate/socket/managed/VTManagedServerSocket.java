@@ -258,17 +258,7 @@ public class VTManagedServerSocket
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtserver.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtserver.setEncryptionKey(key);
   }
   
   public VTManagedServerSocket(String host, int port, String type, String key, String user, String password, VTProxy proxy)
@@ -282,17 +272,7 @@ public class VTManagedServerSocket
     vtserver.setPort(port);
     vtserver.setUniqueUserCredential(user, password);
     vtserver.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtserver.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtserver.setEncryptionKey(key);
   }
   
   public VTManagedServerSocket(String host, int port, int natPort, VTProxy proxy)
@@ -318,17 +298,7 @@ public class VTManagedServerSocket
     vtserver.setPort(port);
     vtserver.setNatPort(natPort);
     vtserver.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtserver.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtserver.setEncryptionKey(key);
   }
   
   public VTManagedServerSocket(String host, int port, int natPort, String type, String key, String user, String password, VTProxy proxy)
@@ -343,17 +313,7 @@ public class VTManagedServerSocket
     vtserver.setNatPort(natPort);
     vtserver.setUniqueUserCredential(user, password);
     vtserver.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtserver.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtserver.setEncryptionKey(key);
   }
   
   public VTManagedServerSocket(String host, int port, boolean passive, VTProxy proxy)
@@ -392,17 +352,7 @@ public class VTManagedServerSocket
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtserver.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtserver.setEncryptionKey(key);
   }
   
   public VTManagedServerSocket(String host, int port, String type, String key, boolean passive, boolean tls, VTProxy proxy)
@@ -417,17 +367,7 @@ public class VTManagedServerSocket
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtserver.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtserver.setEncryptionKey(key);
   }
   
   public VTManagedServerSocket(String host, int port, String type, String key, String user, String password, boolean passive, VTProxy proxy)
@@ -442,17 +382,7 @@ public class VTManagedServerSocket
     vtserver.setPort(port);
     vtserver.setUniqueUserCredential(user, password);
     vtserver.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtserver.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtserver.setEncryptionKey(key);
   }
   
   public VTManagedServerSocket(String host, int port, String type, String key, String user, String password, boolean passive, boolean tls, VTProxy proxy)
@@ -468,17 +398,7 @@ public class VTManagedServerSocket
     vtserver.setPort(port);
     vtserver.setUniqueUserCredential(user, password);
     vtserver.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtserver.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtserver.setEncryptionKey(key);
   }
   
   public VTManagedServerSocket(String host, int port, int natPort, boolean passive, VTProxy proxy)
@@ -520,17 +440,7 @@ public class VTManagedServerSocket
     vtserver.setPort(port);
     vtserver.setNatPort(natPort);
     vtserver.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtserver.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtserver.setEncryptionKey(key);
   }
   
   public VTManagedServerSocket(String host, int port, int natPort, String type, String key, boolean passive, boolean tls, VTProxy proxy)
@@ -546,17 +456,7 @@ public class VTManagedServerSocket
     vtserver.setPort(port);
     vtserver.setNatPort(natPort);
     vtserver.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtserver.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtserver.setEncryptionKey(key);
   }
   
   public VTManagedServerSocket(String host, int port, int natPort, String type, String key, String user, String password, boolean passive, VTProxy proxy)
@@ -572,17 +472,7 @@ public class VTManagedServerSocket
     vtserver.setNatPort(natPort);
     vtserver.setUniqueUserCredential(user, password);
     vtserver.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtserver.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtserver.setEncryptionKey(key);
   }
   
   public VTManagedServerSocket(String host, int port, int natPort, String type, String key, String user, String password, boolean passive, boolean tls, VTProxy proxy)
@@ -599,17 +489,7 @@ public class VTManagedServerSocket
     vtserver.setNatPort(natPort);
     vtserver.setUniqueUserCredential(user, password);
     vtserver.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtserver.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtserver.setEncryptionKey(key);
   }
   
   public VTManagedServerSocket(Properties properties, VTProxy proxy)
@@ -662,17 +542,7 @@ public class VTManagedServerSocket
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtserver.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtserver.setEncryptionKey(key);
   }
   
   public VTManagedServerSocket(boolean managed, String host, int port, String type, String key, String user, String password, VTProxy proxy)
@@ -686,17 +556,7 @@ public class VTManagedServerSocket
     vtserver.setPort(port);
     vtserver.setUniqueUserCredential(user, password);
     vtserver.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtserver.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtserver.setEncryptionKey(key);
   }
   
   public VTManagedServerSocket(boolean managed, String host, int port, int natPort, VTProxy proxy)
@@ -722,17 +582,7 @@ public class VTManagedServerSocket
     vtserver.setPort(port);
     vtserver.setNatPort(natPort);
     vtserver.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtserver.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtserver.setEncryptionKey(key);
   }
   
   public VTManagedServerSocket(boolean managed, String host, int port, int natPort, String type, String key, String user, String password, VTProxy proxy)
@@ -747,17 +597,7 @@ public class VTManagedServerSocket
     vtserver.setNatPort(natPort);
     vtserver.setUniqueUserCredential(user, password);
     vtserver.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtserver.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtserver.setEncryptionKey(key);
   }
   
   public VTManagedServerSocket(boolean managed, String host, int port, boolean passive, VTProxy proxy)
@@ -796,17 +636,7 @@ public class VTManagedServerSocket
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtserver.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtserver.setEncryptionKey(key);
   }
   
   public VTManagedServerSocket(boolean managed, String host, int port, String type, String key, boolean passive, boolean tls, VTProxy proxy)
@@ -821,17 +651,7 @@ public class VTManagedServerSocket
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtserver.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtserver.setEncryptionKey(key);
   }
   
   public VTManagedServerSocket(boolean managed, String host, int port, String type, String key, String user, String password, boolean passive, VTProxy proxy)
@@ -846,17 +666,7 @@ public class VTManagedServerSocket
     vtserver.setPort(port);
     vtserver.setUniqueUserCredential(user, password);
     vtserver.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtserver.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtserver.setEncryptionKey(key);
   }
   
   public VTManagedServerSocket(boolean managed, String host, int port, String type, String key, String user, String password, boolean passive, boolean tls, VTProxy proxy)
@@ -872,17 +682,7 @@ public class VTManagedServerSocket
     vtserver.setPort(port);
     vtserver.setUniqueUserCredential(user, password);
     vtserver.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtserver.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtserver.setEncryptionKey(key);
   }
   
   public VTManagedServerSocket(boolean managed, String host, int port, int natPort, boolean passive, VTProxy proxy)
@@ -924,17 +724,7 @@ public class VTManagedServerSocket
     vtserver.setPort(port);
     vtserver.setNatPort(natPort);
     vtserver.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtserver.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtserver.setEncryptionKey(key);
   }
   
   public VTManagedServerSocket(boolean managed, String host, int port, int natPort, String type, String key, boolean passive, boolean tls, VTProxy proxy)
@@ -950,17 +740,7 @@ public class VTManagedServerSocket
     vtserver.setPort(port);
     vtserver.setNatPort(natPort);
     vtserver.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtserver.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtserver.setEncryptionKey(key);
   }
   
   public VTManagedServerSocket(boolean managed, String host, int port, int natPort, String type, String key, String user, String password, boolean passive, VTProxy proxy)
@@ -976,17 +756,7 @@ public class VTManagedServerSocket
     vtserver.setNatPort(natPort);
     vtserver.setUniqueUserCredential(user, password);
     vtserver.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtserver.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtserver.setEncryptionKey(key);
   }
   
   public VTManagedServerSocket(boolean managed, String host, int port, int natPort, String type, String key, String user, String password, boolean passive, boolean tls, VTProxy proxy)
@@ -1003,17 +773,7 @@ public class VTManagedServerSocket
     vtserver.setNatPort(natPort);
     vtserver.setUniqueUserCredential(user, password);
     vtserver.setEncryptionType(type);
-    try
-    {
-      if (key != null)
-      {
-        vtserver.setEncryptionKey(key.getBytes("UTF-8"));
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    vtserver.setEncryptionKey(key);
   }
   
   public VTManagedServerSocket(boolean managed, Properties properties, VTProxy proxy)

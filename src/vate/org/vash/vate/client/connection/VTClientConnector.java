@@ -1,6 +1,9 @@
 package org.vash.vate.client.connection;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -15,6 +18,7 @@ import org.vash.vate.client.session.VTClientSessionListener;
 import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.nat.mapping.VTNATPortMappingResultNotify;
 import org.vash.vate.nat.mapping.VTNATSinglePortMappingManagerMKII;
+import org.vash.vate.org.apache.commons.io.IOUtils;
 import org.vash.vate.proxy.client.VTProxy;
 import org.vash.vate.proxy.client.VTProxy.VTProxyType;
 import org.vash.vate.runtime.VTRuntimeExit;
@@ -41,7 +45,8 @@ public class VTClientConnector implements Runnable
   private String proxyPassword;
   private boolean tlsAuthentication;
   private String encryptionType;
-  private byte[] encryptionKey;
+  private String encryptionKey = "";
+  private byte[] encryptionKeyData;
   private String sessionCommands;
   // private String sessionLines;
   private String sessionShell = "";
@@ -329,9 +334,30 @@ public class VTClientConnector implements Runnable
     this.encryptionType = encryptionType;
   }
   
-  public void setEncryptionKey(byte[] encryptionKey)
+  public void setEncryptionKey(String encryptionKey)
   {
     this.encryptionKey = encryptionKey;
+    if (encryptionKey != null && encryptionKey.length() > 0)
+    {
+      byte[] fileData = readFileData(encryptionKey);
+      if (fileData != null && fileData.length > 0)
+      {
+        encryptionKeyData = fileData;
+        return;
+      }
+      try
+      {
+        encryptionKeyData = encryptionKey.getBytes("UTF-8");
+      }
+      catch (Throwable t)
+      {
+        
+      }
+    }
+    else
+    {
+      encryptionKeyData = new byte[] {};
+    }
   }
   
   public void setSessionCommands(String sessionCommands)
@@ -399,7 +425,7 @@ public class VTClientConnector implements Runnable
     return encryptionType;
   }
   
-  public byte[] getEncryptionKey()
+  public String getEncryptionKey()
   {
     return encryptionKey;
   }
@@ -652,7 +678,7 @@ public class VTClientConnector implements Runnable
       {
         connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_NONE);
       }
-      connection.setEncryptionKey(encryptionKey);
+      connection.setEncryptionKey(encryptionKeyData);
       connection.setTLSAuthentication(tlsAuthentication);
       try
       {
@@ -743,7 +769,7 @@ public class VTClientConnector implements Runnable
       {
         connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_NONE);
       }
-      connection.setEncryptionKey(encryptionKey);
+      connection.setEncryptionKey(encryptionKeyData);
       connection.setTLSAuthentication(tlsAuthentication);
       VTMainConsole.print("\nVT>Connection with server established!");
       return true;
@@ -1347,7 +1373,7 @@ public class VTClientConnector implements Runnable
           skipConfiguration = false;
           return true;
         }
-        encryptionKey = line.getBytes("UTF-8");
+        encryptionKey = line;
       }
       else
       {
@@ -1576,5 +1602,39 @@ public class VTClientConnector implements Runnable
   public void setSessionShell(String sessionShell)
   {
     this.sessionShell = sessionShell;
+  }
+  
+  public byte[] readFileData(String path)
+  {
+    byte[] data = null;
+    InputStream input = null;
+    try
+    {
+      File file = new File(path);
+      if (file.exists() && file.isFile() && file.length() > 0)
+      {
+        input = new FileInputStream(file);
+        data = IOUtils.toByteArray(input);
+      }
+    }
+    catch (Throwable t)
+    {
+      
+    }
+    finally
+    {
+      if (input != null)
+      {
+        try
+        {
+          input.close();
+        }
+        catch (Throwable t)
+        {
+          
+        }
+      }
+    }
+    return data;
   }
 }

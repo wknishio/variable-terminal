@@ -1458,7 +1458,7 @@ public class VTClientConfigurationDialog extends Dialog
         connector.setEncryptionType(encryptionType.getParameter());
         try
         {
-          connector.setEncryptionKey(encryptionPassword.getParameter().getBytes("UTF-8"));
+          connector.setEncryptionKey(encryptionPassword.getParameter());
         }
         catch (Throwable e)
         {
@@ -1548,7 +1548,7 @@ public class VTClientConfigurationDialog extends Dialog
         client.setEncryptionType(encryptionType.getParameter());
         try
         {
-          client.setEncryptionKey(encryptionPassword.getParameter().getBytes("UTF-8"));
+          client.setEncryptionKey(encryptionPassword.getParameter());
         }
         catch (Throwable e)
         {
