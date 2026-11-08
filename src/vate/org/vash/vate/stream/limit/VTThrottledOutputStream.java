@@ -19,6 +19,7 @@ public final class VTThrottledOutputStream extends FilterOutputStream
   
   public final void write(final int b) throws IOException
   {
+    out.write(b);
     try
     {
       throttler.acquire(1, this);
@@ -27,11 +28,11 @@ public final class VTThrottledOutputStream extends FilterOutputStream
     {
       
     }
-    out.write(b);
   }
   
   public final void write(final byte[] b, final int off, final int len) throws IOException
   {
+    out.write(b, off, len);
     try
     {
       throttler.acquire(len, this);
@@ -40,7 +41,6 @@ public final class VTThrottledOutputStream extends FilterOutputStream
     {
       
     }
-    out.write(b, off, len);
   }
   
   public final void setBytesPerSecond(final long bytesPerSecond)

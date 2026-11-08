@@ -292,7 +292,8 @@ public final class VTMultiplexingOutputStream
     private final Random thirdSequencer;
     private final Random fourthSequencer;
     private final LongTupleHashFunction contentDigest;
-    private final long[] hash = new long[2];
+    private final long[] contentHash = new long[2];
+    private final long[] controlHash = new long[2];
     
     private VTMultiplexedOutputStream(final OutputStream dataOutputStream, final OutputStream controlOutputStream, final int type, final int number, final int packetSize, final long firstSeed, final long secondSeed)
     {
@@ -477,6 +478,16 @@ public final class VTMultiplexingOutputStream
       this.pair = stream;
     }
     
+    private final void contentDigestHashBytes(byte[] buffer, int off, int len, long[] hash)
+    {
+      synchronized (contentDigest)
+      {
+        contentDigest.hashBytes(buffer, off, len, hash);
+        hash[0] ^= firstSequencer.nextLong() ^ secondSequencer.nextLong();
+        hash[1] ^= thirdSequencer.nextLong() ^ fourthSequencer.nextLong();
+      }
+    }
+    
     private final void writeDataPacket(final int type, final int number, final byte[] buffer, final int offset, final int length) throws IOException
     {
       synchronized (dataPacketBuffer)
@@ -485,13 +496,13 @@ public final class VTMultiplexingOutputStream
         dataContentBuffer.reset();
         contentOutputStream.write(buffer, offset, length);
         contentOutputStream.flush();
-        contentDigest.hashBytes(dataContentBuffer.buf(), 0, dataContentBuffer.count(), hash);
-        dataPacketStream.writeLong(firstSequencer.nextLong() ^ secondSequencer.nextLong() ^ hash[0]);
+        contentDigestHashBytes(dataContentBuffer.buf(), 0, dataContentBuffer.count(), contentHash);
+        dataPacketStream.writeLong(contentHash[0]);
         dataPacketStream.writeByte(type);
         dataPacketStream.writeSubInt(number);
         dataPacketStream.writeInt(dataContentBuffer.count());
         dataPacketStream.write(dataContentBuffer.buf(), 0, dataContentBuffer.count());
-        dataPacketStream.writeLong(thirdSequencer.nextLong() ^ fourthSequencer.nextLong() ^ hash[1]);
+        dataPacketStream.writeLong(contentHash[1]);
         dataOutputStream.write(dataPacketBuffer.buf(), 0, dataPacketBuffer.count());
         dataOutputStream.flush();
         transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES + dataContentBuffer.count());
@@ -503,12 +514,12 @@ public final class VTMultiplexingOutputStream
       synchronized (controlPacketBuffer)
       {
         controlPacketBuffer.reset();
-        contentDigest.hashBytes(controlPacketBuffer.buf(), 0, 0, hash);
-        controlPacketStream.writeLong(firstSequencer.nextLong() ^ secondSequencer.nextLong() ^ hash[0]);
+        contentDigestHashBytes(controlPacketBuffer.buf(), 0, 0, controlHash);
+        controlPacketStream.writeLong(controlHash[0]);
         controlPacketStream.writeByte(type);
         controlPacketStream.writeSubInt(number);
         controlPacketStream.writeInt(-2);
-        controlPacketStream.writeLong(thirdSequencer.nextLong() ^ fourthSequencer.nextLong() ^ hash[1]);
+        controlPacketStream.writeLong(controlHash[1]);
         controlOutputStream.write(controlPacketBuffer.buf(), 0, controlPacketBuffer.count());
         controlOutputStream.flush();
         transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
@@ -520,12 +531,12 @@ public final class VTMultiplexingOutputStream
       synchronized (controlPacketBuffer)
       {
         controlPacketBuffer.reset();
-        contentDigest.hashBytes(controlPacketBuffer.buf(), 0, 0, hash);
-        controlPacketStream.writeLong(firstSequencer.nextLong() ^ secondSequencer.nextLong() ^ hash[0]);
+        contentDigestHashBytes(controlPacketBuffer.buf(), 0, 0, controlHash);
+        controlPacketStream.writeLong(controlHash[0]);
         controlPacketStream.writeByte(type);
         controlPacketStream.writeSubInt(number);
         controlPacketStream.writeInt(-3);
-        controlPacketStream.writeLong(thirdSequencer.nextLong() ^ fourthSequencer.nextLong() ^ hash[1]);
+        controlPacketStream.writeLong(controlHash[1]);
         controlOutputStream.write(controlPacketBuffer.buf(), 0, controlPacketBuffer.count());
         controlOutputStream.flush();
         transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
