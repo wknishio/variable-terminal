@@ -274,8 +274,8 @@ public final class VTMultiplexingInputStream
         return;
       }
       stream.contentDigest.hashBytes(packetContentBuffer, 0, Math.max(length, 0), hash);
-      if (((stream.firstSequencer.nextLong() ^ stream.secondSequencer.nextLong() ^ hash[0]) != low)
-      || ((stream.thirdSequencer.nextLong() ^ stream.fourthSequencer.nextLong() ^ hash[1]) != high))
+      if (((stream.lowSequencer.nextLong() ^ hash[0]) != low)
+      || ((stream.highSequencer.nextLong() ^ hash[1]) != high))
       {
         close();
         return;
@@ -324,10 +324,8 @@ public final class VTMultiplexingInputStream
     private volatile boolean closed;
     private volatile Object link = null;
     private final int number;
-    private long firstSequencerSeed;
-    private long secondSequencerSeed;
-    private long thirdSequencerSeed;
-    private long fourthSequencerSeed;
+    private long lowSequencerSeed;
+    private long highSequencerSeed;
     private volatile int type;
     private final VTPipedInputStream bufferedInputStream;
     private final VTPipedOutputStream bufferedOutputStream;
@@ -337,25 +335,19 @@ public final class VTMultiplexingInputStream
     private VTByteArrayInputStream compressedInputPipe;
     private InputStream compressedInputStream;
     private final Collection<Closeable> propagated;
-    private final Random firstSequencer;
-    private final Random secondSequencer;
-    private final Random thirdSequencer;
-    private final Random fourthSequencer;
+    private final Random lowSequencer;
+    private final Random highSequencer;
     private final LongTupleHashFunction contentDigest;
     
     private VTMultiplexedInputStream(final int type, final int number, final int bufferSize, final long firstSeed, final long secondSeed)
     {
       this.type = type;
       this.number = number;
-      this.firstSequencerSeed = createSequencerSeed(number ^ firstSeed, secondSeed);
-      this.secondSequencerSeed = createSequencerSeed(number ^ secondSeed, firstSeed);
-      this.thirdSequencerSeed = createSequencerSeed(firstSeed, number ^ secondSeed);
-      this.fourthSequencerSeed = createSequencerSeed(secondSeed, number ^ firstSeed);
+      this.lowSequencerSeed = createSequencerSeed(number ^ firstSeed, secondSeed);
+      this.highSequencerSeed = createSequencerSeed(firstSeed, number ^ secondSeed);
       this.contentDigest = LongTupleHashFunction.xx128(createSequencerSeed(number ^ firstSeed, number ^ secondSeed));
-      this.firstSequencer = new VTSplitMix64Random(firstSequencerSeed);
-      this.secondSequencer = new VTSplitMix64Random(secondSequencerSeed);
-      this.thirdSequencer = new VTSplitMix64Random(thirdSequencerSeed);
-      this.fourthSequencer = new VTSplitMix64Random(fourthSequencerSeed);
+      this.lowSequencer = new VTSplitMix64Random(lowSequencerSeed);
+      this.highSequencer = new VTSplitMix64Random(highSequencerSeed);
       this.propagated = new ConcurrentLinkedQueue<Closeable>();
       
       if ((type & VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT) == VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED)
@@ -493,14 +485,10 @@ public final class VTMultiplexingInputStream
     
     private final void open() throws IOException
     {
-      firstSequencerSeed = createSequencerSeed(number ^ firstSeed, firstSequencerSeed ^ secondSeed);
-      secondSequencerSeed = createSequencerSeed(number ^ secondSeed, secondSequencerSeed ^ firstSeed);
-      thirdSequencerSeed = createSequencerSeed(thirdSequencerSeed ^ firstSeed, number ^ secondSeed);
-      fourthSequencerSeed = createSequencerSeed(fourthSequencerSeed ^ secondSeed, number ^ firstSeed);
-      firstSequencer.setSeed(firstSequencerSeed);
-      secondSequencer.setSeed(secondSequencerSeed);
-      thirdSequencer.setSeed(thirdSequencerSeed);
-      fourthSequencer.setSeed(fourthSequencerSeed);
+      lowSequencerSeed = createSequencerSeed(number ^ firstSeed, lowSequencerSeed ^ secondSeed);
+      highSequencerSeed = createSequencerSeed(highSequencerSeed ^ firstSeed, number ^ secondSeed);
+      lowSequencer.setSeed(lowSequencerSeed);
+      highSequencer.setSeed(highSequencerSeed);
       if (bufferedInputStream != null)
       {
         bufferedInputStream.open();

@@ -270,10 +270,8 @@ public final class VTMultiplexingOutputStream
     private volatile boolean closed;
     private volatile Object link = null;
     private final int number;
-    private long firstSequencerSeed;
-    private long secondSequencerSeed;
-    private long thirdSequencerSeed;
-    private long fourthSequencerSeed;
+    private long lowSequencerSeed;
+    private long highSequencerSeed;
     private volatile int type;
     private final int packetSize;
     private final byte[] single = new byte[1];
@@ -287,10 +285,8 @@ public final class VTMultiplexingOutputStream
     private OutputStream contentOutputStream;
     private VTMultiplexedInputStream pair;
     private final Collection<Closeable> propagated;
-    private final Random firstSequencer;
-    private final Random secondSequencer;
-    private final Random thirdSequencer;
-    private final Random fourthSequencer;
+    private final Random lowSequencer;
+    private final Random highSequencer;
     private final LongTupleHashFunction contentDigest;
     private final long[] contentHash = new long[2];
     private final long[] controlHash = new long[2];
@@ -302,15 +298,11 @@ public final class VTMultiplexingOutputStream
       this.type = type;
       this.number = number;
       this.packetSize = packetSize;
-      this.firstSequencerSeed = createSequencerSeed(number ^ firstSeed, secondSeed);
-      this.secondSequencerSeed = createSequencerSeed(number ^ secondSeed, firstSeed);
-      this.thirdSequencerSeed = createSequencerSeed(firstSeed, number ^ secondSeed);
-      this.fourthSequencerSeed = createSequencerSeed(secondSeed, number ^ firstSeed);
+      this.lowSequencerSeed = createSequencerSeed(number ^ firstSeed, secondSeed);
+      this.highSequencerSeed = createSequencerSeed(firstSeed, number ^ secondSeed);
       this.contentDigest = LongTupleHashFunction.xx128(createSequencerSeed(number ^ firstSeed, number ^ secondSeed));
-      this.firstSequencer = new VTSplitMix64Random(firstSequencerSeed);
-      this.secondSequencer = new VTSplitMix64Random(secondSequencerSeed);
-      this.thirdSequencer = new VTSplitMix64Random(thirdSequencerSeed);
-      this.fourthSequencer = new VTSplitMix64Random(fourthSequencerSeed);
+      this.lowSequencer = new VTSplitMix64Random(lowSequencerSeed);
+      this.highSequencer = new VTSplitMix64Random(highSequencerSeed);
       this.dataContentBuffer = new VTByteArrayOutputStream(packetTotalSize - VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
       this.dataPacketBuffer = new VTByteArrayOutputStream(packetTotalSize);
       this.dataPacketStream = new VTLittleEndianOutputStream(dataPacketBuffer);
@@ -438,14 +430,10 @@ public final class VTMultiplexingOutputStream
       //throttled.bypass();
       writeOpenPacket(type, number);
       //throttled.restore();
-      firstSequencerSeed = createSequencerSeed(number ^ firstSeed, firstSequencerSeed ^ secondSeed);
-      secondSequencerSeed = createSequencerSeed(number ^ secondSeed, secondSequencerSeed ^ firstSeed);
-      thirdSequencerSeed = createSequencerSeed(thirdSequencerSeed ^ firstSeed, number ^ secondSeed);
-      fourthSequencerSeed = createSequencerSeed(fourthSequencerSeed ^ secondSeed, number ^ firstSeed);
-      firstSequencer.setSeed(firstSequencerSeed);
-      secondSequencer.setSeed(secondSequencerSeed);
-      thirdSequencer.setSeed(thirdSequencerSeed);
-      fourthSequencer.setSeed(fourthSequencerSeed);
+      lowSequencerSeed = createSequencerSeed(number ^ firstSeed, lowSequencerSeed ^ secondSeed);
+      highSequencerSeed = createSequencerSeed(highSequencerSeed ^ firstSeed, number ^ secondSeed);
+      lowSequencer.setSeed(lowSequencerSeed);
+      highSequencer.setSeed(highSequencerSeed);
       if ((type & VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) != 0)
       {
         if ((type & VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_HEAVY) != 0)
@@ -483,8 +471,8 @@ public final class VTMultiplexingOutputStream
       synchronized (contentDigest)
       {
         contentDigest.hashBytes(buffer, off, len, hash);
-        hash[0] ^= firstSequencer.nextLong() ^ secondSequencer.nextLong();
-        hash[1] ^= thirdSequencer.nextLong() ^ fourthSequencer.nextLong();
+        hash[0] ^= lowSequencer.nextLong();
+        hash[1] ^= highSequencer.nextLong();
       }
     }
     
