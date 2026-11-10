@@ -478,12 +478,14 @@ public final class VTMultiplexingOutputStream
     
     private final void writeDataPacket(final int type, final int number, final byte[] buffer, final int offset, final int length) throws IOException
     {
+      int contentSize = 0;
       synchronized (dataPacketBuffer)
       {
         dataPacketBuffer.reset();
         dataContentBuffer.reset();
         contentOutputStream.write(buffer, offset, length);
         contentOutputStream.flush();
+        contentSize = dataContentBuffer.count();
         contentDigestHashBytes(dataContentBuffer.buf(), 0, dataContentBuffer.count(), contentHash);
         dataPacketStream.writeLong(contentHash[0]);
         dataPacketStream.writeByte(type);
@@ -493,8 +495,8 @@ public final class VTMultiplexingOutputStream
         dataPacketStream.writeLong(contentHash[1]);
         dataOutputStream.write(dataPacketBuffer.buf(), 0, dataPacketBuffer.count());
         dataOutputStream.flush();
-        transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES + dataContentBuffer.count());
       }
+      transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES + contentSize);
     }
     
     private final void writeClosePacket(final int type, final int number) throws IOException
@@ -510,8 +512,8 @@ public final class VTMultiplexingOutputStream
         controlPacketStream.writeLong(controlHash[1]);
         controlOutputStream.write(controlPacketBuffer.buf(), 0, controlPacketBuffer.count());
         controlOutputStream.flush();
-        transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
       }
+      transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
     }
     
     private final void writeOpenPacket(final int type, final int number) throws IOException
@@ -527,8 +529,8 @@ public final class VTMultiplexingOutputStream
         controlPacketStream.writeLong(controlHash[1]);
         controlOutputStream.write(controlPacketBuffer.buf(), 0, controlPacketBuffer.count());
         controlOutputStream.flush();
-        transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
       }
+      transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
     }
   }
 }
