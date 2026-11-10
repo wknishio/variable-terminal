@@ -273,9 +273,8 @@ public final class VTMultiplexingInputStream
         close();
         return;
       }
-      stream.contentDigest.hashBytes(packetContentBuffer, 0, Math.max(length, 0), hash);
-      if (((stream.lowSequencer.nextLong() ^ hash[0]) != low)
-      || ((stream.highSequencer.nextLong() ^ hash[1]) != high))
+      stream.contentDigestHashBytes(packetContentBuffer, 0, Math.max(length, 0), hash);
+      if (hash[0] != low || hash[1] != high)
       {
         close();
         return;
@@ -596,6 +595,13 @@ public final class VTMultiplexingInputStream
     public final long skip(final long count) throws IOException
     {
       return input.skip(count);
+    }
+    
+    private final void contentDigestHashBytes(byte[] buffer, int off, int len, long[] hash)
+    {
+      contentDigest.hashBytes(buffer, off, len, hash);
+      hash[0] ^= lowSequencer.nextLong();
+      hash[1] ^= highSequencer.nextLong();
     }
   }
   
