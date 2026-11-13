@@ -31,7 +31,7 @@ public final class VTMultiplexingInputStream
 {
   private volatile boolean closed = false;
   private final int bufferSize;
-  private final byte[] packetContentBuffer;
+  private final byte[] dataContentBuffer;
   private Future<?> packetReaderThread;
   private final VTLittleEndianInputStream input;
   private final VTMultiplexingInputStreamPacketReader packetReader;
@@ -43,11 +43,11 @@ public final class VTMultiplexingInputStream
   private final boolean server;
   private AtomicLong transferredBytes = new AtomicLong(0);
   
-  public VTMultiplexingInputStream(final InputStream input, final boolean server, final int packetContentSize, final int packetTotalSize, final int bufferSize, final long firstSeed, final long secondSeed, final ExecutorService executorService, final boolean startPacketReader)
+  public VTMultiplexingInputStream(final InputStream input, final boolean server, final int contentSize, final int packetSize, final int bufferSize, final long firstSeed, final long secondSeed, final ExecutorService executorService, final boolean startPacketReader)
   {
     this.input = new VTLittleEndianInputStream(input);
     this.server = server;
-    this.packetContentBuffer = new byte[packetTotalSize - VTSystem.VT_PACKET_HEADER_SIZE_BYTES];
+    this.dataContentBuffer = new byte[packetSize - VTSystem.VT_PACKET_HEADER_SIZE_BYTES];
     this.bufferSize = bufferSize;
     this.firstSeed = firstSeed;
     this.secondSeed = secondSeed;
@@ -265,7 +265,7 @@ public final class VTMultiplexingInputStream
       type = input.readByte();
       number = input.readSubInt();
       length = input.readInt();
-      input.readFully(packetContentBuffer, 0, length);
+      input.readFully(dataContentBuffer, 0, length);
       high = input.readLong();
       stream = getInputStream(type, number);
       if (stream == null)
@@ -273,7 +273,7 @@ public final class VTMultiplexingInputStream
         close();
         return;
       }
-      stream.contentDigestHashBytes(packetContentBuffer, 0, Math.max(length, 0), hash);
+      stream.contentDigestHashBytes(dataContentBuffer, 0, Math.max(length, 0), hash);
       if (hash[0] != low || hash[1] != high)
       {
         close();
@@ -285,7 +285,7 @@ public final class VTMultiplexingInputStream
         OutputStream out = stream.getOutputStream();
         try
         {
-          out.write(packetContentBuffer, 0, length);
+          out.write(dataContentBuffer, 0, length);
           out.flush();
         }
         catch (Throwable e)
@@ -458,7 +458,7 @@ public final class VTMultiplexingInputStream
       {
         if (compressedInputPipe == null)
         {
-          compressedInputPipe = new VTByteArrayInputStream(new byte[packetContentBuffer.length]);
+          compressedInputPipe = new VTByteArrayInputStream(new byte[dataContentBuffer.length]);
         }
         if ((type & VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_HEAVY) != 0)
         {
