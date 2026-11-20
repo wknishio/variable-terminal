@@ -95,47 +95,179 @@ public class VTMainNativeUtils
     }
   }
   
-  private static final String WIN32_EJECT_DISC_TRAY_JSCRIPT = 
-  "var shell = new ActiveXObject(\"Shell.Application\");\r\n" +
-  "var fso = new ActiveXObject(\"Scripting.FileSystemObject\");\r\n" +
-  "var drives = new Enumerator(fso.Drives);\r\n" +
-  "\r\n" +
-  "for (; !drives.atEnd(); drives.moveNext()) {\r\n" +
-  "    var d = drives.item();\r\n" +
-  "    try {\r\n" +
-  "        // DriveType 4 is CD-ROM\r\n" +
-  "        if (d.DriveType === 4) {\r\n" +
-  "            shell.Namespace(17).ParseName(d.DriveLetter + \":\\\").InvokeVerb(\"Eject\");\r\n" +
-  "            break;\r\n" +
-  "        }\r\n" +
-  "    } catch (e) {\r\n" +
-  "       // Equivalent to 'On Error Resume Next' for the loop body\r\n" +
+  private static final String WIN32_OPEN_DISC_TRAY_JSCRIPT =
+  "function toggleDriveWMP(targetDrive) {\r\n" + 
+  "    var progIDs = [\"WMPlayer.OCX.7\", \"WMPlayer.OCX\"];\r\n" + 
+  "    var wmp = null;\r\n" + 
+  "    for (var i = 0; i < progIDs.length; i++) {\r\n" + 
+  "        try {\r\n" + 
+  "            wmp = new ActiveXObject(progIDs[i]);\r\n" + 
+  "            break;\r\n" + 
+  "        } catch (e) {}\r\n" + 
+  "    }\r\n" + 
+  "    if (!wmp || !wmp.cdromCollection) {return false;}\r\n" + 
+  "    for (var j = 0; j < wmp.cdromCollection.count; j++) {\r\n" + 
+  "        var cdrom = wmp.cdromCollection.item(j);\r\n" + 
+  "        if (cdrom.driveSpecifier.toUpperCase() === targetDrive) {\r\n" + 
+  "            cdrom.Eject();\r\n" + 
+  "            return true;\r\n" + 
+  "        }\r\n" + 
+  "    }\r\n" + 
+  "    return false;\r\n" + 
+  "}\r\n" + 
+  "function openDriveIMAPI2() {\r\n" + 
+  "    var discMaster = new ActiveXObject(\"IMAPI2.MsftDiscMaster2\");\r\n" +
+  "    var discRecorder = new ActiveXObject(\"IMAPI2.MsftDiscRecorder2\");\r\n" +
+  "    if (discMaster.Count > 0) {\r\n" +
+  "        var uniqueId = discMaster.Item(0);\r\n" +
+  "        discRecorder.InitializeDiscRecorder(uniqueId);\r\n" +
+  "        discRecorder.EjectMedia();\r\n" +
   "    }\r\n" +
   "}\r\n" +
-  "\r\n" +
+  "var fso = new ActiveXObject(\"Scripting.FileSystemObject\");\r\n" +
+  "var drives = new Enumerator(fso.Drives);\r\n" +
+  "var wmp_ok = false;\r\n" +
+  "for (; !drives.atEnd(); drives.moveNext()) {\r\n" +
+  "    var d = drives.item();\r\n" +
+  "    // DriveType 4 is CD-ROM\r\n" +
+  "    if (d.DriveType === 4) {\r\n" +
+  "        try {\r\n" +
+  "            wmp_ok = toggleDriveWMP(d.DriveLetter + \":\");\r\n" +
+  "            if (wmp_ok) {\r\n" +
+  "                break;\r\n" + 
+  "            }\r\n" +
+  "        }\r\n" +
+  "        catch (e) {\r\n" +
+  "        }\r\n" +
+  "    }\r\n" +
+  "}\r\n" +
+  "if (!wmp_ok) {\r\n" +
+  "    try {\r\n" +
+  "        openDriveIMAPI2();\r\n" +
+  "    }\r\n" +
+  "    catch (t) {\r\n" +
+  "    }\r\n" +
+  "}\r\n" +
   "WScript.Quit();\r\n";
   
-  private static final String WIN32_EJECT_DISC_TRAY_POWERSHELL = 
-  "try" +
-  "{" +
-  "  $drives = Get-WmiObject Win32_LogicalDisk -Filter 'DriveType=4';" +
-  "  foreach ($d in $drives)" +
-  "  {" +
-  "    $driveLetter = $d.DeviceID;" +
-  "    try" +
-  "    {" +
-  "      (New-Object -ComObject Shell.Application).Namespace(17).ParseName($driveLetter + ':\\').InvokeVerb('Eject');" +
-  "    }" +
-  "    catch" +
-  "    {" +
+  private static final String WIN32_CLOSE_DISC_TRAY_JSCRIPT =
+  "function toggleDriveWMP(targetDrive) {\r\n" + 
+  "    var progIDs = [\"WMPlayer.OCX.7\", \"WMPlayer.OCX\"];\r\n" + 
+  "    var wmp = null;\r\n" + 
+  "    for (var i = 0; i < progIDs.length; i++) {\r\n" + 
+  "        try {\r\n" + 
+  "            wmp = new ActiveXObject(progIDs[i]);\r\n" + 
+  "            break;\r\n" + 
+  "        } catch (e) {}\r\n" + 
+  "    }\r\n" + 
+  "    if (!wmp || !wmp.cdromCollection) {return false;}\r\n" + 
+  "    for (var j = 0; j < wmp.cdromCollection.count; j++) {\r\n" + 
+  "        var cdrom = wmp.cdromCollection.item(j);\r\n" + 
+  "        if (cdrom.driveSpecifier.toUpperCase() === targetDrive) {\r\n" + 
+  "            cdrom.Eject();\r\n" + 
+  "            return true;\r\n" + 
+  "        }\r\n" + 
+  "    }\r\n" + 
+  "    return false;\r\n" + 
+  "}\r\n" + 
+  "function closeDriveIMAPI2() {\r\n" + 
+  "    var discMaster = new ActiveXObject(\"IMAPI2.MsftDiscMaster2\");\r\n" +
+  "    var discRecorder = new ActiveXObject(\"IMAPI2.MsftDiscRecorder2\");\r\n" +
+  "    if (discMaster.Count > 0) {\r\n" +
+  "        var uniqueId = discMaster.Item(0);\r\n" +
+  "        discRecorder.InitializeDiscRecorder(uniqueId);\r\n" +
+  "        discRecorder.CloseTray();\r\n" +
+  "    }\r\n" +
+  "}\r\n" +
+  "var fso = new ActiveXObject(\"Scripting.FileSystemObject\");\r\n" +
+  "var drives = new Enumerator(fso.Drives);\r\n" +
+  "var wmp_ok = false;\r\n" +
+  "for (; !drives.atEnd(); drives.moveNext()) {\r\n" +
+  "    var d = drives.item();\r\n" +
+  "    // DriveType 4 is CD-ROM\r\n" +
+  "    if (d.DriveType === 4) {\r\n" +
+  "        try {\r\n" +
+  "            wmp_ok = toggleDriveWMP(d.DriveLetter + \":\");\r\n" +
+  "            if (wmp_ok) {\r\n" +
+  "                break;\r\n" + 
+  "            }\r\n" +
+  "        }\r\n" +
+  "        catch (e) {\r\n" +
+  "        }\r\n" +
+  "    }\r\n" +
+  "}\r\n" +
+  "if (!wmp_ok) {\r\n" +
+  "    try {\r\n" +
+  "        closeDriveIMAPI2();\r\n" +
+  "    }\r\n" +
+  "    catch (t) {\r\n" +
+  "    }\r\n" +
+  "}\r\n" +
+  "WScript.Quit();\r\n";
+  
+  private static final String WIN32_OPEN_DISC_TRAY_POWERSHELL2 =
+  "try {" +
+  "  $code = '" +
+  "  using System;" +
+  "  using System.Text;" +
+  "  using System.Runtime.InteropServices;" +
+  "  public class DriveEject {" +
+  "    [DllImport(\\\"winmm.dll\\\", EntryPoint = \\\"mciSendStringA\\\", CharSet = CharSet.Ansi)]" +
+  "    public static extern int mciSendString(string lpstrCommand, StringBuilder lpstrReturnString, int uReturnLength, IntPtr hwndCallback);" +
+  "    public static bool Eject(string driveLetter) {" +
+  "    string alias = \\\"cd_\\\" + driveLetter;" +
+  "      int err = mciSendString(\\\"open \\\" + driveLetter + \\\": type cdaudio alias \\\" + alias, null, 0, IntPtr.Zero);" +
+  "      if (err != 0) return false;" +
+  "      err = mciSendString(\\\"set \\\" + alias + \\\" door open\\\", null, 0, IntPtr.Zero);" +
+  "      mciSendString(\\\"close \\\" + alias, null, 0, IntPtr.Zero);" +
+  "      return err == 0;" +
   "    }" +
   "  }" +
-  "}" + 
-  "catch" +
-  "{" +
+  "';" +
+  "  Add-Type -TypeDefinition $code;" +
+  "  $fso = New-Object -ComObject Scripting.FileSystemObject;" +
+  "  foreach ($d in $fso.Drives) {" +
+  "    if ($d.DriveType -eq 4) {" +
+  "      if (-not [DriveEject]::Eject($d.DriveLetter)) { exit 1; }" +
+  "      break;" +
+  "    }" +
+  "  }" +
+  "} catch {" +
+  "  exit 1;" +
   "}";
   
-  private static final String WIN32_DISABLE_CANONICAL_INPUT_POWERSHELL = 
+  private static final String WIN32_CLOSE_DISC_TRAY_POWERSHELL2 =
+  "try {" +
+  "  $code = '" +
+  "  using System;" +
+  "  using System.Text;" +
+  "  using System.Runtime.InteropServices;" +
+  "  public class DriveEject {" +
+  "    [DllImport(\\\"winmm.dll\\\", EntryPoint = \\\"mciSendStringA\\\", CharSet = CharSet.Ansi)]" +
+  "    public static extern int mciSendString(string lpstrCommand, StringBuilder lpstrReturnString, int uReturnLength, IntPtr hwndCallback);" +
+  "    public static bool Eject(string driveLetter) {" +
+  "      string alias = \\\"cd_\\\" + driveLetter;" +
+  "      int err = mciSendString(\\\"open \\\" + driveLetter + \\\": type cdaudio alias \\\" + alias, null, 0, IntPtr.Zero);" +
+  "      if (err != 0) return false;" +
+  "      err = mciSendString(\\\"set \\\" + alias + \\\" door closed\\\", null, 0, IntPtr.Zero);" +
+  "      mciSendString(\\\"close \\\" + alias, null, 0, IntPtr.Zero);" +
+  "      return err == 0;" +
+  "    }" +
+  "  }" +
+  "';" +
+  "  Add-Type -TypeDefinition $code;" +
+  "  $fso = New-Object -ComObject Scripting.FileSystemObject;" +
+  "  foreach ($d in $fso.Drives) {" +
+  "    if ($d.DriveType -eq 4) {" +
+  "      if (-not [DriveEject]::Eject($d.DriveLetter)) { exit 1; }" +
+  "      break;" +
+  "    }" +
+  "  }" +
+  "} catch {" +
+  "  exit 1;" +
+  "}";
+  
+  private static final String WIN32_DISABLE_CANONICAL_INPUT_POWERSHELL2 = 
   "$Signature = @'\n" +
   "[DllImport(\\\"kernel32.dll\\\", SetLastError = true)]\n" +
   "public static extern bool GetConsoleMode(IntPtr hConsoleHandle, out uint lpMode);\n" +
@@ -155,9 +287,9 @@ public class VTMainNativeUtils
   "    }" +
   "  }" +
   "}" +
-  "exit -1";
+  "exit -1;";
   
-  private static final String WIN32_RESTORE_CANONICAL_INPUT_POWERSHELL = 
+  private static final String WIN32_RESTORE_CANONICAL_INPUT_POWERSHELL2 = 
   "$Signature = @'\n" +
   "[DllImport(\\\"kernel32.dll\\\", SetLastError = true)]\n" +
   "public static extern bool GetConsoleMode(IntPtr hConsoleHandle, out uint lpMode);\n" +
@@ -177,9 +309,9 @@ public class VTMainNativeUtils
   "    }" +
   "  }" +
   "}" +
-  "exit -1";
+  "exit -1;";
   
-  private static final String WIN32_DISABLE_ECHO_INPUT_POWERSHELL = 
+  private static final String WIN32_DISABLE_ECHO_INPUT_POWERSHELL2 = 
   "$Signature = @'\n" +
   "[DllImport(\\\"kernel32.dll\\\", SetLastError = true)]\n" +
   "public static extern bool GetConsoleMode(IntPtr hConsoleHandle, out uint lpMode);\n" +
@@ -199,9 +331,9 @@ public class VTMainNativeUtils
   "    }" +
   "  }" +
   "}" +
-  "exit -1";
+  "exit -1;";
   
-  private static final String WIN32_RESTORE_ECHO_INPUT_POWERSHELL = 
+  private static final String WIN32_RESTORE_ECHO_INPUT_POWERSHELL2 = 
   "$Signature = @'\n" +
   "[DllImport(\\\"kernel32.dll\\\", SetLastError = true)]\n" +
   "public static extern bool GetConsoleMode(IntPtr hConsoleHandle, out uint lpMode);\n" +
@@ -221,7 +353,7 @@ public class VTMainNativeUtils
   "    }" +
   "  }" +
   "}" +
-  "exit -1";
+  "exit -1;";
   
   public static int system(String command)
   {
@@ -282,16 +414,23 @@ public class VTMainNativeUtils
         else
         {
           int status = -1;
-          status = executeRuntime("powershell", "-Command", WIN32_EJECT_DISC_TRAY_POWERSHELL);
+          if (checkPowershell2Available())
+          {
+            status = executeRuntime("powershell", "-Command", WIN32_OPEN_DISC_TRAY_POWERSHELL2);
+          }
+          else if (checkPowershell7Available())
+          {
+            status = executeRuntime("pwsh", "-Command", WIN32_OPEN_DISC_TRAY_POWERSHELL2);
+          }
           // try to use cscript windows script host jscript file
-          if (status == -1)
+          if (status != 0)
           {
             File tmpJscriptFile = null;
             try
             {
               tmpJscriptFile = File.createTempFile("vate_w32_tedt", ".js");
               FileOutputStream output = new FileOutputStream(tmpJscriptFile);
-              output.write(WIN32_EJECT_DISC_TRAY_JSCRIPT.getBytes());
+              output.write(WIN32_OPEN_DISC_TRAY_JSCRIPT.getBytes());
               output.flush();
               output.close();
               status = executeRuntime("cscript", "//e:jscript", tmpJscriptFile.getAbsolutePath());
@@ -331,16 +470,23 @@ public class VTMainNativeUtils
       else
       {
         int status = -1;
-        status = executeRuntime("powershell", "-Command", WIN32_EJECT_DISC_TRAY_POWERSHELL);
+        if (checkPowershell2Available())
+        {
+          status = executeRuntime("powershell", "-Command", WIN32_OPEN_DISC_TRAY_POWERSHELL2);
+        }
+        else if (checkPowershell7Available())
+        {
+          status = executeRuntime("pwsh", "-Command", WIN32_OPEN_DISC_TRAY_POWERSHELL2);
+        }
         // try to use cscript windows script host jscript file
-        if (status == -1)
+        if (status != 0)
         {
           File tmpJscriptFile = null;
           try
           {
             tmpJscriptFile = File.createTempFile("vate_w32_tedt", ".js");
             FileOutputStream output = new FileOutputStream(tmpJscriptFile);
-            output.write(WIN32_EJECT_DISC_TRAY_JSCRIPT.getBytes());
+            output.write(WIN32_OPEN_DISC_TRAY_JSCRIPT.getBytes());
             output.flush();
             output.close();
             status = executeRuntime("cscript", "//e:jscript", tmpJscriptFile.getAbsolutePath());
@@ -384,16 +530,23 @@ public class VTMainNativeUtils
         else
         {
           int status = -1;
-          status = executeRuntime("powershell", "-Command", WIN32_EJECT_DISC_TRAY_POWERSHELL);
+          if (checkPowershell2Available())
+          {
+            status = executeRuntime("powershell", "-Command", WIN32_CLOSE_DISC_TRAY_POWERSHELL2);
+          }
+          else if (checkPowershell7Available())
+          {
+            status = executeRuntime("pwsh", "-Command", WIN32_CLOSE_DISC_TRAY_POWERSHELL2);
+          }
           // try to use cscript windows script host jscript file
-          if (status == -1)
+          if (status != 0)
           {
             File tmpJscriptFile = null;
             try
             {
               tmpJscriptFile = File.createTempFile("vate_w32_tedt", ".js");
               FileOutputStream output = new FileOutputStream(tmpJscriptFile);
-              output.write(WIN32_EJECT_DISC_TRAY_JSCRIPT.getBytes());
+              output.write(WIN32_CLOSE_DISC_TRAY_JSCRIPT.getBytes());
               output.flush();
               output.close();
               status = executeRuntime("cscript", "//e:jscript", tmpJscriptFile.getAbsolutePath());
@@ -433,16 +586,23 @@ public class VTMainNativeUtils
       else
       {
         int status = -1;
-        status = executeRuntime("powershell", "-Command", WIN32_EJECT_DISC_TRAY_POWERSHELL);
+        if (checkPowershell2Available())
+        {
+          status = executeRuntime("powershell", "-Command", WIN32_CLOSE_DISC_TRAY_POWERSHELL2);
+        }
+        else if (checkPowershell7Available())
+        {
+          status = executeRuntime("pwsh", "-Command", WIN32_CLOSE_DISC_TRAY_POWERSHELL2);
+        }
         // try to use cscript windows script host jscript file
-        if (status == -1)
+        if (status != 0)
         {
           File tmpJscriptFile = null;
           try
           {
             tmpJscriptFile = File.createTempFile("vate_w32_tedt", ".js");
             FileOutputStream output = new FileOutputStream(tmpJscriptFile);
-            output.write(WIN32_EJECT_DISC_TRAY_JSCRIPT.getBytes());
+            output.write(WIN32_CLOSE_DISC_TRAY_JSCRIPT.getBytes());
             output.flush();
             output.close();
             status = executeRuntime("cscript", "//e:jscript", tmpJscriptFile.getAbsolutePath());
@@ -1034,7 +1194,14 @@ public class VTMainNativeUtils
     {
       try
       {
-        executeSystem(true, "", "powershell", "-Command", WIN32_RESTORE_CANONICAL_INPUT_POWERSHELL);
+        if (checkPowershell2Available())
+        {
+          executeSystem(true, "", "powershell", "-Command", WIN32_RESTORE_CANONICAL_INPUT_POWERSHELL2);
+        }
+        else if (checkPowershell7Available())
+        {
+          executeSystem(true, "", "pwsh", "-Command", WIN32_RESTORE_CANONICAL_INPUT_POWERSHELL2);
+        }
       }
       catch (Throwable t)
       {
@@ -1079,7 +1246,14 @@ public class VTMainNativeUtils
     {
       try
       {
-        executeSystem(true, "", "powershell", "-Command", WIN32_RESTORE_ECHO_INPUT_POWERSHELL);
+        if (checkPowershell2Available())
+        {
+          executeSystem(true, "", "powershell", "-Command", WIN32_RESTORE_ECHO_INPUT_POWERSHELL2);
+        }
+        else if (checkPowershell7Available())
+        {
+          executeSystem(true, "", "pwsh", "-Command", WIN32_RESTORE_ECHO_INPUT_POWERSHELL2);
+        }
       }
       catch (Throwable t)
       {
@@ -1105,12 +1279,22 @@ public class VTMainNativeUtils
       {
         if (VTReflectionUtils.detectWindows())
         {
-          if (!isNativeAvailable() && checkPowershell2Available() && checkSystemAvailable())
+          if (!isNativeAvailable() && checkSystemAvailable() && checkPowershell2Available())
           {
             if (!disabledTerminalSanity)
             {
               Runtime.getRuntime().addShutdownHook(restoreTerminalSanityPowershellHook);
-              executeSystem(true, "", "powershell", "-Command", WIN32_DISABLE_CANONICAL_INPUT_POWERSHELL);
+              executeSystem(true, "", "powershell", "-Command", WIN32_DISABLE_CANONICAL_INPUT_POWERSHELL2);
+              disabledTerminalSanity = true;
+            }
+            return;
+          }
+          else if (!isNativeAvailable() && checkSystemAvailable() && checkPowershell7Available())
+          {
+            if (!disabledTerminalSanity)
+            {
+              Runtime.getRuntime().addShutdownHook(restoreTerminalSanityPowershellHook);
+              executeSystem(true, "", "pwsh", "-Command", WIN32_DISABLE_CANONICAL_INPUT_POWERSHELL2);
               disabledTerminalSanity = true;
             }
             return;
@@ -1143,12 +1327,22 @@ public class VTMainNativeUtils
       {
         if (VTReflectionUtils.detectWindows())
         {
-          if (!isNativeAvailable() && checkPowershell2Available() && checkSystemAvailable())
+          if (!isNativeAvailable() && checkSystemAvailable() && checkPowershell2Available())
           {
             if (disabledTerminalSanity)
             {
               Runtime.getRuntime().removeShutdownHook(restoreTerminalSanityPowershellHook);
-              executeSystem(true, "", "powershell", "-Command", WIN32_RESTORE_CANONICAL_INPUT_POWERSHELL);
+              executeSystem(true, "", "powershell", "-Command", WIN32_RESTORE_CANONICAL_INPUT_POWERSHELL2);
+              disabledTerminalSanity = false;
+            }
+            return;
+          }
+          else if (!isNativeAvailable() && checkSystemAvailable() && checkPowershell7Available())
+          {
+            if (disabledTerminalSanity)
+            {
+              Runtime.getRuntime().removeShutdownHook(restoreTerminalSanityPowershellHook);
+              executeSystem(true, "", "pwsh", "-Command", WIN32_RESTORE_CANONICAL_INPUT_POWERSHELL2);
               disabledTerminalSanity = false;
             }
             return;
@@ -1181,12 +1375,22 @@ public class VTMainNativeUtils
       {
         if (VTReflectionUtils.detectWindows())
         {
-          if (!isNativeAvailable() && checkPowershell2Available() && checkSystemAvailable())
+          if (!isNativeAvailable() && checkSystemAvailable() && checkPowershell2Available())
           {
             if (!disabledTerminalEcho)
             {
               Runtime.getRuntime().removeShutdownHook(restoreTerminalEchoPowershellHook);
-              executeSystem(true, "", "powershell", "-Command", WIN32_DISABLE_ECHO_INPUT_POWERSHELL);
+              executeSystem(true, "", "powershell", "-Command", WIN32_DISABLE_ECHO_INPUT_POWERSHELL2);
+              disabledTerminalEcho = true;
+            }
+            return;
+          }
+          else if (!isNativeAvailable() && checkSystemAvailable() && checkPowershell7Available())
+          {
+            if (!disabledTerminalEcho)
+            {
+              Runtime.getRuntime().removeShutdownHook(restoreTerminalEchoPowershellHook);
+              executeSystem(true, "", "pwsh", "-Command", WIN32_DISABLE_ECHO_INPUT_POWERSHELL2);
               disabledTerminalEcho = true;
             }
             return;
@@ -1217,12 +1421,22 @@ public class VTMainNativeUtils
     {
       if (VTConsole.hasTerminal())
       {
-        if (!isNativeAvailable() && checkPowershell2Available() && checkSystemAvailable())
+        if (!isNativeAvailable() && checkSystemAvailable() && checkPowershell2Available())
         {
           if (disabledTerminalEcho)
           {
             Runtime.getRuntime().removeShutdownHook(restoreTerminalEchoPowershellHook);
-            executeSystem(true, "", "powershell", "-Command", WIN32_RESTORE_ECHO_INPUT_POWERSHELL);
+            executeSystem(true, "", "powershell", "-Command", WIN32_RESTORE_ECHO_INPUT_POWERSHELL2);
+            disabledTerminalEcho = false;
+          }
+          return;
+        }
+        else if (!isNativeAvailable() && checkSystemAvailable() && checkPowershell7Available())
+        {
+          if (disabledTerminalEcho)
+          {
+            Runtime.getRuntime().removeShutdownHook(restoreTerminalEchoPowershellHook);
+            executeSystem(true, "", "pwsh", "-Command", WIN32_RESTORE_ECHO_INPUT_POWERSHELL2);
             disabledTerminalEcho = false;
           }
           return;
@@ -1251,7 +1465,7 @@ public class VTMainNativeUtils
         {
           return true;
         }
-        if (checkPowershell2Available() && checkSystemAvailable())
+        if ((checkPowershell2Available() || checkPowershell7Available()) && checkSystemAvailable())
         {
           return true;
         }
@@ -1303,6 +1517,11 @@ public class VTMainNativeUtils
   public static boolean checkPowershell2Available()
   {
     return executeRuntime("powershell", "-Command", "\"$PSVersionTable.PSVersion\"") == 0;
+  }
+  
+  public static boolean checkPowershell7Available()
+  {
+    return executeRuntime("pwsh", "-Command", "\"$PSVersionTable.PSVersion\"") == 0;
   }
   
   public static boolean checkWindowsTerminalAvailable()
